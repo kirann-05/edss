@@ -1,6 +1,15 @@
 # DECISIONS
 
-D1 to D4 were put to Kiran as options and have not been answered yet. Provisional defaults are set so the build can start on Day 1. They are changeable. The cost of changing each one later is stated. If a provisional default starts to hurt, present options to Kiran instead of working around it.
+D1 to D4 were put to Kiran as options. D1 is deferred to Day 4 (see "Confirmed by Kiran"). D2 to D4 are still unanswered and keep their provisional defaults. They are changeable. The cost of changing each one later is stated. If a provisional default starts to hurt, present options to Kiran instead of working around it.
+
+## Confirmed by Kiran (2026-10-03)
+
+| ID | Decision | Notes |
+| --- | --- | --- |
+| C1 | Repo lives at `~/Claude/edss` | No spaces in the path. The old folder `~/Claude/Agentic AI ` (trailing space) only holds the original zip |
+| C2 | Container runtime is OrbStack | Docker compatible and lighter on a 16 GB machine. The compose file stays plain Docker Compose so it runs on any Docker host later |
+| C3 | D1 deferred: FakeLLM only until Day 4 | Build all plumbing on FakeLLM. Pick the real dev model by Day 4. The data_mode guard is built on Day 4 regardless |
+| C4 | Lab grading format unknown | Kiran to ask the professor whether each lab is also submitted as a notebook. Until then, keep every lab's deliverable runnable from one command so it can be wrapped in a notebook later |
 
 ## Provisional (Kiran to confirm)
 
@@ -54,6 +63,22 @@ Provisional default: Core plus Strong, Stretch only if ahead. Revisit at the Day
 | D10 | The Coordinator is the graph plus runtime wrapper, not a separate LLM | Honest and simpler, easier to defend |
 | D11 | Validation before the human gate | The book's text, not its pseudocode |
 | D12 | Cross-department paper credit: once at institution, credited to each department | Needs IQAC confirmation |
+
+## Open issues from the 2026-10-03 doc review (proposed defaults, Kiran to confirm)
+
+Each of these is a gap or contradiction found in the pack. The proposed default is what the build will do unless Kiran says otherwise.
+
+| ID | Issue | Proposed default |
+| --- | --- | --- |
+| D13 | CLAUDE.md rule 10 says nothing reaches review without a green report, but ARCHITECTURE sends exhausted retries to the human as `escalated`. As written, an approver could publish a brief that failed V1 | Escalated drafts do reach the human, but Approve is blocked if any integrity check failed (V1, V4, V6, V7, V9). Only send back or override is possible then. Approve with acknowledgement is allowed only when the remaining failures are completeness checks (V2, V3, V8). Reword rule 10 to match |
+| D14 | No rule for combining sub-periods (semesters, quarters) into a year, or for flows versus snapshots | Add `period_agg` (`sum` or `latest`) to every metric key in the catalogue. Flows such as expenditure sum. Snapshots such as faculty_count and budget_sanctioned take the latest as_of. KPIs are computed per period_year |
+| D15 | `at_risk` is used but never defined. T6 (74.96 against 75) must be `missed`, so at_risk cannot mean "missed by a little" | `at_risk` means the target is met but the margin is under a per-KPI band, default 2% of target. Respects `higher_is_better` |
+| D16 | The formula language cannot express the seed KPIs (weighted means, unique publications), and CO and PO weighting has no weight metric | Evaluator supports `sum`, `ratio`, `weighted_mean(value_key, weight_key)` and `unique_publications()`. AC_CO weights by `acad.courses_total`. AC_PO uses a simple mean across departments, flagged placeholder, until IQAC says how programmes are weighted |
+| D17 | The hosted-LLM guard keys on the provider name, but `openai_compat` can point at any URL | When data_mode is real, the factory also checks the base URL host against an allowlist of local hosts (localhost and the configured university server), whatever the provider is called |
+| D18 | Parallel nodes append to the hash-chained audit log at the same time and would race on `prev_hash` | Audit append takes a Postgres transaction-level advisory lock, so the chain has a single writer |
+| D19 | Domain nodes are deterministic and read a local store, so parallel versus sequential differs by milliseconds | The benchmark reports raw timings and timings with configurable simulated source latency, labelled as such. Say this plainly in the viva |
+| D20 | Lab 4 retrieves similar past briefs, but the synthetic data has none | The synthetic generator also seeds 3 to 5 prior approved briefs with the decisions leadership took |
+| D21 | V1's digit lint misses spelled-out numbers, and no check confirms prose direction ("improved" when the KPI fell). V4's keyword check is brittle | Extend V1 to number words. The LLM receives status and direction as structured fields and refers to them by token. Record the remaining prose-truth gap as a known weakness in VIVA_NOTES |
 
 ## Open questions for Kiran to answer or chase
 
