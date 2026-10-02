@@ -1,0 +1,25 @@
+# secrets and local config
+.env
+.env.*
+!.env.example
+
+# real university data must never be committed
+data/real/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# node
+node_modules/
+.next/
+dist/
+
+# local services
+pgdata/
+*.log
+.DS_Store
