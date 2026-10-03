@@ -164,3 +164,65 @@ class TestStartup:
     def test_the_seed_password_is_a_secret(self):
         assert "test-password" not in repr(make_settings())
         assert isinstance(make_settings().edss_seed_password, SecretStr)
+
+
+class TestSignInAudit:
+    """Each test gets a fresh app (pipeline), so failed sign-ins here cannot lock anyone elsewhere."""
+
+    def _rows(self, pipeline, action):
+        return pipeline.state.audit.rows(action=action)
+
+    def test_a_sign_in_is_audited_with_the_role_and_never_the_password(self, pipeline):
+        pipeline.login("registrar")
+        rows = self._rows(pipeline, "auth.login")
+        assert rows and rows[-1].actor_id == "registrar@edss.test"
+        assert rows[-1].outputs == {"role": "registrar"}
+        everything = " ".join(str(r.inputs) + str(r.outputs) for r in pipeline.state.audit.rows())
+        assert PASSWORD not in everything
+
+    def test_a_failed_sign_in_is_audited_under_the_email_tried(self, pipeline):
+        client = TestClient(pipeline.app)
+        client.post(
+            "/api/auth/login", json={"email": "Principal@edss.test", "password": "wrong-password"}
+        )
+        row = self._rows(pipeline, "auth.login_failed")[-1]
+        assert row.actor_id == "principal@edss.test" and row.outputs == {"locked": False}
+        assert "wrong-password" not in str(row.inputs) + str(row.outputs)
+
+    def test_signing_out_is_audited(self, pipeline):
+        client = pipeline.login("dean")
+        assert client.post("/api/auth/logout").status_code == 204
+        assert self._rows(pipeline, "auth.logout")[-1].actor_id == "dean.computing@edss.test"
+
+
+class TestLockout:
+    def test_too_many_failures_lock_the_email_even_against_the_right_password(self, pipeline):
+        client = TestClient(pipeline.app)
+        bad = {"email": "principal@edss.test", "password": "not-it"}
+        statuses = [client.post("/api/auth/login", json=bad).status_code for _ in range(5)]
+        assert statuses == [401] * 5
+        good = {"email": "principal@edss.test", "password": PASSWORD}
+        locked = client.post("/api/auth/login", json=good)
+        assert locked.status_code == 429
+        assert int(locked.headers["retry-after"]) > 0
+        assert "Try again" in locked.json()["detail"]
+        assert pipeline.state.audit.rows(action="auth.locked")
+
+    def test_another_person_can_still_sign_in_while_one_email_is_locked(self, pipeline):
+        client = TestClient(pipeline.app)
+        for _ in range(5):
+            client.post(
+                "/api/auth/login", json={"email": "principal@edss.test", "password": "not-it"}
+            )
+        assert pipeline.login("registrar").get("/api/auth/me").status_code == 200
+
+    def test_a_success_before_the_limit_resets_the_count(self, pipeline):
+        client = TestClient(pipeline.app)
+        bad = {"email": "principal@edss.test", "password": "not-it"}
+        good = {"email": "principal@edss.test", "password": PASSWORD}
+        for _ in range(4):
+            client.post("/api/auth/login", json=bad)
+        assert client.post("/api/auth/login", json=good).status_code == 200
+        for _ in range(4):
+            assert client.post("/api/auth/login", json=bad).status_code == 401
+        assert client.post("/api/auth/login", json=good).status_code == 200

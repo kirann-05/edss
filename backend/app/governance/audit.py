@@ -156,3 +156,7 @@ class AuditLog:
 
     def verify(self) -> VerifyResult:
         return verify_rows(self.rows())
+
+    def actions(self) -> list[str]:
+        """Every action name the log holds, for a filter that offers only real choices."""
+        return sorted({row.action for row in self.rows()})

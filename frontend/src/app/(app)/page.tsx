@@ -14,6 +14,7 @@ import { KpiCard } from "@/components/kpi/kpi-card";
 import { SummaryStrip } from "@/components/kpi/summary-strip";
 import { PageHeader } from "@/components/page-header";
 import { PeriodSelect } from "@/components/period-select";
+import { CurrentReportCard } from "@/components/reports/current-report-card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useKpis, useMe } from "@/lib/api/queries";
@@ -102,6 +103,8 @@ function Dashboard() {
         }
         actions={<PeriodSelect />}
       />
+
+      {me.data?.permissions.includes("view_reports") && <CurrentReportCard />}
 
       {placeholders > 0 && (
         <Alert>

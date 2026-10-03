@@ -9,6 +9,7 @@ from app.agents.runtime import RunEvents
 from app.core.config import Settings
 from app.core.rbac import Permission, Scope, department_scope, has_permission
 from app.core.security import SESSION_COOKIE, read_token
+from app.core.throttle import LoginThrottle
 from app.domain.models import AppUser
 from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
@@ -39,6 +40,7 @@ class AppState:
     governance: GovernanceService
     runs: RunService
     archive: Archive
+    throttle: LoginThrottle
 
     @property
     def demo_login_enabled(self) -> bool:

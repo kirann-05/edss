@@ -347,3 +347,11 @@ export function useFact(id: number | null) {
     queryFn: () => api.get<FactOut>(`/facts/${id}`),
   });
 }
+
+export function useAuditActions() {
+  return useQuery({
+    queryKey: ["audit", "actions"],
+    queryFn: () => api.get<string[]>("/audit/actions"),
+    staleTime: 60_000,
+  });
+}

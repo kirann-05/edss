@@ -174,3 +174,22 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Printing a report (FR-14): paper white, no shadows, and sections that do not split badly.
+   The app chrome is hidden with print:hidden on the shell itself. */
+@media print {
+  @page {
+    margin: 16mm;
+  }
+  body {
+    background: #ffffff;
+  }
+  * {
+    box-shadow: none !important;
+  }
+  article,
+  li,
+  tr {
+    break-inside: avoid;
+  }
+}

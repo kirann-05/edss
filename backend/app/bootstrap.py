@@ -6,7 +6,7 @@ and the run service. Tests build the same state with other settings, or with run
 """
 
 import secrets
-from datetime import date
+from datetime import date, timedelta
 
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -16,6 +16,7 @@ from app.agents.runtime import RunEvents, Runtime
 from app.agents.validation.suite import validate
 from app.api.deps import AppState
 from app.core.config import Settings
+from app.core.throttle import LoginThrottle
 from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
 from app.services.archive import seed_archive
@@ -83,4 +84,9 @@ def build_state(settings: Settings, today: date, *, synchronous_runs: bool = Fal
         governance=governance,
         runs=runs,
         archive=seed_archive(store, drafter),
+        throttle=LoginThrottle(
+            max_failures=settings.login_max_failures,
+            window=timedelta(minutes=settings.login_lockout_minutes),
+            lockout=timedelta(minutes=settings.login_lockout_minutes),
+        ),
     )

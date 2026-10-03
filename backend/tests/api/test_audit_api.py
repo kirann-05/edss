@@ -94,3 +94,23 @@ class TestVerify:
         body = client.get("/api/audit/verify").json()
         assert body["ok"] is False and body["broken_at"] == rows[target].id
         assert "no longer matches" in body["reason"]
+
+
+def test_the_action_filter_offers_only_actions_that_exist(pipeline):
+    client = pipeline.login("registrar")
+    pipeline.start(client)
+    actions = client.get("/api/audit/actions").json()
+    assert actions == sorted(set(actions))
+    assert {"auth.login", "plan.lock", "node.done", "gate.waiting"} <= set(actions)
+
+
+def test_listing_actions_needs_audit_access(pipeline):
+    assert pipeline.login("dean").get("/api/audit/actions").status_code == 403
+
+
+def test_a_time_filter_without_a_zone_is_read_as_utc(pipeline):
+    client = pipeline.login("registrar")
+    everything = client.get("/api/audit?since=2000-01-01T00:00:00").json()
+    assert everything["total"] > 0
+    nothing = client.get("/api/audit?until=2000-01-01T00:00:00").json()
+    assert nothing["total"] == 0

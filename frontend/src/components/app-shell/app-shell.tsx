@@ -76,13 +76,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         Skip to main content
       </a>
 
-      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col gap-6 border-r bg-sidebar p-4 lg:flex">
+      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col gap-6 border-r bg-sidebar p-4 lg:flex print:hidden">
         <Brand />
         <NavList me={me.data} />
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex min-h-16 flex-wrap items-center justify-between gap-3 border-b bg-background/95 px-4 py-2 backdrop-blur lg:px-8">
+        <header className="sticky top-0 z-20 flex min-h-16 flex-wrap items-center justify-between gap-3 border-b bg-background/95 px-4 py-2 backdrop-blur lg:px-8 print:hidden">
           <div className="flex items-center gap-3">
             <Button
               variant="outline"
@@ -113,7 +113,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </SheetContent>
         </Sheet>
 
-        <main id="main" ref={main} tabIndex={-1} className="flex-1 px-4 py-6 outline-none lg:px-8">
+        <main id="main" ref={main} tabIndex={-1} className="flex-1 px-4 py-6 outline-none lg:px-8 print:p-0">
           <div className="mx-auto flex max-w-[1400px] flex-col gap-6">{children}</div>
         </main>
       </div>

@@ -1,6 +1,6 @@
 """The audit viewer (FR-12): every step and every decision, with the chain's verification."""
 
-from datetime import datetime
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, Query
 
@@ -34,6 +34,8 @@ def audit_rows(
     user: AppUser = Auditor,
 ) -> s.AuditPageOut:
     """Newest first. Filtering never changes what the chain check covers."""
+    # a time without a zone is read as UTC, so it can be compared with the log's own times
+    since, until = (t.replace(tzinfo=UTC) if t and t.tzinfo is None else t for t in (since, until))
     rows = state.audit.rows(run_id=run_id, actor_id=actor, action=action, since=since, until=until)
     rows.reverse()
     return s.AuditPageOut(
@@ -50,3 +52,8 @@ def verify(state: State, user: AppUser = Auditor) -> s.VerifyOut:
     return s.VerifyOut(
         ok=result.ok, checked=result.checked, broken_at=result.broken_at, reason=result.reason
     )
+
+
+@router.get("/audit/actions", response_model=list[str])
+def actions(state: State, user: AppUser = Auditor) -> list[str]:
+    return state.audit.actions()

@@ -3852,6 +3852,31 @@
         ]
       }
     },
+    "/api/audit/actions": {
+      "get": {
+        "operationId": "actions_api_audit_actions_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Response Actions Api Audit Actions Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Actions",
+        "tags": [
+          "audit"
+        ]
+      }
+    },
     "/api/audit/verify": {
       "get": {
         "operationId": "verify_api_audit_verify_get",
