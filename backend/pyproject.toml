@@ -6,6 +6,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
     "fastapi>=0.142.2",
     "pydantic-settings>=2.15.0",
+    "pyyaml>=6.0.3",
     "uvicorn[standard]>=0.54.0",
 ]
 
@@ -21,11 +22,12 @@ dev = [
     "httpx2>=2.13.1",
     "pytest>=9.1.1",
     "ruff>=0.16.10",
+    "types-pyyaml>=6.0.12.20260906",
 ]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra --strict-markers"
+addopts = "-ra --strict-markers --import-mode=importlib"
 
 [tool.ruff]
 line-length = 100
@@ -33,3 +35,5 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
+# the formatter owns line wrapping. Compact data tables are marked fmt: skip on purpose
+ignore = ["E501"]

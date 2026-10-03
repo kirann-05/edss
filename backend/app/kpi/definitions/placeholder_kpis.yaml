@@ -1,0 +1,115 @@
+# PLACEHOLDER KPI definitions (docs/DATA_CONTRACT.md section 4). Not real definitions.
+#
+# Rule 12: NIRF and NAAC definitions, parameter codes and targets are never invented. Every
+# row here is marked placeholder with PLACEHOLDER_PENDING_IQAC and is aligned to the
+# STRATEGIC framework only. Replace the whole file with the university's approved list when
+# IQAC supplies it. The loader refuses a placeholder row that lacks the marker.
+#
+# Formulas use the restricted grammar in app/kpi/formulas.py. Metric keys come from
+# app/kpi/catalogue.py.
+
+- key: AC_PASS_PCT
+  name: Overall pass percentage
+  domain: academic
+  formula: '100 * sum("acad.students_passed") / sum("acad.students_appeared")'
+  unit: "%"
+  display_precision: 1
+  note: "PLACEHOLDER_PENDING_IQAC"
+
+- key: AC_CO
+  name: Average CO attainment
+  domain: academic
+  formula: 'weighted_mean("acad.co_attainment", "acad.courses_total")'
+  unit: level
+  display_precision: 2
+  note: "PLACEHOLDER_PENDING_IQAC. Weighted by courses offered."
+
+- key: AC_PO
+  name: Average PO attainment
+  domain: academic
+  formula: 'mean("acad.po_attainment")'
+  unit: level
+  display_precision: 2
+  note: "PLACEHOLDER_PENDING_IQAC. Simple mean across departments until IQAC says how programmes are weighted (decision D16)."
+
+- key: AC_CURR
+  name: Curriculum compliance
+  domain: academic
+  formula: '100 * sum("acad.courses_current_revision") / sum("acad.courses_total")'
+  unit: "%"
+  display_precision: 1
+  note: "PLACEHOLDER_PENDING_IQAC"
+
+- key: RS_PUB_PF
+  name: Publications per faculty
+  domain: research
+  domain_tags: [research, reference]
+  formula: 'unique_publications() / sum("ref.faculty_count")'
+  unit: per faculty
+  display_precision: 2
+  note: "PLACEHOLDER_PENDING_IQAC. A paper shared by two departments counts once for the institution."
+
+- key: RS_CIT_PP
+  name: Citations per publication
+  domain: research
+  formula: 'sum("res.citations_count") / unique_publications()'
+  unit: per paper
+  display_precision: 1
+  note: "PLACEHOLDER_PENDING_IQAC. Citations are credited to the lead department so a shared paper is not counted twice (decision D23)."
+
+- key: RS_GRANT_PF
+  name: Research grant per faculty
+  domain: research
+  domain_tags: [research, reference]
+  formula: 'sum("res.grant_sanctioned") / sum("ref.faculty_count")'
+  unit: INR lakh
+  display_precision: 1
+  note: "PLACEHOLDER_PENDING_IQAC"
+
+- key: PL_PCT
+  name: Placement percentage
+  domain: placement
+  formula: '100 * sum("plc.placed_confirmed") / sum("plc.registered")'
+  unit: "%"
+  display_precision: 1
+  note: "PLACEHOLDER_PENDING_IQAC. Denominator is registered students. Provisional offers are never counted. Whether to use eligible instead is a one-line change here."
+
+- key: PL_AVG
+  name: Average package
+  domain: placement
+  formula: 'weighted_mean("plc.package_avg_lpa", "plc.placed_confirmed")'
+  unit: LPA
+  display_precision: 2
+  note: "PLACEHOLDER_PENDING_IQAC. Weighted by confirmed placements."
+
+- key: PL_INT
+  name: Internship completion
+  domain: placement
+  formula: '100 * sum("plc.intern_completed") / sum("plc.intern_required")'
+  unit: "%"
+  display_precision: 1
+  note: "PLACEHOLDER_PENDING_IQAC"
+
+- key: FN_UTIL
+  name: Budget utilisation (year to date)
+  domain: finance
+  formula: '100 * sum("fin.expenditure_actual") / sum("fin.budget_sanctioned")'
+  unit: "%"
+  display_precision: 1
+  note: "PLACEHOLDER_PENDING_IQAC. Year to date: actual expenditure so far against the annual sanctioned budget. Forecast and unreconciled figures are excluded."
+
+- key: FN_GRANT_UTIL
+  name: Grant utilisation
+  domain: finance
+  formula: '100 * sum("fin.grant_utilized") / sum("fin.grant_received")'
+  unit: "%"
+  display_precision: 1
+  note: "PLACEHOLDER_PENDING_IQAC"
+
+- key: FN_REV
+  name: Revenue (actual, year to date)
+  domain: finance
+  formula: 'sum("fin.revenue_actual")'
+  unit: INR lakh
+  display_precision: 0
+  note: "PLACEHOLDER_PENDING_IQAC. Actuals only. The forecast for the open quarter is shown separately and never added."

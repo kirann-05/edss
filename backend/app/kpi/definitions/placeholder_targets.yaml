@@ -1,0 +1,20 @@
+# PLACEHOLDER targets. They exist so the synthetic demo has misses to talk about
+# (docs/DATA_CONTRACT.md section 4, trap T10: two misses, one at risk, the rest met).
+# Not the university's targets. Source document for every row is the marker below.
+
+source_doc: PLACEHOLDER_PENDING_IQAC
+
+targets:
+  AC_PASS_PCT:   {2023-24: 80,   2024-25: 83,   2025-26: 85}
+  AC_CO:         {2023-24: 2.40, 2024-25: 2.45, 2025-26: 2.50}
+  AC_PO:         {2023-24: 2.30, 2024-25: 2.35, 2025-26: 2.40}
+  AC_CURR:       {2023-24: 85,   2024-25: 88,   2025-26: 90}
+  RS_PUB_PF:     {2023-24: 0.90, 2024-25: 1.00, 2025-26: 1.10}
+  RS_CIT_PP:     {2023-24: 2.5,  2024-25: 2.8,  2025-26: 3.0}
+  RS_GRANT_PF:   {2023-24: 5.0,  2024-25: 5.5,  2025-26: 6.0}
+  PL_PCT:        {2023-24: 65,   2024-25: 70,   2025-26: 75}
+  PL_AVG:        {2023-24: 5.5,  2024-25: 5.75, 2025-26: 6.0}
+  PL_INT:        {2023-24: 70,   2024-25: 75,   2025-26: 80}
+  FN_UTIL:       {2023-24: 65,   2024-25: 68,   2025-26: 70}
+  FN_GRANT_UTIL: {2023-24: 70,   2024-25: 75,   2025-26: 80}
+  FN_REV:        {2023-24: 1700, 2024-25: 1850, 2025-26: 2000}
