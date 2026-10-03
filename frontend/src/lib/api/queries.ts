@@ -18,6 +18,7 @@ import type {
   DomainView,
   EditRequest,
   EvidenceRow,
+  FactOut,
   KpiDrilldown,
   KpiList,
   Me,
@@ -51,6 +52,7 @@ export const keys = {
   briefs: (status?: BriefStatus) => ["briefs", status ?? "all"] as const,
   brief: (id: string) => ["brief", id] as const,
   evidence: (id: string) => ["brief", id, "evidence"] as const,
+  fact: (id: number) => ["fact", id] as const,
   prior: (id: string) => ["brief", id, "prior"] as const,
   currentReport: ["reports", "current"] as const,
   versions: ["reports", "versions"] as const,
@@ -334,5 +336,14 @@ export function useAuditVerification() {
     queryKey: keys.auditVerify,
     queryFn: () => api.get<AuditVerification>("/audit/verify"),
     staleTime: 0,
+  });
+}
+
+/** One source record behind a figure. Out-of-scope records come back as 404, like missing ones. */
+export function useFact(id: number | null) {
+  return useQuery({
+    queryKey: keys.fact(id ?? 0),
+    enabled: id !== null,
+    queryFn: () => api.get<FactOut>(`/facts/${id}`),
   });
 }

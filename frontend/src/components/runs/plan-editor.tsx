@@ -231,7 +231,7 @@ export function PlanEditor({ run, catalogue }: { run: Run; catalogue: PlanCatalo
           )}
         </div>
 
-        <aside className="flex flex-col gap-6 xl:sticky xl:top-6">
+        <aside className="flex flex-col gap-6 xl:sticky xl:top-20">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">

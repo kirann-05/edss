@@ -47,6 +47,15 @@ export const TONE_CLASS: Record<Tone, string> = {
   neutral: "bg-neutral-tint text-neutral-ink border-border",
 };
 
+/** The text colour of a tone, for an icon or a word set beside a figure. */
+export const TONE_TEXT: Record<Tone, string> = {
+  good: "text-good-ink",
+  warning: "text-warning-ink",
+  serious: "text-serious-ink",
+  critical: "text-critical-ink",
+  neutral: "text-neutral-ink",
+};
+
 export interface StatusStyle {
   label: string;
   tone: Tone;

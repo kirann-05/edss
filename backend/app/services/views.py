@@ -123,7 +123,7 @@ def department_row(scope: Scope, dept: Department, value: DepartmentValue) -> s.
     )
 
 
-def _fact_out(store: DataStore, fact: MetricFact, used: bool) -> s.FactOut:
+def fact_out(store: DataStore, fact: MetricFact, used: bool) -> s.FactOut:
     source = store.sources[fact.source_system_id]
     return s.FactOut(
         id=fact.id,
@@ -161,7 +161,7 @@ def build_drilldown(store: DataStore, scope: Scope, key: str, period: str) -> s.
     for fact_id in wanted_ids:
         fact = store.facts_by_id[fact_id]
         if scope.allows(fact.dept_code):
-            facts.append(_fact_out(store, fact, used=fact_id in used_ids))
+            facts.append(fact_out(store, fact, used=fact_id in used_ids))
         else:
             hidden += 1
 

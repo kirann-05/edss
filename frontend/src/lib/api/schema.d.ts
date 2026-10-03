@@ -274,6 +274,29 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/facts/{fact_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Fact
+         * @description One source record behind a figure, with its source and status (Lab 9 evidence).
+         *
+         *     A record from a department outside the person's scope is answered exactly like one that does
+         *     not exist, so the response never confirms that another department has data.
+         */
+        get: operations["fact_api_facts__fact_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/health": {
         parameters: {
             query?: never;
@@ -2316,6 +2339,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DomainViewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    fact_api_facts__fact_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                fact_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FactOut"];
                 };
             };
             /** @description Validation Error */

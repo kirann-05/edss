@@ -4415,6 +4415,49 @@
         ]
       }
     },
+    "/api/facts/{fact_id}": {
+      "get": {
+        "description": "One source record behind a figure, with its source and status (Lab 9 evidence).\n\nA record from a department outside the person's scope is answered exactly like one that does\nnot exist, so the response never confirms that another department has data.",
+        "operationId": "fact_api_facts__fact_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "fact_id",
+            "required": true,
+            "schema": {
+              "title": "Fact Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FactOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Fact",
+        "tags": [
+          "kpis"
+        ]
+      }
+    },
     "/api/health": {
       "get": {
         "operationId": "health_api_health_get",

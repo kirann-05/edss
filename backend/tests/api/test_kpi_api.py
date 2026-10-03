@@ -161,3 +161,34 @@ def test_system_status_says_plainly_when_drafts_are_canned(login):
     assert body["periods"] == ["2023-24", "2024-25", "2025-26"]
     # the pause that stands in for a slow source is stated, so a demo never passes it off as real
     assert body["simulated_source_latency_ms"] == 0
+
+
+class TestFactLookup:
+    def _fact(self, pipeline, dept: str, status: str | None = None):
+        facts = pipeline.state.store.facts_by_id.values()
+        return next(
+            f for f in facts if f.dept_code == dept and (status is None or f.status.value == status)
+        )
+
+    def test_a_reviewer_reads_one_record_with_its_source_and_status(self, pipeline):
+        provisional = self._fact(pipeline, "CSE", "provisional")
+        body = pipeline.login("registrar").get(f"/api/facts/{provisional.id}").json()
+        assert body["id"] == provisional.id and body["status"] == "provisional"
+        assert body["source_system"] and body["source_ref"] and body["used"] is False
+
+    def test_a_final_record_counts_as_used(self, pipeline):
+        final = self._fact(pipeline, "CSE", "final")
+        assert pipeline.login("registrar").get(f"/api/facts/{final.id}").json()["used"] is True
+
+    def test_a_hod_reads_their_own_department_but_another_looks_like_nothing(self, pipeline):
+        own, other = self._fact(pipeline, "CSE"), self._fact(pipeline, "CIVIL")
+        client = pipeline.login("hod_cse")
+        assert client.get(f"/api/facts/{own.id}").status_code == 200
+        hidden = client.get(f"/api/facts/{other.id}")
+        missing = client.get("/api/facts/999999999")
+        assert hidden.status_code == missing.status_code == 404
+        assert "CIVIL" not in hidden.text
+
+    def test_the_governing_council_cannot_read_records(self, pipeline):
+        record = self._fact(pipeline, "CSE")
+        assert pipeline.login("viewer").get(f"/api/facts/{record.id}").status_code == 403
