@@ -4,14 +4,33 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "./client";
 import type {
+  AuditPage,
+  AuditVerification,
+  Brief,
+  BriefStatus,
+  BriefSummary,
   DataHealth,
   DemoUser,
+  Decision,
+  DecisionResult,
+  Diff,
   Domain,
   DomainView,
+  EditRequest,
+  EvidenceRow,
   KpiDrilldown,
   KpiList,
   Me,
+  PlanCatalogue,
+  PlanPatch,
+  PriorMatch,
+  Run,
+  RunRevision,
+  RunTrace,
   SystemStatus,
+  ValidationReport,
+  Version,
+  VersionDetail,
 } from "./types";
 
 const withPeriod = (path: string, period: string | undefined) =>
@@ -25,6 +44,20 @@ export const keys = {
   kpi: (key: string, period?: string) => ["kpi", key, period ?? "current"] as const,
   domain: (domain: Domain, period?: string) => ["domain", domain, period ?? "current"] as const,
   health: (period?: string) => ["data-health", period ?? "current"] as const,
+  catalogue: ["plan-catalogue"] as const,
+  runs: ["runs"] as const,
+  run: (id: string) => ["run", id] as const,
+  trace: (id: string) => ["run", id, "trace"] as const,
+  briefs: (status?: BriefStatus) => ["briefs", status ?? "all"] as const,
+  brief: (id: string) => ["brief", id] as const,
+  evidence: (id: string) => ["brief", id, "evidence"] as const,
+  prior: (id: string) => ["brief", id, "prior"] as const,
+  currentReport: ["reports", "current"] as const,
+  versions: ["reports", "versions"] as const,
+  version: (n: number) => ["reports", "version", n] as const,
+  diff: (from: number, to: number) => ["reports", "diff", from, to] as const,
+  audit: (query: string) => ["audit", query] as const,
+  auditVerify: ["audit", "verify"] as const,
 };
 
 export function useMe() {
@@ -105,5 +138,201 @@ export function useLogout() {
     mutationFn: () => api.post<void>("/auth/logout"),
     // a different person may sign in next, so nothing from this session may survive
     onSuccess: () => client.clear(),
+  });
+}
+
+// --- runs ------------------------------------------------------------------------------------
+
+export function usePlanCatalogue() {
+  return useQuery({
+    queryKey: keys.catalogue,
+    queryFn: () => api.get<PlanCatalogue>("/plan-catalogue"),
+    staleTime: 5 * 60_000,
+  });
+}
+
+export function useRuns() {
+  return useQuery({ queryKey: keys.runs, queryFn: () => api.get<Run[]>("/runs") });
+}
+
+/** A run. While the graph is working the record is also polled, so a dropped event stream never strands the page. */
+export function useRun(id: string) {
+  return useQuery({
+    queryKey: keys.run(id),
+    queryFn: () => api.get<Run>(`/runs/${encodeURIComponent(id)}`),
+    refetchInterval: (query) => (query.state.data?.status === "running" ? 2000 : false),
+    staleTime: 0,
+  });
+}
+
+const runPath = (id: string, tail = "") => `/runs/${encodeURIComponent(id)}${tail}`;
+
+/** Every run action returns the whole run, so one handler keeps the cache honest. */
+function useRunMutation<V>(call: (variables: V) => Promise<Run>) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: call,
+    onSuccess: (run) => {
+      client.setQueryData(keys.run(run.id), run);
+      void client.invalidateQueries({ queryKey: keys.runs });
+      void client.invalidateQueries({ queryKey: keys.briefs() });
+    },
+  });
+}
+
+export function useCreateRun() {
+  return useRunMutation<string>((request) => api.post<Run>("/runs", { request }));
+}
+
+export function useAnswerRun(id: string) {
+  return useRunMutation<{ question_id: string; answer: string }[]>((answers) =>
+    api.post<Run>(runPath(id, "/answers"), { answers }),
+  );
+}
+
+export function useSkipQuestions(id: string) {
+  return useRunMutation<void>(() => api.post<Run>(runPath(id, "/skip-questions")));
+}
+
+export function useEditPlan(id: string) {
+  return useRunMutation<PlanPatch>((patch) => api.put<Run>(runPath(id, "/plan"), patch));
+}
+
+export function useRevisePlan(id: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (feedback: string) =>
+      api.post<RunRevision>(runPath(id, "/plan/revise"), { feedback }),
+    onSuccess: (revision) => client.setQueryData(keys.run(id), revision.run),
+  });
+}
+
+export function useLockPlan(id: string) {
+  return useRunMutation<string[]>((faults) => api.post<Run>(runPath(id, "/plan/lock"), { faults }));
+}
+
+export function useResumeRun(id: string) {
+  return useRunMutation<void>(() => api.post<Run>(runPath(id, "/resume")));
+}
+
+export function useRunTrace(id: string) {
+  return useQuery({
+    queryKey: keys.trace(id),
+    queryFn: () => api.get<RunTrace>(runPath(id, "/trace")),
+  });
+}
+
+// --- briefs ----------------------------------------------------------------------------------
+
+export function useBriefs(status?: BriefStatus) {
+  return useQuery({
+    queryKey: keys.briefs(status),
+    queryFn: () =>
+      api.get<BriefSummary[]>(status ? `/briefs?status_filter=${encodeURIComponent(status)}` : "/briefs"),
+    refetchInterval: 15_000, // a draft can arrive while someone has the queue open
+  });
+}
+
+export function useBrief(id: string) {
+  return useQuery({
+    queryKey: keys.brief(id),
+    queryFn: () => api.get<Brief>(`/briefs/${encodeURIComponent(id)}`),
+    staleTime: 0,
+  });
+}
+
+export function useEvidence(id: string) {
+  return useQuery({
+    queryKey: keys.evidence(id),
+    queryFn: () => api.get<EvidenceRow[]>(`/briefs/${encodeURIComponent(id)}/evidence`),
+  });
+}
+
+export function usePriorBriefs(id: string) {
+  return useQuery({
+    queryKey: keys.prior(id),
+    queryFn: () => api.get<PriorMatch[]>(`/briefs/${encodeURIComponent(id)}/prior`),
+  });
+}
+
+/** A dry run: would these edits pass validation? Nothing is saved. */
+export function useCheckEdits(id: string) {
+  return useMutation({
+    mutationFn: (edits: EditRequest[]) =>
+      api.post<{ report: ValidationReport }>(`/briefs/${encodeURIComponent(id)}/check-edits`, { edits }),
+  });
+}
+
+export function useDecide(id: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (decision: Partial<Decision> & Pick<Decision, "kind">) =>
+      api.post<DecisionResult>(`/briefs/${encodeURIComponent(id)}/decision`, decision),
+    onSuccess: (result) => {
+      client.setQueryData(keys.brief(id), result.brief);
+      void client.invalidateQueries({ queryKey: ["briefs"] });
+      void client.invalidateQueries({ queryKey: ["reports"] });
+      void client.invalidateQueries({ queryKey: keys.runs });
+      void client.invalidateQueries({ queryKey: keys.run(result.brief.run_id) });
+    },
+  });
+}
+
+// --- reports ---------------------------------------------------------------------------------
+
+export function useCurrentReport(enabled = true) {
+  return useQuery({
+    queryKey: keys.currentReport,
+    enabled,
+    queryFn: () => api.get<{ current: Version | null }>("/reports/current"),
+  });
+}
+
+export function useVersions() {
+  return useQuery({ queryKey: keys.versions, queryFn: () => api.get<Version[]>("/reports/versions") });
+}
+
+export function useVersion(number: number) {
+  return useQuery({
+    queryKey: keys.version(number),
+    queryFn: () => api.get<VersionDetail>(`/reports/versions/${number}`),
+  });
+}
+
+export function useDiff(from: number | null, to: number | null) {
+  return useQuery({
+    queryKey: keys.diff(from ?? 0, to ?? 0),
+    enabled: from !== null && to !== null && from !== to,
+    queryFn: () => api.get<Diff>(`/reports/diff?from_version=${from}&to_version=${to}`),
+  });
+}
+
+export function useRollback() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (body: { to_version: number; reason: string }) =>
+      api.post<Version>("/reports/rollback", body),
+    onSuccess: () => {
+      void client.invalidateQueries({ queryKey: ["reports"] });
+      void client.invalidateQueries({ queryKey: ["briefs"] });
+    },
+  });
+}
+
+// --- audit -----------------------------------------------------------------------------------
+
+export function useAudit(query: string) {
+  return useQuery({
+    queryKey: keys.audit(query),
+    queryFn: () => api.get<AuditPage>(query ? `/audit?${query}` : "/audit"),
+    placeholderData: (previous) => previous,
+  });
+}
+
+export function useAuditVerification() {
+  return useQuery({
+    queryKey: keys.auditVerify,
+    queryFn: () => api.get<AuditVerification>("/audit/verify"),
+    staleTime: 0,
   });
 }

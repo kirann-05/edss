@@ -632,6 +632,15 @@ export interface components {
             /** Question Id */
             question_id: string;
         };
+        /** AnswerOut */
+        AnswerOut: {
+            /** Answer */
+            answer: string;
+            /** Question */
+            question: string;
+            /** Question Id */
+            question_id: string;
+        };
         /** AnswersIn */
         AnswersIn: {
             /** Answers */
@@ -1593,7 +1602,7 @@ export interface components {
         /** RunOut */
         RunOut: {
             /** Answers */
-            answers: components["schemas"]["AnswerIn"][];
+            answers: components["schemas"]["AnswerOut"][];
             /** Brief Id */
             brief_id: string | null;
             /**
@@ -1716,6 +1725,8 @@ export interface components {
             llm_provider: string;
             /** Periods */
             periods: string[];
+            /** Simulated Source Latency Ms */
+            simulated_source_latency_ms: number;
             /** Stale After Days */
             stale_after_days: number;
             /**

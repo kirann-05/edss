@@ -68,7 +68,7 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 - [x] E4 Drill-down drawer, deep-linkable: formula, inputs, per-department chart and table, fact list with badges, source refs. Check: click KPI, see domain metric, department, source ref
 - [x] E5 Domain tabs with department comparison charts (bar with target line) and table toggle. Check: stale and missing departments shown explicitly, never as zero
 - [x] E6 Data health page: department by domain matrix, batches, refresh. Check: T1 stale and T2 missing visible (the refresh button waits for the ingestion work in F2)
-- [ ] E7 New Run: clarify chat, editable plan, lock, live progress. Check: demo script step 2 and 3 clickable
+- [~] E7 New Run: clarify chat, editable plan, lock, live progress. Check: demo script step 2 and 3 clickable (types, queries, progress model, live event hook, request form and runs list are done and tested, the clarify panel, plan editor, timeline and the run pages are not written)
 - [ ] E8 Review queue and Brief review: options, risks, trade-offs, assumptions, tabs for evidence, validation, data health, prior briefs, bottom action bar. Check: Approve disabled until green or escalated with acknowledgement
 - [ ] E9 Inline option edit with diff against the draft. Check: edit shows changed text, approver sees the diff
 - [ ] E10 Reports: versions, diff, rollback with reason and confirmation, print to PDF view. Check: demo script step 7 and 8

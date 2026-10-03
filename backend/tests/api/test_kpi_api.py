@@ -159,3 +159,5 @@ def test_system_status_says_plainly_when_drafts_are_canned(login):
     assert body["llm_is_fake"] is True
     assert body["current_period"] == "2025-26"
     assert body["periods"] == ["2023-24", "2024-25", "2025-26"]
+    # the pause that stands in for a slow source is stated, so a demo never passes it off as real
+    assert body["simulated_source_latency_ms"] == 0

@@ -3,20 +3,38 @@
 // 3:1 on a light surface by design.
 import {
   Archive,
+  BadgeCheck,
+  Ban,
   CircleCheck,
   CircleHelp,
   CircleSlash,
   CircleX,
+  ClipboardCheck,
   Clock,
+  CornerUpLeft,
+  FileText,
+  History,
   Hourglass,
+  ListChecks,
+  LoaderCircle,
+  MessageCircleQuestion,
   Scale,
+  ShieldAlert,
   ShieldCheck,
   TrendingUp,
   TriangleAlert,
+  Undo2,
   type LucideIcon,
 } from "lucide-react";
 
-import type { FactStatus, HealthState, KpiStatus } from "@/lib/api/types";
+import type {
+  BriefStatus,
+  FactStatus,
+  HealthState,
+  KpiStatus,
+  RunStatus,
+  Version,
+} from "@/lib/api/types";
 
 export type Tone = "good" | "warning" | "serious" | "critical" | "neutral";
 
@@ -85,4 +103,44 @@ export const HEALTH_STATE: Record<HealthState, StatusStyle> = {
   stale: { label: "Stale", tone: "warning", icon: Clock, hint: "Older than the freshness window. Used, but flagged" },
   missing: { label: "No record", tone: "serious", icon: CircleSlash, hint: "No data for this period. Never treated as zero" },
   closed: { label: "Closed year", tone: "neutral", icon: Archive, hint: "A finished period. Freshness no longer applies" },
+};
+
+export const RUN_STATUS: Record<RunStatus, StatusStyle> = {
+  clarifying: {
+    label: "Needs your answers",
+    tone: "neutral",
+    icon: MessageCircleQuestion,
+    hint: "The agent has questions before it can plan",
+  },
+  planning: { label: "Plan to review", tone: "neutral", icon: ListChecks, hint: "A plan exists and can still be edited" },
+  running: { label: "Running", tone: "neutral", icon: LoaderCircle, hint: "The plan is locked and the agents are working" },
+  awaiting_review: {
+    label: "Awaiting review",
+    tone: "warning",
+    icon: ClipboardCheck,
+    hint: "A draft is ready and waits for a named person",
+  },
+  completed: { label: "Done", tone: "good", icon: CircleCheck, hint: "A person has decided and the run is finished" },
+  failed: { label: "Stopped", tone: "critical", icon: CircleX, hint: "The run stopped. It can be resumed from its last checkpoint" },
+};
+
+export const BRIEF_STATUS: Record<BriefStatus, StatusStyle> = {
+  draft: { label: "Draft", tone: "neutral", icon: FileText, hint: "Validated and waiting for a decision" },
+  escalated: {
+    label: "Escalated",
+    tone: "serious",
+    icon: ShieldAlert,
+    hint: "Validation could not be satisfied inside the retry budget. A person decides",
+  },
+  approved: { label: "Approved", tone: "good", icon: CircleCheck, hint: "Approved by a named person" },
+  published: { label: "Published", tone: "good", icon: BadgeCheck, hint: "Approved and released as a report version" },
+  rolled_back: { label: "Rolled back", tone: "warning", icon: Undo2, hint: "Taken out of service by a rollback" },
+  overridden: { label: "Overridden", tone: "neutral", icon: Ban, hint: "A person set the draft aside and gave a reason" },
+  returned: { label: "Sent back", tone: "neutral", icon: CornerUpLeft, hint: "A person sent the draft back with a reason" },
+};
+
+export const VERSION_STATE: Record<Version["state"], StatusStyle> = {
+  current: { label: "Current", tone: "good", icon: BadgeCheck, hint: "The version leadership sees now" },
+  previous: { label: "Previous", tone: "neutral", icon: History, hint: "An earlier version, kept in full" },
+  rolled_back: { label: "Rolled back", tone: "warning", icon: Undo2, hint: "Taken out of service by a rollback, kept in full" },
 };

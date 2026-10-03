@@ -41,7 +41,16 @@ def run_out(record: RunRecord) -> s.RunOut:
             s.QuestionOut(id=q.id, text=q.text, why=q.why, choices=list(q.choices))
             for q in record.questions
         ],
-        answers=[s.AnswerIn(question_id=a.question_id, answer=a.answer) for a in record.answers],
+        answers=[
+            s.AnswerOut(
+                question_id=a.question_id,
+                question=record.asked[a.question_id].text
+                if a.question_id in record.asked
+                else a.question_id,
+                answer=a.answer,
+            )
+            for a in record.answers
+        ],
         plan=(
             s.PlanOut(
                 request=plan.request,
@@ -193,7 +202,7 @@ async def stream_events(
     return StreamingResponse(
         stream(),
         media_type="text/event-stream",
-        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        headers={"Cache-Control": "no-cache, no-transform", "X-Accel-Buffering": "no"},
     )
 
 

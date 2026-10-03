@@ -76,6 +76,8 @@ class SystemStatusOut(Api):
     periods: list[str]
     today: date
     stale_after_days: int
+    # a pause added to each domain agent to stand in for a slow source system. 0 means none
+    simulated_source_latency_ms: int
 
 
 # --- kpis ---------------------------------------------------------------------------------
@@ -288,6 +290,12 @@ class AnswersIn(Api):
     answers: list[AnswerIn]
 
 
+class AnswerOut(Api):
+    question_id: str
+    question: str  # the words of the question this answers, so a reader needs no id
+    answer: str
+
+
 class CreateRunIn(Api):
     request: str
 
@@ -345,7 +353,7 @@ class RunOut(Api):
     created_by_name: str
     created_at: datetime
     questions: list[QuestionOut]
-    answers: list[AnswerIn]
+    answers: list[AnswerOut]
     plan: PlanOut | None
     plan_history: list[PlanHistoryOut]
     faults: list[str]

@@ -429,5 +429,5 @@ def build_graph(deps: GraphDeps, checkpointer: Any):
 
 
 def _validation_detail(report: dict[str, Any]) -> str:
-    failing = [c["id"] for c in report["checks"] if not c["passed"]]
-    return f"Failing: {', '.join(failing)}" if failing else "All nine checks passed"
+    failing = [f"{c['id']} {c['name']}" for c in report["checks"] if not c["passed"]]
+    return f"Failing: {'; '.join(failing)}" if failing else "All nine checks passed"

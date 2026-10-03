@@ -34,6 +34,18 @@ class TestClarify:
         assert done["plan"]["period_year"] == "2024-25"
         assert set(done["plan"]["domains"]) == {"placement", "finance"}
 
+    def test_an_answer_is_returned_with_the_words_of_its_question(self, pipeline):
+        client = pipeline.login("registrar")
+        run = client.post("/api/runs", json={"request": VAGUE}).json()
+        asked = {q["id"]: q["text"] for q in run["questions"]}
+        after = client.post(
+            f"/api/runs/{run['id']}/answers",
+            json={"answers": [{"question_id": "period", "answer": "2024-25"}]},
+        ).json()
+        assert after["answers"] == [
+            {"question_id": "period", "question": asked["period"], "answer": "2024-25"}
+        ]
+
     def test_a_partial_answer_leaves_only_the_remaining_questions(self, pipeline):
         client = pipeline.login("registrar")
         run = client.post("/api/runs", json={"request": VAGUE}).json()
@@ -237,6 +249,14 @@ class TestProgressStream:
                         events.append(payload)
         return events, end
 
+    def test_the_stream_asks_proxies_not_to_compress_or_buffer_it(self, pipeline):
+        client = pipeline.login("registrar")
+        run = pipeline.start(client)
+        with client.stream("GET", f"/api/runs/{run['id']}/events") as response:
+            control = response.headers["cache-control"]
+            assert "no-transform" in control and "no-cache" in control
+            assert response.headers["x-accel-buffering"] == "no"
+
     def test_a_finished_run_replays_its_progress_and_says_when_it_ends(self, pipeline):
         client = pipeline.login("registrar")
         run = pipeline.start(client)
@@ -254,7 +274,7 @@ class TestProgressStream:
         validations = [e for e in events if e["node"] == "validate" and e["state"] == "done"]
         assert [v["ok"] for v in validations] == [False, True]
         assert (
-            validations[0]["detail"] == "Failing: V1"
+            validations[0]["detail"] == "Failing: V1 Every figure cites its source"
             and validations[1]["detail"] == "All nine checks passed"
         )
         done = [e for e in events if e["state"] == "done" and e["node"].startswith("domain:")]

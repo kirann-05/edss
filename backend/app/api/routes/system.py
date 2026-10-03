@@ -19,4 +19,5 @@ def status(state: State) -> s.SystemStatusOut:
         periods=list(state.store.periods),
         today=state.store.today,
         stale_after_days=state.store.stale_after_days,
+        simulated_source_latency_ms=settings.source_latency_ms,
     )

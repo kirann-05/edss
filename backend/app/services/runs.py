@@ -67,7 +67,8 @@ class RunRecord:
     created_by_name: str
     created_at: datetime
     status: RunStatus = RunStatus.CLARIFYING
-    questions: list[ClarifyQuestion] = field(default_factory=list)
+    questions: list[ClarifyQuestion] = field(default_factory=list)  # still waiting for an answer
+    asked: dict[str, ClarifyQuestion] = field(default_factory=dict)  # every question ever asked
     answers: list[Clarification] = field(default_factory=list)
     plan: Plan | None = None
     plan_history: list[dict[str, Any]] = field(default_factory=list)
@@ -143,6 +144,7 @@ class RunService:
         catalogue = self._catalogue()
         remaining = clarify(self._model, record.request, record.answers, catalogue)
         record.questions = remaining
+        record.asked.update({q.id: q for q in remaining})
         if remaining:
             record.status = RunStatus.CLARIFYING
         else:
