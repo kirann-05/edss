@@ -50,11 +50,23 @@ class ScopeRegistry:
             for g in self._grants
         ]
 
-    def grant(self, domain: Domain, granted_by: str, today: date) -> None:
-        self._grants = [g for g in self._grants if g.domain is not domain]
-        self._grants.append(
-            ScopeGrant(domain, None, granted_by, today, today + timedelta(days=365), True)
+    def grant(
+        self, domain: Domain, granted_by: str, today: date, expires_on: date | None = None
+    ) -> ScopeGrant:
+        """A new grant replaces any earlier one for the area. A year unless the Registrar says."""
+        grant = ScopeGrant(
+            domain, None, granted_by, today, expires_on or today + timedelta(days=365), True
         )
+        self._grants = [g for g in self._grants if g.domain is not domain] + [grant]
+        return grant
+
+    @staticmethod
+    def state_of(grant: ScopeGrant, today: date) -> str:
+        if not grant.active:
+            return "revoked"
+        if grant.expires_on is not None and grant.expires_on < today:
+            return "expired"
+        return "active"
 
 
 class InMemoryConnector(Connector):

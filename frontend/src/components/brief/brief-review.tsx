@@ -213,6 +213,7 @@ export function BriefReview({ id }: { id: string }) {
         description="The brief is published as the next report version, under your name and role, and the audit log records it. A Registrar or Principal can roll it back later, nothing is ever deleted."
         confirmLabel="Approve and publish"
         busy={decide.isPending}
+        busyLabel="Publishing"
         error={dialog === "approve" ? decideError : null}
         onConfirm={() => send({ kind: "approve" })}
       />
@@ -223,6 +224,7 @@ export function BriefReview({ id }: { id: string }) {
         description="Your edits are checked again on the server. If they pass, the edited brief is published and the draft's text is kept beside it, so anyone can see what changed."
         confirmLabel="Approve with edits"
         busy={decide.isPending}
+        busyLabel="Publishing"
         error={dialog === "approve_edits" ? decideError : null}
         onConfirm={() => send({ kind: "edit", edits })}
       >

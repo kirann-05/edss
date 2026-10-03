@@ -4,6 +4,110 @@
  */
 
 export interface paths {
+    "/api/admin/options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Options */
+        get: operations["options_api_admin_options_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/scope-grants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Scope Grants */
+        get: operations["scope_grants_api_admin_scope_grants_get"];
+        put?: never;
+        /** Grant */
+        post: operations["grant_api_admin_scope_grants_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/scope-grants/{domain}/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Revoke */
+        post: operations["revoke_api_admin_scope_grants__domain__revoke_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Users */
+        get: operations["users_api_admin_users_get"];
+        put?: never;
+        /** Create User */
+        post: operations["create_user_api_admin_users_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/users/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update User */
+        patch: operations["update_user_api_admin_users__user_id__patch"];
+        trace?: never;
+    };
+    "/api/admin/users/{user_id}/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reset Password */
+        post: operations["reset_password_api_admin_users__user_id__password_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/audit": {
         parameters: {
             query?: never;
@@ -665,6 +769,35 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AdminOptionsOut */
+        AdminOptionsOut: {
+            /** Areas */
+            areas: components["schemas"]["Domain"][];
+            /** Departments */
+            departments: components["schemas"]["DepartmentOptionOut"][];
+            /** Min Password */
+            min_password: number;
+            /** Roles */
+            roles: components["schemas"]["Role"][];
+            /** Schools */
+            schools: string[];
+        };
+        /** AdminUserOut */
+        AdminUserOut: {
+            /** Active */
+            active: boolean;
+            /** Dept Code */
+            dept_code: string | null;
+            /** Email */
+            email: string;
+            /** Id */
+            id: number;
+            /** Name */
+            name: string;
+            role: components["schemas"]["Role"];
+            /** School */
+            school: string | null;
+        };
         /** AnswerIn */
         AnswerIn: {
             /** Answer */
@@ -917,6 +1050,20 @@ export interface components {
             /** Request */
             request: string;
         };
+        /** CreateUserIn */
+        CreateUserIn: {
+            /** Dept Code */
+            dept_code?: string | null;
+            /** Email */
+            email: string;
+            /** Name */
+            name: string;
+            /** Password */
+            password: string;
+            role: components["schemas"]["Role"];
+            /** School */
+            school?: string | null;
+        };
         /** CurrentReportOut */
         CurrentReportOut: {
             current: components["schemas"]["VersionOut"] | null;
@@ -986,6 +1133,15 @@ export interface components {
             role: components["schemas"]["Role"];
             /** School */
             school?: string | null;
+        };
+        /** DepartmentOptionOut */
+        DepartmentOptionOut: {
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /** School */
+            school: string;
         };
         /** DepartmentOut */
         DepartmentOut: {
@@ -1205,6 +1361,12 @@ export interface components {
             value: string | null;
             /** Variance Abs */
             variance_abs: string | null;
+        };
+        /** GrantIn */
+        GrantIn: {
+            domain: components["schemas"]["Domain"];
+            /** Expires On */
+            expires_on?: string | null;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -1476,6 +1638,11 @@ export interface components {
             options: components["schemas"]["OptionOut"][];
             status: components["schemas"]["KpiStatus"];
         };
+        /** PasswordIn */
+        PasswordIn: {
+            /** Password */
+            password: string;
+        };
         /**
          * Permission
          * @enum {string}
@@ -1678,6 +1845,28 @@ export interface components {
          * @enum {string}
          */
         RunStatus: "clarifying" | "planning" | "running" | "awaiting_review" | "completed" | "failed";
+        /** ScopeGrantOut */
+        ScopeGrantOut: {
+            /** Active */
+            active: boolean;
+            /** Dept Code */
+            dept_code: string | null;
+            domain: components["schemas"]["Domain"];
+            /** Expires On */
+            expires_on: string | null;
+            /** Granted By */
+            granted_by: string;
+            /**
+             * Granted On
+             * Format: date
+             */
+            granted_on: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "active" | "expired" | "revoked";
+        };
         /** ScopeOut */
         ScopeOut: {
             /** Departments */
@@ -1795,6 +1984,21 @@ export interface components {
             target: string | null;
             /** Value */
             value: string | null;
+        };
+        /**
+         * UpdateUserIn
+         * @description Only the fields sent are changed. Sending null clears a department or a school.
+         */
+        UpdateUserIn: {
+            /** Active */
+            active?: boolean | null;
+            /** Dept Code */
+            dept_code?: string | null;
+            /** Name */
+            name?: string | null;
+            role?: components["schemas"]["Role"] | null;
+            /** School */
+            school?: string | null;
         };
         /** UserOut */
         UserOut: {
@@ -1930,6 +2134,231 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    options_api_admin_options_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminOptionsOut"];
+                };
+            };
+        };
+    };
+    scope_grants_api_admin_scope_grants_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopeGrantOut"][];
+                };
+            };
+        };
+    };
+    grant_api_admin_scope_grants_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GrantIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopeGrantOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    revoke_api_admin_scope_grants__domain__revoke_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                domain: components["schemas"]["Domain"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScopeGrantOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    users_api_admin_users_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminUserOut"][];
+                };
+            };
+        };
+    };
+    create_user_api_admin_users_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUserIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminUserOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_user_api_admin_users__user_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminUserOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reset_password_api_admin_users__user_id__password_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PasswordIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     audit_rows_api_audit_get: {
         parameters: {
             query?: {

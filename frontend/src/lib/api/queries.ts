@@ -4,11 +4,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "./client";
 import type {
+  AdminOptions,
+  AdminUser,
   AuditPage,
   AuditVerification,
   Brief,
   BriefStatus,
   BriefSummary,
+  CreateUser,
   DataHealth,
   DemoUser,
   Decision,
@@ -28,7 +31,9 @@ import type {
   Run,
   RunRevision,
   RunTrace,
+  ScopeGrant,
   SystemStatus,
+  UpdateUser,
   ValidationReport,
   Version,
   VersionDetail,
@@ -354,4 +359,55 @@ export function useAuditActions() {
     queryFn: () => api.get<string[]>("/audit/actions"),
     staleTime: 60_000,
   });
+}
+
+// --- admin -----------------------------------------------------------------------------------
+
+export function useAdminOptions() {
+  return useQuery({ queryKey: ["admin", "options"], queryFn: () => api.get<AdminOptions>("/admin/options"), staleTime: 5 * 60_000 });
+}
+
+export function useAdminUsers(enabled: boolean) {
+  return useQuery({ queryKey: ["admin", "users"], enabled, queryFn: () => api.get<AdminUser[]>("/admin/users") });
+}
+
+function useAdminMutation<V, R>(call: (variables: V) => Promise<R>) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: call,
+    onSuccess: () => {
+      void client.invalidateQueries({ queryKey: ["admin"] });
+      void client.invalidateQueries({ queryKey: ["audit"] });
+    },
+  });
+}
+
+export function useCreateUser() {
+  return useAdminMutation((body: CreateUser) => api.post<AdminUser>("/admin/users", body));
+}
+
+export function useUpdateUser() {
+  return useAdminMutation(({ id, changes }: { id: number; changes: UpdateUser }) =>
+    api.patch<AdminUser>(`/admin/users/${id}`, changes),
+  );
+}
+
+export function useResetPassword() {
+  return useAdminMutation(({ id, password }: { id: number; password: string }) =>
+    api.post<void>(`/admin/users/${id}/password`, { password }),
+  );
+}
+
+export function useScopeGrants(enabled: boolean) {
+  return useQuery({ queryKey: ["admin", "scope-grants"], enabled, queryFn: () => api.get<ScopeGrant[]>("/admin/scope-grants") });
+}
+
+export function useGrantScope() {
+  return useAdminMutation((body: { domain: string; expires_on: string | null }) =>
+    api.post<ScopeGrant>("/admin/scope-grants", body),
+  );
+}
+
+export function useRevokeScope() {
+  return useAdminMutation((domain: string) => api.post<ScopeGrant[]>(`/admin/scope-grants/${domain}/revoke`));
 }

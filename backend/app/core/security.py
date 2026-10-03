@@ -32,18 +32,32 @@ def verify_password(password_hash: str, password: str) -> bool:
         return False
 
 
-def issue_token(user_id: int, secret: str, hours: int, now: datetime | None = None) -> str:
+def issue_token(
+    user_id: int, secret: str, hours: int, now: datetime | None = None, version: int = 0
+) -> str:
+    """`version` is the person's session version. Raising it ends every session issued before."""
     issued = now or datetime.now(UTC)
-    claims = {"sub": str(user_id), "iat": issued, "exp": issued + timedelta(hours=hours)}
+    claims = {
+        "sub": str(user_id),
+        "ver": version,
+        "iat": issued,
+        "exp": issued + timedelta(hours=hours),
+    }
     return jwt.encode(claims, secret, algorithm=_ALGORITHM)
 
 
-def read_token(token: str, secret: str) -> int | None:
-    """The user id in a valid, unexpired token, or None. Never raises on a bad token."""
+def read_session(token: str, secret: str) -> tuple[int, int] | None:
+    """The user id and session version in a valid, unexpired token, or None. Never raises."""
     try:
         claims = jwt.decode(
             token, secret, algorithms=[_ALGORITHM], options={"require": ["exp", "sub"]}
         )
-        return int(claims["sub"])
-    except (jwt.PyJWTError, ValueError, KeyError):
+        return int(claims["sub"]), int(claims.get("ver", 0))
+    except (jwt.PyJWTError, ValueError, KeyError, TypeError):
         return None
+
+
+def read_token(token: str, secret: str) -> int | None:
+    """The user id in a valid, unexpired token, or None. Never raises on a bad token."""
+    session = read_session(token, secret)
+    return session[0] if session else None

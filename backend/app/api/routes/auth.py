@@ -33,7 +33,7 @@ def _start_session(response: Response, user: AppUser, state: AppState) -> None:
     hours = state.settings.session_hours
     response.set_cookie(
         SESSION_COOKIE,
-        issue_token(user.id, state.jwt_secret, hours),
+        issue_token(user.id, state.jwt_secret, hours, version=state.users.session_version(user.id)),
         max_age=hours * 3600,
         httponly=True,  # script on the page can never read the session
         samesite="lax",

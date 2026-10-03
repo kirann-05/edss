@@ -103,6 +103,8 @@ export function ConfirmDialog({
   description,
   confirmLabel,
   busy,
+  busyLabel = "Working",
+  destructive = false,
   error,
   onConfirm,
   children,
@@ -113,6 +115,9 @@ export function ConfirmDialog({
   description: React.ReactNode;
   confirmLabel: string;
   busy: boolean;
+  /** What the button says while the request runs */
+  busyLabel?: string;
+  destructive?: boolean;
   error: string | null;
   onConfirm: () => void;
   children?: React.ReactNode;
@@ -132,8 +137,8 @@ export function ConfirmDialog({
               Cancel
             </Button>
           </DialogClose>
-          <Button type="button" disabled={busy} onClick={onConfirm}>
-            {busy ? "Publishing" : confirmLabel}
+          <Button type="button" variant={destructive ? "destructive" : "default"} disabled={busy} onClick={onConfirm}>
+            {busy ? busyLabel : confirmLabel}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -65,6 +65,13 @@ export type VersionDetail = S["VersionDetailOut"];
 export type Diff = S["DiffOut"];
 export type Change = S["ChangeOut"];
 
+// admin
+export type AdminUser = S["AdminUserOut"];
+export type AdminOptions = S["AdminOptionsOut"];
+export type CreateUser = S["CreateUserIn"];
+export type UpdateUser = S["UpdateUserIn"];
+export type ScopeGrant = S["ScopeGrantOut"];
+
 // audit
 export type AuditRow = S["AuditRowOut"];
 export type AuditPage = S["AuditPageOut"];

@@ -4,7 +4,18 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from app import __version__
-from app.api.routes import audit, auth, briefs, data_health, health, kpis, reports, runs, system
+from app.api.routes import (
+    admin,
+    audit,
+    auth,
+    briefs,
+    data_health,
+    health,
+    kpis,
+    reports,
+    runs,
+    system,
+)
 from app.bootstrap import build_state
 from app.core.config import Settings, get_settings
 from app.core.tracing import enforce_no_external_tracing
@@ -45,6 +56,7 @@ def create_app(
     app.include_router(briefs.router, prefix="/api")
     app.include_router(reports.router, prefix="/api")
     app.include_router(audit.router, prefix="/api")
+    app.include_router(admin.router, prefix="/api")
     register_error_handlers(app)
     return app
 

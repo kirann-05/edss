@@ -653,3 +653,66 @@ class TraceOut(Api):
     run_id: str
     events: list[RunEventOut]
     audit: list[AuditRowOut]
+
+
+# --- admin --------------------------------------------------------------------------------
+class AdminUserOut(Api):
+    id: int
+    email: str
+    name: str
+    role: Role
+    dept_code: str | None
+    school: str | None
+    active: bool
+
+
+class CreateUserIn(Api):
+    email: str
+    name: str
+    role: Role
+    dept_code: str | None = None
+    school: str | None = None
+    password: str  # never logged or returned
+
+
+class UpdateUserIn(Api):
+    """Only the fields sent are changed. Sending null clears a department or a school."""
+
+    name: str | None = None
+    role: Role | None = None
+    dept_code: str | None = None
+    school: str | None = None
+    active: bool | None = None
+
+
+class PasswordIn(Api):
+    password: str
+
+
+class DepartmentOptionOut(Api):
+    code: str
+    name: str
+    school: str
+
+
+class AdminOptionsOut(Api):
+    roles: list[Role]
+    departments: list[DepartmentOptionOut]
+    schools: list[str]
+    min_password: int
+    areas: list[Domain]
+
+
+class ScopeGrantOut(Api):
+    domain: Domain
+    dept_code: str | None
+    granted_by: str
+    granted_on: date
+    expires_on: date | None
+    active: bool
+    state: Literal["active", "expired", "revoked"]
+
+
+class GrantIn(Api):
+    domain: Domain
+    expires_on: date | None = None

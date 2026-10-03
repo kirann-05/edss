@@ -8,7 +8,7 @@ from fastapi import Depends, HTTPException, Query, Request, status
 from app.agents.runtime import RunEvents
 from app.core.config import Settings
 from app.core.rbac import Permission, Scope, department_scope, has_permission
-from app.core.security import SESSION_COOKIE, read_token
+from app.core.security import SESSION_COOKIE, read_session
 from app.core.throttle import LoginThrottle
 from app.domain.models import AppUser
 from app.governance.audit import AuditLog
@@ -56,9 +56,10 @@ State = Annotated[AppState, Depends(get_state)]
 
 def current_user(request: Request, state: State) -> AppUser:
     token = request.cookies.get(SESSION_COOKIE)
-    user_id = read_token(token, state.jwt_secret) if token else None
-    user = state.users.get(user_id) if user_id is not None else None
-    if user is None or not user.active:
+    session = read_session(token, state.jwt_secret) if token else None
+    user = state.users.get(session[0]) if session else None
+    # a password reset or a deactivation raises the version, which ends every older session
+    if user is None or not user.active or session[1] != state.users.session_version(user.id):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Not signed in")
     return user
 
