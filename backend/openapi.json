@@ -1,6 +1,582 @@
 {
   "components": {
     "schemas": {
+      "BatchOut": {
+        "properties": {
+          "checksum": {
+            "title": "Checksum",
+            "type": "string"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/Domain"
+          },
+          "file_ref": {
+            "title": "File Ref",
+            "type": "string"
+          },
+          "finished_at": {
+            "format": "date",
+            "title": "Finished At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "owner_office": {
+            "title": "Owner Office",
+            "type": "string"
+          },
+          "rejected_count": {
+            "title": "Rejected Count",
+            "type": "integer"
+          },
+          "row_count": {
+            "title": "Row Count",
+            "type": "integer"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "domain",
+          "source",
+          "owner_office",
+          "file_ref",
+          "row_count",
+          "rejected_count",
+          "finished_at",
+          "checksum"
+        ],
+        "title": "BatchOut",
+        "type": "object"
+      },
+      "DataHealthOut": {
+        "properties": {
+          "batches": {
+            "items": {
+              "$ref": "#/components/schemas/BatchOut"
+            },
+            "title": "Batches",
+            "type": "array"
+          },
+          "cells": {
+            "items": {
+              "$ref": "#/components/schemas/HealthCellOut"
+            },
+            "title": "Cells",
+            "type": "array"
+          },
+          "departments": {
+            "items": {
+              "$ref": "#/components/schemas/DepartmentOut"
+            },
+            "title": "Departments",
+            "type": "array"
+          },
+          "domains": {
+            "items": {
+              "$ref": "#/components/schemas/Domain"
+            },
+            "title": "Domains",
+            "type": "array"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "stale_after_days": {
+            "title": "Stale After Days",
+            "type": "integer"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/HealthSummary"
+          },
+          "today": {
+            "format": "date",
+            "title": "Today",
+            "type": "string"
+          }
+        },
+        "required": [
+          "period_year",
+          "is_current",
+          "today",
+          "stale_after_days",
+          "domains",
+          "departments",
+          "cells",
+          "batches",
+          "summary"
+        ],
+        "title": "DataHealthOut",
+        "type": "object"
+      },
+      "DemoLoginIn": {
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "title": "DemoLoginIn",
+        "type": "object"
+      },
+      "DemoUserOut": {
+        "properties": {
+          "dept_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dept Code"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "school": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "School"
+          }
+        },
+        "required": [
+          "email",
+          "name",
+          "role"
+        ],
+        "title": "DemoUserOut",
+        "type": "object"
+      },
+      "DepartmentOut": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "school": {
+            "title": "School",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "school"
+        ],
+        "title": "DepartmentOut",
+        "type": "object"
+      },
+      "DepartmentRowOut": {
+        "properties": {
+          "access": {
+            "enum": [
+              "visible",
+              "restricted"
+            ],
+            "title": "Access",
+            "type": "string"
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "dept_code": {
+            "title": "Dept Code",
+            "type": "string"
+          },
+          "dept_name": {
+            "title": "Dept Name",
+            "type": "string"
+          },
+          "fact_ids": {
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "title": "Fact Ids",
+            "type": "array"
+          },
+          "inputs": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/InputTermOut"
+            },
+            "title": "Inputs",
+            "type": "array"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "school": {
+            "title": "School",
+            "type": "string"
+          },
+          "stale": {
+            "default": false,
+            "title": "Stale",
+            "type": "boolean"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DeptState"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "dept_code",
+          "dept_name",
+          "school",
+          "access"
+        ],
+        "title": "DepartmentRowOut",
+        "type": "object"
+      },
+      "DeptFlagList": {
+        "properties": {
+          "departments": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Departments",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "departments",
+          "total"
+        ],
+        "title": "DeptFlagList",
+        "type": "object"
+      },
+      "DeptState": {
+        "enum": [
+          "ok",
+          "undefined",
+          "missing",
+          "excluded"
+        ],
+        "title": "DeptState",
+        "type": "string"
+      },
+      "Domain": {
+        "enum": [
+          "academic",
+          "research",
+          "placement",
+          "finance",
+          "reference"
+        ],
+        "title": "Domain",
+        "type": "string"
+      },
+      "DomainKpiOut": {
+        "properties": {
+          "departments": {
+            "items": {
+              "$ref": "#/components/schemas/DepartmentRowOut"
+            },
+            "title": "Departments",
+            "type": "array"
+          },
+          "kpi": {
+            "$ref": "#/components/schemas/KpiOut"
+          }
+        },
+        "required": [
+          "kpi",
+          "departments"
+        ],
+        "title": "DomainKpiOut",
+        "type": "object"
+      },
+      "DomainViewOut": {
+        "properties": {
+          "domain": {
+            "$ref": "#/components/schemas/Domain"
+          },
+          "kpis": {
+            "items": {
+              "$ref": "#/components/schemas/DomainKpiOut"
+            },
+            "title": "Kpis",
+            "type": "array"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          }
+        },
+        "required": [
+          "domain",
+          "period_year",
+          "kpis"
+        ],
+        "title": "DomainViewOut",
+        "type": "object"
+      },
+      "FactOut": {
+        "properties": {
+          "as_of": {
+            "format": "date",
+            "title": "As Of",
+            "type": "string"
+          },
+          "batch_id": {
+            "title": "Batch Id",
+            "type": "integer"
+          },
+          "dept_code": {
+            "title": "Dept Code",
+            "type": "string"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/Domain"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "metric_key": {
+            "title": "Metric Key",
+            "type": "string"
+          },
+          "metric_label": {
+            "title": "Metric Label",
+            "type": "string"
+          },
+          "period_sub": {
+            "title": "Period Sub",
+            "type": "string"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "source_owner": {
+            "title": "Source Owner",
+            "type": "string"
+          },
+          "source_ref": {
+            "title": "Source Ref",
+            "type": "string"
+          },
+          "source_system": {
+            "title": "Source System",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/FactStatus"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "used": {
+            "title": "Used",
+            "type": "boolean"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "metric_key",
+          "metric_label",
+          "domain",
+          "dept_code",
+          "period_year",
+          "period_sub",
+          "value",
+          "unit",
+          "status",
+          "as_of",
+          "source_system",
+          "source_owner",
+          "source_ref",
+          "batch_id",
+          "used"
+        ],
+        "title": "FactOut",
+        "type": "object"
+      },
+      "FactStatus": {
+        "enum": [
+          "final",
+          "audited",
+          "provisional",
+          "forecast",
+          "pending_reconciliation"
+        ],
+        "title": "FactStatus",
+        "type": "string"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HealthCellOut": {
+        "properties": {
+          "age_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Days"
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "batch_ids": {
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "title": "Batch Ids",
+            "type": "array"
+          },
+          "dept_code": {
+            "title": "Dept Code",
+            "type": "string"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/Domain"
+          },
+          "fact_count": {
+            "default": 0,
+            "title": "Fact Count",
+            "type": "integer"
+          },
+          "non_final": {
+            "$ref": "#/components/schemas/NonFinalCounts",
+            "default": {
+              "forecast": 0,
+              "pending_reconciliation": 0,
+              "provisional": 0
+            }
+          },
+          "restricted": {
+            "default": false,
+            "title": "Restricted",
+            "type": "boolean"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "enum": [
+                  "fresh",
+                  "stale",
+                  "missing",
+                  "closed"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State"
+          }
+        },
+        "required": [
+          "dept_code",
+          "domain"
+        ],
+        "title": "HealthCellOut",
+        "type": "object"
+      },
       "HealthResponse": {
         "properties": {
           "data_mode": {
@@ -32,6 +608,750 @@
         ],
         "title": "HealthResponse",
         "type": "object"
+      },
+      "HealthSummary": {
+        "properties": {
+          "closed": {
+            "title": "Closed",
+            "type": "integer"
+          },
+          "fresh": {
+            "title": "Fresh",
+            "type": "integer"
+          },
+          "missing": {
+            "title": "Missing",
+            "type": "integer"
+          },
+          "stale": {
+            "title": "Stale",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "fresh",
+          "stale",
+          "missing",
+          "closed"
+        ],
+        "title": "HealthSummary",
+        "type": "object"
+      },
+      "InputTermOut": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "value"
+        ],
+        "title": "InputTermOut",
+        "type": "object"
+      },
+      "KpiDrilldownOut": {
+        "properties": {
+          "access": {
+            "enum": [
+              "full",
+              "restricted"
+            ],
+            "title": "Access",
+            "type": "string"
+          },
+          "departments": {
+            "items": {
+              "$ref": "#/components/schemas/DepartmentRowOut"
+            },
+            "title": "Departments",
+            "type": "array"
+          },
+          "facts": {
+            "items": {
+              "$ref": "#/components/schemas/FactOut"
+            },
+            "title": "Facts",
+            "type": "array"
+          },
+          "facts_hidden": {
+            "title": "Facts Hidden",
+            "type": "integer"
+          },
+          "inputs": {
+            "items": {
+              "$ref": "#/components/schemas/InputTermOut"
+            },
+            "title": "Inputs",
+            "type": "array"
+          },
+          "kpi": {
+            "$ref": "#/components/schemas/KpiOut"
+          },
+          "spread": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SpreadOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "kpi",
+          "inputs",
+          "departments",
+          "spread",
+          "facts",
+          "facts_hidden",
+          "access"
+        ],
+        "title": "KpiDrilldownOut",
+        "type": "object"
+      },
+      "KpiFlagsOut": {
+        "properties": {
+          "excluded": {
+            "$ref": "#/components/schemas/DeptFlagList"
+          },
+          "excluded_fact_count": {
+            "title": "Excluded Fact Count",
+            "type": "integer"
+          },
+          "missing": {
+            "$ref": "#/components/schemas/DeptFlagList"
+          },
+          "no_target": {
+            "title": "No Target",
+            "type": "boolean"
+          },
+          "stale": {
+            "$ref": "#/components/schemas/DeptFlagList"
+          },
+          "undefined": {
+            "$ref": "#/components/schemas/DeptFlagList"
+          }
+        },
+        "required": [
+          "stale",
+          "missing",
+          "excluded",
+          "undefined",
+          "excluded_fact_count",
+          "no_target"
+        ],
+        "title": "KpiFlagsOut",
+        "type": "object"
+      },
+      "KpiFramework": {
+        "enum": [
+          "NIRF",
+          "NAAC",
+          "STRATEGIC"
+        ],
+        "title": "KpiFramework",
+        "type": "string"
+      },
+      "KpiListOut": {
+        "properties": {
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "kpis": {
+            "items": {
+              "$ref": "#/components/schemas/KpiOut"
+            },
+            "title": "Kpis",
+            "type": "array"
+          },
+          "newest_as_of": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Newest As Of"
+          },
+          "oldest_as_of": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Oldest As Of"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/StatusSummary"
+          }
+        },
+        "required": [
+          "period_year",
+          "is_current",
+          "oldest_as_of",
+          "newest_as_of",
+          "summary",
+          "kpis"
+        ],
+        "title": "KpiListOut",
+        "type": "object"
+      },
+      "KpiOut": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/Domain"
+          },
+          "domain_tags": {
+            "items": {
+              "$ref": "#/components/schemas/Domain"
+            },
+            "title": "Domain Tags",
+            "type": "array"
+          },
+          "flags": {
+            "$ref": "#/components/schemas/KpiFlagsOut"
+          },
+          "formula": {
+            "title": "Formula",
+            "type": "string"
+          },
+          "formula_text": {
+            "title": "Formula Text",
+            "type": "string"
+          },
+          "framework": {
+            "$ref": "#/components/schemas/KpiFramework"
+          },
+          "higher_is_better": {
+            "title": "Higher Is Better",
+            "type": "boolean"
+          },
+          "input_fact_count": {
+            "title": "Input Fact Count",
+            "type": "integer"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "placeholder": {
+            "title": "Placeholder",
+            "type": "boolean"
+          },
+          "precision": {
+            "title": "Precision",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/KpiStatus"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          },
+          "trend": {
+            "items": {
+              "$ref": "#/components/schemas/TrendPoint"
+            },
+            "title": "Trend",
+            "type": "array"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "variance_abs": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Variance Abs"
+          },
+          "variance_pct": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Variance Pct"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "key",
+          "name",
+          "domain",
+          "domain_tags",
+          "framework",
+          "placeholder",
+          "note",
+          "unit",
+          "precision",
+          "higher_is_better",
+          "version",
+          "formula",
+          "formula_text",
+          "period_year",
+          "value",
+          "target",
+          "variance_abs",
+          "variance_pct",
+          "status",
+          "as_of",
+          "flags",
+          "input_fact_count",
+          "trend"
+        ],
+        "title": "KpiOut",
+        "type": "object"
+      },
+      "KpiStatus": {
+        "enum": [
+          "met",
+          "at_risk",
+          "missed",
+          "undefined"
+        ],
+        "title": "KpiStatus",
+        "type": "string"
+      },
+      "LoginIn": {
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginIn",
+        "type": "object"
+      },
+      "MeOut": {
+        "properties": {
+          "permissions": {
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            },
+            "title": "Permissions",
+            "type": "array"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/ScopeOut"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserOut"
+          }
+        },
+        "required": [
+          "user",
+          "permissions",
+          "scope"
+        ],
+        "title": "MeOut",
+        "type": "object"
+      },
+      "NonFinalCounts": {
+        "properties": {
+          "forecast": {
+            "default": 0,
+            "title": "Forecast",
+            "type": "integer"
+          },
+          "pending_reconciliation": {
+            "default": 0,
+            "title": "Pending Reconciliation",
+            "type": "integer"
+          },
+          "provisional": {
+            "default": 0,
+            "title": "Provisional",
+            "type": "integer"
+          }
+        },
+        "title": "NonFinalCounts",
+        "type": "object"
+      },
+      "Permission": {
+        "enum": [
+          "view_dashboard",
+          "view_data_health",
+          "start_run",
+          "review",
+          "approve",
+          "rollback",
+          "view_reports",
+          "view_audit",
+          "manage_users",
+          "manage_scope",
+          "refresh_data"
+        ],
+        "title": "Permission",
+        "type": "string"
+      },
+      "Role": {
+        "enum": [
+          "registrar",
+          "principal",
+          "dean",
+          "hod",
+          "viewer",
+          "admin"
+        ],
+        "title": "Role",
+        "type": "string"
+      },
+      "ScopeOut": {
+        "properties": {
+          "departments": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Departments",
+            "type": "array"
+          },
+          "everything": {
+            "title": "Everything",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "everything",
+          "departments"
+        ],
+        "title": "ScopeOut",
+        "type": "object"
+      },
+      "SpreadOut": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "max": {
+            "title": "Max",
+            "type": "string"
+          },
+          "median": {
+            "title": "Median",
+            "type": "string"
+          },
+          "min": {
+            "title": "Min",
+            "type": "string"
+          },
+          "simple_mean": {
+            "title": "Simple Mean",
+            "type": "string"
+          }
+        },
+        "required": [
+          "count",
+          "min",
+          "median",
+          "max",
+          "simple_mean"
+        ],
+        "title": "SpreadOut",
+        "type": "object"
+      },
+      "StatusSummary": {
+        "properties": {
+          "at_risk": {
+            "title": "At Risk",
+            "type": "integer"
+          },
+          "met": {
+            "title": "Met",
+            "type": "integer"
+          },
+          "missed": {
+            "title": "Missed",
+            "type": "integer"
+          },
+          "undefined": {
+            "title": "Undefined",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "met",
+          "at_risk",
+          "missed",
+          "undefined"
+        ],
+        "title": "StatusSummary",
+        "type": "object"
+      },
+      "SystemStatusOut": {
+        "properties": {
+          "current_period": {
+            "title": "Current Period",
+            "type": "string"
+          },
+          "data_mode": {
+            "enum": [
+              "synthetic",
+              "real"
+            ],
+            "title": "Data Mode",
+            "type": "string"
+          },
+          "llm_is_fake": {
+            "title": "Llm Is Fake",
+            "type": "boolean"
+          },
+          "llm_provider": {
+            "title": "Llm Provider",
+            "type": "string"
+          },
+          "periods": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Periods",
+            "type": "array"
+          },
+          "stale_after_days": {
+            "title": "Stale After Days",
+            "type": "integer"
+          },
+          "today": {
+            "format": "date",
+            "title": "Today",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "data_mode",
+          "llm_provider",
+          "llm_is_fake",
+          "current_period",
+          "periods",
+          "today",
+          "stale_after_days"
+        ],
+        "title": "SystemStatusOut",
+        "type": "object"
+      },
+      "TrendPoint": {
+        "properties": {
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/KpiStatus"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "period_year",
+          "value",
+          "target",
+          "status"
+        ],
+        "title": "TrendPoint",
+        "type": "object"
+      },
+      "UserOut": {
+        "properties": {
+          "dept_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dept Code"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "school": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "School"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "name",
+          "role"
+        ],
+        "title": "UserOut",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
       }
     }
   },
@@ -41,6 +1361,255 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/auth/demo-login": {
+      "post": {
+        "description": "One-click sign-in for the seeded synthetic users, so a demo can switch roles quickly.\n\nExists only when EDSS_DEMO_LOGIN is on AND data mode is synthetic. In real mode it is a 404.",
+        "operationId": "demo_login_api_auth_demo_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DemoLoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Demo Login",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/demo-users": {
+      "get": {
+        "operationId": "demo_users_api_auth_demo_users_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DemoUserOut"
+                  },
+                  "title": "Response Demo Users Api Auth Demo Users Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Demo Users",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "operationId": "login_api_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Login",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "operationId": "logout_api_auth_logout_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Logout",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "operationId": "me_api_auth_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Me",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/data-health": {
+      "get": {
+        "operationId": "data_health_api_data_health_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "period",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataHealthOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Data Health",
+        "tags": [
+          "data health"
+        ]
+      }
+    },
+    "/api/domains/{domain}": {
+      "get": {
+        "operationId": "domain_view_api_domains__domain__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Domain"
+            }
+          },
+          {
+            "in": "query",
+            "name": "period",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainViewOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Domain View",
+        "tags": [
+          "kpis"
+        ]
+      }
+    },
     "/api/health": {
       "get": {
         "operationId": "health_api_health_get",
@@ -57,6 +1626,134 @@
           }
         },
         "summary": "Health",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/api/kpis": {
+      "get": {
+        "operationId": "list_kpis_api_kpis_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "period",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiListOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Kpis",
+        "tags": [
+          "kpis"
+        ]
+      }
+    },
+    "/api/kpis/{key}": {
+      "get": {
+        "operationId": "drilldown_api_kpis__key__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "required": true,
+            "schema": {
+              "title": "Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "period",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KpiDrilldownOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Drilldown",
+        "tags": [
+          "kpis"
+        ]
+      }
+    },
+    "/api/system/status": {
+      "get": {
+        "operationId": "status_api_system_status_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemStatusOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Status",
         "tags": [
           "system"
         ]

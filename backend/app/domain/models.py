@@ -8,9 +8,9 @@ from datetime import date
 from decimal import Decimal
 from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, PlainSerializer
+from pydantic import BaseModel, ConfigDict, PlainSerializer, model_validator
 
-from app.domain.enums import Domain, FactStatus, KpiFramework, PeriodAgg
+from app.domain.enums import Domain, FactStatus, KpiFramework, PeriodAgg, Role
 
 
 def _plain(value: Decimal) -> str:
@@ -116,3 +116,23 @@ class KpiTarget(Frozen):
     framework: KpiFramework
     source_doc: str
     placeholder: bool = True
+
+
+class AppUser(Frozen):
+    """A person who signs in. The password hash is kept apart, in services/users.py."""
+
+    id: int
+    email: str
+    name: str
+    role: Role
+    dept_code: str | None = None  # a HOD belongs to one department
+    school: str | None = None  # a Dean belongs to one school
+    active: bool = True
+
+    @model_validator(mode="after")
+    def _role_has_its_scope(self) -> "AppUser":
+        if self.role is Role.HOD and not self.dept_code:
+            raise ValueError("a HOD must have a department")
+        if self.role is Role.DEAN and not self.school:
+            raise ValueError("a Dean must have a school")
+        return self

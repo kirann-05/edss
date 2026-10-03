@@ -4,6 +4,130 @@
  */
 
 export interface paths {
+    "/api/auth/demo-login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Demo Login
+         * @description One-click sign-in for the seeded synthetic users, so a demo can switch roles quickly.
+         *
+         *     Exists only when EDSS_DEMO_LOGIN is on AND data mode is synthetic. In real mode it is a 404.
+         */
+        post: operations["demo_login_api_auth_demo_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth/demo-users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Demo Users */
+        get: operations["demo_users_api_auth_demo_users_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Login */
+        post: operations["login_api_auth_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Logout */
+        post: operations["logout_api_auth_logout_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Me */
+        get: operations["me_api_auth_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/data-health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Data Health */
+        get: operations["data_health_api_data_health_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/domains/{domain}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Domain View */
+        get: operations["domain_view_api_domains__domain__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/health": {
         parameters: {
             query?: never;
@@ -21,10 +145,281 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/kpis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Kpis */
+        get: operations["list_kpis_api_kpis_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/kpis/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Drilldown */
+        get: operations["drilldown_api_kpis__key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/system/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Status */
+        get: operations["status_api_system_status_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** BatchOut */
+        BatchOut: {
+            /** Checksum */
+            checksum: string;
+            domain: components["schemas"]["Domain"];
+            /** File Ref */
+            file_ref: string;
+            /**
+             * Finished At
+             * Format: date
+             */
+            finished_at: string;
+            /** Id */
+            id: number;
+            /** Owner Office */
+            owner_office: string;
+            /** Rejected Count */
+            rejected_count: number;
+            /** Row Count */
+            row_count: number;
+            /** Source */
+            source: string;
+        };
+        /** DataHealthOut */
+        DataHealthOut: {
+            /** Batches */
+            batches: components["schemas"]["BatchOut"][];
+            /** Cells */
+            cells: components["schemas"]["HealthCellOut"][];
+            /** Departments */
+            departments: components["schemas"]["DepartmentOut"][];
+            /** Domains */
+            domains: components["schemas"]["Domain"][];
+            /** Is Current */
+            is_current: boolean;
+            /** Period Year */
+            period_year: string;
+            /** Stale After Days */
+            stale_after_days: number;
+            summary: components["schemas"]["HealthSummary"];
+            /**
+             * Today
+             * Format: date
+             */
+            today: string;
+        };
+        /** DemoLoginIn */
+        DemoLoginIn: {
+            /** Email */
+            email: string;
+        };
+        /** DemoUserOut */
+        DemoUserOut: {
+            /** Dept Code */
+            dept_code?: string | null;
+            /** Email */
+            email: string;
+            /** Name */
+            name: string;
+            role: components["schemas"]["Role"];
+            /** School */
+            school?: string | null;
+        };
+        /** DepartmentOut */
+        DepartmentOut: {
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /** School */
+            school: string;
+        };
+        /** DepartmentRowOut */
+        DepartmentRowOut: {
+            /**
+             * Access
+             * @enum {string}
+             */
+            access: "visible" | "restricted";
+            /** As Of */
+            as_of?: string | null;
+            /** Dept Code */
+            dept_code: string;
+            /** Dept Name */
+            dept_name: string;
+            /**
+             * Fact Ids
+             * @default []
+             */
+            fact_ids: number[];
+            /**
+             * Inputs
+             * @default []
+             */
+            inputs: components["schemas"]["InputTermOut"][];
+            /** Reason */
+            reason?: string | null;
+            /** School */
+            school: string;
+            /**
+             * Stale
+             * @default false
+             */
+            stale: boolean;
+            state?: components["schemas"]["DeptState"] | null;
+            /** Value */
+            value?: string | null;
+        };
+        /** DeptFlagList */
+        DeptFlagList: {
+            /** Departments */
+            departments: string[];
+            /** Total */
+            total: number;
+        };
+        /**
+         * DeptState
+         * @enum {string}
+         */
+        DeptState: "ok" | "undefined" | "missing" | "excluded";
+        /**
+         * Domain
+         * @enum {string}
+         */
+        Domain: "academic" | "research" | "placement" | "finance" | "reference";
+        /** DomainKpiOut */
+        DomainKpiOut: {
+            /** Departments */
+            departments: components["schemas"]["DepartmentRowOut"][];
+            kpi: components["schemas"]["KpiOut"];
+        };
+        /** DomainViewOut */
+        DomainViewOut: {
+            domain: components["schemas"]["Domain"];
+            /** Kpis */
+            kpis: components["schemas"]["DomainKpiOut"][];
+            /** Period Year */
+            period_year: string;
+        };
+        /** FactOut */
+        FactOut: {
+            /**
+             * As Of
+             * Format: date
+             */
+            as_of: string;
+            /** Batch Id */
+            batch_id: number;
+            /** Dept Code */
+            dept_code: string;
+            domain: components["schemas"]["Domain"];
+            /** Id */
+            id: number;
+            /** Metric Key */
+            metric_key: string;
+            /** Metric Label */
+            metric_label: string;
+            /** Period Sub */
+            period_sub: string;
+            /** Period Year */
+            period_year: string;
+            /** Source Owner */
+            source_owner: string;
+            /** Source Ref */
+            source_ref: string;
+            /** Source System */
+            source_system: string;
+            status: components["schemas"]["FactStatus"];
+            /** Unit */
+            unit: string;
+            /** Used */
+            used: boolean;
+            /** Value */
+            value: string;
+        };
+        /**
+         * FactStatus
+         * @enum {string}
+         */
+        FactStatus: "final" | "audited" | "provisional" | "forecast" | "pending_reconciliation";
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
+        /** HealthCellOut */
+        HealthCellOut: {
+            /** Age Days */
+            age_days?: number | null;
+            /** As Of */
+            as_of?: string | null;
+            /**
+             * Batch Ids
+             * @default []
+             */
+            batch_ids: number[];
+            /** Dept Code */
+            dept_code: string;
+            domain: components["schemas"]["Domain"];
+            /**
+             * Fact Count
+             * @default 0
+             */
+            fact_count: number;
+            /**
+             * @default {
+             *       "forecast": 0,
+             *       "pending_reconciliation": 0,
+             *       "provisional": 0
+             *     }
+             */
+            non_final: components["schemas"]["NonFinalCounts"];
+            /**
+             * Restricted
+             * @default false
+             */
+            restricted: boolean;
+            /** State */
+            state?: ("fresh" | "stale" | "missing" | "closed") | null;
+        };
         /** HealthResponse */
         HealthResponse: {
             /**
@@ -39,6 +434,257 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** HealthSummary */
+        HealthSummary: {
+            /** Closed */
+            closed: number;
+            /** Fresh */
+            fresh: number;
+            /** Missing */
+            missing: number;
+            /** Stale */
+            stale: number;
+        };
+        /** InputTermOut */
+        InputTermOut: {
+            /** Label */
+            label: string;
+            /** Value */
+            value: string;
+        };
+        /** KpiDrilldownOut */
+        KpiDrilldownOut: {
+            /**
+             * Access
+             * @enum {string}
+             */
+            access: "full" | "restricted";
+            /** Departments */
+            departments: components["schemas"]["DepartmentRowOut"][];
+            /** Facts */
+            facts: components["schemas"]["FactOut"][];
+            /** Facts Hidden */
+            facts_hidden: number;
+            /** Inputs */
+            inputs: components["schemas"]["InputTermOut"][];
+            kpi: components["schemas"]["KpiOut"];
+            spread: components["schemas"]["SpreadOut"] | null;
+        };
+        /** KpiFlagsOut */
+        KpiFlagsOut: {
+            excluded: components["schemas"]["DeptFlagList"];
+            /** Excluded Fact Count */
+            excluded_fact_count: number;
+            missing: components["schemas"]["DeptFlagList"];
+            /** No Target */
+            no_target: boolean;
+            stale: components["schemas"]["DeptFlagList"];
+            undefined: components["schemas"]["DeptFlagList"];
+        };
+        /**
+         * KpiFramework
+         * @enum {string}
+         */
+        KpiFramework: "NIRF" | "NAAC" | "STRATEGIC";
+        /** KpiListOut */
+        KpiListOut: {
+            /** Is Current */
+            is_current: boolean;
+            /** Kpis */
+            kpis: components["schemas"]["KpiOut"][];
+            /** Newest As Of */
+            newest_as_of: string | null;
+            /** Oldest As Of */
+            oldest_as_of: string | null;
+            /** Period Year */
+            period_year: string;
+            summary: components["schemas"]["StatusSummary"];
+        };
+        /** KpiOut */
+        KpiOut: {
+            /** As Of */
+            as_of: string | null;
+            domain: components["schemas"]["Domain"];
+            /** Domain Tags */
+            domain_tags: components["schemas"]["Domain"][];
+            flags: components["schemas"]["KpiFlagsOut"];
+            /** Formula */
+            formula: string;
+            /** Formula Text */
+            formula_text: string;
+            framework: components["schemas"]["KpiFramework"];
+            /** Higher Is Better */
+            higher_is_better: boolean;
+            /** Input Fact Count */
+            input_fact_count: number;
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Note */
+            note: string | null;
+            /** Period Year */
+            period_year: string;
+            /** Placeholder */
+            placeholder: boolean;
+            /** Precision */
+            precision: number;
+            status: components["schemas"]["KpiStatus"];
+            /** Target */
+            target: string | null;
+            /** Trend */
+            trend: components["schemas"]["TrendPoint"][];
+            /** Unit */
+            unit: string;
+            /** Value */
+            value: string | null;
+            /** Variance Abs */
+            variance_abs: string | null;
+            /** Variance Pct */
+            variance_pct: string | null;
+            /** Version */
+            version: number;
+        };
+        /**
+         * KpiStatus
+         * @enum {string}
+         */
+        KpiStatus: "met" | "at_risk" | "missed" | "undefined";
+        /** LoginIn */
+        LoginIn: {
+            /** Email */
+            email: string;
+            /** Password */
+            password: string;
+        };
+        /** MeOut */
+        MeOut: {
+            /** Permissions */
+            permissions: components["schemas"]["Permission"][];
+            scope: components["schemas"]["ScopeOut"];
+            user: components["schemas"]["UserOut"];
+        };
+        /** NonFinalCounts */
+        NonFinalCounts: {
+            /**
+             * Forecast
+             * @default 0
+             */
+            forecast: number;
+            /**
+             * Pending Reconciliation
+             * @default 0
+             */
+            pending_reconciliation: number;
+            /**
+             * Provisional
+             * @default 0
+             */
+            provisional: number;
+        };
+        /**
+         * Permission
+         * @enum {string}
+         */
+        Permission: "view_dashboard" | "view_data_health" | "start_run" | "review" | "approve" | "rollback" | "view_reports" | "view_audit" | "manage_users" | "manage_scope" | "refresh_data";
+        /**
+         * Role
+         * @enum {string}
+         */
+        Role: "registrar" | "principal" | "dean" | "hod" | "viewer" | "admin";
+        /** ScopeOut */
+        ScopeOut: {
+            /** Departments */
+            departments: string[];
+            /** Everything */
+            everything: boolean;
+        };
+        /** SpreadOut */
+        SpreadOut: {
+            /** Count */
+            count: number;
+            /** Max */
+            max: string;
+            /** Median */
+            median: string;
+            /** Min */
+            min: string;
+            /** Simple Mean */
+            simple_mean: string;
+        };
+        /** StatusSummary */
+        StatusSummary: {
+            /** At Risk */
+            at_risk: number;
+            /** Met */
+            met: number;
+            /** Missed */
+            missed: number;
+            /** Undefined */
+            undefined: number;
+        };
+        /** SystemStatusOut */
+        SystemStatusOut: {
+            /** Current Period */
+            current_period: string;
+            /**
+             * Data Mode
+             * @enum {string}
+             */
+            data_mode: "synthetic" | "real";
+            /** Llm Is Fake */
+            llm_is_fake: boolean;
+            /** Llm Provider */
+            llm_provider: string;
+            /** Periods */
+            periods: string[];
+            /** Stale After Days */
+            stale_after_days: number;
+            /**
+             * Today
+             * Format: date
+             */
+            today: string;
+            /** Version */
+            version: string;
+        };
+        /** TrendPoint */
+        TrendPoint: {
+            /** Period Year */
+            period_year: string;
+            status: components["schemas"]["KpiStatus"];
+            /** Target */
+            target: string | null;
+            /** Value */
+            value: string | null;
+        };
+        /** UserOut */
+        UserOut: {
+            /** Dept Code */
+            dept_code?: string | null;
+            /** Email */
+            email: string;
+            /** Id */
+            id: number;
+            /** Name */
+            name: string;
+            role: components["schemas"]["Role"];
+            /** School */
+            school?: string | null;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Context */
+            ctx?: Record<string, never>;
+            /** Input */
+            input?: unknown;
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -48,6 +694,194 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    demo_login_api_auth_demo_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DemoLoginIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    demo_users_api_auth_demo_users_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoUserOut"][];
+                };
+            };
+        };
+    };
+    login_api_auth_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    logout_api_auth_logout_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    me_api_auth_me_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MeOut"];
+                };
+            };
+        };
+    };
+    data_health_api_data_health_get: {
+        parameters: {
+            query?: {
+                period?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataHealthOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    domain_view_api_domains__domain__get: {
+        parameters: {
+            query?: {
+                period?: string | null;
+            };
+            header?: never;
+            path: {
+                domain: components["schemas"]["Domain"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DomainViewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     health_api_health_get: {
         parameters: {
             query?: never;
@@ -64,6 +898,90 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HealthResponse"];
+                };
+            };
+        };
+    };
+    list_kpis_api_kpis_get: {
+        parameters: {
+            query?: {
+                period?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KpiListOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    drilldown_api_kpis__key__get: {
+        parameters: {
+            query?: {
+                period?: string | null;
+            };
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KpiDrilldownOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    status_api_system_status_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SystemStatusOut"];
                 };
             };
         };

@@ -39,6 +39,13 @@ class Settings(BaseSettings):
 
     # auth
     jwt_secret: SecretStr | None = None
+    session_hours: int = 8
+    cookie_secure: bool = False  # set true behind HTTPS
+    # One shared password for the synthetic seed users. With none set, only demo sign-in works.
+    edss_seed_password: SecretStr | None = None
+    # Lets the login page offer one-click sign-in for the seeded demo users. Refused unless
+    # data_mode is synthetic, however this flag is set.
+    edss_demo_login: bool = False
 
     # pipeline behaviour
     max_attempts: int = 3
