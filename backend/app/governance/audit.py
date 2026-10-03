@@ -13,32 +13,13 @@ import hashlib
 import json
 import threading
 from dataclasses import dataclass, field
-from datetime import UTC, date, datetime
-from decimal import Decimal
-from enum import Enum
+from datetime import UTC, datetime
 from typing import Any, Literal
+
+from app.core.canonical import canonical
 
 GENESIS_HASH = "0" * 64
 ActorType = Literal["user", "agent", "system"]
-
-
-def _default(value: Any) -> Any:
-    if isinstance(value, Decimal):
-        return format(value, "f")  # text, never a float, so a figure hashes the same everywhere
-    if isinstance(value, (datetime, date)):
-        return value.isoformat()
-    if isinstance(value, Enum):
-        return value.value
-    if isinstance(value, (set, frozenset, tuple)):
-        return sorted(value, key=str) if isinstance(value, (set, frozenset)) else list(value)
-    if hasattr(value, "model_dump"):
-        return value.model_dump(mode="json")
-    raise TypeError(f"cannot audit a value of type {type(value).__name__}")
-
-
-def canonical(value: Any) -> str:
-    """One text form per content, whatever the key order, so the same facts always hash alike."""
-    return json.dumps(value, sort_keys=True, separators=(",", ":"), default=_default)
 
 
 def compute_hash(

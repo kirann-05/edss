@@ -22,6 +22,7 @@ ALLOWED_APP_PREFIXES = (
     "app.kpi.formulas",
     "app.kpi.results",
     "app.kpi.describe",
+    "app.core.canonical",
     "app.core.config",
     "app.services.system_config",
 )

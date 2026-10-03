@@ -7,7 +7,8 @@ from decimal import Decimal
 
 import pytest
 
-from app.governance.audit import GENESIS_HASH, AuditLog, canonical, compute_hash, verify_rows
+from app.core.canonical import canonical
+from app.governance.audit import GENESIS_HASH, AuditLog, compute_hash, verify_rows
 
 T0 = datetime(2026, 10, 3, 12, 0, tzinfo=UTC)
 
