@@ -60,3 +60,51 @@ def login(app):
     yield sign_in
     for client in clients:
         client.close()
+
+
+class Pipeline:
+    """A fresh app with runs executed inline, and helpers to drive the real HTTP API."""
+
+    def __init__(self):
+        self.app = create_app(make_settings(), today=REF, synchronous_runs=True)
+        self._clients: list[TestClient] = []
+        self.state = self.app.state.edss
+
+    def login(self, persona: str) -> TestClient:
+        client = TestClient(self.app)
+        self._clients.append(client)
+        response = client.post(
+            "/api/auth/login", json={"email": EMAILS[persona], "password": PASSWORD}
+        )
+        assert response.status_code == 200, response.text
+        return client
+
+    def close(self):
+        for client in self._clients:
+            client.close()
+
+    def start(
+        self,
+        client: TestClient,
+        request="Governing Council brief for 2025-26 on everything",
+        faults=None,
+    ):
+        """Create a run, accept the plan as it is, lock it, and return the finished run."""
+        run = client.post("/api/runs", json={"request": request}).json()
+        if run["status"] == "clarifying":
+            run = client.post(f"/api/runs/{run['id']}/skip-questions").json()
+        locked = client.post(f"/api/runs/{run['id']}/plan/lock", json={"faults": faults or []})
+        assert locked.status_code == 200, locked.text
+        return client.get(f"/api/runs/{run['id']}").json()
+
+    def draft(self, client: TestClient, **kw) -> tuple[str, str]:
+        run = self.start(client, **kw)
+        assert run["status"] == "awaiting_review", run
+        return run["id"], run["brief_id"]
+
+
+@pytest.fixture
+def pipeline():
+    pipe = Pipeline()
+    yield pipe
+    pipe.close()

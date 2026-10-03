@@ -1,18 +1,20 @@
-import secrets
 from datetime import date
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
 from app import __version__
-from app.api.deps import AppState
-from app.api.routes import auth, data_health, health, kpis, system
+from app.api.routes import audit, auth, briefs, data_health, health, kpis, reports, runs, system
+from app.bootstrap import build_state
 from app.core.config import Settings, get_settings
 from app.core.tracing import enforce_no_external_tracing
-from app.services.store import DataStore
-from app.services.users import build_seed_users
+from app.governance.service import EditRejected, GovernanceError, PermissionDenied
+from app.services.runs import RunError, RunNotFound
 
 
-def create_app(settings: Settings | None = None, today: date | None = None) -> FastAPI:
+def create_app(
+    settings: Settings | None = None, today: date | None = None, synchronous_runs: bool = False
+) -> FastAPI:
     settings = settings or get_settings()
     enforce_no_external_tracing()
 
@@ -21,14 +23,6 @@ def create_app(settings: Settings | None = None, today: date | None = None) -> F
         # data (CHECKLIST F3 builds the Postgres services this mode needs).
         raise RuntimeError("DATA_MODE=real needs the Postgres services, which are not built yet")
 
-    jwt_secret = settings.jwt_secret.get_secret_value() if settings.jwt_secret else None
-    if jwt_secret is None:
-        # Synthetic mode only: a throwaway secret, so sessions end when the server restarts
-        jwt_secret = secrets.token_urlsafe(32)
-
-    seed_password = (
-        settings.edss_seed_password.get_secret_value() if settings.edss_seed_password else None
-    )
     # API docs describe every endpoint, so they are a development aid only. No public docs, no
     # ReDoc and no OAuth redirect page, which nothing here uses.
     docs = settings.data_mode == "synthetic"
@@ -40,16 +34,44 @@ def create_app(settings: Settings | None = None, today: date | None = None) -> F
         redoc_url=None,
         swagger_ui_oauth2_redirect_url=None,
     )
-    app.state.edss = AppState(
-        settings=settings,
-        store=DataStore.build(today or date.today(), settings.stale_after_days),
-        users=build_seed_users(seed_password),
-        jwt_secret=jwt_secret,
-    )
+    app.state.edss = build_state(settings, today or date.today(), synchronous_runs=synchronous_runs)
 
     app.include_router(health.router, prefix="/api")
     app.include_router(auth.router, prefix="/api")
     app.include_router(system.router, prefix="/api")
     app.include_router(kpis.router, prefix="/api")
     app.include_router(data_health.router, prefix="/api")
+    app.include_router(runs.router, prefix="/api")
+    app.include_router(briefs.router, prefix="/api")
+    app.include_router(reports.router, prefix="/api")
+    app.include_router(audit.router, prefix="/api")
+    register_error_handlers(app)
     return app
+
+
+def register_error_handlers(app: FastAPI) -> None:
+    """One consistent meaning for each kind of refusal, so the UI can show the right thing."""
+
+    @app.exception_handler(PermissionDenied)
+    async def refused(request: Request, error: PermissionDenied) -> JSONResponse:
+        return JSONResponse({"detail": str(error)}, status_code=403)
+
+    @app.exception_handler(EditRejected)
+    async def edit_rejected(request: Request, error: EditRejected) -> JSONResponse:
+        # an edit that broke validation carries the report, so the person sees exactly what to fix
+        assert error.report is not None
+        body = {"detail": {"message": str(error), "report": error.report.model_dump(mode="json")}}
+        return JSONResponse(body, status_code=422)
+
+    @app.exception_handler(GovernanceError)
+    async def governance_error(request: Request, error: GovernanceError) -> JSONResponse:
+        # a rule that does not allow it right now: the state of the brief, not a malformed request
+        return JSONResponse({"detail": str(error)}, status_code=409)
+
+    @app.exception_handler(RunNotFound)
+    async def no_run(request: Request, error: RunNotFound) -> JSONResponse:
+        return JSONResponse({"detail": str(error)}, status_code=404)
+
+    @app.exception_handler(RunError)
+    async def run_error(request: Request, error: RunError) -> JSONResponse:
+        return JSONResponse({"detail": str(error)}, status_code=409)

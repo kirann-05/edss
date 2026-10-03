@@ -373,6 +373,7 @@ def build_graph(deps: GraphDeps, checkpointer: Any):
             escalated=escalated,
             diagnosis=diagnosis,
             repair_log=tuple(state.get("repair_log", [])),
+            history=tuple(ValidationReport.model_validate(x) for x in state.get("reports", [])),
             created_by=state["created_by"],
         )
         return {"brief_id": brief_id, "escalated": escalated}

@@ -369,3 +369,55 @@ class TestAudit:
         with pytest.raises(PermissionDenied):
             gov.decide(brief.id, person(Role.VIEWER), Decision(kind="approve"))
         assert audit.rows(action="brief.refused")
+
+
+class TestApprovalState:
+    """The UI asks the server whether Approve is allowed, so the rule lives in one place."""
+
+    def test_a_passing_draft_can_be_approved(self, gov, clean, vctx):
+        state = gov.approval_state(draft(gov, clean, vctx).id)
+        assert (
+            state.can_approve and not state.needs_acknowledgement and state.blocked_reason is None
+        )
+
+    def test_an_escalated_draft_failing_only_completeness_needs_an_acknowledgement(
+        self, gov, clean, vctx
+    ):
+        brief = draft(gov, clean, vctx, report=failing_report("V3"), escalated=True)
+        state = gov.approval_state(brief.id)
+        assert state.can_approve and state.needs_acknowledgement and state.failing_checks == ["V3"]
+
+    def test_an_escalated_draft_failing_integrity_cannot_be_approved_and_says_why(
+        self, gov, clean, vctx
+    ):
+        brief = draft(gov, clean, vctx, report=failing_report("V1", "V3"), escalated=True)
+        state = gov.approval_state(brief.id)
+        assert not state.can_approve and "V1" in state.blocked_reason
+
+    def test_a_decided_brief_cannot_be_approved_again(self, gov, clean, vctx):
+        brief = draft(gov, clean, vctx)
+        gov.decide(brief.id, PRINCIPAL, Decision(kind="approve"))
+        assert not gov.approval_state(brief.id).can_approve
+
+    def test_the_state_always_agrees_with_what_decide_actually_does(self, gov, clean, vctx):
+        for checks, escalated in [
+            ((), False),
+            (("V3",), True),
+            (("V1",), True),
+            (("V2", "V8"), True),
+        ]:
+            brief = draft(
+                gov,
+                clean,
+                vctx,
+                run=f"r-{checks}",
+                report=failing_report(*checks),
+                escalated=escalated,
+            )
+            state = gov.approval_state(brief.id)
+            try:
+                gov.decide(brief.id, PRINCIPAL, Decision(kind="approve", ack_escalation=True))
+                allowed = True
+            except GovernanceError:
+                allowed = False
+            assert allowed == state.can_approve, checks

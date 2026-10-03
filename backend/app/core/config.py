@@ -52,6 +52,10 @@ class Settings(BaseSettings):
     # pipeline behaviour
     max_attempts: int = 3
     stale_after_days: int = 90
+    run_budget_seconds: float = 300.0
+    # Seconds a domain agent waits on its source, to model a slow system. Zero in tests. The
+    # demo sets it so the four agents running in parallel can be seen.
+    source_latency_ms: int = 0
 
     # never send run data to external tracing. Enforced at startup, see core/tracing.py
     langchain_tracing_v2: bool = False

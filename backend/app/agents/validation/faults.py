@@ -99,3 +99,16 @@ def apply_fault(doc: BriefDocument, fault: str, ctx: ValidationContext) -> Brief
         return _FAULTS[fault](doc, ctx)
     except KeyError:
         raise ValueError(f"unknown fault {fault!r}, expected one of {FAULTS}") from None
+
+
+# Plain words for the New Run page, where failure injection is switched on in synthetic mode
+FAULT_INFO: dict[str, tuple[str, str]] = {
+    "fake_number": ("A figure written by hand", "A model writes a made-up percentage into an option."),
+    "dropped_source": ("A figure with no source", "A KPI loses the records it was computed from."),
+    "provisional_as_final": ("A provisional figure called confirmed", "Text describes a provisional record as confirmed."),
+    "missing_risks": ("An option with no risks", "A model forgets to list the risks of an option."),
+    "stale_hidden": ("A stale department hidden", "The caveat about a stale department is left out."),
+    "double_count": ("A shared paper counted twice", "A publication shared by two departments is counted twice."),
+    "rounded_miss": ("A miss hidden by rounding", "A missed KPI is marked met because it rounds to the target."),
+    "approval_bypass": ("A false claim of approval", "The brief claims to be approved before anyone has approved it."),
+}  # fmt: skip

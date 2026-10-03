@@ -9,15 +9,18 @@ Two conventions the UI relies on:
   department's identity and nothing else, so scoping holds even if the UI is bypassed.
 """
 
-from datetime import date
-from typing import Literal
+from datetime import date, datetime
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict
 
+from app.agents.models import ValidationReport
+from app.agents.tokens import Segment
 from app.core.rbac import Permission
-from app.domain.enums import Domain, FactStatus, KpiFramework, KpiStatus, Role
+from app.domain.enums import BriefStatus, Domain, FactStatus, KpiFramework, KpiStatus, Role
 from app.domain.models import DecimalStr
 from app.kpi.results import DeptState
+from app.services.runs import RunStatus
 
 
 class Api(BaseModel):
@@ -266,3 +269,379 @@ class DataHealthOut(Api):
     cells: list[HealthCellOut]
     batches: list[BatchOut]
     summary: HealthSummary
+
+
+# --- runs ---------------------------------------------------------------------------------
+class QuestionOut(Api):
+    id: str
+    text: str
+    why: str
+    choices: list[str]
+
+
+class AnswerIn(Api):
+    question_id: str
+    answer: str
+
+
+class AnswersIn(Api):
+    answers: list[AnswerIn]
+
+
+class CreateRunIn(Api):
+    request: str
+
+
+class PlanStepOut(Api):
+    id: str
+    title: str
+    detail: str
+
+
+class PlanOut(Api):
+    request: str
+    period_year: str
+    domains: list[Domain]
+    kpi_keys: list[str]
+    options_for: Literal["off_target", "all"]
+    audience: str
+    steps: list[PlanStepOut]
+    revision: int
+    locked_at: datetime | None
+
+
+class StepPatch(Api):
+    title: str | None = None
+    detail: str | None = None
+
+
+class PlanPatchIn(Api):
+    period_year: str | None = None
+    domains: list[Domain] | None = None
+    kpi_keys: list[str] | None = None
+    options_for: Literal["off_target", "all"] | None = None
+    audience: str | None = None
+    steps: dict[str, StepPatch] | None = None
+
+
+class ReviseIn(Api):
+    feedback: str
+
+
+class LockIn(Api):
+    faults: list[str] = []
+
+
+class PlanHistoryOut(Api):
+    revision: int
+    changes: list[str]
+    at: str
+
+
+class RunOut(Api):
+    id: str
+    request: str
+    status: RunStatus
+    created_by_name: str
+    created_at: datetime
+    questions: list[QuestionOut]
+    answers: list[AnswerIn]
+    plan: PlanOut | None
+    plan_history: list[PlanHistoryOut]
+    faults: list[str]
+    brief_id: str | None
+    error: str | None
+
+
+class RunRevisionOut(Api):
+    run: RunOut
+    changes: list[str]
+
+
+class KpiChoiceOut(Api):
+    key: str
+    name: str
+    domain: Domain
+
+
+class FaultOut(Api):
+    id: str
+    label: str
+    description: str
+
+
+class PlanCatalogueOut(Api):
+    periods: list[str]
+    current_period: str
+    domains: list[Domain]
+    kpis: list[KpiChoiceOut]
+    audiences: list[str]
+    faults: list[FaultOut]  # empty unless the data is synthetic
+
+
+class RunEventOut(Api):
+    id: int
+    ts: datetime
+    node: str
+    label: str
+    state: Literal["running", "done", "failed", "waiting"]
+    elapsed_ms: int | None
+    attempt: int | None
+    detail: str | None
+    ok: bool | None
+
+
+# --- briefs -------------------------------------------------------------------------------
+class RichTextOut(Api):
+    text: str  # with reference tokens, what an editor changes
+    segments: list[Segment]  # the same text with every figure resolved
+
+
+class OptionOut(Api):
+    id: str
+    title: str
+    description: RichTextOut
+    assumptions: list[RichTextOut]
+    risks: list[RichTextOut]
+    trade_offs: list[RichTextOut]
+
+
+class OptionSetOut(Api):
+    kpi_key: str
+    kpi_name: str
+    status: KpiStatus
+    attempt: int
+    options: list[OptionOut]
+
+
+class SummaryOut(Api):
+    kpi_key: str
+    text: RichTextOut
+
+
+class AssumptionOut(Api):
+    kind: str
+    dept_code: str | None
+    kpi_keys: list[str]
+    text: RichTextOut
+
+
+class HealthNoteOut(Api):
+    dept_code: str
+    domain: Domain
+    state: str
+    as_of: date | None
+    non_final: list[FactStatus]
+
+
+class FigureOut(Api):
+    key: str
+    name: str
+    domain: Domain
+    unit: str
+    precision: int
+    higher_is_better: bool
+    placeholder: bool
+    value: DecimalStr | None
+    target: DecimalStr | None
+    variance_abs: DecimalStr | None
+    status: KpiStatus
+    as_of: date | None
+    flags: KpiFlagsOut
+    input_fact_count: int
+    trend: str
+
+
+class BriefDocumentOut(Api):
+    title: str
+    period_year: str
+    kpis: list[FigureOut]
+    summary: list[SummaryOut]
+    option_sets: list[OptionSetOut]
+    assumptions: list[AssumptionOut]
+    data_health: list[HealthNoteOut]
+
+
+class ApprovalOut(Api):
+    actor_name: str
+    role: str
+    at: datetime
+    ack_escalation: bool
+
+
+class EditOut(Api):
+    option_id: str
+    field: str
+    before: str | list[str]
+    after: str | list[str]
+    by: str
+    at: datetime
+
+
+class ApprovalStateOut(Api):
+    can_approve: bool
+    blocked_reason: str | None
+    needs_acknowledgement: bool
+    failing_checks: list[str]
+
+
+class BriefOut(Api):
+    id: str
+    run_id: str
+    status: BriefStatus
+    escalated: bool
+    diagnosis: str | None
+    attempts: int
+    created_at: datetime
+    created_by: str
+    request: str | None
+    period_year: str
+    document: BriefDocumentOut
+    validation: ValidationReport
+    history: list[ValidationReport]  # every attempt, so a repair can be followed step by step
+    repair_log: list[str]
+    approval: ApprovalOut | None
+    edits: list[EditOut]
+    version: int | None
+    decision_reason: str | None
+    approval_state: ApprovalStateOut
+    can_decide: bool  # whether this person's role may approve, edit or override
+
+
+class BriefSummaryOut(Api):
+    id: str
+    run_id: str
+    status: BriefStatus
+    escalated: bool
+    validation_passed: bool
+    failing_checks: list[str]
+    attempts: int
+    created_at: datetime
+    request: str | None
+    period_year: str
+    off_target_count: int
+
+
+class EditRequestIn(Api):
+    option_id: str
+    field: Literal["title", "description", "assumptions", "risks", "trade_offs"]
+    value: str | list[str]
+
+
+class DecisionIn(Api):
+    kind: Literal["approve", "edit", "override", "send_back"]
+    reason: str | None = None
+    edits: list[EditRequestIn] = []
+    ack_escalation: bool = False
+
+
+class DecisionOut(Api):
+    brief: BriefOut
+    version: int | None  # the version number, when the decision published one
+
+
+class EditCheckIn(Api):
+    edits: list[EditRequestIn]
+
+
+class EditCheckOut(Api):
+    report: ValidationReport
+
+
+class EvidenceRowOut(Api):
+    kpi_key: str
+    claim: str
+    fact_ids: list[int]
+    source_systems: list[str]
+    scope: str
+    tags: list[str]
+
+
+class PriorMatchOut(Api):
+    id: str
+    period_year: str
+    title: str
+    decided_on: date
+    decision: str
+    matching_kpis: list[str]
+    score: float
+    reason: str
+
+
+# --- reports ------------------------------------------------------------------------------
+class VersionOut(Api):
+    version: int
+    brief_id: str
+    run_id: str
+    title: str
+    period_year: str
+    approved_by: str
+    approved_at: datetime
+    state: Literal["current", "previous", "rolled_back"]
+    escalation_acknowledged: bool
+    edit_count: int
+    kpi_count: int
+
+
+class VersionDetailOut(VersionOut):
+    document: BriefDocumentOut
+    edits: list[EditOut]
+
+
+class CurrentReportOut(Api):
+    current: VersionOut | None
+
+
+class ChangeOut(Api):
+    section: Literal["figures", "options", "assumptions"]
+    kind: Literal["added", "removed", "changed"]
+    kpi_key: str | None
+    option_id: str | None
+    field: str | None
+    before: str | None
+    after: str | None
+
+
+class DiffOut(Api):
+    from_version: int
+    to_version: int
+    changes: list[ChangeOut]
+
+
+class RollbackIn(Api):
+    to_version: int
+    reason: str
+
+
+# --- audit --------------------------------------------------------------------------------
+class AuditRowOut(Api):
+    id: int
+    ts: datetime
+    run_id: str | None
+    actor_type: str
+    actor_id: str
+    action: str
+    inputs: dict[str, Any]
+    outputs: dict[str, Any]
+    prev_hash: str
+    hash: str
+
+
+class AuditPageOut(Api):
+    rows: list[AuditRowOut]
+    total: int
+    offset: int
+    limit: int
+
+
+class VerifyOut(Api):
+    ok: bool
+    checked: int
+    broken_at: int | None
+    reason: str | None
+
+
+class TraceOut(Api):
+    run_id: str
+    events: list[RunEventOut]
+    audit: list[AuditRowOut]

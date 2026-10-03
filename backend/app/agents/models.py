@@ -144,6 +144,7 @@ class BriefDocument(Frozen):
     option_sets: tuple[OptionSet, ...]
     assumptions: tuple[AssumptionItem, ...]
     data_health: tuple[HealthNote, ...]
+    options_for: str = "off_target"  # from the plan, so the document can be checked on its own
     # The approval state lives with the brief record, but check V5 needs to see a claim made in
     # the document itself, so a document that says it is approved can be caught.
     claims_status: str = "draft"

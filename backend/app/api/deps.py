@@ -5,12 +5,24 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException, Query, Request, status
 
+from app.agents.runtime import RunEvents
 from app.core.config import Settings
 from app.core.rbac import Permission, Scope, department_scope, has_permission
 from app.core.security import SESSION_COOKIE, read_token
 from app.domain.models import AppUser
+from app.governance.audit import AuditLog
+from app.governance.service import GovernanceService
+from app.services.archive import Archive
+from app.services.connector import InMemoryConnector, ScopeRegistry
+from app.services.runs import RunService
 from app.services.store import DataStore, UnknownPeriodError
+from app.services.system_config import SystemConfig
 from app.services.users import UserStore
+
+
+def demo_login_enabled(settings: Settings) -> bool:
+    # The flag alone is not enough: demo sign-in never exists outside synthetic data mode
+    return settings.edss_demo_login and settings.data_mode == "synthetic"
 
 
 @dataclass
@@ -19,11 +31,18 @@ class AppState:
     store: DataStore
     users: UserStore
     jwt_secret: str
+    audit: AuditLog
+    events: RunEvents
+    scopes: ScopeRegistry
+    connector: InMemoryConnector
+    system_config: SystemConfig
+    governance: GovernanceService
+    runs: RunService
+    archive: Archive
 
     @property
     def demo_login_enabled(self) -> bool:
-        # The flag alone is not enough: demo sign-in never exists outside synthetic data mode
-        return self.settings.edss_demo_login and self.settings.data_mode == "synthetic"
+        return demo_login_enabled(self.settings)
 
 
 def get_state(request: Request) -> AppState:

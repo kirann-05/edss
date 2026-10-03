@@ -41,6 +41,10 @@ class PermissionDenied(GovernanceError):
     pass
 
 
+class EditRejected(GovernanceError):
+    """An edit that would break a validation check. The report says which, so it can be fixed."""
+
+
 class EditRequest(Frozen):
     option_id: str
     field: EditableField
@@ -83,6 +87,7 @@ class BriefRecord(Frozen):
     repair_log: tuple[str, ...]
     created_at: datetime
     created_by: str
+    history: tuple[ValidationReport, ...] = ()
     approval: Approval | None = None
     edits: tuple[Edit, ...] = ()
     version: int | None = None
@@ -109,6 +114,13 @@ class Change(Frozen):
     field: str | None = None
     before: str | None = None
     after: str | None = None
+
+
+class ApprovalState(Frozen):
+    can_approve: bool
+    blocked_reason: str | None = None
+    needs_acknowledgement: bool = False  # escalated, but only on completeness checks
+    failing_checks: list[str] = []
 
 
 class DecisionResult(Frozen):
@@ -194,6 +206,7 @@ class GovernanceService:
         diagnosis: str | None,
         repair_log: tuple[str, ...],
         created_by: str,
+        history: tuple[ValidationReport, ...] = (),
     ) -> BriefRecord:
         with self._lock:
             record = BriefRecord(
@@ -208,6 +221,7 @@ class GovernanceService:
                 repair_log=repair_log,
                 created_at=self._clock(),
                 created_by=created_by,
+                history=history,
             )
             self._briefs[record.id] = record
         self._audit.append(
@@ -246,6 +260,33 @@ class GovernanceService:
             if decision.kind in ("override", "send_back"):
                 return self._close(brief, actor, decision)
             return self._approve(brief, actor, decision)
+
+    def approval_state(self, brief_id: str) -> ApprovalState:
+        """Whether this brief can be approved, and if not why. The UI shows this, it never guesses."""
+        brief = self.get(brief_id)
+        if brief.status not in (BriefStatus.DRAFT, BriefStatus.ESCALATED):
+            return ApprovalState(
+                can_approve=False,
+                blocked_reason=f"This brief has already been {brief.status.value}.",
+            )
+        report = brief.validation
+        if report.passed:
+            return ApprovalState(can_approve=True)
+        failing = sorted(c.id for c in report.failing)
+        if brief.status is not BriefStatus.ESCALATED:
+            return ApprovalState(
+                can_approve=False,
+                blocked_reason="Validation has not passed.",
+                failing_checks=failing,
+            )
+        integrity = sorted(set(failing) & INTEGRITY_CHECKS)
+        if integrity:
+            return ApprovalState(
+                can_approve=False,
+                blocked_reason=f"Integrity checks failed ({', '.join(integrity)}). Send it back or override it.",
+                failing_checks=failing,
+            )
+        return ApprovalState(can_approve=True, needs_acknowledgement=True, failing_checks=failing)
 
     def _require(
         self, actor: AppUser, permission: Permission, brief: BriefRecord | None, action: str
@@ -299,9 +340,7 @@ class GovernanceService:
                     inputs={"brief_id": brief.id, "attempted": "edit"},
                     outputs={"failed_checks": [c.id for c in report.failing]},
                 )
-                raise GovernanceError(
-                    "the edit failed validation, so nothing was published", report
-                )
+                raise EditRejected("the edit failed validation, so nothing was published", report)
 
         # a passing report (possibly the fresh one after an edit) is the normal path
         if not report.passed:

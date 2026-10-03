@@ -187,6 +187,7 @@ def compose_brief(
         title=f"Decision brief, {plan.period_year}",
         period_year=plan.period_year,
         plan_kpi_keys=plan.kpi_keys,
+        options_for=plan.options_for,
         kpis=tuple(ordered),
         summary=build_summary(ordered),
         option_sets=tuple(sorted(option_sets, key=lambda s: order.get(s.kpi_key, len(order)))),

@@ -4,7 +4,6 @@ import pytest
 from fastapi.testclient import TestClient
 from pydantic import SecretStr
 
-from app.api.deps import AppState
 from app.core.security import SESSION_COOKIE, issue_token, read_token
 from app.main import create_app
 
@@ -130,13 +129,15 @@ class TestDemoLogin:
         )
 
     def test_it_never_exists_in_real_data_mode_whatever_the_flag_says(self):
-        state = AppState(
-            settings=make_settings(data_mode="real", edss_demo_login=True),
-            store=None,  # type: ignore[arg-type]
-            users=None,  # type: ignore[arg-type]
-            jwt_secret="x",
+        from app.api.deps import demo_login_enabled
+
+        assert demo_login_enabled(make_settings(data_mode="real", edss_demo_login=True)) is False
+        assert (
+            demo_login_enabled(make_settings(data_mode="synthetic", edss_demo_login=True)) is True
         )
-        assert state.demo_login_enabled is False
+        assert (
+            demo_login_enabled(make_settings(data_mode="synthetic", edss_demo_login=False)) is False
+        )
 
 
 class TestStartup:

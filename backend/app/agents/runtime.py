@@ -50,6 +50,7 @@ class DraftSink(Protocol):
         escalated: bool,
         diagnosis: str | None,
         repair_log: tuple[str, ...],
+        history: tuple[ValidationReport, ...],
         created_by: str,
     ) -> str: ...
 

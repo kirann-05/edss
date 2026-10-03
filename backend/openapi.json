@@ -1,6 +1,243 @@
 {
   "components": {
     "schemas": {
+      "AnswerIn": {
+        "properties": {
+          "answer": {
+            "title": "Answer",
+            "type": "string"
+          },
+          "question_id": {
+            "title": "Question Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question_id",
+          "answer"
+        ],
+        "title": "AnswerIn",
+        "type": "object"
+      },
+      "AnswersIn": {
+        "properties": {
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/AnswerIn"
+            },
+            "title": "Answers",
+            "type": "array"
+          }
+        },
+        "required": [
+          "answers"
+        ],
+        "title": "AnswersIn",
+        "type": "object"
+      },
+      "ApprovalOut": {
+        "properties": {
+          "ack_escalation": {
+            "title": "Ack Escalation",
+            "type": "boolean"
+          },
+          "actor_name": {
+            "title": "Actor Name",
+            "type": "string"
+          },
+          "at": {
+            "format": "date-time",
+            "title": "At",
+            "type": "string"
+          },
+          "role": {
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "actor_name",
+          "role",
+          "at",
+          "ack_escalation"
+        ],
+        "title": "ApprovalOut",
+        "type": "object"
+      },
+      "ApprovalStateOut": {
+        "properties": {
+          "blocked_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocked Reason"
+          },
+          "can_approve": {
+            "title": "Can Approve",
+            "type": "boolean"
+          },
+          "failing_checks": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Failing Checks",
+            "type": "array"
+          },
+          "needs_acknowledgement": {
+            "title": "Needs Acknowledgement",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "can_approve",
+          "blocked_reason",
+          "needs_acknowledgement",
+          "failing_checks"
+        ],
+        "title": "ApprovalStateOut",
+        "type": "object"
+      },
+      "AssumptionOut": {
+        "properties": {
+          "dept_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dept Code"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "kpi_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Kpi Keys",
+            "type": "array"
+          },
+          "text": {
+            "$ref": "#/components/schemas/RichTextOut"
+          }
+        },
+        "required": [
+          "kind",
+          "dept_code",
+          "kpi_keys",
+          "text"
+        ],
+        "title": "AssumptionOut",
+        "type": "object"
+      },
+      "AuditPageOut": {
+        "properties": {
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/AuditRowOut"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "rows",
+          "total",
+          "offset",
+          "limit"
+        ],
+        "title": "AuditPageOut",
+        "type": "object"
+      },
+      "AuditRowOut": {
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "actor_type": {
+            "title": "Actor Type",
+            "type": "string"
+          },
+          "hash": {
+            "title": "Hash",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "inputs": {
+            "additionalProperties": true,
+            "title": "Inputs",
+            "type": "object"
+          },
+          "outputs": {
+            "additionalProperties": true,
+            "title": "Outputs",
+            "type": "object"
+          },
+          "prev_hash": {
+            "title": "Prev Hash",
+            "type": "string"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run Id"
+          },
+          "ts": {
+            "format": "date-time",
+            "title": "Ts",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ts",
+          "run_id",
+          "actor_type",
+          "actor_id",
+          "action",
+          "inputs",
+          "outputs",
+          "prev_hash",
+          "hash"
+        ],
+        "title": "AuditRowOut",
+        "type": "object"
+      },
       "BatchOut": {
         "properties": {
           "checksum": {
@@ -52,6 +289,449 @@
           "checksum"
         ],
         "title": "BatchOut",
+        "type": "object"
+      },
+      "BriefDocumentOut": {
+        "properties": {
+          "assumptions": {
+            "items": {
+              "$ref": "#/components/schemas/AssumptionOut"
+            },
+            "title": "Assumptions",
+            "type": "array"
+          },
+          "data_health": {
+            "items": {
+              "$ref": "#/components/schemas/HealthNoteOut"
+            },
+            "title": "Data Health",
+            "type": "array"
+          },
+          "kpis": {
+            "items": {
+              "$ref": "#/components/schemas/FigureOut"
+            },
+            "title": "Kpis",
+            "type": "array"
+          },
+          "option_sets": {
+            "items": {
+              "$ref": "#/components/schemas/OptionSetOut"
+            },
+            "title": "Option Sets",
+            "type": "array"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "summary": {
+            "items": {
+              "$ref": "#/components/schemas/SummaryOut"
+            },
+            "title": "Summary",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "period_year",
+          "kpis",
+          "summary",
+          "option_sets",
+          "assumptions",
+          "data_health"
+        ],
+        "title": "BriefDocumentOut",
+        "type": "object"
+      },
+      "BriefOut": {
+        "properties": {
+          "approval": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ApprovalOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approval_state": {
+            "$ref": "#/components/schemas/ApprovalStateOut"
+          },
+          "attempts": {
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "can_decide": {
+            "title": "Can Decide",
+            "type": "boolean"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "decision_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Reason"
+          },
+          "diagnosis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diagnosis"
+          },
+          "document": {
+            "$ref": "#/components/schemas/BriefDocumentOut"
+          },
+          "edits": {
+            "items": {
+              "$ref": "#/components/schemas/EditOut"
+            },
+            "title": "Edits",
+            "type": "array"
+          },
+          "escalated": {
+            "title": "Escalated",
+            "type": "boolean"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationReport"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "repair_log": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Repair Log",
+            "type": "array"
+          },
+          "request": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BriefStatus"
+          },
+          "validation": {
+            "$ref": "#/components/schemas/ValidationReport"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "required": [
+          "id",
+          "run_id",
+          "status",
+          "escalated",
+          "diagnosis",
+          "attempts",
+          "created_at",
+          "created_by",
+          "request",
+          "period_year",
+          "document",
+          "validation",
+          "history",
+          "repair_log",
+          "approval",
+          "edits",
+          "version",
+          "decision_reason",
+          "approval_state",
+          "can_decide"
+        ],
+        "title": "BriefOut",
+        "type": "object"
+      },
+      "BriefStatus": {
+        "enum": [
+          "draft",
+          "escalated",
+          "approved",
+          "published",
+          "rolled_back",
+          "overridden",
+          "returned"
+        ],
+        "title": "BriefStatus",
+        "type": "string"
+      },
+      "BriefSummaryOut": {
+        "properties": {
+          "attempts": {
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "escalated": {
+            "title": "Escalated",
+            "type": "boolean"
+          },
+          "failing_checks": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Failing Checks",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "off_target_count": {
+            "title": "Off Target Count",
+            "type": "integer"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "request": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BriefStatus"
+          },
+          "validation_passed": {
+            "title": "Validation Passed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "run_id",
+          "status",
+          "escalated",
+          "validation_passed",
+          "failing_checks",
+          "attempts",
+          "created_at",
+          "request",
+          "period_year",
+          "off_target_count"
+        ],
+        "title": "BriefSummaryOut",
+        "type": "object"
+      },
+      "ChangeOut": {
+        "properties": {
+          "after": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "After"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Before"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "kind": {
+            "enum": [
+              "added",
+              "removed",
+              "changed"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "kpi_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kpi Key"
+          },
+          "option_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Option Id"
+          },
+          "section": {
+            "enum": [
+              "figures",
+              "options",
+              "assumptions"
+            ],
+            "title": "Section",
+            "type": "string"
+          }
+        },
+        "required": [
+          "section",
+          "kind",
+          "kpi_key",
+          "option_id",
+          "field",
+          "before",
+          "after"
+        ],
+        "title": "ChangeOut",
+        "type": "object"
+      },
+      "CheckResult": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "passed": {
+            "title": "Passed",
+            "type": "boolean"
+          },
+          "violations": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/Violation"
+            },
+            "title": "Violations",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "passed"
+        ],
+        "title": "CheckResult",
+        "type": "object"
+      },
+      "CreateRunIn": {
+        "properties": {
+          "request": {
+            "title": "Request",
+            "type": "string"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "title": "CreateRunIn",
+        "type": "object"
+      },
+      "CurrentReportOut": {
+        "properties": {
+          "current": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VersionOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "current"
+        ],
+        "title": "CurrentReportOut",
         "type": "object"
       },
       "DataHealthOut": {
@@ -117,6 +797,73 @@
           "summary"
         ],
         "title": "DataHealthOut",
+        "type": "object"
+      },
+      "DecisionIn": {
+        "properties": {
+          "ack_escalation": {
+            "default": false,
+            "title": "Ack Escalation",
+            "type": "boolean"
+          },
+          "edits": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/EditRequestIn"
+            },
+            "title": "Edits",
+            "type": "array"
+          },
+          "kind": {
+            "enum": [
+              "approve",
+              "edit",
+              "override",
+              "send_back"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "title": "DecisionIn",
+        "type": "object"
+      },
+      "DecisionOut": {
+        "properties": {
+          "brief": {
+            "$ref": "#/components/schemas/BriefOut"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "required": [
+          "brief",
+          "version"
+        ],
+        "title": "DecisionOut",
         "type": "object"
       },
       "DemoLoginIn": {
@@ -327,6 +1074,32 @@
         "title": "DeptState",
         "type": "string"
       },
+      "DiffOut": {
+        "properties": {
+          "changes": {
+            "items": {
+              "$ref": "#/components/schemas/ChangeOut"
+            },
+            "title": "Changes",
+            "type": "array"
+          },
+          "from_version": {
+            "title": "From Version",
+            "type": "integer"
+          },
+          "to_version": {
+            "title": "To Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "from_version",
+          "to_version",
+          "changes"
+        ],
+        "title": "DiffOut",
+        "type": "object"
+      },
       "Domain": {
         "enum": [
           "academic",
@@ -381,6 +1154,180 @@
           "kpis"
         ],
         "title": "DomainViewOut",
+        "type": "object"
+      },
+      "EditCheckIn": {
+        "properties": {
+          "edits": {
+            "items": {
+              "$ref": "#/components/schemas/EditRequestIn"
+            },
+            "title": "Edits",
+            "type": "array"
+          }
+        },
+        "required": [
+          "edits"
+        ],
+        "title": "EditCheckIn",
+        "type": "object"
+      },
+      "EditCheckOut": {
+        "properties": {
+          "report": {
+            "$ref": "#/components/schemas/ValidationReport"
+          }
+        },
+        "required": [
+          "report"
+        ],
+        "title": "EditCheckOut",
+        "type": "object"
+      },
+      "EditOut": {
+        "properties": {
+          "after": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "After"
+          },
+          "at": {
+            "format": "date-time",
+            "title": "At",
+            "type": "string"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Before"
+          },
+          "by": {
+            "title": "By",
+            "type": "string"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "option_id": {
+            "title": "Option Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "option_id",
+          "field",
+          "before",
+          "after",
+          "by",
+          "at"
+        ],
+        "title": "EditOut",
+        "type": "object"
+      },
+      "EditRequestIn": {
+        "properties": {
+          "field": {
+            "enum": [
+              "title",
+              "description",
+              "assumptions",
+              "risks",
+              "trade_offs"
+            ],
+            "title": "Field",
+            "type": "string"
+          },
+          "option_id": {
+            "title": "Option Id",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "option_id",
+          "field",
+          "value"
+        ],
+        "title": "EditRequestIn",
+        "type": "object"
+      },
+      "EvidenceRowOut": {
+        "properties": {
+          "claim": {
+            "title": "Claim",
+            "type": "string"
+          },
+          "fact_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Fact Ids",
+            "type": "array"
+          },
+          "kpi_key": {
+            "title": "Kpi Key",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string"
+          },
+          "source_systems": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Systems",
+            "type": "array"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          }
+        },
+        "required": [
+          "kpi_key",
+          "claim",
+          "fact_ids",
+          "source_systems",
+          "scope",
+          "tags"
+        ],
+        "title": "EvidenceRowOut",
         "type": "object"
       },
       "FactOut": {
@@ -481,6 +1428,138 @@
         "title": "FactStatus",
         "type": "string"
       },
+      "FaultOut": {
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "description"
+        ],
+        "title": "FaultOut",
+        "type": "object"
+      },
+      "FigureOut": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/Domain"
+          },
+          "flags": {
+            "$ref": "#/components/schemas/KpiFlagsOut"
+          },
+          "higher_is_better": {
+            "title": "Higher Is Better",
+            "type": "boolean"
+          },
+          "input_fact_count": {
+            "title": "Input Fact Count",
+            "type": "integer"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "placeholder": {
+            "title": "Placeholder",
+            "type": "boolean"
+          },
+          "precision": {
+            "title": "Precision",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/KpiStatus"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          },
+          "trend": {
+            "title": "Trend",
+            "type": "string"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "variance_abs": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Variance Abs"
+          }
+        },
+        "required": [
+          "key",
+          "name",
+          "domain",
+          "unit",
+          "precision",
+          "higher_is_better",
+          "placeholder",
+          "value",
+          "target",
+          "variance_abs",
+          "status",
+          "as_of",
+          "flags",
+          "input_fact_count",
+          "trend"
+        ],
+        "title": "FigureOut",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -577,6 +1656,49 @@
         "title": "HealthCellOut",
         "type": "object"
       },
+      "HealthNoteOut": {
+        "properties": {
+          "as_of": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "dept_code": {
+            "title": "Dept Code",
+            "type": "string"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/Domain"
+          },
+          "non_final": {
+            "items": {
+              "$ref": "#/components/schemas/FactStatus"
+            },
+            "title": "Non Final",
+            "type": "array"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dept_code",
+          "domain",
+          "state",
+          "as_of",
+          "non_final"
+        ],
+        "title": "HealthNoteOut",
+        "type": "object"
+      },
       "HealthResponse": {
         "properties": {
           "data_mode": {
@@ -658,6 +1780,28 @@
           "value"
         ],
         "title": "InputTermOut",
+        "type": "object"
+      },
+      "KpiChoiceOut": {
+        "properties": {
+          "domain": {
+            "$ref": "#/components/schemas/Domain"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "name",
+          "domain"
+        ],
+        "title": "KpiChoiceOut",
         "type": "object"
       },
       "KpiDrilldownOut": {
@@ -998,6 +2142,60 @@
         "title": "KpiStatus",
         "type": "string"
       },
+      "Locator": {
+        "description": "Where a failure is, so only that part is regenerated (Lab 10).",
+        "properties": {
+          "kpi_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kpi Key"
+          },
+          "option_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Option Id"
+          },
+          "section": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Section"
+          }
+        },
+        "title": "Locator",
+        "type": "object"
+      },
+      "LockIn": {
+        "properties": {
+          "faults": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Faults",
+            "type": "array"
+          }
+        },
+        "title": "LockIn",
+        "type": "object"
+      },
       "LoginIn": {
         "properties": {
           "email": {
@@ -1061,6 +2259,87 @@
         "title": "NonFinalCounts",
         "type": "object"
       },
+      "OptionOut": {
+        "properties": {
+          "assumptions": {
+            "items": {
+              "$ref": "#/components/schemas/RichTextOut"
+            },
+            "title": "Assumptions",
+            "type": "array"
+          },
+          "description": {
+            "$ref": "#/components/schemas/RichTextOut"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "risks": {
+            "items": {
+              "$ref": "#/components/schemas/RichTextOut"
+            },
+            "title": "Risks",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "trade_offs": {
+            "items": {
+              "$ref": "#/components/schemas/RichTextOut"
+            },
+            "title": "Trade Offs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "assumptions",
+          "risks",
+          "trade_offs"
+        ],
+        "title": "OptionOut",
+        "type": "object"
+      },
+      "OptionSetOut": {
+        "properties": {
+          "attempt": {
+            "title": "Attempt",
+            "type": "integer"
+          },
+          "kpi_key": {
+            "title": "Kpi Key",
+            "type": "string"
+          },
+          "kpi_name": {
+            "title": "Kpi Name",
+            "type": "string"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/OptionOut"
+            },
+            "title": "Options",
+            "type": "array"
+          },
+          "status": {
+            "$ref": "#/components/schemas/KpiStatus"
+          }
+        },
+        "required": [
+          "kpi_key",
+          "kpi_name",
+          "status",
+          "attempt",
+          "options"
+        ],
+        "title": "OptionSetOut",
+        "type": "object"
+      },
       "Permission": {
         "enum": [
           "view_dashboard",
@@ -1078,6 +2357,384 @@
         "title": "Permission",
         "type": "string"
       },
+      "PlanCatalogueOut": {
+        "properties": {
+          "audiences": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Audiences",
+            "type": "array"
+          },
+          "current_period": {
+            "title": "Current Period",
+            "type": "string"
+          },
+          "domains": {
+            "items": {
+              "$ref": "#/components/schemas/Domain"
+            },
+            "title": "Domains",
+            "type": "array"
+          },
+          "faults": {
+            "items": {
+              "$ref": "#/components/schemas/FaultOut"
+            },
+            "title": "Faults",
+            "type": "array"
+          },
+          "kpis": {
+            "items": {
+              "$ref": "#/components/schemas/KpiChoiceOut"
+            },
+            "title": "Kpis",
+            "type": "array"
+          },
+          "periods": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Periods",
+            "type": "array"
+          }
+        },
+        "required": [
+          "periods",
+          "current_period",
+          "domains",
+          "kpis",
+          "audiences",
+          "faults"
+        ],
+        "title": "PlanCatalogueOut",
+        "type": "object"
+      },
+      "PlanHistoryOut": {
+        "properties": {
+          "at": {
+            "title": "At",
+            "type": "string"
+          },
+          "changes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Changes",
+            "type": "array"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "revision",
+          "changes",
+          "at"
+        ],
+        "title": "PlanHistoryOut",
+        "type": "object"
+      },
+      "PlanOut": {
+        "properties": {
+          "audience": {
+            "title": "Audience",
+            "type": "string"
+          },
+          "domains": {
+            "items": {
+              "$ref": "#/components/schemas/Domain"
+            },
+            "title": "Domains",
+            "type": "array"
+          },
+          "kpi_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Kpi Keys",
+            "type": "array"
+          },
+          "locked_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locked At"
+          },
+          "options_for": {
+            "enum": [
+              "off_target",
+              "all"
+            ],
+            "title": "Options For",
+            "type": "string"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "request": {
+            "title": "Request",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/PlanStepOut"
+            },
+            "title": "Steps",
+            "type": "array"
+          }
+        },
+        "required": [
+          "request",
+          "period_year",
+          "domains",
+          "kpi_keys",
+          "options_for",
+          "audience",
+          "steps",
+          "revision",
+          "locked_at"
+        ],
+        "title": "PlanOut",
+        "type": "object"
+      },
+      "PlanPatchIn": {
+        "properties": {
+          "audience": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audience"
+          },
+          "domains": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Domain"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Domains"
+          },
+          "kpi_keys": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kpi Keys"
+          },
+          "options_for": {
+            "anyOf": [
+              {
+                "enum": [
+                  "off_target",
+                  "all"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options For"
+          },
+          "period_year": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Year"
+          },
+          "steps": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/StepPatch"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Steps"
+          }
+        },
+        "title": "PlanPatchIn",
+        "type": "object"
+      },
+      "PlanStepOut": {
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "detail"
+        ],
+        "title": "PlanStepOut",
+        "type": "object"
+      },
+      "PriorMatchOut": {
+        "properties": {
+          "decided_on": {
+            "format": "date",
+            "title": "Decided On",
+            "type": "string"
+          },
+          "decision": {
+            "title": "Decision",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "matching_kpis": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Matching Kpis",
+            "type": "array"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "period_year",
+          "title",
+          "decided_on",
+          "decision",
+          "matching_kpis",
+          "score",
+          "reason"
+        ],
+        "title": "PriorMatchOut",
+        "type": "object"
+      },
+      "QuestionOut": {
+        "properties": {
+          "choices": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Choices",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "why": {
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "why",
+          "choices"
+        ],
+        "title": "QuestionOut",
+        "type": "object"
+      },
+      "ReviseIn": {
+        "properties": {
+          "feedback": {
+            "title": "Feedback",
+            "type": "string"
+          }
+        },
+        "required": [
+          "feedback"
+        ],
+        "title": "ReviseIn",
+        "type": "object"
+      },
+      "RichTextOut": {
+        "properties": {
+          "segments": {
+            "items": {
+              "$ref": "#/components/schemas/Segment"
+            },
+            "title": "Segments",
+            "type": "array"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "segments"
+        ],
+        "title": "RichTextOut",
+        "type": "object"
+      },
       "Role": {
         "enum": [
           "registrar",
@@ -1088,6 +2745,244 @@
           "admin"
         ],
         "title": "Role",
+        "type": "string"
+      },
+      "RollbackIn": {
+        "properties": {
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "to_version": {
+            "title": "To Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "to_version",
+          "reason"
+        ],
+        "title": "RollbackIn",
+        "type": "object"
+      },
+      "RunEventOut": {
+        "properties": {
+          "attempt": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attempt"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "elapsed_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Elapsed Ms"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "node": {
+            "title": "Node",
+            "type": "string"
+          },
+          "ok": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ok"
+          },
+          "state": {
+            "enum": [
+              "running",
+              "done",
+              "failed",
+              "waiting"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "ts": {
+            "format": "date-time",
+            "title": "Ts",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ts",
+          "node",
+          "label",
+          "state",
+          "elapsed_ms",
+          "attempt",
+          "detail",
+          "ok"
+        ],
+        "title": "RunEventOut",
+        "type": "object"
+      },
+      "RunOut": {
+        "properties": {
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/AnswerIn"
+            },
+            "title": "Answers",
+            "type": "array"
+          },
+          "brief_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brief Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by_name": {
+            "title": "Created By Name",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "faults": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Faults",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "plan": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plan_history": {
+            "items": {
+              "$ref": "#/components/schemas/PlanHistoryOut"
+            },
+            "title": "Plan History",
+            "type": "array"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionOut"
+            },
+            "title": "Questions",
+            "type": "array"
+          },
+          "request": {
+            "title": "Request",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RunStatus"
+          }
+        },
+        "required": [
+          "id",
+          "request",
+          "status",
+          "created_by_name",
+          "created_at",
+          "questions",
+          "answers",
+          "plan",
+          "plan_history",
+          "faults",
+          "brief_id",
+          "error"
+        ],
+        "title": "RunOut",
+        "type": "object"
+      },
+      "RunRevisionOut": {
+        "properties": {
+          "changes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Changes",
+            "type": "array"
+          },
+          "run": {
+            "$ref": "#/components/schemas/RunOut"
+          }
+        },
+        "required": [
+          "run",
+          "changes"
+        ],
+        "title": "RunRevisionOut",
+        "type": "object"
+      },
+      "RunStatus": {
+        "enum": [
+          "clarifying",
+          "planning",
+          "running",
+          "awaiting_review",
+          "completed",
+          "failed"
+        ],
+        "title": "RunStatus",
         "type": "string"
       },
       "ScopeOut": {
@@ -1109,6 +3004,99 @@
           "departments"
         ],
         "title": "ScopeOut",
+        "type": "object"
+      },
+      "Segment": {
+        "description": "A piece of rendered text. A ref segment is a figure the UI makes clickable and badged.",
+        "properties": {
+          "display": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "kpi",
+                  "fact"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kind"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "t": {
+            "enum": [
+              "text",
+              "ref"
+            ],
+            "title": "T",
+            "type": "string"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "unresolved": {
+            "default": false,
+            "title": "Unresolved",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "t"
+        ],
+        "title": "Segment",
         "type": "object"
       },
       "SpreadOut": {
@@ -1172,6 +3160,51 @@
         "title": "StatusSummary",
         "type": "object"
       },
+      "StepPatch": {
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "title": "StepPatch",
+        "type": "object"
+      },
+      "SummaryOut": {
+        "properties": {
+          "kpi_key": {
+            "title": "Kpi Key",
+            "type": "string"
+          },
+          "text": {
+            "$ref": "#/components/schemas/RichTextOut"
+          }
+        },
+        "required": [
+          "kpi_key",
+          "text"
+        ],
+        "title": "SummaryOut",
+        "type": "object"
+      },
       "SystemStatusOut": {
         "properties": {
           "current_period": {
@@ -1226,6 +3259,35 @@
           "stale_after_days"
         ],
         "title": "SystemStatusOut",
+        "type": "object"
+      },
+      "TraceOut": {
+        "properties": {
+          "audit": {
+            "items": {
+              "$ref": "#/components/schemas/AuditRowOut"
+            },
+            "title": "Audit",
+            "type": "array"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/RunEventOut"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "events",
+          "audit"
+        ],
+        "title": "TraceOut",
         "type": "object"
       },
       "TrendPoint": {
@@ -1357,6 +3419,263 @@
         ],
         "title": "ValidationError",
         "type": "object"
+      },
+      "ValidationReport": {
+        "properties": {
+          "attempt": {
+            "default": 1,
+            "title": "Attempt",
+            "type": "integer"
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/CheckResult"
+            },
+            "title": "Checks",
+            "type": "array"
+          },
+          "passed": {
+            "title": "Passed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "passed",
+          "checks"
+        ],
+        "title": "ValidationReport",
+        "type": "object"
+      },
+      "VerifyOut": {
+        "properties": {
+          "broken_at": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Broken At"
+          },
+          "checked": {
+            "title": "Checked",
+            "type": "integer"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "required": [
+          "ok",
+          "checked",
+          "broken_at",
+          "reason"
+        ],
+        "title": "VerifyOut",
+        "type": "object"
+      },
+      "VersionDetailOut": {
+        "properties": {
+          "approved_at": {
+            "format": "date-time",
+            "title": "Approved At",
+            "type": "string"
+          },
+          "approved_by": {
+            "title": "Approved By",
+            "type": "string"
+          },
+          "brief_id": {
+            "title": "Brief Id",
+            "type": "string"
+          },
+          "document": {
+            "$ref": "#/components/schemas/BriefDocumentOut"
+          },
+          "edit_count": {
+            "title": "Edit Count",
+            "type": "integer"
+          },
+          "edits": {
+            "items": {
+              "$ref": "#/components/schemas/EditOut"
+            },
+            "title": "Edits",
+            "type": "array"
+          },
+          "escalation_acknowledged": {
+            "title": "Escalation Acknowledged",
+            "type": "boolean"
+          },
+          "kpi_count": {
+            "title": "Kpi Count",
+            "type": "integer"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "current",
+              "previous",
+              "rolled_back"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version",
+          "brief_id",
+          "run_id",
+          "title",
+          "period_year",
+          "approved_by",
+          "approved_at",
+          "state",
+          "escalation_acknowledged",
+          "edit_count",
+          "kpi_count",
+          "document",
+          "edits"
+        ],
+        "title": "VersionDetailOut",
+        "type": "object"
+      },
+      "VersionOut": {
+        "properties": {
+          "approved_at": {
+            "format": "date-time",
+            "title": "Approved At",
+            "type": "string"
+          },
+          "approved_by": {
+            "title": "Approved By",
+            "type": "string"
+          },
+          "brief_id": {
+            "title": "Brief Id",
+            "type": "string"
+          },
+          "edit_count": {
+            "title": "Edit Count",
+            "type": "integer"
+          },
+          "escalation_acknowledged": {
+            "title": "Escalation Acknowledged",
+            "type": "boolean"
+          },
+          "kpi_count": {
+            "title": "Kpi Count",
+            "type": "integer"
+          },
+          "period_year": {
+            "title": "Period Year",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "current",
+              "previous",
+              "rolled_back"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version",
+          "brief_id",
+          "run_id",
+          "title",
+          "period_year",
+          "approved_by",
+          "approved_at",
+          "state",
+          "escalation_acknowledged",
+          "edit_count",
+          "kpi_count"
+        ],
+        "title": "VersionOut",
+        "type": "object"
+      },
+      "Violation": {
+        "properties": {
+          "diagnosis": {
+            "title": "Diagnosis",
+            "type": "string"
+          },
+          "fix": {
+            "anyOf": [
+              {
+                "enum": [
+                  "regenerate_options",
+                  "rebuild_figure",
+                  "rebuild_sections",
+                  "reset_status"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fix"
+          },
+          "locator": {
+            "$ref": "#/components/schemas/Locator"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "locator",
+          "message",
+          "diagnosis"
+        ],
+        "title": "Violation",
+        "type": "object"
       }
     }
   },
@@ -1366,6 +3685,166 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/audit": {
+      "get": {
+        "description": "Newest first. Filtering never changes what the chain check covers.",
+        "operationId": "audit_rows_api_audit_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "actor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Actor"
+            }
+          },
+          {
+            "in": "query",
+            "name": "action",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Action"
+            }
+          },
+          {
+            "in": "query",
+            "name": "since",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Since"
+            }
+          },
+          {
+            "in": "query",
+            "name": "until",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Until"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditPageOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Audit Rows",
+        "tags": [
+          "audit"
+        ]
+      }
+    },
+    "/api/audit/verify": {
+      "get": {
+        "operationId": "verify_api_audit_verify_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Verify",
+        "tags": [
+          "audit"
+        ]
+      }
+    },
     "/api/auth/demo-login": {
       "post": {
         "description": "One-click sign-in for the seeded synthetic users, so a demo can switch roles quickly.\n\nExists only when EDSS_DEMO_LOGIN is on AND data mode is synthetic. In real mode it is a 404.",
@@ -1506,6 +3985,299 @@
         "summary": "Me",
         "tags": [
           "auth"
+        ]
+      }
+    },
+    "/api/briefs": {
+      "get": {
+        "operationId": "list_briefs_api_briefs_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status_filter",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/BriefStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status Filter"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BriefSummaryOut"
+                  },
+                  "title": "Response List Briefs Api Briefs Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Briefs",
+        "tags": [
+          "briefs"
+        ]
+      }
+    },
+    "/api/briefs/{brief_id}": {
+      "get": {
+        "operationId": "get_brief_api_briefs__brief_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "brief_id",
+            "required": true,
+            "schema": {
+              "title": "Brief Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BriefOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Brief",
+        "tags": [
+          "briefs"
+        ]
+      }
+    },
+    "/api/briefs/{brief_id}/check-edits": {
+      "post": {
+        "description": "A dry run: would these edits pass validation? Nothing is saved or published.",
+        "operationId": "check_edits_api_briefs__brief_id__check_edits_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "brief_id",
+            "required": true,
+            "schema": {
+              "title": "Brief Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditCheckIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditCheckOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Check Edits",
+        "tags": [
+          "briefs"
+        ]
+      }
+    },
+    "/api/briefs/{brief_id}/decision": {
+      "post": {
+        "description": "Approve, edit, override or send back. The governance service checks the role, and logs a\nrefusal as well as a success, so this route needs only a signed-in person.",
+        "operationId": "decide_api_briefs__brief_id__decision_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "brief_id",
+            "required": true,
+            "schema": {
+              "title": "Brief Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Decide",
+        "tags": [
+          "briefs"
+        ]
+      }
+    },
+    "/api/briefs/{brief_id}/evidence": {
+      "get": {
+        "operationId": "evidence_api_briefs__brief_id__evidence_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "brief_id",
+            "required": true,
+            "schema": {
+              "title": "Brief Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EvidenceRowOut"
+                  },
+                  "title": "Response Evidence Api Briefs  Brief Id  Evidence Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Evidence",
+        "tags": [
+          "briefs"
+        ]
+      }
+    },
+    "/api/briefs/{brief_id}/prior": {
+      "get": {
+        "operationId": "prior_api_briefs__brief_id__prior_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "brief_id",
+            "required": true,
+            "schema": {
+              "title": "Brief Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PriorMatchOut"
+                  },
+                  "title": "Response Prior Api Briefs  Brief Id  Prior Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Prior",
+        "tags": [
+          "briefs"
         ]
       }
     },
@@ -1740,6 +4512,702 @@
         "summary": "Drilldown",
         "tags": [
           "kpis"
+        ]
+      }
+    },
+    "/api/plan-catalogue": {
+      "get": {
+        "operationId": "plan_catalogue_api_plan_catalogue_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanCatalogueOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Plan Catalogue",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/reports/current": {
+      "get": {
+        "operationId": "current_api_reports_current_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentReportOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Current",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/reports/diff": {
+      "get": {
+        "operationId": "diff_api_reports_diff_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "from_version",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "title": "From Version",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to_version",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "title": "To Version",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiffOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Diff",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/reports/rollback": {
+      "post": {
+        "description": "Move the current pointer back. The governance service checks the role and keeps history intact.",
+        "operationId": "rollback_api_reports_rollback_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rollback",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/reports/versions": {
+      "get": {
+        "operationId": "versions_api_reports_versions_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/VersionOut"
+                  },
+                  "title": "Response Versions Api Reports Versions Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Versions",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/reports/versions/{number}": {
+      "get": {
+        "operationId": "version_detail_api_reports_versions__number__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "number",
+            "required": true,
+            "schema": {
+              "title": "Number",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionDetailOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Version Detail",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/runs": {
+      "get": {
+        "operationId": "list_runs_api_runs_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RunOut"
+                  },
+                  "title": "Response List Runs Api Runs Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Runs",
+        "tags": [
+          "runs"
+        ]
+      },
+      "post": {
+        "operationId": "create_run_api_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRunIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}": {
+      "get": {
+        "operationId": "get_run_api_runs__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/answers": {
+      "post": {
+        "operationId": "answer_api_runs__run_id__answers_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswersIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Answer",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/events": {
+      "get": {
+        "description": "Live progress as server-sent events. A reconnect resumes from Last-Event-ID.",
+        "operationId": "stream_events_api_runs__run_id__events_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "After",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Stream Events",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/plan": {
+      "put": {
+        "operationId": "edit_plan_api_runs__run_id__plan_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanPatchIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Edit Plan",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/plan/lock": {
+      "post": {
+        "operationId": "lock_plan_api_runs__run_id__plan_lock_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LockIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Lock Plan",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/plan/revise": {
+      "post": {
+        "operationId": "revise_plan_api_runs__run_id__plan_revise_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviseIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunRevisionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Revise Plan",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/resume": {
+      "post": {
+        "operationId": "resume_api_runs__run_id__resume_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Resume",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/skip-questions": {
+      "post": {
+        "operationId": "skip_questions_api_runs__run_id__skip_questions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Skip Questions",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/trace": {
+      "get": {
+        "operationId": "trace_api_runs__run_id__trace_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraceOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Trace",
+        "tags": [
+          "runs"
         ]
       }
     },
