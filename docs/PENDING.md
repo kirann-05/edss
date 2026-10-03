@@ -26,7 +26,7 @@ Not needed any more: a hosted model key. The local model runs through Ollama.
 
 ## 2. Still ours, not done
 
-These need no one else. They are listed in the order that covers the most labs for the least work.
+These need no one else. They are split into small parts, with the demo first, in [NEXT_STEPS.md](NEXT_STEPS.md). This table is the same work seen by lab.
 
 | Item | Lab | Why it matters | Rough size |
 | --- | --- | --- | --- |

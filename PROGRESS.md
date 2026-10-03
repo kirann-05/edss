@@ -72,7 +72,7 @@ Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 
 State on 2026-10-04: every page works and is tested (955 backend tests, 224 frontend tests, 15 browser tests including an accessibility scan). Everything is committed and pushed to the private repo `kirann-05/edss`.
 
-What is not ours is in **docs/PENDING.md**, section 1. What is still ours, in order, is its section 2: acceptance suite and benchmark, specialists, MCP connector, Postgres, Docker deployment. Take them one at a time and commit after each.
+What is not ours is in **docs/PENDING.md**. What is still ours is split into small parts in **docs/NEXT_STEPS.md**, demo first. Do one part per session, start from those two files, and commit at the end of each part.
 
 Facts for the next session, found by checking and not from memory:
 
