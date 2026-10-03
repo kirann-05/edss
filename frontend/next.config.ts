@@ -6,6 +6,8 @@ import type { NextConfig } from "next";
 const apiOrigin = process.env.EDSS_API_ORIGIN ?? "http://127.0.0.1:8000";
 
 const nextConfig: NextConfig = {
+  // The browser tests build into their own folder, so they never touch a dev server that is running
+  distDir: process.env.EDSS_DIST_DIR ?? ".next",
   async rewrites() {
     return [{ source: "/api/:path*", destination: `${apiOrigin}/api/:path*` }];
   },

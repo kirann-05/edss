@@ -3,11 +3,32 @@
 import * as React from "react"
 import { cn } from "cn"
 
+/**
+ * A table wider than its space scrolls sideways. A region that scrolls must be reachable from the
+ * keyboard (WCAG 2.1.1), so it becomes a tab stop only while it actually overflows, which keeps
+ * tables that fit free of pointless stops.
+ */
 function Table({ className, ...props }: React.ComponentProps<"table">) {
+  const container = React.useRef<HTMLDivElement>(null)
+  const [overflows, setOverflows] = React.useState(false)
+
+  React.useEffect(() => {
+    const element = container.current
+    if (!element) return
+    const measure = () => setOverflows(element.scrollWidth > element.clientWidth + 1)
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(element)
+    if (element.firstElementChild) observer.observe(element.firstElementChild)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div
+      ref={container}
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      className="relative w-full overflow-x-auto focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+      {...(overflows ? { tabIndex: 0, role: "region", "aria-label": "Table, scrolls sideways" } : {})}
     >
       <table
         data-slot="table"

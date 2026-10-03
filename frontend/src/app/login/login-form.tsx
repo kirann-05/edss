@@ -79,7 +79,9 @@ export function LoginForm() {
               <CircleAlert aria-hidden className="mt-0.5 size-5 shrink-0" />
               {failure instanceof ApiError && failure.status === 401
                 ? "Those details do not match an account. Check the email and password and try again."
-                : "Sign in is not available right now. Try again in a moment."}
+                : failure instanceof ApiError && failure.status === 429
+                  ? failure.message // the server says how long to wait
+                  : "Sign in is not available right now. Try again in a moment."}
             </p>
           )}
 

@@ -54,6 +54,7 @@ Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 | vitest, @vitejs/plugin-react, jsdom, @testing-library/react, @testing-library/dom, @testing-library/jest-dom, @testing-library/user-event | Unit and component tests |
 | @playwright/test | The one E2E approval-flow test (docs/ARCHITECTURE.md section 10) |
 | openapi-typescript | Generates API types from the backend OpenAPI contract so schema drift is a compile error (D22) |
+| @axe-core/playwright | Automated accessibility scan (axe-core, WCAG 2.2 AA tags) run by the browser tests over every page and key state. Catches mechanical problems only, so it sits beside the keyboard tests and does not replace a manual pass |
 
 ## Environment (2026-10-03)
 

@@ -4,7 +4,7 @@ Scope: everything that does not need the real dataset, IQAC definitions, the uni
 
 Legend: `[x]` done and verified, `[ ]` not started, `[~]` in progress, `[!]` blocked (reason given). Every item has an acceptance check. Do not tick an item until the check has been run and seen to pass.
 
-Last updated: 2026-10-03, after the pipeline API.
+Last updated: 2026-10-03, after the frontend and the browser tests.
 
 ## How the work is ordered
 
@@ -23,8 +23,8 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 - [x] A2 uv, Python 3.12, pnpm installed. Check: `uv run python --version` shows 3.12
 - [x] A3 OrbStack installed. Check: `brew list --cask orbstack`
 - [x] A4 OrbStack opened once and Docker daemon answering. Check: `docker info` succeeds (server 29.4.0)
-- [ ] A5 Playwright browsers installed for the E2E test. Check: `pnpm exec playwright --version`
-- [ ] A6 Ollama installed (not needed before Day 4, FakeLLM until then, see C3)
+- [x] A5 Browser for the E2E test. Locally the tests drive the Chrome already installed (no download), CI installs Chromium. Check: `make e2e`
+- [x] A6 Ollama 0.35 installed, with `qwen3.5:4b` (3.4 GB) and `nomic-embed-text` (274 MB) pulled (decision C5). Check: `ollama list`
 
 ## B. Repo scaffold
 
@@ -33,7 +33,7 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 - [x] B3 `frontend/` Next.js app, TypeScript, Tailwind, shadcn/ui, TanStack Query, ECharts. Check: `pnpm build` and `pnpm lint` green
 - [x] B4 Frontend proxies `/api/*` to the backend, one origin for cookies and SSE. Check: browser fetch of `/api/health` returns JSON
 - [x] B5 `.env.example` kept in sync, `.env` never committed. Check: `git ls-files | grep -c '^\.env$'` is 0
-- [ ] B6 CI workflow running backend tests, frontend lint, typecheck, unit tests and build. Check: workflow file lints locally with `act` or is run on first push
+- [~] B6 CI workflow running backend tests, frontend lint, typecheck, unit tests and build. Check: workflow file lints locally with `act` or is run on first push (written, pinned to commit SHAs, linted with actionlint and every step run locally, but it sits in docs/ci until the GitHub token has the workflow scope, see PROGRESS.md)
 - [ ] B7 `docker-compose.yml` with `db` (Postgres 16 and pgvector) and health check. Check: `docker compose up -d db` healthy. Needs A4
 
 ## C. Backend core (pure logic, tests written first)
@@ -62,23 +62,23 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 
 ## E. Frontend (against the API above)
 
-- [~] E1 Design tokens, shell, navigation by role, data mode badge, skip link, status badge components. Check: 1280px screenshot reviewed, axe has no serious issues (tokens, shell, role navigation, badges and mode chips are done, the axe check is still to run)
-- [~] E2 Login page with role shown after sign in. Check: Playwright logs in as each seeded role (the page works for every role by hand, the Playwright check is still to write)
+- [x] E1 Design tokens, shell, navigation by role, data mode badge, skip link, status badge components. Check: 1280px screenshot reviewed, axe has no serious issues (every role's navigation is tested, axe is clean on every page, see E15)
+- [x] E2 Login page with role shown after sign in. Check: Playwright logs in as each seeded role (the demo buttons are used by every browser test, the password form, a wrong password, the lockout and sign-out are tested)
 - [x] E3 Dashboard: KPI cards with target, variance chip, status, badges, rounded-miss notice, current report card. Check: T6 KPI shows "75.0" with Missed and "0.04 pts below"
 - [x] E4 Drill-down drawer, deep-linkable: formula, inputs, per-department chart and table, fact list with badges, source refs. Check: click KPI, see domain metric, department, source ref
 - [x] E5 Domain tabs with department comparison charts (bar with target line) and table toggle. Check: stale and missing departments shown explicitly, never as zero
 - [x] E6 Data health page: department by domain matrix, batches, refresh. Check: T1 stale and T2 missing visible (the refresh button waits for the ingestion work in F2)
-- [~] E7 New Run: clarify chat, editable plan, lock, live progress. Check: demo script step 2 and 3 clickable (types, queries, progress model, live event hook, request form and runs list are done and tested, the clarify panel, plan editor, timeline and the run pages are not written)
-- [ ] E8 Review queue and Brief review: options, risks, trade-offs, assumptions, tabs for evidence, validation, data health, prior briefs, bottom action bar. Check: Approve disabled until green or escalated with acknowledgement
-- [ ] E9 Inline option edit with diff against the draft. Check: edit shows changed text, approver sees the diff
-- [ ] E10 Reports: versions, diff, rollback with reason and confirmation, print to PDF view. Check: demo script step 7 and 8
-- [ ] E11 Audit page: filters, chain verification banner, run trace timeline. Check: demo script step 8
-- [ ] E12 Admin page: users and scope grants. Cut line 6 candidate, build last
+- [x] E7 New Run: clarify chat, editable plan, lock, live progress. Check: demo script step 2 and 3 clickable (chat clarifier, editable plan, revise in words, lock with demo faults, live timeline, all driven in the browser and by the approval-flow test)
+- [x] E8 Review queue and Brief review: options, risks, trade-offs, assumptions, tabs for evidence, validation, data health, prior briefs, bottom action bar. Check: Approve disabled until green or escalated with acknowledgement
+- [x] E9 Inline option edit with diff against the draft. Check: edit shows changed text, approver sees the diff
+- [x] E10 Reports: versions, diff, rollback with reason and confirmation, print to PDF view. Check: demo script step 7 and 8
+- [x] E11 Audit page: filters, chain verification banner, run trace timeline. Check: demo script step 8
+- [x] E12 Admin page: users and scope grants (people and roles for the Administrator, data access for the Registrar)
 - [~] E13 Every number in the UI opens its drill-down. Check: grep-style test that no bare figure is rendered outside the number component (KPI cards and chart rows open the drill-down, numbers inside the drawer do not yet)
 - [~] E14 Empty, loading, error and stale states for every panel. Check: Storybook-free checklist walk-through in the browser (loading, error, empty and stale states exist on the dashboard and data health, the rest come with their pages)
-- [ ] E15 Accessibility: keyboard path, visible focus, AA contrast, chart table toggle, no colour-only meaning. Check: axe and manual keyboard pass
+- [x] E15 Accessibility: keyboard path, visible focus, AA contrast, chart table toggle, no colour-only meaning. Check: axe and manual keyboard pass (axe is clean at WCAG 2.2 AA on every page and key state, four keyboard-only tests pass, and the scan found and fixed two real problems. A person with a screen reader has not yet walked it, which axe cannot replace)
 - [x] E16 Unit tests (Vitest) for number formatting that never hides a miss. Check: 74.96 against 75 never renders as equal
-- [ ] E17 One Playwright E2E: Principal logs in, opens draft, approves, sees published version, rolls back. Check: `pnpm e2e` green
+- [x] E17 One Playwright E2E: Principal logs in, opens draft, approves, sees published version, rolls back. Check: `pnpm e2e` green (13 browser tests: approval and rollback, fault injection, HOD scoping, sign-in and lockout, keyboard, axe)
 
 ## F. Needs Docker (do as soon as A4 is done)
 

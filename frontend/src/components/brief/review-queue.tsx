@@ -8,7 +8,7 @@ import { ErrorPanel } from "@/components/error-panel";
 import { BriefStatusBadge } from "@/components/status/status-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { useBriefs } from "@/lib/api/queries";
 import type { BriefSummary } from "@/lib/api/types";
 import { formatAge } from "@/lib/when";
@@ -27,16 +27,25 @@ export function ReviewQueue() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Tabs value={show} onValueChange={(v) => setShow(v as "waiting" | "all")}>
-        <TabsList>
-          <TabsTrigger value="waiting" className="text-base">
-            Waiting for a decision ({waiting.length})
-          </TabsTrigger>
-          <TabsTrigger value="all" className="text-base">
-            All ({briefs.data.length})
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      {/* a filter, not tabs: there is one list, and tabs would promise a separate panel for each */}
+      <div role="group" aria-label="Show" className="flex gap-2">
+        <Button
+          type="button"
+          variant={show === "waiting" ? "default" : "outline"}
+          aria-pressed={show === "waiting"}
+          onClick={() => setShow("waiting")}
+        >
+          Waiting for a decision ({waiting.length})
+        </Button>
+        <Button
+          type="button"
+          variant={show === "all" ? "default" : "outline"}
+          aria-pressed={show === "all"}
+          onClick={() => setShow("all")}
+        >
+          All ({briefs.data.length})
+        </Button>
+      </div>
       {rows.length === 0 ? (
         <p className="rounded-xl border border-dashed p-8 text-center text-base text-muted-foreground">
           {show === "waiting"

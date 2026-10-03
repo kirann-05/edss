@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web lint typecheck check types seed acceptance demo
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed acceptance demo
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -6,6 +6,8 @@ help:
 	@echo "make lint       ruff and eslint"
 	@echo "make typecheck  tsc"
 	@echo "make check      lint, typecheck, tests (run before every commit)"
+	@echo "make e2e        browser tests: approval flow, faults, scoping, sign-in, keyboard, axe"
+	@echo "make check-all  check, then e2e"
 	@echo "make types      export the OpenAPI contract and regenerate frontend types"
 
 dev:
@@ -25,6 +27,10 @@ test-api:
 test-web:
 	cd frontend && pnpm test
 
+# starts its own backend and web server on spare ports, with a fresh in-memory state
+e2e:
+	cd frontend && pnpm e2e
+
 lint:
 	cd backend && uv run ruff check . && uv run ruff format --check .
 	cd frontend && pnpm lint
@@ -33,6 +39,8 @@ typecheck:
 	cd frontend && pnpm typecheck
 
 check: lint typecheck test
+
+check-all: check e2e
 
 types:
 	cd backend && uv run python ../scripts/export_openapi.py
