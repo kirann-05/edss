@@ -4,7 +4,7 @@ Scope: everything that does not need the real dataset, IQAC definitions, the uni
 
 Legend: `[x]` done and verified, `[ ]` not started, `[~]` in progress, `[!]` blocked (reason given). Every item has an acceptance check. Do not tick an item until the check has been run and seen to pass.
 
-Last updated: 2026-10-03.
+Last updated: 2026-10-03, after the pipeline API.
 
 ## How the work is ordered
 
@@ -32,33 +32,33 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 - [x] B2 `backend/` uv project, FastAPI app with `/api/health`, pytest and ruff configured. Check: `make test` green
 - [x] B3 `frontend/` Next.js app, TypeScript, Tailwind, shadcn/ui, TanStack Query, ECharts. Check: `pnpm build` and `pnpm lint` green
 - [x] B4 Frontend proxies `/api/*` to the backend, one origin for cookies and SSE. Check: browser fetch of `/api/health` returns JSON
-- [ ] B5 `.env.example` kept in sync, `.env` never committed. Check: `git ls-files | grep -c '^\.env$'` is 0
+- [x] B5 `.env.example` kept in sync, `.env` never committed. Check: `git ls-files | grep -c '^\.env$'` is 0
 - [ ] B6 CI workflow running backend tests, frontend lint, typecheck, unit tests and build. Check: workflow file lints locally with `act` or is run on first push
 - [ ] B7 `docker-compose.yml` with `db` (Postgres 16 and pgvector) and health check. Check: `docker compose up -d db` healthy. Needs A4
 
 ## C. Backend core (pure logic, tests written first)
 
-- [~] C1 Domain schemas (Pydantic v2): DomainView, KpiResult, Option, Brief, ValidationReport, Plan, RunState. Check: schema tests, OpenAPI exports cleanly (KpiResult, DepartmentValue and the API models exist, Brief, Plan and RunState come with slices 2 and 3)
+- [x] C1 Domain schemas (Pydantic v2): DomainView, KpiResult, Option, Brief, ValidationReport, Plan, RunState. Check: schema tests, OpenAPI exports cleanly (`make types` regenerates the whole contract)
 - [x] C2 Synthetic generator, seed 42, 8 departments, 3 years, traps T1 to T10. Check: one test per trap asserts the planted value and the expected handling
-- [~] C3 FakeLLM and provider factory with data_mode guard (also checks the base URL host, decision D17). Check: real mode plus hosted provider refuses at start and at call time (the rule 7 tracing guard is done, the LLM factory and data_mode guard are not)
+- [x] C3 FakeLLM and provider factory with data_mode guard (also checks the base URL host, decision D17). Check: real mode plus hosted provider refuses at start and at call time (`tests/agents/test_llm.py`, including a model built in synthetic mode that stops when the mode flips, and the rule 7 tracing guard)
 - [x] C4 KPI engine: restricted AST evaluator, Decimal arithmetic, weighted aggregation, variance, unrounded status, undefined on zero denominator (decisions D14 to D16). Check: tests green including T6, T7, T9, every result lists its input fact ids
-- [ ] C5 Reference tokens `{{kpi:KEY}}` and `{{fact:ID}}`, renderer, digit and number-word lint (decision D21). Check: stray digit and spelled-out number both rejected
-- [ ] C6 Validation checks V1 to V9 as pure functions with locators. Check: each check has a passing and a failing fixture
-- [ ] C7 Fault injection helpers (8 faults from ARCHITECTURE section 10). Check: every injected fault is detected by the intended check
-- [ ] C8 Hash-chained audit log logic with verifier (decision D18 for the single writer). Check: tampering with any row breaks verification at that row
+- [x] C5 Reference tokens `{{kpi:KEY}}` and `{{fact:ID}}`, renderer, digit and number-word lint (decision D21). Check: stray digit and spelled-out number both rejected
+- [x] C6 Validation checks V1 to V9 as pure functions with locators. Check: each check has a passing and a failing fixture
+- [x] C7 Fault injection helpers (8 faults from ARCHITECTURE section 10). Check: every injected fault is detected by the intended check
+- [x] C8 Hash-chained audit log logic with verifier (decision D18 for the single writer). Check: tampering with any row breaks verification at that row
 - [x] C9 RBAC matrix and HOD and Dean scoping functions. Check: table-driven tests for every role and action (RBAC matrix and department scope, tested against SPEC section 2)
-- [ ] C10 Clarify and plan skills on FakeLLM, case-agnostic. Check: vague request gives at least 2 questions, same skill handles two different requests, plan lock is immutable
-- [ ] C11 Brief composer and options drafting through FakeLLM with structured output and repair retry. Check: every off-target KPI gets 2 or 3 options with assumptions, risks, trade-offs
-- [ ] C12 Governance logic: approve, edit, override, publish, versions, current pointer, rollback. Check: publish v1 and v2, roll back to v1, audit rows written, unauthorised role refused
+- [x] C10 Clarify and plan skills on FakeLLM, case-agnostic. Check: vague request gives at least 2 questions, same skill handles two different requests, plan lock is immutable
+- [x] C11 Brief composer and options drafting through FakeLLM with structured output and repair retry. Check: every off-target KPI gets 2 or 3 options with assumptions, risks, trade-offs
+- [x] C12 Governance logic: approve, edit, override, publish, versions, current pointer, rollback. Check: publish v1 and v2, roll back to v1, audit rows written, unauthorised role refused
 
 ## D. API layer
 
 - [x] D1 Cookie session auth, roles, demo login for synthetic mode only (guarded). Check: demo login refused when data_mode is real
-- [~] D2 Routers per docs/ARCHITECTURE.md: runs, kpis, briefs, drilldown, audit, health, auth, admin. Check: OpenAPI lists every route (auth, system, kpis, domains and data health so far)
+- [~] D2 Routers per docs/ARCHITECTURE.md: runs, kpis, briefs, drilldown, audit, health, auth, admin. Check: OpenAPI lists every route (auth, system, kpis, domains, data health, runs, briefs, reports, audit and the plan catalogue are in, the admin router is not)
 - [x] D3 Authorisation test for every route, including HOD scoping. Check: HOD cannot read another department's detail by any route (the route-table walk covers routes added later automatically)
-- [ ] D4 SSE run progress with node timings and retry attempt. Check: event stream test, browser shows live rows
+- [~] D4 SSE run progress with node timings and retry attempt. Check: event stream test, browser shows live rows (stream, Last-Event-ID resume and attempt events are tested, the browser rows come with the New Run page)
 - [x] D5 OpenAPI to TypeScript types generation so the UI contract cannot drift. Check: `make types` then `pnpm typecheck` green (also covers the plain-language input names)
-- [~] D6 In-memory services behind the same interfaces the Postgres versions will implement. Check: swap is a one-file change per service (data store and users are in memory behind the final interfaces, runs, briefs and audit come next)
+- [~] D6 In-memory services behind the same interfaces the Postgres versions will implement. Check: swap is a one-file change per service (data store, users, runs, briefs, audit and the prior-brief archive are in memory behind the interfaces the Postgres versions will implement)
 
 ## E. Frontend (against the API above)
 
@@ -91,9 +91,9 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 
 ## G. Needs a docs-first spike (APIs move fast)
 
-- [ ] G1 LangGraph: Send fan-out, interrupt and resume, Postgres checkpointer, bounded back-edge. Read current docs, pin versions, small spike before use
+- [~] G1 LangGraph: Send fan-out, interrupt and resume, Postgres checkpointer, bounded back-edge. Read current docs, pin versions, small spike before use (fan-out, interrupt and resume, the bounded back-edge and crash recovery pass on the in-memory checkpointer, the Postgres checkpointer waits for F)
 - [ ] G2 MCP server with scoped tokens consumed through langchain-mcp-adapters, auth header per call. Same rule
-- [ ] G3 Test that fails the build if an agent module imports a database or file reader
+- [x] G3 Test that fails the build if an agent module imports a database or file reader
 - [ ] G4 Parallel versus sequential benchmark with simulated source latency, labelled as such (decision D19)
 
 ## H. Blocked on other people (not ours, never block the build)
@@ -108,7 +108,7 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 
 ## I. Documentation we keep current as we go
 
-- [ ] I1 `docs/VIVA_NOTES.md` row for every component when built (what, why, rejected alternative, known weakness)
-- [ ] I2 `PROGRESS.md` updated at the end of every session, new dependencies listed with a reason
+- [~] I1 `docs/VIVA_NOTES.md` row for every component when built (what, why, rejected alternative, known weakness) (rows are filled for everything built so far, the pipeline pages are still to add)
+- [~] I2 `PROGRESS.md` updated at the end of every session, new dependencies listed with a reason
 - [ ] I3 `Makefile` commands section in CLAUDE.md filled in once the targets exist
 - [ ] I4 Runbook for the university IT cell (Day 19, needs F and the compose profile)

@@ -112,15 +112,15 @@ Default A. Stale data is the exception: it is used and flagged, because old data
 
 | ID | Status |
 | --- | --- |
-| D13 escalated drafts cannot be approved past an integrity failure | Not built, comes with the gate in slice 3 |
+| D13 escalated drafts cannot be approved past an integrity failure | In code, `INTEGRITY_CHECKS` in `governance/service.py`, tested through the API. Rule 10 in CLAUDE.md is not reworded yet, that waits for Kiran's yes |
 | D14 `period_agg` per metric | In code, `kpi/catalogue.py` |
 | D15 at-risk band | In code, `judge()` in `kpi/engine.py`, 2 percent default per definition |
 | D16 formula grammar | In code, `kpi/formulas.py`. AC_PO uses a simple mean, flagged placeholder |
-| D17 host check on the LLM base URL | Not built, comes with the LLM factory |
-| D18 single writer for the audit chain | Not built, comes with the audit work in slice 4 |
-| D19 honest parallel benchmark | Not built |
-| D20 seeded prior briefs | Not built |
-| D21 number-word lint and structured direction | Not built, comes with check V1 in slice 3 |
+| D17 host check on the LLM base URL | In code, `is_local_host` and `get_chat_model` in `agents/llm.py`, checked at construction and on every call |
+| D18 single writer for the audit chain | In code as a process lock, verified under 8 concurrent threads. The Postgres advisory lock arrives with F3 |
+| D19 honest parallel benchmark | Not built. A test already asserts parallel beats sequential with simulated latency, the script that prints both timings is still to write |
+| D20 seeded prior briefs | In code, `services/archive.py`, similarity by token overlap in memory. pgvector arrives with F5 |
+| D21 number-word lint and structured direction | In code, `agents/tokens.py` flags digits and spelled-out numbers, and status and direction reach the text as tokens. The prose-truth gap stays a known weakness |
 
 ## Open questions for Kiran to answer or chase
 
