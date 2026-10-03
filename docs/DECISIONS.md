@@ -80,6 +80,18 @@ Each of these is a gap or contradiction found in the pack. The proposed default 
 | D20 | Lab 4 retrieves similar past briefs, but the synthetic data has none | The synthetic generator also seeds 3 to 5 prior approved briefs with the decisions leadership took |
 | D21 | V1's digit lint misses spelled-out numbers, and no check confirms prose direction ("improved" when the KPI fell). V4's keyword check is brittle | Extend V1 to number words. The LLM receives status and direction as structured fields and refers to them by token. Record the remaining prose-truth gap as a known weakness in VIVA_NOTES |
 
+## Provisional build approach (2026-10-03, Kiran to confirm)
+
+### D22: Where the UI gets its data before Postgres and the graph exist
+
+| Option | Upside | Cost |
+| --- | --- | --- |
+| A. Real FastAPI over in-memory services, fed by the synthetic generator and the real KPI engine. Types generated from its OpenAPI | One implementation. Auth, RBAC, SSE and schemas are the real ones from day 1. No throwaway mock layer. Contract drift is a compile error | The backend slice has to exist before the matching page can show real data. In-memory services are replaced later, one file each |
+| B. Mock route handlers inside Next.js, hand-typed fixtures | UI can start in minutes with no backend at all | Throwaway code. Fixtures can disagree with the engine. Contract drift is found late. Auth, SSE and RBAC get built twice |
+| C. MSW in the browser | No server needed, works offline | Same drift problem as B, plus one more dependency |
+
+Provisional default: A, delivered as vertical slices so a page is usable as soon as its slice is done. Cost of changing later: low, the UI only talks to `/api/*` and does not know which backend answers.
+
 ## Open questions for Kiran to answer or chase
 
 1. Which departments are in the pilot, and does IQAC already have approved KPI definitions and targets? Is NIRF or NAAC the priority?

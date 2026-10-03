@@ -27,7 +27,33 @@ C1 to C4 in docs/DECISIONS.md (repo path, OrbStack, FakeLLM until Day 4, lab gra
 
 ## Dependencies added (with reason)
 
-None yet.
+Backend (`backend/pyproject.toml`, pinned by `uv.lock`)
+
+| Package | Why |
+| --- | --- |
+| fastapi, uvicorn | The API server (docs/ARCHITECTURE.md) |
+| pydantic-settings | Typed, validated environment config. Secrets have no defaults |
+| pytest | Test runner |
+| httpx2 | Starlette's test client dependency. Starlette 1.7 deprecates plain httpx for it |
+| ruff | Lint and format in one tool |
+
+Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
+
+| Package | Why |
+| --- | --- |
+| next, react, react-dom | App framework from the stack in CLAUDE.md |
+| shadcn, radix-ui, class-variance-authority, lucide-react, tw-animate-css | shadcn/ui components, accessible primitives and icons. Components are copied into `src/components/ui`, so we own them |
+| cn | shadcn's own class-name merge helper (replaces clsx plus tailwind-merge). Repository is under the shadcn-ui organisation |
+| @tanstack/react-query | Server state, caching and refetch for every page |
+| echarts | Charts, as chosen in docs/UI_SPEC.md |
+| @fontsource-variable/inter | Self-hosted font, so the demo works with no network |
+| vitest, @vitejs/plugin-react, jsdom, @testing-library/react, @testing-library/dom, @testing-library/jest-dom, @testing-library/user-event | Unit and component tests |
+| @playwright/test | The one E2E approval-flow test (docs/ARCHITECTURE.md section 10) |
+| openapi-typescript | Generates API types from the backend OpenAPI contract so schema drift is a compile error (D22) |
+
+## Environment (updated 2026-10-03)
+
+Xcode license accepted. uv 0.12, Python 3.12.15, pnpm 12.8, OrbStack with Docker 29.4 all installed and working. Ollama still not installed, deliberately (FakeLLM until Day 4, decision C3). Node is v26.6 and Next.js 16.3 builds and runs on it.
 
 ## Environment (Day 0, 2026-10-03)
 

@@ -1,0 +1,176 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Dark mode is not supported yet (docs/UI_SPEC.md: only if time remains). The variant
+   stays so shadcn's dark: classes are inert unless a .dark class is ever applied. */
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Status roles. mark = shapes and icons beside a label, ink = text on its tint.
+     Marks alone are sub-3:1 for warning and serious on light surfaces by design, so a
+     status is always icon + label, never colour alone. */
+  --color-good-mark: var(--good-mark);
+  --color-good-ink: var(--good-ink);
+  --color-good-tint: var(--good-tint);
+  --color-warning-mark: var(--warning-mark);
+  --color-warning-ink: var(--warning-ink);
+  --color-warning-tint: var(--warning-tint);
+  --color-serious-mark: var(--serious-mark);
+  --color-serious-ink: var(--serious-ink);
+  --color-serious-tint: var(--serious-tint);
+  --color-critical-mark: var(--critical-mark);
+  --color-critical-ink: var(--critical-ink);
+  --color-critical-tint: var(--critical-tint);
+  --color-neutral-mark: var(--neutral-mark);
+  --color-neutral-ink: var(--neutral-ink);
+  --color-neutral-tint: var(--neutral-tint);
+
+  --color-grid: var(--grid);
+  --color-axis: var(--axis);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  /* Surfaces and ink: warm neutrals from the dataviz reference palette */
+  --background: #f9f9f7;
+  --foreground: #0b0b0b;
+  --card: #fcfcfb;
+  --card-foreground: #0b0b0b;
+  --popover: #fcfcfb;
+  --popover-foreground: #0b0b0b;
+
+  /* One accent. Blue 500 carries 5.4:1 against white text and 5.3:1 on the surface */
+  --primary: #256abf;
+  --primary-foreground: #ffffff;
+  --secondary: #efeee9;
+  --secondary-foreground: #0b0b0b;
+  --muted: #efeee9;
+  --muted-foreground: #5f5e5a; /* 6.3:1 on card, AA for body text */
+  --accent: #efeee9;
+  --accent-foreground: #0b0b0b;
+  --destructive: #a32525;
+  --border: rgb(11 11 11 / 12%);
+  --input: #898781; /* 3.5:1, input boundaries must be visible (WCAG 1.4.11) */
+  --ring: #2a78d6;
+
+  /* Categorical slots 1 to 5 from the validated reference order */
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+
+  --radius: 0.5rem;
+
+  --sidebar: #f2f1ed;
+  --sidebar-foreground: #0b0b0b;
+  --sidebar-primary: #256abf;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e7e5de;
+  --sidebar-accent-foreground: #0b0b0b;
+  --sidebar-border: rgb(11 11 11 / 12%);
+  --sidebar-ring: #2a78d6;
+
+  /* Status roles (fixed marks from the reference palette, text-safe inks on tints) */
+  --good-mark: #0ca30c;
+  --good-ink: #006300;
+  --good-tint: #e8f6e8;
+  --warning-mark: #fab219;
+  --warning-ink: #7a4f00;
+  --warning-tint: #fff5d9;
+  --serious-mark: #ec835a;
+  --serious-ink: #8f3a14;
+  --serious-tint: #fdece5;
+  --critical-mark: #d03b3b;
+  --critical-ink: #a32525;
+  --critical-tint: #fbe9e9;
+  --neutral-mark: #898781;
+  --neutral-ink: #52514e;
+  --neutral-tint: #efeee9;
+
+  /* Chart chrome: hairline, solid, recessive */
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss03";
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Columns of numbers must align vertically. Hero figures stay proportional. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

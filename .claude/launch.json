@@ -1,0 +1,31 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "api",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": [
+        "run",
+        "--project",
+        "backend",
+        "uvicorn",
+        "app.main:create_app",
+        "--factory",
+        "--reload",
+        "--reload-dir",
+        "backend/app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000"
+      ],
+      "port": 8000
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--dir", "frontend", "dev"],
+      "port": 3000
+    }
+  ]
+}
