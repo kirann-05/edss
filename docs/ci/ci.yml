@@ -1,0 +1,74 @@
+# To switch this on: gh auth refresh -h github.com -s workflow (approve in the browser), then
+#   git mv docs/ci/ci.yml .github/workflows/ci.yml && git commit -m 'ci: enable' && git push
+# It sits in docs/ci until then because GitHub refuses a push that adds a workflow when the
+# token has no workflow scope. Actions are pinned to commit SHAs, the version is in the comment.
+#
+# Every push and pull request: the same checks as `make check`, plus a contract check that fails
+# when the API schema and the frontend's generated types disagree. Synthetic data only, no
+# secrets: the backend runs on its built-in synthetic defaults.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          working-directory: backend
+          python-version: "3.12"
+      - name: Install
+        run: uv sync --frozen
+      - name: Lint
+        run: uv run ruff check . && uv run ruff format --check .
+      - name: Test
+        run: uv run pytest -q
+      - name: API contract matches the committed schema
+        run: |
+          uv run python ../scripts/export_openapi.py
+          git diff --exit-code -- openapi.json
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: frontend/package.json
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 26
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Types generated from the committed API schema
+        run: |
+          pnpm types
+          git diff --exit-code -- src/lib/api/schema.d.ts
+      - name: Lint
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Test
+        run: pnpm test
+      - name: Build
+        run: pnpm build
