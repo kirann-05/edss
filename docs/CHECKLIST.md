@@ -54,9 +54,9 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 ## D. API layer
 
 - [x] D1 Cookie session auth, roles, demo login for synthetic mode only (guarded). Check: demo login refused when data_mode is real
-- [~] D2 Routers per docs/ARCHITECTURE.md: runs, kpis, briefs, drilldown, audit, health, auth, admin. Check: OpenAPI lists every route (auth, system, kpis, domains, data health, runs, briefs, reports, audit and the plan catalogue are in, the admin router is not)
+- [x] D2 Routers per docs/ARCHITECTURE.md: runs, kpis, briefs, drilldown, audit, health, auth, admin. Check: OpenAPI lists every route (every router is in, including admin and data refresh)
 - [x] D3 Authorisation test for every route, including HOD scoping. Check: HOD cannot read another department's detail by any route (the route-table walk covers routes added later automatically)
-- [~] D4 SSE run progress with node timings and retry attempt. Check: event stream test, browser shows live rows (stream, Last-Event-ID resume and attempt events are tested, the browser rows come with the New Run page)
+- [x] D4 SSE run progress with node timings and retry attempt. Check: event stream test, browser shows live rows (stream, Last-Event-ID resume and attempt events are tested, the browser rows come with the New Run page)
 - [x] D5 OpenAPI to TypeScript types generation so the UI contract cannot drift. Check: `make types` then `pnpm typecheck` green (also covers the plain-language input names)
 - [~] D6 In-memory services behind the same interfaces the Postgres versions will implement. Check: swap is a one-file change per service (data store, users, runs, briefs, audit and the prior-brief archive are in memory behind the interfaces the Postgres versions will implement)
 
@@ -83,7 +83,7 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 ## F. Needs Docker (do as soon as A4 is done)
 
 - [ ] F1 SQLAlchemy models and Alembic baseline for every table in DATA_CONTRACT. Check: `alembic upgrade head` on empty DB
-- [ ] F2 Loader from generator output into Postgres, row counts asserted, traps queryable. Check: `make seed`
+- [~] F2 Loader from generator output into Postgres, row counts asserted, traps queryable. Check: `make seed` (adapters, validator, ledger and the seed check are done and tested against files and a SQL source, loading into Postgres waits for F1)
 - [ ] F3 Postgres implementations of the services from D6. Check: same API tests pass against Postgres
 - [ ] F4 App DB role with no UPDATE or DELETE on `audit_log`. Check: an UPDATE from the app role fails
 - [ ] F5 pgvector retrieval of similar past briefs with seeded history (decision D20). Check: similar and tag-matched items returned
@@ -112,3 +112,13 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 - [~] I2 `PROGRESS.md` updated at the end of every session, new dependencies listed with a reason
 - [ ] I3 `Makefile` commands section in CLAUDE.md filled in once the targets exist
 - [ ] I4 Runbook for the university IT cell (Day 19, needs F and the compose profile)
+
+## J. Added during the build
+
+- [x] J1 Real local model through Ollama: OpenAI-compatible client with schema-constrained output and thinking off, prompts as data with worked examples, a code-side check before the gate, a different seed on each repair. Check: `scripts/evaluate_llm.py`, results in `docs/evals`
+- [x] J2 Ingestion layer: CSV and read-only SQL adapters, validator with plain reasons, ledger with batches and no-op re-ingest, manifest, reconciliation report. Check: the CSV and SQL sources give KPIs identical to the original in every period
+- [x] J3 Data refresh (FR-16) that adds to the same ledger so an approved brief's evidence ids never change. Check: `tests/api/test_refresh_api.py`
+- [x] J4 Login lockout, audited sign-ins and sign-outs, sessions ended on password reset or switch-off
+- [x] J5 Admin: people and roles for the Administrator, data access grants for the Registrar
+- [x] J6 Browser tests: approval and rollback, fault injection, HOD scoping, sign-in, keyboard, refresh, accessibility scan. Check: `make e2e`
+- [x] J7 `make seed` writes the sample to `data/sample`, reads it back through the real path, asserts counts and all ten traps

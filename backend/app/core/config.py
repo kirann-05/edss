@@ -28,6 +28,14 @@ class Settings(BaseSettings):
     llm_base_url: str = "http://localhost:11434/v1"
     llm_model: str = ""
     llm_embed_model: str = ""
+    llm_api_key: SecretStr | None = None  # only for a server that wants one, never for Ollama
+    llm_timeout_seconds: float = 120.0
+    llm_temperature: float = 0.2
+    llm_seed: int | None = 7  # the same prompt gives the same answer, which makes a run debuggable
+    llm_max_tokens: int = 1500
+    # "none" switches thinking off. Thinking models can spend the whole budget reasoning and
+    # return no answer. Leave empty for a server or model that does not take the field.
+    llm_reasoning_effort: str = "none"
     allow_hosted_llm: bool = False
     # Comma separated university server names that count as local for real data (decision D17)
     llm_local_hosts: str = ""
@@ -51,6 +59,10 @@ class Settings(BaseSettings):
     # failed sign-ins for one email inside the window before that email is locked for a while
     login_max_failures: int = 5
     login_lockout_minutes: int = 15
+
+    # A folder of exports with a manifest.yml (docs/DATA_CONTRACT.md). When set, the app reads its
+    # data from there instead of generating the synthetic set, and "Refresh data" reads it again.
+    ingest_dir: str = ""
 
     # pipeline behaviour
     max_attempts: int = 3

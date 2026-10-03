@@ -378,6 +378,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/data/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Refresh
+         * @description Read the sources again (FR-16). The data in use is replaced only when the whole read worked.
+         */
+        post: operations["refresh_api_data_refresh_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/domains/{domain}": {
         parameters: {
             query?: never;
@@ -1755,6 +1775,40 @@ export interface components {
             /** Why */
             why: string;
         };
+        /** RefreshOut */
+        RefreshOut: {
+            /** Accepted */
+            accepted: number;
+            /** Current Period */
+            current_period: string;
+            /** Folder */
+            folder: string | null;
+            /** Periods */
+            periods: string[];
+            /**
+             * Refreshed At
+             * Format: date-time
+             */
+            refreshed_at: string;
+            /** Rejected */
+            rejected: number;
+            /** Rejects */
+            rejects: components["schemas"]["RejectOut"][];
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "folder" | "synthetic";
+            /** Unchanged Files */
+            unchanged_files: number;
+        };
+        /** RejectOut */
+        RejectOut: {
+            /** Where */
+            where: string;
+            /** Why */
+            why: string[];
+        };
         /** ReviseIn */
         ReviseIn: {
             /** Feedback */
@@ -1950,8 +2004,14 @@ export interface components {
             data_mode: "synthetic" | "real";
             /** Llm Is Fake */
             llm_is_fake: boolean;
+            /** Llm Is Local */
+            llm_is_local: boolean;
+            /** Llm Name */
+            llm_name: string;
             /** Llm Provider */
             llm_provider: string;
+            /** Llm Reachable */
+            llm_reachable: boolean | null;
             /** Periods */
             periods: string[];
             /** Simulated Source Latency Ms */
@@ -2781,6 +2841,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    refresh_api_data_refresh_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RefreshOut"];
                 };
             };
         };

@@ -33,7 +33,7 @@ REF = date(2026, 10, 1)
 class StubbornModel(FakeLLM):
     """A model that writes a figure by hand on every attempt, however many times it is told not to."""
 
-    def complete(self, task, payload):
+    def complete(self, task, payload, schema=None):
         return super().complete(task, {**payload, "attempt": 1, "inject": ["fake_number"]})
 
 

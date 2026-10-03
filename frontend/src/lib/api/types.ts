@@ -72,6 +72,9 @@ export type CreateUser = S["CreateUserIn"];
 export type UpdateUser = S["UpdateUserIn"];
 export type ScopeGrant = S["ScopeGrantOut"];
 
+// data refresh
+export type RefreshResult = S["RefreshOut"];
+
 // audit
 export type AuditRow = S["AuditRowOut"];
 export type AuditPage = S["AuditPageOut"];

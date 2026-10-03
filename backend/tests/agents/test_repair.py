@@ -90,7 +90,7 @@ def test_repair_passes_the_diagnosis_to_the_model_so_it_can_correct_itself(clean
     seen = []
 
     class Listening(FakeLLM):
-        def complete(self, task, payload):
+        def complete(self, task, payload, schema=None):
             seen.append(payload)
             return super().complete(task, payload)
 
@@ -110,7 +110,7 @@ def test_repair_passes_the_diagnosis_to_the_model_so_it_can_correct_itself(clean
 class _StubbornlyWrong(FakeLLM):
     """A model that keeps writing a number by hand, however many times it is told not to."""
 
-    def complete(self, task, payload):
+    def complete(self, task, payload, schema=None):
         out = super().complete(task, {**payload, "attempt": 1, "inject": ["fake_number"]})
         return out
 

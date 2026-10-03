@@ -1,0 +1,2 @@
+dept_code,metric_key,period_year,period_sub,value,status,as_of,numerator,denominator,unit,source_ref
+CSE,acad.students_appeared,2025-26,S1,4600,final,2026-09-09,,,students,your own row reference

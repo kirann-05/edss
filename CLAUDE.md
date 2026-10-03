@@ -67,4 +67,10 @@ Kiran develops on an Apple Silicon MacBook Air (no NVIDIA GPU). Check before ass
 
 ## Commands
 
-Fill this in as the Makefile appears (`make dev`, `make seed`, `make test`, `make acceptance`, `make demo`).
+- `make dev` runs the API (8000) and the web app (3000) together
+- `make check` lint, typecheck and unit tests, run before every commit. `make e2e` the browser tests, `make check-all` both
+- `make types` exports the API contract and regenerates the frontend types. Run it after any change to `backend/app/api/schemas.py`
+- `make seed` writes the synthetic sample to `data/sample`, reads it back through the real ingestion path and checks every planted trap
+- `make ingest DIR=data/real/<folder>` checks a folder of exports and prints the reconciliation report
+- `uv run python ../scripts/evaluate_llm.py` (from `backend`) measures a model, results go to `docs/evals`
+- Not built yet and they fail loudly: `make acceptance`, `make demo`. What is not ours to finish is in `docs/PENDING.md`

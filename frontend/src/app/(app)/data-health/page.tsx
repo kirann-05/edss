@@ -7,13 +7,14 @@ import { Suspense, useEffect } from "react";
 import { landingFor } from "@/components/app-shell/nav";
 import { ErrorPanel } from "@/components/error-panel";
 import { HealthCellView, HealthLegend } from "@/components/health/health-cell";
+import { RefreshButton, RefreshOutcome } from "@/components/health/refresh-button";
 import { PageHeader } from "@/components/page-header";
 import { PeriodSelect } from "@/components/period-select";
 import { HealthBadge } from "@/components/status/status-badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useDataHealth, useMe } from "@/lib/api/queries";
+import { useDataHealth, useMe, useRefreshData } from "@/lib/api/queries";
 import { DOMAIN_LABEL, type HealthState } from "@/lib/api/types";
 import { usePeriod } from "@/lib/use-period";
 
@@ -39,6 +40,8 @@ function DataHealth() {
   }, [me.data, mayView, landing, router]);
 
   const health = useDataHealth(period, mayView);
+  const refresh = useRefreshData();
+  const mayRefresh = me.data?.permissions.includes("refresh_data") ?? false;
 
   if (me.data && !mayView) return null;
   if (health.isPending) return <Skeleton className="h-96 w-full" aria-busy="true" />;
@@ -63,8 +66,15 @@ function DataHealth() {
             ? `How fresh each department's data is for ${data.period_year}, judged against ${data.stale_after_days} days.`
             : `${data.period_year} is a closed year, so freshness no longer applies. Gaps are still shown.`
         }
-        actions={<PeriodSelect />}
+        actions={
+          <>
+            {mayRefresh && <RefreshButton refresh={refresh} />}
+            <PeriodSelect />
+          </>
+        }
       />
+
+      {mayRefresh && <RefreshOutcome refresh={refresh} />}
 
       <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label="Cells by state">
         {STATES.map((state) => (

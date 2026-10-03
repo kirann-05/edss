@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed acceptance demo
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -9,6 +9,8 @@ help:
 	@echo "make e2e        browser tests: approval flow, faults, scoping, sign-in, keyboard, axe"
 	@echo "make check-all  check, then e2e"
 	@echo "make types      export the OpenAPI contract and regenerate frontend types"
+	@echo "make seed       write the synthetic sample to data/sample, read it back, check every planted trap"
+	@echo "make ingest DIR=data/real/2026-10   check a folder of exports and print the reconciliation report"
 
 dev:
 	$(MAKE) -j2 api web
@@ -46,10 +48,14 @@ types:
 	cd backend && uv run python ../scripts/export_openapi.py
 	cd frontend && pnpm types
 
-# Not built yet. They fail loudly instead of pretending to succeed.
 seed:
-	@echo "make seed is not implemented yet (CHECKLIST C2 and F2)" && exit 1
+	cd backend && uv run python ../scripts/seed.py
 
+ingest:
+	@test -n "$(DIR)" || (echo "usage: make ingest DIR=data/real/2026-10" && exit 2)
+	cd backend && uv run python ../scripts/ingest.py ../$(DIR) --mode $${MODE:-real}
+
+# Not built yet. They fail loudly instead of pretending to succeed.
 acceptance:
 	@echo "make acceptance is not implemented yet (CHECKLIST C6 and C7)" && exit 1
 

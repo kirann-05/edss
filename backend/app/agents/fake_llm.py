@@ -36,14 +36,23 @@ class FakeLLM:
         self.role = role
         self.name = f"fake-{role}"
 
-    def complete(self, task: str, payload: dict[str, Any]) -> dict[str, Any]:
+    def complete(self, task: str, payload: dict[str, Any], schema: Any = None) -> dict[str, Any]:
         try:
             handler = _HANDLERS[task]
         except KeyError:
             raise KeyError(f"FakeLLM has no handler for task {task!r}") from None
         return handler(payload)
 
-    def generate(self, task: str, payload: dict[str, Any], schema: Any, max_repairs: int = 2):
+    def generate(
+        self,
+        task: str,
+        payload: dict[str, Any],
+        schema: Any,
+        max_repairs: int = 2,
+        check: Any = None,
+    ):
+        """`check` is ignored on purpose. The FakeLLM can misbehave deliberately (failure
+        injection), and the validation gate, not a cheap pre-check, is what must catch that."""
         from app.agents.llm import structured_call
 
         return structured_call(self, task, payload, schema, max_repairs)

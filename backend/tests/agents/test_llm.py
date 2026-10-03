@@ -99,12 +99,26 @@ class TestCallTimeGuard:
             model.generate("clarify", {"request": "x"}, _Echo)
 
     def test_the_guard_reads_the_store_on_every_call(self):
+        class Client:  # stands in for the network, so a unit test can never reach a real server
+            calls = 0
+
+            def chat_json(self, messages, schema, name, seed_offset=0):
+                from app.agents.llm_http import ChatResult, Usage
+
+                Client.calls += 1
+                return ChatResult('{"answer": "ok"}', Usage())
+
         config = SystemConfig("synthetic")
-        model = get_chat_model("drafter", settings(provider="hosted", allow_hosted=True), config)
+        model = RemoteModel(
+            "drafter", settings(provider="hosted", allow_hosted=True), config, client=Client()
+        )
         config.set_data_mode("real")
-        config.set_data_mode("synthetic")
-        with pytest.raises(NotImplementedError):  # allowed again, so it reaches the unbuilt adapter
+        with pytest.raises(DataModeViolation):
             model.generate("clarify", {"request": "x"}, _Echo)
+        assert Client.calls == 0  # refused before anything could be sent
+        config.set_data_mode("synthetic")
+        assert model.generate("clarify", {"request": "x"}, _Echo).answer == "ok"  # allowed again
+        assert Client.calls == 1
 
 
 class _Echo(BaseModel):
@@ -121,7 +135,7 @@ class _Flaky:
         self.bad_times = bad_times
         self.seen = []
 
-    def complete(self, task, payload):
+    def complete(self, task, payload, schema=None):
         self.calls += 1
         self.seen.append(payload)
         return {"nope": 1} if self.calls <= self.bad_times else {"answer": "ok"}

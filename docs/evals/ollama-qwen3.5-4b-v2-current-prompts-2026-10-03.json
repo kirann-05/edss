@@ -1,0 +1,283 @@
+{
+  "provider": "ollama",
+  "model": "qwen3.5:4b",
+  "seed": 7,
+  "temperature": 0.2,
+  "trials": 3,
+  "planner": [
+    {
+      "request": "Prepare the leadership brief",
+      "ask_expected": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_got": [
+        "audience",
+        "period"
+      ],
+      "ask_exact": false,
+      "plan_fields": {},
+      "plan_ok": null,
+      "calls": 1,
+      "seconds": 5.663445624988526,
+      "error": null
+    },
+    {
+      "request": "How are we doing?",
+      "ask_expected": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_got": [
+        "audience",
+        "period"
+      ],
+      "ask_exact": false,
+      "plan_fields": {},
+      "plan_ok": null,
+      "calls": 1,
+      "seconds": 3.99761312501505,
+      "error": null
+    },
+    {
+      "request": "Where did we miss target this year, and what should we do about it?",
+      "ask_expected": [
+        "audience",
+        "scope"
+      ],
+      "ask_got": [
+        "audience",
+        "period"
+      ],
+      "ask_exact": false,
+      "plan_fields": {},
+      "plan_ok": null,
+      "calls": 1,
+      "seconds": 5.274009000015212,
+      "error": null
+    },
+    {
+      "request": "Prepare the placement brief",
+      "ask_expected": [
+        "audience",
+        "period"
+      ],
+      "ask_got": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_exact": false,
+      "plan_fields": {},
+      "plan_ok": null,
+      "calls": 1,
+      "seconds": 6.86540308399708,
+      "error": null
+    },
+    {
+      "request": "Placement and research brief for the Governing Council for 2025-26",
+      "ask_expected": [],
+      "ask_got": [],
+      "ask_exact": true,
+      "plan_fields": {
+        "period": true,
+        "areas": false,
+        "audience": true,
+        "options_for": false
+      },
+      "plan_ok": false,
+      "calls": 2,
+      "seconds": 8.063134333991911,
+      "error": null
+    },
+    {
+      "request": "Finance brief for the Registrar for last year",
+      "ask_expected": [],
+      "ask_got": [
+        "audience",
+        "period"
+      ],
+      "ask_exact": false,
+      "plan_fields": {
+        "period": true,
+        "areas": true,
+        "audience": true,
+        "options_for": true
+      },
+      "plan_ok": true,
+      "calls": 2,
+      "seconds": 9.542214874993078,
+      "error": null
+    },
+    {
+      "request": "Brief for the board on everything, with options for every KPI, for 2024-25",
+      "ask_expected": [],
+      "ask_got": [],
+      "ask_exact": true,
+      "plan_fields": {
+        "period": true,
+        "areas": true,
+        "audience": true,
+        "options_for": true
+      },
+      "plan_ok": true,
+      "calls": 2,
+      "seconds": 8.325028125022072,
+      "error": null
+    },
+    {
+      "request": "Academic results for the Principal this year",
+      "ask_expected": [],
+      "ask_got": [
+        "audience",
+        "period"
+      ],
+      "ask_exact": false,
+      "plan_fields": {
+        "period": true,
+        "areas": true,
+        "audience": true,
+        "options_for": true
+      },
+      "plan_ok": true,
+      "calls": 2,
+      "seconds": 10.158388582989573,
+      "error": null
+    },
+    {
+      "request": "Research output and grants brief for the council for 2023-24",
+      "ask_expected": [],
+      "ask_got": [],
+      "ask_exact": true,
+      "plan_fields": {
+        "period": true,
+        "areas": true,
+        "audience": true,
+        "options_for": false
+      },
+      "plan_ok": false,
+      "calls": 2,
+      "seconds": 7.044448916014517,
+      "error": null
+    },
+    {
+      "request": "Institution-wide overview for leadership for 2025-26, only the KPIs that are off target",
+      "ask_expected": [],
+      "ask_got": [],
+      "ask_exact": true,
+      "plan_fields": {
+        "period": true,
+        "areas": true,
+        "audience": true,
+        "options_for": true
+      },
+      "plan_ok": true,
+      "calls": 2,
+      "seconds": 6.948942666989751,
+      "error": null
+    }
+  ],
+  "drafts": [
+    {
+      "kpi": "AC_PASS_PCT",
+      "seed": 7,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 24.483971374982502,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "AC_PASS_PCT",
+      "seed": 8,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 29.619526208000025,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "AC_PASS_PCT",
+      "seed": 9,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 33.7789469169802,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "RS_PUB_PF",
+      "seed": 7,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 31.004750082996907,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "RS_PUB_PF",
+      "seed": 8,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 24.898318417021073,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "RS_PUB_PF",
+      "seed": 9,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 24.250882166001247,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "PL_PCT",
+      "seed": 7,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 31.523413791001076,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "PL_PCT",
+      "seed": 8,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 27.882219583989354,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "PL_PCT",
+      "seed": 9,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 26.782370208005887,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    }
+  ]
+}

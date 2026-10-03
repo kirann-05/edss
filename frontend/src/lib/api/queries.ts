@@ -28,6 +28,7 @@ import type {
   PlanCatalogue,
   PlanPatch,
   PriorMatch,
+  RefreshResult,
   Run,
   RunRevision,
   RunTrace,
@@ -75,7 +76,9 @@ export function useSystemStatus() {
   return useQuery({
     queryKey: keys.status,
     queryFn: () => api.get<SystemStatus>("/system/status"),
-    staleTime: 5 * 60_000,
+    // the model server can stop or start while the page is open, so this is checked now and then
+    staleTime: 15_000,
+    refetchInterval: 30_000,
   });
 }
 
@@ -410,4 +413,15 @@ export function useGrantScope() {
 
 export function useRevokeScope() {
   return useAdminMutation((domain: string) => api.post<ScopeGrant[]>(`/admin/scope-grants/${domain}/revoke`));
+}
+
+/** Read the sources again. Everything on screen came from the old read, so all of it is refetched. */
+export function useRefreshData() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.post<RefreshResult>("/data/refresh"),
+    onSuccess: () => {
+      void client.invalidateQueries();
+    },
+  });
 }

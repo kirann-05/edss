@@ -27,6 +27,7 @@ from dataclasses import dataclass
 from datetime import date, timedelta
 from decimal import Decimal
 
+from app.domain.dataset import Dataset
 from app.domain.enums import Domain, FactStatus
 from app.domain.models import (
     Department,
@@ -178,16 +179,7 @@ PENDING_RECONCILIATION = ("BIOTECH", "fin.expenditure_actual", "Q3")  # trap T8
 QUARTERS = ("Q1", "Q2", "Q3")
 
 
-@dataclass(frozen=True)
-class SyntheticDataset:
-    reference_date: date
-    current_period: str
-    periods: tuple[str, ...]
-    departments: tuple[Department, ...]
-    source_systems: tuple[SourceSystem, ...]
-    batches: tuple[IngestBatch, ...]
-    facts: tuple[MetricFact, ...]
-    publications: tuple[Publication, ...]
+SyntheticDataset = Dataset  # the same shape, whether it came from the generator or from files
 
 
 def split_total(total: int, weights: Sequence[float]) -> list[int]:

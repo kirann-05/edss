@@ -1,0 +1,795 @@
+dedup_key,title,period_year,status,dept_codes,venue,indexing
+doi:10.5555/edss.2023.0001,Edge inference study 1,2023-24,final,CSE;AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0002,Protein folding study 2,2023-24,final,CSE;AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0003,Power electronics study 3,2023-24,final,CSE;AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0004,Federated analytics study 4,2023-24,final,CSE;AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0005,Supply chains study 5,2023-24,final,CSE;AIML,IEEE Access,Scopus
+doi:10.5555/edss.2023.0006,Edge inference study 6,2023-24,final,CSE;AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0007,Federated analytics study 7,2023-24,final,CSE;ECE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0008,Federated analytics study 8,2023-24,final,CSE;ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0009,Federated analytics study 9,2023-24,final,CSE;ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0010,Clean energy study 10,2023-24,final,CSE;ECE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0011,Graph learning study 11,2023-24,final,ECE;EEE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0012,Supply chains study 12,2023-24,final,ECE;EEE,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0013,Power electronics study 13,2023-24,final,ECE;EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0014,Edge inference study 14,2023-24,final,BIOTECH;CIVIL,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0015,Edge inference study 15,2023-24,final,BIOTECH;CIVIL,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0016,Soil mechanics study 16,2023-24,final,AIML;MCA,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0017,Clean energy study 17,2023-24,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0018,Supply chains study 18,2023-24,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0019,Protein folding study 19,2023-24,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0020,Soil mechanics study 20,2023-24,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0021,Edge inference study 21,2023-24,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0022,Structural health study 22,2023-24,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0023,Structural health study 23,2023-24,final,CSE,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0024,Protein folding study 24,2023-24,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0025,Wireless sensing study 25,2023-24,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0026,Wireless sensing study 26,2023-24,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0027,Protein folding study 27,2023-24,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0028,Power electronics study 28,2023-24,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0029,Structural health study 29,2023-24,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0030,Supply chains study 30,2023-24,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2023.0031,Federated analytics study 31,2023-24,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0032,Wireless sensing study 32,2023-24,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2023.0033,Graph learning study 33,2023-24,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0034,Protein folding study 34,2023-24,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2023.0035,Soil mechanics study 35,2023-24,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0036,Clean energy study 36,2023-24,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0037,Clean energy study 37,2023-24,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0038,Power electronics study 38,2023-24,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0039,Federated analytics study 39,2023-24,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0040,Soil mechanics study 40,2023-24,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0041,Supply chains study 41,2023-24,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0042,Power electronics study 42,2023-24,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0043,Edge inference study 43,2023-24,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2023.0044,Power electronics study 44,2023-24,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0045,Supply chains study 45,2023-24,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0046,Supply chains study 46,2023-24,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0047,Clean energy study 47,2023-24,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0048,Federated analytics study 48,2023-24,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0049,Edge inference study 49,2023-24,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0050,Wireless sensing study 50,2023-24,final,CSE,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0051,Supply chains study 51,2023-24,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0052,Graph learning study 52,2023-24,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2023.0053,Power electronics study 53,2023-24,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0054,Protein folding study 54,2023-24,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0055,Structural health study 55,2023-24,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0056,Power electronics study 56,2023-24,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0057,Graph learning study 57,2023-24,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0058,Clean energy study 58,2023-24,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2023.0059,Wireless sensing study 59,2023-24,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0060,Graph learning study 60,2023-24,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0061,Edge inference study 61,2023-24,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0062,Clean energy study 62,2023-24,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0063,Power electronics study 63,2023-24,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0064,Clean energy study 64,2023-24,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0065,Protein folding study 65,2023-24,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0066,Supply chains study 66,2023-24,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0067,Structural health study 67,2023-24,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0068,Wireless sensing study 68,2023-24,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0069,Clean energy study 69,2023-24,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2023.0070,Structural health study 70,2023-24,final,CSE,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0071,Graph learning study 71,2023-24,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0072,Structural health study 72,2023-24,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0073,Graph learning study 73,2023-24,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0074,Graph learning study 74,2023-24,final,CSE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0075,Graph learning study 75,2023-24,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0076,Federated analytics study 76,2023-24,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0077,Clean energy study 77,2023-24,final,AIML,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0078,Power electronics study 78,2023-24,final,AIML,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0079,Clean energy study 79,2023-24,final,AIML,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0080,Supply chains study 80,2023-24,final,AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0081,Edge inference study 81,2023-24,final,AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0082,Supply chains study 82,2023-24,final,AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0083,Graph learning study 83,2023-24,final,AIML,IEEE Access,Scopus
+doi:10.5555/edss.2023.0084,Supply chains study 84,2023-24,final,AIML,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0085,Structural health study 85,2023-24,final,AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0086,Federated analytics study 86,2023-24,final,AIML,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0087,Supply chains study 87,2023-24,final,AIML,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0088,Clean energy study 88,2023-24,final,AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0089,Clean energy study 89,2023-24,final,AIML,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0090,Graph learning study 90,2023-24,final,AIML,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0091,Edge inference study 91,2023-24,final,AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0092,Supply chains study 92,2023-24,final,AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0093,Structural health study 93,2023-24,final,AIML,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0094,Power electronics study 94,2023-24,final,AIML,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0095,Supply chains study 95,2023-24,final,AIML,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0096,Protein folding study 96,2023-24,final,AIML,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0097,Federated analytics study 97,2023-24,final,AIML,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0098,Structural health study 98,2023-24,final,AIML,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0099,Graph learning study 99,2023-24,final,AIML,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0100,Federated analytics study 100,2023-24,final,AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0101,Wireless sensing study 101,2023-24,final,AIML,IEEE Access,Scopus
+doi:10.5555/edss.2023.0102,Soil mechanics study 102,2023-24,final,MCA,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0103,Federated analytics study 103,2023-24,final,MCA,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0104,Federated analytics study 104,2023-24,final,MCA,IEEE Access,Scopus
+doi:10.5555/edss.2023.0105,Edge inference study 105,2023-24,final,MCA,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0106,Structural health study 106,2023-24,final,MCA,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0107,Soil mechanics study 107,2023-24,final,MCA,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0108,Soil mechanics study 108,2023-24,final,MCA,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0109,Edge inference study 109,2023-24,final,ECE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0110,Soil mechanics study 110,2023-24,final,ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0111,Wireless sensing study 111,2023-24,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0112,Wireless sensing study 112,2023-24,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0113,Supply chains study 113,2023-24,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0114,Protein folding study 114,2023-24,final,ECE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0115,Edge inference study 115,2023-24,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0116,Soil mechanics study 116,2023-24,final,ECE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0117,Edge inference study 117,2023-24,final,ECE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0118,Federated analytics study 118,2023-24,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0119,Wireless sensing study 119,2023-24,final,ECE,IEEE Access,Scopus
+doi:10.5555/edss.2023.0120,Wireless sensing study 120,2023-24,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0121,Clean energy study 121,2023-24,final,ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0122,Protein folding study 122,2023-24,final,ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0123,Federated analytics study 123,2023-24,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0124,Federated analytics study 124,2023-24,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2023.0125,Edge inference study 125,2023-24,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0126,Edge inference study 126,2023-24,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0127,Federated analytics study 127,2023-24,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0128,Protein folding study 128,2023-24,final,ECE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0129,Wireless sensing study 129,2023-24,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0130,Protein folding study 130,2023-24,final,ECE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0131,Protein folding study 131,2023-24,final,ECE,IEEE Access,Scopus
+doi:10.5555/edss.2023.0132,Supply chains study 132,2023-24,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0133,Graph learning study 133,2023-24,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0134,Protein folding study 134,2023-24,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0135,Clean energy study 135,2023-24,final,ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0136,Supply chains study 136,2023-24,final,ECE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0137,Edge inference study 137,2023-24,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0138,Power electronics study 138,2023-24,final,ECE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0139,Wireless sensing study 139,2023-24,final,ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0140,Power electronics study 140,2023-24,final,ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0141,Graph learning study 141,2023-24,final,ECE,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0142,Graph learning study 142,2023-24,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0143,Structural health study 143,2023-24,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0144,Federated analytics study 144,2023-24,final,ECE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0145,Power electronics study 145,2023-24,final,ECE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0146,Power electronics study 146,2023-24,final,ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0147,Power electronics study 147,2023-24,final,ECE,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0148,Structural health study 148,2023-24,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0149,Edge inference study 149,2023-24,final,ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0150,Clean energy study 150,2023-24,final,EEE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0151,Clean energy study 151,2023-24,final,EEE,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0152,Structural health study 152,2023-24,final,EEE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0153,Structural health study 153,2023-24,final,EEE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0154,Protein folding study 154,2023-24,final,EEE,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0155,Wireless sensing study 155,2023-24,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0156,Federated analytics study 156,2023-24,final,EEE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0157,Edge inference study 157,2023-24,final,EEE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0158,Soil mechanics study 158,2023-24,final,EEE,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0159,Edge inference study 159,2023-24,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0160,Wireless sensing study 160,2023-24,final,EEE,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0161,Soil mechanics study 161,2023-24,final,EEE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0162,Supply chains study 162,2023-24,final,EEE,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0163,Protein folding study 163,2023-24,final,EEE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0164,Supply chains study 164,2023-24,final,EEE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0165,Federated analytics study 165,2023-24,final,EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0166,Supply chains study 166,2023-24,final,EEE,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0167,Wireless sensing study 167,2023-24,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0168,Edge inference study 168,2023-24,final,EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2023.0169,Protein folding study 169,2023-24,final,EEE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0170,Supply chains study 170,2023-24,final,EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2023.0171,Power electronics study 171,2023-24,final,EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0172,Supply chains study 172,2023-24,final,EEE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0173,Soil mechanics study 173,2023-24,final,EEE,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0174,Federated analytics study 174,2023-24,final,EEE,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0175,Protein folding study 175,2023-24,final,EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0176,Soil mechanics study 176,2023-24,final,EEE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0177,Wireless sensing study 177,2023-24,final,MECH,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0178,Clean energy study 178,2023-24,final,MECH,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0179,Clean energy study 179,2023-24,final,MECH,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0180,Edge inference study 180,2023-24,final,MECH,Springer LNCS,UGC CARE
+doi:10.5555/edss.2023.0181,Soil mechanics study 181,2023-24,final,MECH,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0182,Structural health study 182,2023-24,final,MECH,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0183,Structural health study 183,2023-24,final,MECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0184,Graph learning study 184,2023-24,final,MECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0185,Soil mechanics study 185,2023-24,final,MECH,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0186,Supply chains study 186,2023-24,final,MECH,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0187,Supply chains study 187,2023-24,final,MECH,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0188,Structural health study 188,2023-24,final,MECH,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0189,Graph learning study 189,2023-24,final,MECH,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0190,Structural health study 190,2023-24,final,MECH,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0191,Federated analytics study 191,2023-24,final,MECH,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0192,Federated analytics study 192,2023-24,final,MECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0193,Clean energy study 193,2023-24,final,MECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0194,Federated analytics study 194,2023-24,final,MECH,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0195,Wireless sensing study 195,2023-24,final,MECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0196,Federated analytics study 196,2023-24,final,MECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0197,Clean energy study 197,2023-24,final,MECH,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0198,Clean energy study 198,2023-24,final,MECH,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0199,Structural health study 199,2023-24,final,MECH,Springer LNCS,UGC CARE
+doi:10.5555/edss.2023.0200,Clean energy study 200,2023-24,final,MECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0201,Clean energy study 201,2023-24,final,MECH,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0202,Protein folding study 202,2023-24,final,MECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0203,Wireless sensing study 203,2023-24,final,MECH,Springer LNCS,UGC CARE
+doi:10.5555/edss.2023.0204,Edge inference study 204,2023-24,final,MECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0205,Structural health study 205,2023-24,final,MECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0206,Power electronics study 206,2023-24,final,CIVIL,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0207,Supply chains study 207,2023-24,final,CIVIL,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0208,Federated analytics study 208,2023-24,final,CIVIL,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0209,Graph learning study 209,2023-24,final,CIVIL,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0210,Supply chains study 210,2023-24,final,CIVIL,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0211,Graph learning study 211,2023-24,final,CIVIL,Scientific Reports,Web of Science
+doi:10.5555/edss.2023.0212,Clean energy study 212,2023-24,final,CIVIL,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0213,Protein folding study 213,2023-24,final,CIVIL,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0214,Federated analytics study 214,2023-24,final,CIVIL,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0215,Structural health study 215,2023-24,final,CIVIL,ACM Digital Library,Scopus
+doi:10.5555/edss.2023.0216,Protein folding study 216,2023-24,final,CIVIL,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0217,Graph learning study 217,2023-24,final,CIVIL,ACM Digital Library,Web of Science
+doi:10.5555/edss.2023.0218,Supply chains study 218,2023-24,final,CIVIL,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0219,Power electronics study 219,2023-24,final,CIVIL,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0220,Graph learning study 220,2023-24,final,CIVIL,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0221,Soil mechanics study 221,2023-24,final,CIVIL,IEEE Access,Scopus
+doi:10.5555/edss.2023.0222,Supply chains study 222,2023-24,final,CIVIL,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0223,Power electronics study 223,2023-24,final,CIVIL,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0224,Supply chains study 224,2023-24,final,CIVIL,Springer LNCS,Scopus
+doi:10.5555/edss.2023.0225,Clean energy study 225,2023-24,final,BIOTECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0226,Supply chains study 226,2023-24,final,BIOTECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0227,Protein folding study 227,2023-24,final,BIOTECH,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0228,Graph learning study 228,2023-24,final,BIOTECH,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0229,Wireless sensing study 229,2023-24,final,BIOTECH,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2023.0230,Edge inference study 230,2023-24,final,BIOTECH,IEEE Access,Scopus
+doi:10.5555/edss.2023.0231,Structural health study 231,2023-24,final,BIOTECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0232,Soil mechanics study 232,2023-24,final,BIOTECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2023.0233,Power electronics study 233,2023-24,final,BIOTECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0234,Edge inference study 234,2023-24,final,BIOTECH,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0235,Clean energy study 235,2023-24,final,BIOTECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2023.0236,Power electronics study 236,2023-24,final,BIOTECH,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0237,Edge inference study 237,2023-24,final,BIOTECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2023.0238,Edge inference study 238,2023-24,final,BIOTECH,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0239,Protein folding study 239,2023-24,final,BIOTECH,Scientific Reports,UGC CARE
+doi:10.5555/edss.2023.0240,Supply chains study 240,2023-24,final,BIOTECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0241,Structural health study 241,2023-24,final,BIOTECH,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0242,Structural health study 242,2023-24,final,BIOTECH,IEEE Access,UGC CARE
+doi:10.5555/edss.2023.0243,Protein folding study 243,2023-24,final,BIOTECH,Scientific Reports,Scopus
+doi:10.5555/edss.2023.0244,Soil mechanics study 244,2023-24,final,BIOTECH,IEEE Access,Web of Science
+doi:10.5555/edss.2023.0245,Federated analytics study 245,2023-24,final,BIOTECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2023.0246,Wireless sensing study 246,2023-24,final,BIOTECH,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0001,Wireless sensing study 1,2024-25,final,CSE;AIML,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0002,Clean energy study 2,2024-25,final,CSE;AIML,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0003,Wireless sensing study 3,2024-25,final,CSE;AIML,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0004,Power electronics study 4,2024-25,final,CSE;AIML,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0005,Federated analytics study 5,2024-25,final,CSE;AIML,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0006,Federated analytics study 6,2024-25,final,CSE;AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0007,Supply chains study 7,2024-25,final,CSE;AIML,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0008,Wireless sensing study 8,2024-25,final,CSE;ECE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0009,Protein folding study 9,2024-25,final,CSE;ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0010,Clean energy study 10,2024-25,final,CSE;ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0011,Supply chains study 11,2024-25,final,CSE;ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0012,Clean energy study 12,2024-25,final,ECE;EEE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0013,Clean energy study 13,2024-25,final,ECE;EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0014,Protein folding study 14,2024-25,final,ECE;EEE,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0015,Soil mechanics study 15,2024-25,final,ECE;EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0016,Graph learning study 16,2024-25,final,BIOTECH;CIVIL,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0017,Edge inference study 17,2024-25,final,BIOTECH;CIVIL,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0018,Supply chains study 18,2024-25,final,AIML;MCA,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0019,Structural health study 19,2024-25,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0020,Clean energy study 20,2024-25,final,CSE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0021,Edge inference study 21,2024-25,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0022,Supply chains study 22,2024-25,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0023,Soil mechanics study 23,2024-25,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0024,Federated analytics study 24,2024-25,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0025,Supply chains study 25,2024-25,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0026,Wireless sensing study 26,2024-25,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0027,Protein folding study 27,2024-25,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0028,Edge inference study 28,2024-25,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0029,Edge inference study 29,2024-25,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0030,Power electronics study 30,2024-25,final,CSE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0031,Clean energy study 31,2024-25,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0032,Soil mechanics study 32,2024-25,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0033,Protein folding study 33,2024-25,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0034,Protein folding study 34,2024-25,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0035,Power electronics study 35,2024-25,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0036,Federated analytics study 36,2024-25,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0037,Graph learning study 37,2024-25,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0038,Protein folding study 38,2024-25,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0039,Clean energy study 39,2024-25,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0040,Soil mechanics study 40,2024-25,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0041,Clean energy study 41,2024-25,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0042,Power electronics study 42,2024-25,final,CSE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0043,Clean energy study 43,2024-25,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0044,Supply chains study 44,2024-25,final,CSE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0045,Soil mechanics study 45,2024-25,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0046,Power electronics study 46,2024-25,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0047,Edge inference study 47,2024-25,final,CSE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0048,Federated analytics study 48,2024-25,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0049,Soil mechanics study 49,2024-25,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0050,Federated analytics study 50,2024-25,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0051,Clean energy study 51,2024-25,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0052,Supply chains study 52,2024-25,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0053,Soil mechanics study 53,2024-25,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0054,Edge inference study 54,2024-25,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0055,Structural health study 55,2024-25,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0056,Edge inference study 56,2024-25,final,CSE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0057,Power electronics study 57,2024-25,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0058,Power electronics study 58,2024-25,final,CSE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0059,Clean energy study 59,2024-25,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0060,Protein folding study 60,2024-25,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0061,Protein folding study 61,2024-25,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0062,Clean energy study 62,2024-25,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0063,Structural health study 63,2024-25,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0064,Soil mechanics study 64,2024-25,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0065,Edge inference study 65,2024-25,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0066,Power electronics study 66,2024-25,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0067,Edge inference study 67,2024-25,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0068,Protein folding study 68,2024-25,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0069,Soil mechanics study 69,2024-25,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0070,Edge inference study 70,2024-25,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0071,Protein folding study 71,2024-25,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0072,Federated analytics study 72,2024-25,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0073,Clean energy study 73,2024-25,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0074,Graph learning study 74,2024-25,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0075,Wireless sensing study 75,2024-25,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0076,Graph learning study 76,2024-25,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0077,Soil mechanics study 77,2024-25,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0078,Protein folding study 78,2024-25,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0079,Power electronics study 79,2024-25,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0080,Clean energy study 80,2024-25,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0081,Soil mechanics study 81,2024-25,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0082,Clean energy study 82,2024-25,final,CSE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0083,Wireless sensing study 83,2024-25,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0084,Wireless sensing study 84,2024-25,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0085,Wireless sensing study 85,2024-25,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0086,Clean energy study 86,2024-25,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0087,Supply chains study 87,2024-25,final,AIML,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0088,Clean energy study 88,2024-25,final,AIML,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0089,Protein folding study 89,2024-25,final,AIML,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0090,Supply chains study 90,2024-25,final,AIML,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0091,Federated analytics study 91,2024-25,final,AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0092,Graph learning study 92,2024-25,final,AIML,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0093,Wireless sensing study 93,2024-25,final,AIML,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0094,Clean energy study 94,2024-25,final,AIML,IEEE Access,Scopus
+doi:10.5555/edss.2024.0095,Protein folding study 95,2024-25,final,AIML,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0096,Protein folding study 96,2024-25,final,AIML,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0097,Clean energy study 97,2024-25,final,AIML,IEEE Access,Scopus
+doi:10.5555/edss.2024.0098,Soil mechanics study 98,2024-25,final,AIML,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0099,Power electronics study 99,2024-25,final,AIML,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0100,Graph learning study 100,2024-25,final,AIML,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0101,Edge inference study 101,2024-25,final,AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0102,Clean energy study 102,2024-25,final,AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0103,Power electronics study 103,2024-25,final,AIML,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0104,Protein folding study 104,2024-25,final,AIML,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0105,Protein folding study 105,2024-25,final,AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0106,Clean energy study 106,2024-25,final,AIML,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0107,Federated analytics study 107,2024-25,final,AIML,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0108,Structural health study 108,2024-25,final,AIML,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0109,Power electronics study 109,2024-25,final,AIML,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0110,Supply chains study 110,2024-25,final,AIML,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0111,Protein folding study 111,2024-25,final,AIML,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0112,Protein folding study 112,2024-25,final,AIML,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0113,Clean energy study 113,2024-25,final,AIML,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0114,Federated analytics study 114,2024-25,final,AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0115,Wireless sensing study 115,2024-25,final,MCA,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0116,Supply chains study 116,2024-25,final,MCA,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0117,Structural health study 117,2024-25,final,MCA,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0118,Supply chains study 118,2024-25,final,MCA,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0119,Graph learning study 119,2024-25,final,MCA,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0120,Clean energy study 120,2024-25,final,MCA,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0121,Power electronics study 121,2024-25,final,MCA,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0122,Power electronics study 122,2024-25,final,MCA,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0123,Wireless sensing study 123,2024-25,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0124,Edge inference study 124,2024-25,final,ECE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0125,Graph learning study 125,2024-25,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0126,Power electronics study 126,2024-25,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0127,Protein folding study 127,2024-25,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0128,Supply chains study 128,2024-25,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0129,Federated analytics study 129,2024-25,final,ECE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0130,Clean energy study 130,2024-25,final,ECE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0131,Soil mechanics study 131,2024-25,final,ECE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0132,Protein folding study 132,2024-25,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0133,Edge inference study 133,2024-25,final,ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0134,Edge inference study 134,2024-25,final,ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0135,Protein folding study 135,2024-25,final,ECE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0136,Wireless sensing study 136,2024-25,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0137,Wireless sensing study 137,2024-25,final,ECE,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0138,Power electronics study 138,2024-25,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0139,Supply chains study 139,2024-25,final,ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0140,Power electronics study 140,2024-25,final,ECE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0141,Edge inference study 141,2024-25,final,ECE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0142,Soil mechanics study 142,2024-25,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0143,Soil mechanics study 143,2024-25,final,ECE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0144,Clean energy study 144,2024-25,final,ECE,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0145,Protein folding study 145,2024-25,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0146,Protein folding study 146,2024-25,final,ECE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0147,Edge inference study 147,2024-25,final,ECE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0148,Soil mechanics study 148,2024-25,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0149,Supply chains study 149,2024-25,final,ECE,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0150,Protein folding study 150,2024-25,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0151,Clean energy study 151,2024-25,final,ECE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0152,Supply chains study 152,2024-25,final,ECE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0153,Soil mechanics study 153,2024-25,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0154,Protein folding study 154,2024-25,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0155,Supply chains study 155,2024-25,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0156,Soil mechanics study 156,2024-25,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0157,Clean energy study 157,2024-25,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0158,Soil mechanics study 158,2024-25,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0159,Structural health study 159,2024-25,final,ECE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0160,Power electronics study 160,2024-25,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0161,Graph learning study 161,2024-25,final,ECE,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0162,Graph learning study 162,2024-25,final,ECE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0163,Power electronics study 163,2024-25,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0164,Wireless sensing study 164,2024-25,final,ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0165,Structural health study 165,2024-25,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0166,Wireless sensing study 166,2024-25,final,ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0167,Protein folding study 167,2024-25,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0168,Clean energy study 168,2024-25,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0169,Wireless sensing study 169,2024-25,final,EEE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0170,Edge inference study 170,2024-25,final,EEE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0171,Supply chains study 171,2024-25,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0172,Edge inference study 172,2024-25,final,EEE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0173,Protein folding study 173,2024-25,final,EEE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0174,Clean energy study 174,2024-25,final,EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0175,Protein folding study 175,2024-25,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0176,Wireless sensing study 176,2024-25,final,EEE,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0177,Structural health study 177,2024-25,final,EEE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0178,Soil mechanics study 178,2024-25,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0179,Soil mechanics study 179,2024-25,final,EEE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0180,Edge inference study 180,2024-25,final,EEE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0181,Protein folding study 181,2024-25,final,EEE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0182,Power electronics study 182,2024-25,final,EEE,IEEE Access,Scopus
+doi:10.5555/edss.2024.0183,Protein folding study 183,2024-25,final,EEE,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0184,Edge inference study 184,2024-25,final,EEE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0185,Power electronics study 185,2024-25,final,EEE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0186,Wireless sensing study 186,2024-25,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0187,Soil mechanics study 187,2024-25,final,EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0188,Edge inference study 188,2024-25,final,EEE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0189,Supply chains study 189,2024-25,final,EEE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0190,Wireless sensing study 190,2024-25,final,EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0191,Clean energy study 191,2024-25,final,EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0192,Edge inference study 192,2024-25,final,EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0193,Wireless sensing study 193,2024-25,final,EEE,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0194,Protein folding study 194,2024-25,final,EEE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0195,Clean energy study 195,2024-25,final,EEE,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0196,Structural health study 196,2024-25,final,EEE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0197,Graph learning study 197,2024-25,final,EEE,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0198,Power electronics study 198,2024-25,final,EEE,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0199,Edge inference study 199,2024-25,final,MECH,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0200,Soil mechanics study 200,2024-25,final,MECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0201,Wireless sensing study 201,2024-25,final,MECH,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0202,Graph learning study 202,2024-25,final,MECH,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0203,Power electronics study 203,2024-25,final,MECH,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0204,Power electronics study 204,2024-25,final,MECH,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0205,Graph learning study 205,2024-25,final,MECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0206,Wireless sensing study 206,2024-25,final,MECH,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0207,Wireless sensing study 207,2024-25,final,MECH,IEEE Access,Scopus
+doi:10.5555/edss.2024.0208,Protein folding study 208,2024-25,final,MECH,IEEE Access,Scopus
+doi:10.5555/edss.2024.0209,Supply chains study 209,2024-25,final,MECH,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0210,Edge inference study 210,2024-25,final,MECH,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0211,Wireless sensing study 211,2024-25,final,MECH,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0212,Edge inference study 212,2024-25,final,MECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0213,Structural health study 213,2024-25,final,MECH,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0214,Federated analytics study 214,2024-25,final,MECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0215,Graph learning study 215,2024-25,final,MECH,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0216,Supply chains study 216,2024-25,final,MECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0217,Edge inference study 217,2024-25,final,MECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0218,Clean energy study 218,2024-25,final,MECH,IEEE Access,Scopus
+doi:10.5555/edss.2024.0219,Wireless sensing study 219,2024-25,final,MECH,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0220,Edge inference study 220,2024-25,final,MECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0221,Soil mechanics study 221,2024-25,final,MECH,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0222,Wireless sensing study 222,2024-25,final,MECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0223,Federated analytics study 223,2024-25,final,MECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0224,Federated analytics study 224,2024-25,final,MECH,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0225,Edge inference study 225,2024-25,final,MECH,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0226,Federated analytics study 226,2024-25,final,MECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0227,Clean energy study 227,2024-25,final,MECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0228,Wireless sensing study 228,2024-25,final,MECH,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0229,Supply chains study 229,2024-25,final,MECH,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0230,Supply chains study 230,2024-25,final,MECH,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0231,Protein folding study 231,2024-25,final,CIVIL,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0232,Clean energy study 232,2024-25,final,CIVIL,IEEE Access,Scopus
+doi:10.5555/edss.2024.0233,Edge inference study 233,2024-25,final,CIVIL,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0234,Edge inference study 234,2024-25,final,CIVIL,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0235,Federated analytics study 235,2024-25,final,CIVIL,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0236,Federated analytics study 236,2024-25,final,CIVIL,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0237,Edge inference study 237,2024-25,final,CIVIL,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0238,Supply chains study 238,2024-25,final,CIVIL,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0239,Soil mechanics study 239,2024-25,final,CIVIL,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0240,Edge inference study 240,2024-25,final,CIVIL,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0241,Structural health study 241,2024-25,final,CIVIL,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2024.0242,Clean energy study 242,2024-25,final,CIVIL,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0243,Wireless sensing study 243,2024-25,final,CIVIL,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0244,Edge inference study 244,2024-25,final,CIVIL,Springer LNCS,UGC CARE
+doi:10.5555/edss.2024.0245,Structural health study 245,2024-25,final,CIVIL,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0246,Soil mechanics study 246,2024-25,final,CIVIL,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0247,Federated analytics study 247,2024-25,final,CIVIL,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0248,Protein folding study 248,2024-25,final,CIVIL,IEEE Access,Scopus
+doi:10.5555/edss.2024.0249,Protein folding study 249,2024-25,final,CIVIL,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0250,Wireless sensing study 250,2024-25,final,CIVIL,IEEE Access,Scopus
+doi:10.5555/edss.2024.0251,Power electronics study 251,2024-25,final,CIVIL,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0252,Supply chains study 252,2024-25,final,BIOTECH,IEEE Access,Scopus
+doi:10.5555/edss.2024.0253,Graph learning study 253,2024-25,final,BIOTECH,IEEE Access,UGC CARE
+doi:10.5555/edss.2024.0254,Federated analytics study 254,2024-25,final,BIOTECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2024.0255,Supply chains study 255,2024-25,final,BIOTECH,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0256,Power electronics study 256,2024-25,final,BIOTECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0257,Wireless sensing study 257,2024-25,final,BIOTECH,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0258,Edge inference study 258,2024-25,final,BIOTECH,IEEE Access,Scopus
+doi:10.5555/edss.2024.0259,Power electronics study 259,2024-25,final,BIOTECH,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0260,Edge inference study 260,2024-25,final,BIOTECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0261,Supply chains study 261,2024-25,final,BIOTECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0262,Clean energy study 262,2024-25,final,BIOTECH,ACM Digital Library,Web of Science
+doi:10.5555/edss.2024.0263,Structural health study 263,2024-25,final,BIOTECH,Scientific Reports,Scopus
+doi:10.5555/edss.2024.0264,Wireless sensing study 264,2024-25,final,BIOTECH,ACM Digital Library,Scopus
+doi:10.5555/edss.2024.0265,Protein folding study 265,2024-25,final,BIOTECH,Scientific Reports,Web of Science
+doi:10.5555/edss.2024.0266,Federated analytics study 266,2024-25,final,BIOTECH,Springer LNCS,Scopus
+doi:10.5555/edss.2024.0267,Structural health study 267,2024-25,final,BIOTECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2024.0268,Graph learning study 268,2024-25,final,BIOTECH,IEEE Access,Scopus
+doi:10.5555/edss.2024.0269,Protein folding study 269,2024-25,final,BIOTECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0270,Protein folding study 270,2024-25,final,BIOTECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2024.0271,Edge inference study 271,2024-25,final,BIOTECH,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0272,Supply chains study 272,2024-25,final,BIOTECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2024.0273,Supply chains study 273,2024-25,final,BIOTECH,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0274,Structural health study 274,2024-25,final,BIOTECH,Scientific Reports,UGC CARE
+doi:10.5555/edss.2024.0275,Wireless sensing study 275,2024-25,final,BIOTECH,IEEE Access,Web of Science
+doi:10.5555/edss.2024.0276,Graph learning study 276,2024-25,final,BIOTECH,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0001,Clean energy study 1,2025-26,final,CSE;AIML,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0002,Soil mechanics study 2,2025-26,final,CSE;AIML,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0003,Supply chains study 3,2025-26,final,CSE;AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0004,Edge inference study 4,2025-26,final,CSE;AIML,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0005,Wireless sensing study 5,2025-26,final,CSE;AIML,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0006,Clean energy study 6,2025-26,final,CSE;AIML,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0007,Supply chains study 7,2025-26,final,CSE;AIML,IEEE Access,Scopus
+doi:10.5555/edss.2025.0008,Supply chains study 8,2025-26,final,CSE;AIML,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.shared,Federated analytics study 9,2025-26,final,CSE;ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0010,Protein folding study 10,2025-26,final,CSE;ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0011,Wireless sensing study 11,2025-26,final,CSE;ECE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0012,Federated analytics study 12,2025-26,final,CSE;ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0013,Federated analytics study 13,2025-26,final,CSE;ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0014,Wireless sensing study 14,2025-26,final,ECE;EEE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0015,Edge inference study 15,2025-26,final,ECE;EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0016,Structural health study 16,2025-26,final,ECE;EEE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0017,Power electronics study 17,2025-26,final,ECE;EEE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0018,Clean energy study 18,2025-26,final,BIOTECH;CIVIL,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0019,Soil mechanics study 19,2025-26,final,BIOTECH;CIVIL,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0020,Soil mechanics study 20,2025-26,final,AIML;MCA,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0021,Wireless sensing study 21,2025-26,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0022,Edge inference study 22,2025-26,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0023,Protein folding study 23,2025-26,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0024,Graph learning study 24,2025-26,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0025,Edge inference study 25,2025-26,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0026,Clean energy study 26,2025-26,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0027,Wireless sensing study 27,2025-26,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0028,Edge inference study 28,2025-26,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0029,Federated analytics study 29,2025-26,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0030,Soil mechanics study 30,2025-26,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0031,Graph learning study 31,2025-26,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0032,Structural health study 32,2025-26,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0033,Clean energy study 33,2025-26,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0034,Graph learning study 34,2025-26,final,CSE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0035,Wireless sensing study 35,2025-26,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0036,Power electronics study 36,2025-26,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0037,Clean energy study 37,2025-26,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0038,Federated analytics study 38,2025-26,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0039,Wireless sensing study 39,2025-26,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0040,Supply chains study 40,2025-26,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0041,Soil mechanics study 41,2025-26,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0042,Wireless sensing study 42,2025-26,final,CSE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0043,Edge inference study 43,2025-26,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0044,Supply chains study 44,2025-26,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0045,Soil mechanics study 45,2025-26,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0046,Edge inference study 46,2025-26,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0047,Power electronics study 47,2025-26,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0048,Supply chains study 48,2025-26,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0049,Edge inference study 49,2025-26,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0050,Supply chains study 50,2025-26,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0051,Federated analytics study 51,2025-26,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0052,Supply chains study 52,2025-26,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0053,Graph learning study 53,2025-26,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0054,Power electronics study 54,2025-26,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0055,Clean energy study 55,2025-26,final,CSE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0056,Power electronics study 56,2025-26,final,CSE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0057,Protein folding study 57,2025-26,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0058,Federated analytics study 58,2025-26,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0059,Wireless sensing study 59,2025-26,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0060,Soil mechanics study 60,2025-26,final,CSE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0061,Power electronics study 61,2025-26,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0062,Soil mechanics study 62,2025-26,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0063,Clean energy study 63,2025-26,final,CSE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0064,Wireless sensing study 64,2025-26,final,CSE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0065,Soil mechanics study 65,2025-26,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0066,Clean energy study 66,2025-26,final,CSE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0067,Structural health study 67,2025-26,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0068,Structural health study 68,2025-26,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0069,Soil mechanics study 69,2025-26,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0070,Protein folding study 70,2025-26,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0071,Federated analytics study 71,2025-26,final,CSE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0072,Structural health study 72,2025-26,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0073,Protein folding study 73,2025-26,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0074,Clean energy study 74,2025-26,final,CSE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0075,Edge inference study 75,2025-26,final,CSE,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0076,Protein folding study 76,2025-26,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0077,Protein folding study 77,2025-26,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0078,Power electronics study 78,2025-26,final,CSE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0079,Structural health study 79,2025-26,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0080,Graph learning study 80,2025-26,final,CSE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0081,Supply chains study 81,2025-26,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0082,Structural health study 82,2025-26,final,CSE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0083,Wireless sensing study 83,2025-26,final,CSE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0084,Wireless sensing study 84,2025-26,final,CSE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0085,Wireless sensing study 85,2025-26,final,CSE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0086,Graph learning study 86,2025-26,final,CSE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0087,Power electronics study 87,2025-26,final,CSE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0088,Soil mechanics study 88,2025-26,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0089,Graph learning study 89,2025-26,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0090,Power electronics study 90,2025-26,final,CSE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0091,Soil mechanics study 91,2025-26,final,CSE,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0092,Edge inference study 92,2025-26,final,CSE,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0093,Protein folding study 93,2025-26,final,CSE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0094,Structural health study 94,2025-26,final,CSE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0095,Soil mechanics study 95,2025-26,final,CSE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0096,Edge inference study 96,2025-26,final,AIML,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0097,Federated analytics study 97,2025-26,final,AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0098,Federated analytics study 98,2025-26,final,AIML,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0099,Power electronics study 99,2025-26,final,AIML,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0100,Graph learning study 100,2025-26,final,AIML,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0101,Structural health study 101,2025-26,final,AIML,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0102,Power electronics study 102,2025-26,final,AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0103,Wireless sensing study 103,2025-26,final,AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0104,Federated analytics study 104,2025-26,final,AIML,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0105,Federated analytics study 105,2025-26,final,AIML,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0106,Clean energy study 106,2025-26,final,AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0107,Supply chains study 107,2025-26,final,AIML,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0108,Graph learning study 108,2025-26,final,AIML,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0109,Wireless sensing study 109,2025-26,final,AIML,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0110,Edge inference study 110,2025-26,final,AIML,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0111,Wireless sensing study 111,2025-26,final,AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0112,Wireless sensing study 112,2025-26,final,AIML,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0113,Power electronics study 113,2025-26,final,AIML,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0114,Clean energy study 114,2025-26,final,AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0115,Edge inference study 115,2025-26,final,AIML,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0116,Protein folding study 116,2025-26,final,AIML,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0117,Structural health study 117,2025-26,final,AIML,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0118,Protein folding study 118,2025-26,final,AIML,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0119,Federated analytics study 119,2025-26,final,AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0120,Graph learning study 120,2025-26,final,AIML,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0121,Wireless sensing study 121,2025-26,final,AIML,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0122,Wireless sensing study 122,2025-26,final,AIML,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0123,Wireless sensing study 123,2025-26,final,AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0124,Clean energy study 124,2025-26,final,AIML,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0125,Power electronics study 125,2025-26,final,AIML,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0126,Clean energy study 126,2025-26,final,AIML,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0127,Protein folding study 127,2025-26,final,MCA,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0128,Supply chains study 128,2025-26,final,MCA,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0129,Soil mechanics study 129,2025-26,final,MCA,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0130,Protein folding study 130,2025-26,final,MCA,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0131,Edge inference study 131,2025-26,final,MCA,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0132,Protein folding study 132,2025-26,final,MCA,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0133,Soil mechanics study 133,2025-26,final,MCA,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0134,Clean energy study 134,2025-26,final,MCA,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0135,Graph learning study 135,2025-26,final,MCA,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0136,Supply chains study 136,2025-26,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0137,Graph learning study 137,2025-26,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0138,Supply chains study 138,2025-26,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0139,Power electronics study 139,2025-26,final,ECE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0140,Soil mechanics study 140,2025-26,final,ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0141,Power electronics study 141,2025-26,final,ECE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0142,Wireless sensing study 142,2025-26,final,ECE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0143,Soil mechanics study 143,2025-26,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0144,Power electronics study 144,2025-26,final,ECE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0145,Wireless sensing study 145,2025-26,final,ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0146,Soil mechanics study 146,2025-26,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0147,Wireless sensing study 147,2025-26,final,ECE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0148,Protein folding study 148,2025-26,final,ECE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0149,Graph learning study 149,2025-26,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0150,Federated analytics study 150,2025-26,final,ECE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0151,Edge inference study 151,2025-26,final,ECE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0152,Clean energy study 152,2025-26,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0153,Protein folding study 153,2025-26,final,ECE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0154,Edge inference study 154,2025-26,final,ECE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0155,Clean energy study 155,2025-26,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0156,Clean energy study 156,2025-26,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0157,Wireless sensing study 157,2025-26,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0158,Edge inference study 158,2025-26,final,ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0159,Protein folding study 159,2025-26,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0160,Power electronics study 160,2025-26,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0161,Structural health study 161,2025-26,final,ECE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0162,Power electronics study 162,2025-26,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0163,Graph learning study 163,2025-26,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0164,Soil mechanics study 164,2025-26,final,ECE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0165,Federated analytics study 165,2025-26,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0166,Edge inference study 166,2025-26,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0167,Supply chains study 167,2025-26,final,ECE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0168,Supply chains study 168,2025-26,final,ECE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0169,Edge inference study 169,2025-26,final,ECE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0170,Edge inference study 170,2025-26,final,ECE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0171,Federated analytics study 171,2025-26,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0172,Federated analytics study 172,2025-26,final,ECE,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0173,Power electronics study 173,2025-26,final,ECE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0174,Graph learning study 174,2025-26,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0175,Power electronics study 175,2025-26,final,ECE,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0176,Power electronics study 176,2025-26,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0177,Structural health study 177,2025-26,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0178,Protein folding study 178,2025-26,final,ECE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0179,Structural health study 179,2025-26,final,ECE,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0180,Power electronics study 180,2025-26,final,ECE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0181,Federated analytics study 181,2025-26,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0182,Power electronics study 182,2025-26,final,ECE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0183,Power electronics study 183,2025-26,final,ECE,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0184,Soil mechanics study 184,2025-26,final,ECE,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0185,Soil mechanics study 185,2025-26,final,ECE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0186,Edge inference study 186,2025-26,final,ECE,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0187,Soil mechanics study 187,2025-26,final,EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0188,Structural health study 188,2025-26,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0189,Soil mechanics study 189,2025-26,final,EEE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0190,Federated analytics study 190,2025-26,final,EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0191,Protein folding study 191,2025-26,final,EEE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0192,Supply chains study 192,2025-26,final,EEE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0193,Edge inference study 193,2025-26,final,EEE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0194,Clean energy study 194,2025-26,final,EEE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0195,Clean energy study 195,2025-26,final,EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0196,Soil mechanics study 196,2025-26,final,EEE,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0197,Wireless sensing study 197,2025-26,final,EEE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0198,Power electronics study 198,2025-26,final,EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0199,Federated analytics study 199,2025-26,final,EEE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0200,Structural health study 200,2025-26,final,EEE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0201,Protein folding study 201,2025-26,final,EEE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0202,Power electronics study 202,2025-26,final,EEE,IEEE Access,Scopus
+doi:10.5555/edss.2025.0203,Protein folding study 203,2025-26,final,EEE,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0204,Supply chains study 204,2025-26,final,EEE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0205,Wireless sensing study 205,2025-26,final,EEE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0206,Wireless sensing study 206,2025-26,final,EEE,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0207,Clean energy study 207,2025-26,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0208,Clean energy study 208,2025-26,final,EEE,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0209,Graph learning study 209,2025-26,final,EEE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0210,Federated analytics study 210,2025-26,final,EEE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0211,Structural health study 211,2025-26,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0212,Graph learning study 212,2025-26,final,EEE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0213,Clean energy study 213,2025-26,final,EEE,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0214,Clean energy study 214,2025-26,final,EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0215,Graph learning study 215,2025-26,final,EEE,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0216,Power electronics study 216,2025-26,final,EEE,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0217,Wireless sensing study 217,2025-26,final,EEE,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0218,Graph learning study 218,2025-26,final,EEE,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0219,Soil mechanics study 219,2025-26,final,EEE,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0220,Wireless sensing study 220,2025-26,final,EEE,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0221,Edge inference study 221,2025-26,final,CIVIL,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0222,Clean energy study 222,2025-26,final,CIVIL,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0223,Soil mechanics study 223,2025-26,final,CIVIL,Scientific Reports,Scopus
+doi:10.5555/edss.2025.0224,Power electronics study 224,2025-26,final,CIVIL,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0225,Wireless sensing study 225,2025-26,final,CIVIL,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0226,Wireless sensing study 226,2025-26,final,CIVIL,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0227,Soil mechanics study 227,2025-26,final,CIVIL,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0228,Federated analytics study 228,2025-26,final,CIVIL,IEEE Access,Scopus
+doi:10.5555/edss.2025.0229,Graph learning study 229,2025-26,final,CIVIL,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0230,Wireless sensing study 230,2025-26,final,CIVIL,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0231,Clean energy study 231,2025-26,final,CIVIL,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0232,Federated analytics study 232,2025-26,final,CIVIL,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0233,Soil mechanics study 233,2025-26,final,CIVIL,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0234,Supply chains study 234,2025-26,final,CIVIL,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0235,Protein folding study 235,2025-26,final,CIVIL,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0236,Federated analytics study 236,2025-26,final,CIVIL,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0237,Clean energy study 237,2025-26,final,CIVIL,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0238,Clean energy study 238,2025-26,final,CIVIL,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0239,Wireless sensing study 239,2025-26,final,CIVIL,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0240,Soil mechanics study 240,2025-26,final,CIVIL,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0241,Graph learning study 241,2025-26,final,CIVIL,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0242,Protein folding study 242,2025-26,final,CIVIL,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0243,Structural health study 243,2025-26,final,CIVIL,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0244,Clean energy study 244,2025-26,final,CIVIL,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0245,Soil mechanics study 245,2025-26,final,BIOTECH,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0246,Structural health study 246,2025-26,final,BIOTECH,IEEE Access,UGC CARE
+doi:10.5555/edss.2025.0247,Edge inference study 247,2025-26,final,BIOTECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0248,Clean energy study 248,2025-26,final,BIOTECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0249,Power electronics study 249,2025-26,final,BIOTECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0250,Structural health study 250,2025-26,final,BIOTECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0251,Soil mechanics study 251,2025-26,final,BIOTECH,ACM Digital Library,UGC CARE
+doi:10.5555/edss.2025.0252,Graph learning study 252,2025-26,final,BIOTECH,Elsevier Procedia,UGC CARE
+doi:10.5555/edss.2025.0253,Structural health study 253,2025-26,final,BIOTECH,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0254,Clean energy study 254,2025-26,final,BIOTECH,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0255,Wireless sensing study 255,2025-26,final,BIOTECH,Elsevier Procedia,Web of Science
+doi:10.5555/edss.2025.0256,Federated analytics study 256,2025-26,final,BIOTECH,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0257,Wireless sensing study 257,2025-26,final,BIOTECH,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0258,Clean energy study 258,2025-26,final,BIOTECH,Elsevier Procedia,Scopus
+doi:10.5555/edss.2025.0259,Protein folding study 259,2025-26,final,BIOTECH,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0260,Structural health study 260,2025-26,final,BIOTECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0261,Structural health study 261,2025-26,final,BIOTECH,ACM Digital Library,Web of Science
+doi:10.5555/edss.2025.0262,Clean energy study 262,2025-26,final,BIOTECH,Springer LNCS,UGC CARE
+doi:10.5555/edss.2025.0263,Protein folding study 263,2025-26,final,BIOTECH,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0264,Soil mechanics study 264,2025-26,final,BIOTECH,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0265,Supply chains study 265,2025-26,final,BIOTECH,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0266,Protein folding study 266,2025-26,final,BIOTECH,IEEE Access,Web of Science
+doi:10.5555/edss.2025.0267,Edge inference study 267,2025-26,final,BIOTECH,Springer LNCS,Web of Science
+doi:10.5555/edss.2025.0268,Protein folding study 268,2025-26,final,BIOTECH,ACM Digital Library,Scopus
+doi:10.5555/edss.2025.0269,Structural health study 269,2025-26,final,BIOTECH,Scientific Reports,Web of Science
+doi:10.5555/edss.2025.0270,Federated analytics study 270,2025-26,final,BIOTECH,Springer LNCS,Scopus
+doi:10.5555/edss.2025.0271,Edge inference study 271,2025-26,final,BIOTECH,Scientific Reports,UGC CARE
+doi:10.5555/edss.2025.0272,Soil mechanics study 272,2025-26,final,BIOTECH,Elsevier Procedia,Scopus

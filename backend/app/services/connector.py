@@ -74,6 +74,10 @@ class InMemoryConnector(Connector):
         self._store = store
         self._scopes = scopes
 
+    def use_store(self, store: DataStore) -> None:
+        """Serve from a refreshed store. The only place an agent's view of the data is replaced."""
+        self._store = store
+
     def periods(self) -> tuple[str, ...]:
         return self._store.periods
 

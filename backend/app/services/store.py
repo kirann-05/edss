@@ -7,6 +7,7 @@ It is built from the synthetic generator only, and refuses to stand in for real 
 
 from datetime import date
 
+from app.domain.dataset import Dataset, current_facts
 from app.domain.enums import Domain
 from app.domain.models import (
     Department,
@@ -19,7 +20,7 @@ from app.domain.models import (
 from app.kpi.engine import PeriodData, compute_all
 from app.kpi.loader import load_seed_definitions, load_seed_targets
 from app.kpi.results import KpiResult
-from app.synthetic.generator import SyntheticDataset, generate
+from app.synthetic.generator import generate
 
 
 class UnknownPeriodError(KeyError):
@@ -33,7 +34,7 @@ class UnknownKpiError(KeyError):
 class DataStore:
     def __init__(
         self,
-        dataset: SyntheticDataset,
+        dataset: Dataset,
         definitions: list[KpiDefinition],
         targets: list[KpiTarget],
         today: date,
@@ -46,7 +47,10 @@ class DataStore:
         self._definition_by_key = {d.key: d for d in self.definitions}
         self._target = {(t.kpi_key, t.period_year): t for t in targets}
         self.departments: dict[str, Department] = {d.code: d for d in dataset.departments}
-        self.facts_by_id: dict[int, MetricFact] = {f.id: f for f in dataset.facts}
+        self.facts_by_id: dict[int, MetricFact] = {
+            f.id: f for f in dataset.facts
+        }  # every fact, so old evidence resolves
+        self._current = current_facts(dataset.facts)  # the newest batch's figure for each slot
         self.batches: dict[int, IngestBatch] = {b.id: b for b in dataset.batches}
         self.sources: dict[int, SourceSystem] = {s.id: s for s in dataset.source_systems}
         self._results: dict[str, dict[str, KpiResult]] = {}
@@ -81,7 +85,7 @@ class DataStore:
         return PeriodData(
             period_year=period,
             departments=self.dataset.departments,
-            facts=tuple(f for f in self.dataset.facts if f.period_year == period),
+            facts=tuple(f for f in self._current if f.period_year == period),
             publications=tuple(p for p in self.dataset.publications if p.period_year == period),
             is_current=period == self.current_period,
         )
@@ -123,7 +127,7 @@ class DataStore:
     ) -> list[MetricFact]:
         return [
             f
-            for f in self.dataset.facts
+            for f in self._current
             if f.period_year == period
             and (dept is None or f.dept_code == dept)
             and (domain is None or f.domain is domain)

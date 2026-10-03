@@ -1,0 +1,300 @@
+{
+  "provider": "ollama",
+  "model": "qwen3.5:4b",
+  "seed": 7,
+  "temperature": 0.2,
+  "trials": 3,
+  "planner": [
+    {
+      "request": "Prepare the leadership brief",
+      "ask_expected": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_got": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_exact": true,
+      "plan_fields": {},
+      "plan_ok": null,
+      "calls": 1,
+      "seconds": 4.907716499990784,
+      "error": null
+    },
+    {
+      "request": "How are we doing?",
+      "ask_expected": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_got": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_exact": true,
+      "plan_fields": {},
+      "plan_ok": null,
+      "calls": 1,
+      "seconds": 6.182398874982027,
+      "error": null
+    },
+    {
+      "request": "Where did we miss target this year, and what should we do about it?",
+      "ask_expected": [
+        "audience",
+        "scope"
+      ],
+      "ask_got": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_exact": false,
+      "plan_fields": {},
+      "plan_ok": null,
+      "calls": 1,
+      "seconds": 7.073441375017865,
+      "error": null
+    },
+    {
+      "request": "Prepare the placement brief",
+      "ask_expected": [
+        "audience",
+        "period"
+      ],
+      "ask_got": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_exact": false,
+      "plan_fields": {},
+      "plan_ok": null,
+      "calls": 1,
+      "seconds": 6.6855189590132795,
+      "error": null
+    },
+    {
+      "request": "Placement and research brief for the Governing Council for 2025-26",
+      "ask_expected": [],
+      "ask_got": [
+        "scope"
+      ],
+      "ask_exact": false,
+      "plan_fields": {
+        "period": true,
+        "areas": false,
+        "audience": true,
+        "options_for": false
+      },
+      "plan_ok": false,
+      "calls": 2,
+      "seconds": 8.678095209004823,
+      "error": null
+    },
+    {
+      "request": "Finance brief for the Registrar for last year",
+      "ask_expected": [],
+      "ask_got": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_exact": false,
+      "plan_fields": {
+        "period": true,
+        "areas": false,
+        "audience": true,
+        "options_for": true
+      },
+      "plan_ok": false,
+      "calls": 2,
+      "seconds": 12.82756825000979,
+      "error": null
+    },
+    {
+      "request": "Brief for the board on everything, with options for every KPI, for 2024-25",
+      "ask_expected": [],
+      "ask_got": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_exact": false,
+      "plan_fields": {
+        "period": true,
+        "areas": true,
+        "audience": true,
+        "options_for": true
+      },
+      "plan_ok": true,
+      "calls": 2,
+      "seconds": 13.626161374995718,
+      "error": null
+    },
+    {
+      "request": "Academic results for the Principal this year",
+      "ask_expected": [],
+      "ask_got": [
+        "audience",
+        "period",
+        "scope"
+      ],
+      "ask_exact": false,
+      "plan_fields": {
+        "period": true,
+        "areas": false,
+        "audience": true,
+        "options_for": false
+      },
+      "plan_ok": false,
+      "calls": 2,
+      "seconds": 20.81604645799962,
+      "error": null
+    },
+    {
+      "request": "Research output and grants brief for the council for 2023-24",
+      "ask_expected": [],
+      "ask_got": [
+        "audience",
+        "scope"
+      ],
+      "ask_exact": false,
+      "plan_fields": {
+        "period": true,
+        "areas": false,
+        "audience": true,
+        "options_for": false
+      },
+      "plan_ok": false,
+      "calls": 2,
+      "seconds": 20.65137587499339,
+      "error": null
+    },
+    {
+      "request": "Institution-wide overview for leadership for 2025-26, only the KPIs that are off target",
+      "ask_expected": [],
+      "ask_got": [
+        "audience",
+        "scope"
+      ],
+      "ask_exact": false,
+      "plan_fields": {
+        "period": true,
+        "areas": true,
+        "audience": true,
+        "options_for": true
+      },
+      "plan_ok": true,
+      "calls": 2,
+      "seconds": 22.723537625017343,
+      "error": null
+    }
+  ],
+  "drafts": [
+    {
+      "kpi": "AC_PASS_PCT",
+      "seed": 7,
+      "drafted": true,
+      "first_try": false,
+      "calls": 2,
+      "seconds": 50.322287499991944,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "AC_PASS_PCT",
+      "seed": 8,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 28.034191582992207,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "AC_PASS_PCT",
+      "seed": 9,
+      "drafted": true,
+      "first_try": false,
+      "calls": 2,
+      "seconds": 45.824642833002144,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "RS_PUB_PF",
+      "seed": 7,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 24.455815875000553,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "RS_PUB_PF",
+      "seed": 8,
+      "drafted": false,
+      "first_try": false,
+      "calls": 3,
+      "seconds": 90.84191499999724,
+      "passed_gate": false,
+      "failing_checks": [],
+      "error": "LLMOutputError: draft_options: output did not fit after 2 repairs: option 1 contains figures written by hand (one). Write figures only as reference tokens, and avoid spelled-out numbers too"
+    },
+    {
+      "kpi": "RS_PUB_PF",
+      "seed": 9,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 27.80073745799018,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "PL_PCT",
+      "seed": 7,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 24.356604333006544,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "PL_PCT",
+      "seed": 8,
+      "drafted": false,
+      "first_try": false,
+      "calls": 3,
+      "seconds": 89.17170770798111,
+      "passed_gate": false,
+      "failing_checks": [],
+      "error": "LLMOutputError: draft_options: output did not fit after 2 repairs: option 3 contains figures written by hand (one). Write figures only as reference tokens, and avoid spelled-out numbers too"
+    },
+    {
+      "kpi": "PL_PCT",
+      "seed": 9,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 32.03924458401161,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    }
+  ]
+}

@@ -72,6 +72,9 @@ class SystemStatusOut(Api):
     llm_provider: str
     # true when drafts come from canned test outputs rather than a model, so nobody mistakes them
     llm_is_fake: bool
+    llm_name: str  # for example ollama:qwen3.5:4b, or fake-drafter
+    llm_is_local: bool  # false means the model is reached over the network, synthetic data only
+    llm_reachable: bool | None  # None for the canned model, which needs no server
     current_period: str
     periods: list[str]
     today: date
@@ -716,3 +719,21 @@ class ScopeGrantOut(Api):
 class GrantIn(Api):
     domain: Domain
     expires_on: date | None = None
+
+
+# --- data refresh -------------------------------------------------------------------------
+class RejectOut(Api):
+    where: str
+    why: list[str]
+
+
+class RefreshOut(Api):
+    source: Literal["folder", "synthetic"]
+    folder: str | None
+    accepted: int
+    rejected: int
+    rejects: list[RejectOut]  # the first few, the full list is in the ingest report
+    unchanged_files: int  # files that had not changed, so nothing was added for them
+    periods: list[str]
+    current_period: str
+    refreshed_at: datetime

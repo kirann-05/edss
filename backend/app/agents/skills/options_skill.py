@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 from app.agents.fake_llm import register
 from app.agents.llm import ChatModel
 from app.agents.models import KpiFigure, Option, OptionSet
+from app.agents.tokens import KPI_FIELDS, Ref, lint_numbers, parse_tokens
 from app.domain.enums import KpiStatus
 
 INJECTABLE_BY_MODEL = ("fake_number", "missing_risks", "provisional_as_final")
@@ -75,6 +76,73 @@ def option_payload(
     }
 
 
+def _check_options(figure: KpiFigure):
+    """A quick pre-check for a real model, with feedback specific enough for it to fix itself.
+
+    It is not the gate. Check V1 to V9 still decide, on everything, later. This only saves a
+    small model the long way round: it is told "you wrote a number" now, instead of failing the
+    gate and being told after the whole brief is composed.
+    """
+
+    def check(draft: OptionSetDraft) -> list[str]:
+        problems: list[str] = []
+        for number, option in enumerate(draft.options, start=1):
+            texts = [
+                option.title,
+                option.description,
+                *option.assumptions,
+                *option.risks,
+                *option.trade_offs,
+            ]
+            stray = sorted({fragment for text in texts for fragment in lint_numbers(text)})
+            if stray:
+                problems.append(
+                    f"option {number} contains figures written by hand ({', '.join(stray[:5])}). "
+                    "Write figures only as reference tokens, and avoid spelled-out numbers too"
+                )
+            for text in texts:
+                for part in parse_tokens(text):
+                    if isinstance(part, Ref) and (
+                        part.kind != "kpi" or part.key != figure.key or part.field not in KPI_FIELDS
+                    ):
+                        problems.append(
+                            f"option {number} uses a token that is not allowed ({part.kind}:{part.key}). "
+                            f"Only {{{{kpi:{figure.key}}}}} with .target, .gap or .status may be used"
+                        )
+            for label, items in (
+                ("assumptions", option.assumptions),
+                ("risks", option.risks),
+                ("trade_offs", option.trade_offs),
+            ):
+                if not [i for i in items if i.strip()]:
+                    problems.append(f"option {number} needs at least one entry in {label}")
+            if not option.title.strip() or not option.description.strip():
+                problems.append(f"option {number} needs a title and a description")
+        return list(dict.fromkeys(problems))
+
+    return check
+
+
+def _inject_into_draft(
+    draft: OptionSetDraft, inject: Sequence[str], fault_fact_id: int | None
+) -> OptionSetDraft:
+    """Failure injection for a real model, done in code after it has answered.
+
+    The FakeLLM misbehaves by itself when asked. A real model cannot be asked to, so the same
+    faults are applied to what it returned. Either way the validation gate must catch them.
+    """
+    first = draft.options[0].model_copy()
+    if "fake_number" in inject:
+        first.description += " An increase of 12% is realistic within a year."
+    if "missing_risks" in inject:
+        first.risks = []
+    if "provisional_as_final" in inject and fault_fact_id:
+        first.description += (
+            " {{fact:" + str(fault_fact_id) + "}} confirmed placements are already secured."
+        )
+    return OptionSetDraft(options=[first, *draft.options[1:]])
+
+
 def draft_option_set(
     model: ChatModel,
     figure: KpiFigure,
@@ -84,10 +152,20 @@ def draft_option_set(
     inject: Sequence[str] = (),
     fault_fact_id: int | None = None,
 ) -> OptionSet:
+    canned = getattr(model, "provider", "") == "fake"
+    # a canned model misbehaves when asked, a real one has the faults applied to its answer
     payload = option_payload(
-        figure, attempt=attempt, diagnosis=diagnosis, inject=inject, fault_fact_id=fault_fact_id
+        figure,
+        attempt=attempt,
+        diagnosis=diagnosis,
+        inject=inject if canned else (),
+        fault_fact_id=fault_fact_id if canned else None,
     )
-    draft = model.generate("draft_options", payload, OptionSetDraft)  # type: ignore[attr-defined]
+    draft = model.generate(  # type: ignore[attr-defined]
+        "draft_options", payload, OptionSetDraft, check=_check_options(figure)
+    )
+    if not canned and attempt == 1 and inject:
+        draft = _inject_into_draft(draft, inject, fault_fact_id)
     return OptionSet(
         kpi_key=figure.key,
         attempt=attempt,

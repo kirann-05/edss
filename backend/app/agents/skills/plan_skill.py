@@ -11,7 +11,7 @@ KPIs follow from which areas, and what changed between two versions of a plan.
 """
 
 import re
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Literal
@@ -85,12 +85,15 @@ class StepDraft(BaseModel):
 
 
 class PlanDraft(BaseModel):
+    """The decisions in a plan. The outline's steps are written in code, never by a model: the
+    pipeline is fixed, and a model must not be able to promise a step the graph does not run."""
+
     period_year: str
     domains: list[Domain]
     kpi_keys: list[str]
     options_for: Literal["off_target", "all"]
     audience: str
-    steps: list[StepDraft]
+    steps: list[StepDraft] = []  # ignored. Kept so older canned outputs still fit
 
 
 # --- the skill ----------------------------------------------------------------------------------
@@ -110,22 +113,70 @@ def clarify(
             "catalogue": catalogue.payload(),
         },
         ClarifyDraft,
+        check=_check_questions,
     )
-    return [
-        ClarifyQuestion(id=q.id, text=q.text, why=q.why, choices=tuple(q.choices))
-        for q in draft.questions
-    ]
+    answered = {a.question_id for a in answers}
+    questions: list[ClarifyQuestion] = []
+    for q in draft.questions:
+        # Only the three things a plan can use, each asked once. That bounds the conversation
+        # whatever a model does: it cannot keep inventing new questions (rule 8, in spirit).
+        if q.id not in ASKABLE or q.id in answered or any(q.id == done.id for done in questions):
+            continue
+        choices = tuple(reversed(catalogue.periods)) if q.id == "period" else tuple(q.choices)
+        questions.append(ClarifyQuestion(id=q.id, text=q.text, why=q.why, choices=choices))
+    return questions
 
 
-def _to_plan(draft: PlanDraft, request: str, revision: int) -> Plan:
+ASKABLE = ("period", "scope", "audience")
+
+
+def _check_questions(draft: ClarifyDraft) -> list[str]:
+    problems = []
+    for q in draft.questions:
+        if not q.text.strip() or not q.why.strip():
+            problems.append(f"question {q.id!r} needs both a text and a why")
+    return problems
+
+
+def _check_plan(catalogue: PlanCatalogue) -> Callable[[PlanDraft], list[str]]:
+    """What a schema cannot say: the period, the KPIs and the audience must really exist."""
+    known = catalogue.by_key()
+
+    def check(draft: PlanDraft) -> list[str]:
+        problems = []
+        if draft.period_year not in catalogue.periods:
+            problems.append(
+                f"period_year {draft.period_year!r} is not one of {list(catalogue.periods)}"
+            )
+        unknown = [k for k in draft.kpi_keys if k not in known]
+        if unknown:
+            problems.append(f"unknown kpi_keys {unknown}, copy keys exactly from the catalogue")
+        if not draft.kpi_keys and not draft.domains:
+            problems.append("choose at least one area or one KPI")
+        if draft.audience not in AUDIENCES:
+            problems.append(f"audience must be exactly one of {list(AUDIENCES)}")
+        return problems
+
+    return check
+
+
+def _to_plan(draft: PlanDraft, request: str, revision: int, catalogue: PlanCatalogue) -> Plan:
+    """The model decides what the plan is about. Code decides everything that follows from it."""
+    known = catalogue.by_key()
+    chosen = set(draft.kpi_keys) or set(catalogue.keys_for(draft.domains))
+    keys = tuple(k.key for k in catalogue.kpis if k.key in chosen)  # catalogue order, no repeats
+    domains = tuple(d for d in AREAS if any(known[k].domain is d for k in keys))
+    steps = _steps(
+        draft.period_year, [d.value for d in domains], len(keys), draft.options_for, draft.audience
+    )
     return Plan(
         request=request,
         period_year=draft.period_year,
-        domains=tuple(draft.domains),
-        kpi_keys=tuple(draft.kpi_keys),
+        domains=domains,
+        kpi_keys=keys,
         options_for=draft.options_for,
         audience=draft.audience,
-        steps=tuple(PlanStep(id=s.id, title=s.title, detail=s.detail) for s in draft.steps),
+        steps=tuple(PlanStep(id=s["id"], title=s["title"], detail=s["detail"]) for s in steps),
         revision=revision,
     )
 
@@ -141,8 +192,9 @@ def propose_plan(
             "catalogue": catalogue.payload(),
         },
         PlanDraft,
+        check=_check_plan(catalogue),
     )
-    return _to_plan(draft, request, revision=1)
+    return _to_plan(draft, request, revision=1, catalogue=catalogue)
 
 
 def revise_plan(
@@ -159,8 +211,9 @@ def revise_plan(
             "catalogue": catalogue.payload(),
         },
         PlanDraft,
+        check=_check_plan(catalogue),
     )
-    revised = _to_plan(draft, plan.request, revision=plan.revision + 1)
+    revised = _to_plan(draft, plan.request, revision=plan.revision + 1, catalogue=catalogue)
     return revised, diff_plans(plan, revised, catalogue)
 
 

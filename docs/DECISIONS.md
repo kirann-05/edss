@@ -125,6 +125,15 @@ Default A. Stale data is the exception: it is used and flagged, because old data
 | D20 seeded prior briefs | In code, `services/archive.py`, similarity by token overlap in memory. pgvector arrives with F5 |
 | D21 number-word lint and structured direction | In code, `agents/tokens.py` flags digits and spelled-out numbers, and status and direction reach the text as tokens. The prose-truth gap stays a known weakness |
 
+### Decisions made while building (2026-10-03 and 04)
+
+| ID | Decision | Why | Cost |
+| --- | --- | --- | --- |
+| D25 | The plan's outline steps are written in code from the model's decisions, and the areas follow from the chosen KPIs | The pipeline is fixed, so a model must not be able to promise a step the graph does not run | The model cannot add a custom step. A person can still reword any step |
+| D26 | A data refresh adds to the same ledger. A changed file is a new batch, an unchanged file adds nothing, and superseded records are kept | An approved brief cites record ids, and those must keep pointing at the same records | The ledger only grows. Cleaning it is a deliberate act, not part of a refresh |
+| D27 | The model is checked twice: a cheap check with specific feedback right after it answers (so a small model can fix itself), then the nine checks as the gate | The gate alone makes a small model fail the long way round | The cheap check is ignored for the canned model, so injected faults still reach the gate |
+| D28 | Commits use the GitHub noreply address, and the workflow file waits in `docs/ci` until the token has the `workflow` scope | GitHub refused a push that exposed a private email, and refused a workflow without the scope | CI does not run until Kiran grants the scope |
+
 ## Open questions for Kiran to answer or chase
 
 1. Which departments are in the pilot, and does IQAC already have approved KPI definitions and targets? Is NIRF or NAAC the priority?

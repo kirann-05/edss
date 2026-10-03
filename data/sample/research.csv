@@ -1,0 +1,93 @@
+dept_code,metric_key,period_year,period_sub,value,status,as_of,numerator,denominator,unit,source_ref
+CSE,res.publications_count,2023-24,AY,70,final,2024-09-01,,,publications,research_register_2023-24.csv:row 1
+CSE,res.citations_count,2023-24,AY,350,final,2024-09-01,,,citations,research_register_2023-24.csv:row 2
+CSE,res.grant_sanctioned,2023-24,AY,482,final,2024-09-01,,,INR lakh,research_register_2023-24.csv:row 3
+CSE,res.grant_count,2023-24,AY,11,final,2024-09-01,,,grants,research_register_2023-24.csv:row 4
+AIML,res.publications_count,2023-24,AY,32,final,2024-09-01,,,publications,research_register_2023-24.csv:row 5
+AIML,res.citations_count,2023-24,AY,94,final,2024-09-01,,,citations,research_register_2023-24.csv:row 6
+AIML,res.grant_sanctioned,2023-24,AY,155,final,2024-09-01,,,INR lakh,research_register_2023-24.csv:row 7
+AIML,res.grant_count,2023-24,AY,3,final,2024-09-01,,,grants,research_register_2023-24.csv:row 8
+MCA,res.publications_count,2023-24,AY,8,final,2024-09-01,,,publications,research_register_2023-24.csv:row 9
+MCA,res.citations_count,2023-24,AY,17,final,2024-09-01,,,citations,research_register_2023-24.csv:row 10
+MCA,res.grant_sanctioned,2023-24,AY,22,final,2024-09-01,,,INR lakh,research_register_2023-24.csv:row 11
+MCA,res.grant_count,2023-24,AY,1,final,2024-09-01,,,grants,research_register_2023-24.csv:row 12
+ECE,res.publications_count,2023-24,AY,48,final,2024-09-01,,,publications,research_register_2023-24.csv:row 13
+ECE,res.citations_count,2023-24,AY,194,final,2024-09-01,,,citations,research_register_2023-24.csv:row 14
+ECE,res.grant_sanctioned,2023-24,AY,353,final,2024-09-01,,,INR lakh,research_register_2023-24.csv:row 15
+ECE,res.grant_count,2023-24,AY,8,final,2024-09-01,,,grants,research_register_2023-24.csv:row 16
+EEE,res.publications_count,2023-24,AY,30,final,2024-09-01,,,publications,research_register_2023-24.csv:row 17
+EEE,res.citations_count,2023-24,AY,105,final,2024-09-01,,,citations,research_register_2023-24.csv:row 18
+EEE,res.grant_sanctioned,2023-24,AY,224,final,2024-09-01,,,INR lakh,research_register_2023-24.csv:row 19
+EEE,res.grant_count,2023-24,AY,5,final,2024-09-01,,,grants,research_register_2023-24.csv:row 20
+MECH,res.publications_count,2023-24,AY,29,final,2024-09-01,,,publications,research_register_2023-24.csv:row 21
+MECH,res.citations_count,2023-24,AY,93,final,2024-09-01,,,citations,research_register_2023-24.csv:row 22
+MECH,res.grant_sanctioned,2023-24,AY,129,final,2024-09-01,,,INR lakh,research_register_2023-24.csv:row 23
+MECH,res.grant_count,2023-24,AY,3,final,2024-09-01,,,grants,research_register_2023-24.csv:row 24
+CIVIL,res.publications_count,2023-24,AY,21,final,2024-09-01,,,publications,research_register_2023-24.csv:row 25
+CIVIL,res.citations_count,2023-24,AY,66,final,2024-09-01,,,citations,research_register_2023-24.csv:row 26
+CIVIL,res.grant_sanctioned,2023-24,AY,163,final,2024-09-01,,,INR lakh,research_register_2023-24.csv:row 27
+CIVIL,res.grant_count,2023-24,AY,4,final,2024-09-01,,,grants,research_register_2023-24.csv:row 28
+BIOTECH,res.publications_count,2023-24,AY,24,final,2024-09-01,,,publications,research_register_2023-24.csv:row 29
+BIOTECH,res.citations_count,2023-24,AY,130,final,2024-09-01,,,citations,research_register_2023-24.csv:row 30
+BIOTECH,res.grant_sanctioned,2023-24,AY,224,final,2024-09-01,,,INR lakh,research_register_2023-24.csv:row 31
+BIOTECH,res.grant_count,2023-24,AY,5,final,2024-09-01,,,grants,research_register_2023-24.csv:row 32
+CSE,res.publications_count,2024-25,AY,79,final,2025-09-01,,,publications,research_register_2024-25.csv:row 1
+CSE,res.citations_count,2024-25,AY,395,final,2025-09-01,,,citations,research_register_2024-25.csv:row 2
+CSE,res.grant_sanctioned,2024-25,AY,521,final,2025-09-01,,,INR lakh,research_register_2024-25.csv:row 3
+CSE,res.grant_count,2024-25,AY,12,final,2025-09-01,,,grants,research_register_2024-25.csv:row 4
+AIML,res.publications_count,2024-25,AY,36,final,2025-09-01,,,publications,research_register_2024-25.csv:row 5
+AIML,res.citations_count,2024-25,AY,104,final,2025-09-01,,,citations,research_register_2024-25.csv:row 6
+AIML,res.grant_sanctioned,2024-25,AY,167,final,2025-09-01,,,INR lakh,research_register_2024-25.csv:row 7
+AIML,res.grant_count,2024-25,AY,4,final,2025-09-01,,,grants,research_register_2024-25.csv:row 8
+MCA,res.publications_count,2024-25,AY,9,final,2025-09-01,,,publications,research_register_2024-25.csv:row 9
+MCA,res.citations_count,2024-25,AY,19,final,2025-09-01,,,citations,research_register_2024-25.csv:row 10
+MCA,res.grant_sanctioned,2024-25,AY,23,final,2025-09-01,,,INR lakh,research_register_2024-25.csv:row 11
+MCA,res.grant_count,2024-25,AY,1,final,2025-09-01,,,grants,research_register_2024-25.csv:row 12
+ECE,res.publications_count,2024-25,AY,54,final,2025-09-01,,,publications,research_register_2024-25.csv:row 13
+ECE,res.citations_count,2024-25,AY,220,final,2025-09-01,,,citations,research_register_2024-25.csv:row 14
+ECE,res.grant_sanctioned,2024-25,AY,381,final,2025-09-01,,,INR lakh,research_register_2024-25.csv:row 15
+ECE,res.grant_count,2024-25,AY,8,final,2025-09-01,,,grants,research_register_2024-25.csv:row 16
+EEE,res.publications_count,2024-25,AY,34,final,2025-09-01,,,publications,research_register_2024-25.csv:row 17
+EEE,res.citations_count,2024-25,AY,117,final,2025-09-01,,,citations,research_register_2024-25.csv:row 18
+EEE,res.grant_sanctioned,2024-25,AY,242,final,2025-09-01,,,INR lakh,research_register_2024-25.csv:row 19
+EEE,res.grant_count,2024-25,AY,5,final,2025-09-01,,,grants,research_register_2024-25.csv:row 20
+MECH,res.publications_count,2024-25,AY,32,final,2025-09-01,,,publications,research_register_2024-25.csv:row 21
+MECH,res.citations_count,2024-25,AY,102,final,2025-09-01,,,citations,research_register_2024-25.csv:row 22
+MECH,res.grant_sanctioned,2024-25,AY,140,final,2025-09-01,,,INR lakh,research_register_2024-25.csv:row 23
+MECH,res.grant_count,2024-25,AY,3,final,2025-09-01,,,grants,research_register_2024-25.csv:row 24
+CIVIL,res.publications_count,2024-25,AY,23,final,2025-09-01,,,publications,research_register_2024-25.csv:row 25
+CIVIL,res.citations_count,2024-25,AY,74,final,2025-09-01,,,citations,research_register_2024-25.csv:row 26
+CIVIL,res.grant_sanctioned,2024-25,AY,177,final,2025-09-01,,,INR lakh,research_register_2024-25.csv:row 27
+CIVIL,res.grant_count,2024-25,AY,4,final,2025-09-01,,,grants,research_register_2024-25.csv:row 28
+BIOTECH,res.publications_count,2024-25,AY,27,final,2025-09-01,,,publications,research_register_2024-25.csv:row 29
+BIOTECH,res.citations_count,2024-25,AY,146,final,2025-09-01,,,citations,research_register_2024-25.csv:row 30
+BIOTECH,res.grant_sanctioned,2024-25,AY,242,final,2025-09-01,,,INR lakh,research_register_2024-25.csv:row 31
+BIOTECH,res.grant_count,2024-25,AY,5,final,2025-09-01,,,grants,research_register_2024-25.csv:row 32
+CSE,res.publications_count,2025-26,AY,88,final,2026-08-21,,,publications,research_register_2025-26.csv:row 1
+CSE,res.citations_count,2025-26,AY,440,final,2026-08-21,,,citations,research_register_2025-26.csv:row 2
+CSE,res.grant_sanctioned,2025-26,AY,560,final,2026-08-21,,,INR lakh,research_register_2025-26.csv:row 3
+CSE,res.grant_count,2025-26,AY,12,final,2026-08-21,,,grants,research_register_2025-26.csv:row 4
+AIML,res.publications_count,2025-26,AY,40,final,2026-08-21,,,publications,research_register_2025-26.csv:row 5
+AIML,res.citations_count,2025-26,AY,115,final,2026-08-21,,,citations,research_register_2025-26.csv:row 6
+AIML,res.grant_sanctioned,2025-26,AY,180,final,2026-08-21,,,INR lakh,research_register_2025-26.csv:row 7
+AIML,res.grant_count,2025-26,AY,4,final,2026-08-21,,,grants,research_register_2025-26.csv:row 8
+MCA,res.publications_count,2025-26,AY,10,final,2026-08-21,,,publications,research_register_2025-26.csv:row 9
+MCA,res.citations_count,2025-26,AY,22,final,2026-08-21,,,citations,research_register_2025-26.csv:row 10
+MCA,res.grant_sanctioned,2025-26,AY,25,final,2026-08-21,,,INR lakh,research_register_2025-26.csv:row 11
+MCA,res.grant_count,2025-26,AY,1,final,2026-08-21,,,grants,research_register_2025-26.csv:row 12
+ECE,res.publications_count,2025-26,AY,60,final,2026-08-21,,,publications,research_register_2025-26.csv:row 13
+ECE,res.citations_count,2025-26,AY,242,final,2026-08-21,,,citations,research_register_2025-26.csv:row 14
+ECE,res.grant_sanctioned,2025-26,AY,410,final,2026-08-21,,,INR lakh,research_register_2025-26.csv:row 15
+ECE,res.grant_count,2025-26,AY,9,final,2026-08-21,,,grants,research_register_2025-26.csv:row 16
+EEE,res.publications_count,2025-26,AY,38,final,2026-08-21,,,publications,research_register_2025-26.csv:row 17
+EEE,res.citations_count,2025-26,AY,133,final,2026-08-21,,,citations,research_register_2025-26.csv:row 18
+EEE,res.grant_sanctioned,2025-26,AY,260,final,2026-08-21,,,INR lakh,research_register_2025-26.csv:row 19
+EEE,res.grant_count,2025-26,AY,6,final,2026-08-21,,,grants,research_register_2025-26.csv:row 20
+CIVIL,res.publications_count,2025-26,AY,26,final,2026-08-21,,,publications,research_register_2025-26.csv:row 21
+CIVIL,res.citations_count,2025-26,AY,84,final,2026-08-21,,,citations,research_register_2025-26.csv:row 22
+CIVIL,res.grant_sanctioned,2025-26,AY,190,final,2026-08-21,,,INR lakh,research_register_2025-26.csv:row 23
+CIVIL,res.grant_count,2025-26,AY,4,final,2026-08-21,,,grants,research_register_2025-26.csv:row 24
+BIOTECH,res.publications_count,2025-26,AY,30,final,2026-08-21,,,publications,research_register_2025-26.csv:row 25
+BIOTECH,res.citations_count,2025-26,AY,162,final,2026-08-21,,,citations,research_register_2025-26.csv:row 26
+BIOTECH,res.grant_sanctioned,2025-26,AY,260,final,2026-08-21,,,INR lakh,research_register_2025-26.csv:row 27
+BIOTECH,res.grant_count,2025-26,AY,6,final,2026-08-21,,,grants,research_register_2025-26.csv:row 28

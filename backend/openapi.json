@@ -2934,6 +2934,98 @@
         "title": "QuestionOut",
         "type": "object"
       },
+      "RefreshOut": {
+        "properties": {
+          "accepted": {
+            "title": "Accepted",
+            "type": "integer"
+          },
+          "current_period": {
+            "title": "Current Period",
+            "type": "string"
+          },
+          "folder": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Folder"
+          },
+          "periods": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Periods",
+            "type": "array"
+          },
+          "refreshed_at": {
+            "format": "date-time",
+            "title": "Refreshed At",
+            "type": "string"
+          },
+          "rejected": {
+            "title": "Rejected",
+            "type": "integer"
+          },
+          "rejects": {
+            "items": {
+              "$ref": "#/components/schemas/RejectOut"
+            },
+            "title": "Rejects",
+            "type": "array"
+          },
+          "source": {
+            "enum": [
+              "folder",
+              "synthetic"
+            ],
+            "title": "Source",
+            "type": "string"
+          },
+          "unchanged_files": {
+            "title": "Unchanged Files",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source",
+          "folder",
+          "accepted",
+          "rejected",
+          "rejects",
+          "unchanged_files",
+          "periods",
+          "current_period",
+          "refreshed_at"
+        ],
+        "title": "RefreshOut",
+        "type": "object"
+      },
+      "RejectOut": {
+        "properties": {
+          "where": {
+            "title": "Where",
+            "type": "string"
+          },
+          "why": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Why",
+            "type": "array"
+          }
+        },
+        "required": [
+          "where",
+          "why"
+        ],
+        "title": "RejectOut",
+        "type": "object"
+      },
       "ReviseIn": {
         "properties": {
           "feedback": {
@@ -3519,9 +3611,28 @@
             "title": "Llm Is Fake",
             "type": "boolean"
           },
+          "llm_is_local": {
+            "title": "Llm Is Local",
+            "type": "boolean"
+          },
+          "llm_name": {
+            "title": "Llm Name",
+            "type": "string"
+          },
           "llm_provider": {
             "title": "Llm Provider",
             "type": "string"
+          },
+          "llm_reachable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llm Reachable"
           },
           "periods": {
             "items": {
@@ -3553,6 +3664,9 @@
           "data_mode",
           "llm_provider",
           "llm_is_fake",
+          "llm_name",
+          "llm_is_local",
+          "llm_reachable",
           "current_period",
           "periods",
           "today",
@@ -5003,6 +5117,28 @@
           }
         },
         "summary": "Data Health",
+        "tags": [
+          "data health"
+        ]
+      }
+    },
+    "/api/data/refresh": {
+      "post": {
+        "description": "Read the sources again (FR-16). The data in use is replaced only when the whole read worked.",
+        "operationId": "refresh_api_data_refresh_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Refresh",
         "tags": [
           "data health"
         ]

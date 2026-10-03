@@ -6,10 +6,12 @@ and the run service. Tests build the same state with other settings, or with run
 """
 
 import secrets
+from collections.abc import Callable
 from datetime import date, timedelta
 
 from langgraph.checkpoint.memory import InMemorySaver
 
+from app.agents.fake_llm import FakeLLM
 from app.agents.graph import GraphDeps, build_graph
 from app.agents.llm import LlmSettings, get_chat_model
 from app.agents.runtime import RunEvents, Runtime
@@ -21,6 +23,7 @@ from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
 from app.services.archive import seed_archive
 from app.services.connector import InMemoryConnector, ScopeRegistry
+from app.services.refresh import DataSource
 from app.services.runs import RunService, plan_catalogue_from
 from app.services.store import DataStore
 from app.services.system_config import SystemConfig
@@ -28,7 +31,15 @@ from app.services.users import build_seed_users
 from app.services.validation_context import context_for_document
 
 
-def build_state(settings: Settings, today: date, *, synchronous_runs: bool = False) -> AppState:
+def build_state(
+    settings: Settings,
+    today: date,
+    *,
+    synchronous_runs: bool = False,
+    store: DataStore | None = None,
+    clock: Callable[[], date] | None = None,
+) -> AppState:
+    """`store` lets the same services run over data that came from files or a database."""
     jwt_secret = settings.jwt_secret.get_secret_value() if settings.jwt_secret else None
     if jwt_secret is None:
         # Synthetic mode only: a throwaway secret, so sessions end when the server restarts
@@ -37,7 +48,8 @@ def build_state(settings: Settings, today: date, *, synchronous_runs: bool = Fal
         settings.edss_seed_password.get_secret_value() if settings.edss_seed_password else None
     )
 
-    store = DataStore.build(today, settings.stale_after_days)
+    data_source = DataSource(settings)
+    store = store or data_source.load(today)
     audit, events = AuditLog(), RunEvents()
     scopes = ScopeRegistry(today)
     connector = InMemoryConnector(store, scopes)
@@ -83,7 +95,11 @@ def build_state(settings: Settings, today: date, *, synchronous_runs: bool = Fal
         system_config=system_config,
         governance=governance,
         runs=runs,
-        archive=seed_archive(store, drafter),
+        archive=seed_archive(store, FakeLLM("drafter")),  # fixture history, never a live model call
+        data_source=data_source,
+        clock=clock or date.today,
+        drafter=drafter,
+        clarifier=clarifier,
         throttle=LoginThrottle(
             max_failures=settings.login_max_failures,
             window=timedelta(minutes=settings.login_lockout_minutes),

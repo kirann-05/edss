@@ -114,6 +114,10 @@ class RunService:
         with self._lock:
             return sorted(self._runs.values(), key=lambda r: r.created_at, reverse=True)
 
+    def any_running(self) -> bool:
+        with self._lock:
+            return any(r.status is RunStatus.RUNNING for r in self._runs.values())
+
     def is_settled(self, run_id: str) -> bool:
         return self.get(run_id).status in SETTLED
 

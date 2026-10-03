@@ -1,6 +1,8 @@
 """Shared request dependencies: who is signed in, what they may do, and what they may see."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import date
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, Query, Request, status
@@ -15,6 +17,7 @@ from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
 from app.services.archive import Archive
 from app.services.connector import InMemoryConnector, ScopeRegistry
+from app.services.refresh import DataSource
 from app.services.runs import RunService
 from app.services.store import DataStore, UnknownPeriodError
 from app.services.system_config import SystemConfig
@@ -41,6 +44,12 @@ class AppState:
     runs: RunService
     archive: Archive
     throttle: LoginThrottle
+    data_source: DataSource
+    clock: Callable[
+        [], date
+    ]  # today, as freshness is judged. Fixed in tests, the real date otherwise
+    drafter: object  # the model behind the graph's drafting steps
+    clarifier: object
 
     @property
     def demo_login_enabled(self) -> bool:

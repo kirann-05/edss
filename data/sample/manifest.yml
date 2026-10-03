@@ -1,0 +1,28 @@
+departments: departments.csv
+sources:
+- domain: academic
+  name: Examination Section results export
+  owner_office: Controller of Examinations
+  kind: csv
+  file: academic.csv
+- domain: research
+  name: R&D Cell publication register
+  owner_office: Research and Development Cell
+  kind: csv
+  file: research.csv
+  publications: publications.csv
+- domain: placement
+  name: Placement Cell offers view
+  owner_office: Training and Placement Cell
+  kind: csv
+  file: placement.csv
+- domain: finance
+  name: Accounts Office quarterly statements
+  owner_office: Accounts Office
+  kind: csv
+  file: finance.csv
+- domain: reference
+  name: HR and Admissions registers
+  owner_office: Registrar's Office
+  kind: csv
+  file: reference.csv
