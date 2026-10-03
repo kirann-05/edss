@@ -1,6 +1,6 @@
 # DECISIONS
 
-D1 to D4 were put to Kiran as options. D1 is deferred to Day 4 (see "Confirmed by Kiran"). D2 to D4 are still unanswered and keep their provisional defaults. They are changeable. The cost of changing each one later is stated. If a provisional default starts to hurt, present options to Kiran instead of working around it.
+D1 to D4 were put to Kiran as options. D1 is now decided (C5). D2 to D4 are still unanswered and keep their provisional defaults. They are changeable. The cost of changing each one later is stated. If a provisional default starts to hurt, present options to Kiran instead of working around it.
 
 ## Confirmed by Kiran (2026-10-03)
 
@@ -10,6 +10,9 @@ D1 to D4 were put to Kiran as options. D1 is deferred to Day 4 (see "Confirmed b
 | C2 | Container runtime is OrbStack | Docker compatible and lighter on a 16 GB machine. The compose file stays plain Docker Compose so it runs on any Docker host later |
 | C3 | D1 deferred: FakeLLM only until Day 4 | Build all plumbing on FakeLLM. Pick the real dev model by Day 4. The data_mode guard is built on Day 4 regardless |
 | C4 | Lab grading format unknown | Kiran to ask the professor whether each lab is also submitted as a notebook. Until then, keep every lab's deliverable runnable from one command so it can be wrapped in a notebook later |
+| C5 | D1 decided: local first | Ollama on the dev machine with `qwen3.5:4b` (chat, 3.4 GB) and `nomic-embed-text` (embeddings), both small enough for 16 GB alongside Postgres. FakeLLM stays the default for tests and the demo fallback. Production inference on a university GPU through vLLM, sized once IT answers (H3) |
+| C6 | D13 to D24 confirmed as implemented | Confirmed 2026-10-03. Rule 10 in CLAUDE.md reworded to match D13 |
+| C7 | Code is pushed to a private GitHub repo, kirann-05/edss, so CI runs on every push | Commits use the GitHub noreply address so the push is accepted with email privacy on. `.env`, `data/real/` and credentials stay out of git, checked before the first push |
 
 ## Provisional (Kiran to confirm)
 
@@ -64,11 +67,11 @@ Provisional default: Core plus Strong, Stretch only if ahead. Revisit at the Day
 | D11 | Validation before the human gate | The book's text, not its pseudocode |
 | D12 | Cross-department paper credit: once at institution, credited to each department | Needs IQAC confirmation |
 
-## Open issues from the 2026-10-03 doc review (proposed defaults, Kiran to confirm)
+## Review findings from 2026-10-03 (confirmed by Kiran, C6)
 
-Each of these is a gap or contradiction found in the pack. The proposed default is what the build will do unless Kiran says otherwise.
+Each of these is a gap or contradiction found in the pack. The defaults below are what the build does, confirmed on 2026-10-03.
 
-| ID | Issue | Proposed default |
+| ID | Issue | Decision |
 | --- | --- | --- |
 | D13 | CLAUDE.md rule 10 says nothing reaches review without a green report, but ARCHITECTURE sends exhausted retries to the human as `escalated`. As written, an approver could publish a brief that failed V1 | Escalated drafts do reach the human, but Approve is blocked if any integrity check failed (V1, V4, V6, V7, V9). Only send back or override is possible then. Approve with acknowledgement is allowed only when the remaining failures are completeness checks (V2, V3, V8). Reword rule 10 to match |
 | D14 | No rule for combining sub-periods (semesters, quarters) into a year, or for flows versus snapshots | Add `period_agg` (`sum` or `latest`) to every metric key in the catalogue. Flows such as expenditure sum. Snapshots such as faculty_count and budget_sanctioned take the latest as_of. KPIs are computed per period_year |
@@ -80,7 +83,7 @@ Each of these is a gap or contradiction found in the pack. The proposed default 
 | D20 | Lab 4 retrieves similar past briefs, but the synthetic data has none | The synthetic generator also seeds 3 to 5 prior approved briefs with the decisions leadership took |
 | D21 | V1's digit lint misses spelled-out numbers, and no check confirms prose direction ("improved" when the KPI fell). V4's keyword check is brittle | Extend V1 to number words. The LLM receives status and direction as structured fields and refers to them by token. Record the remaining prose-truth gap as a known weakness in VIVA_NOTES |
 
-## Provisional build approach (2026-10-03, Kiran to confirm)
+## Build approach (confirmed by Kiran, C6)
 
 ### D22: Where the UI gets its data before Postgres and the graph exist
 
@@ -90,9 +93,9 @@ Each of these is a gap or contradiction found in the pack. The proposed default 
 | B. Mock route handlers inside Next.js, hand-typed fixtures | UI can start in minutes with no backend at all | Throwaway code. Fixtures can disagree with the engine. Contract drift is found late. Auth, SSE and RBAC get built twice |
 | C. MSW in the browser | No server needed, works offline | Same drift problem as B, plus one more dependency |
 
-Provisional default: A, delivered as vertical slices so a page is usable as soon as its slice is done. Cost of changing later: low, the UI only talks to `/api/*` and does not know which backend answers.
+Decision: A, delivered as vertical slices so a page is usable as soon as its slice is done. Cost of changing later: low, the UI only talks to `/api/*` and does not know which backend answers.
 
-## Implemented defaults (2026-10-03, Kiran to confirm)
+## Implemented defaults (confirmed by Kiran, C6)
 
 ### D23: citations and shared papers
 
@@ -112,7 +115,7 @@ Default A. Stale data is the exception: it is used and flagged, because old data
 
 | ID | Status |
 | --- | --- |
-| D13 escalated drafts cannot be approved past an integrity failure | In code, `INTEGRITY_CHECKS` in `governance/service.py`, tested through the API. Rule 10 in CLAUDE.md is not reworded yet, that waits for Kiran's yes |
+| D13 escalated drafts cannot be approved past an integrity failure | In code, `INTEGRITY_CHECKS` in `governance/service.py`, tested through the API. Rule 10 in CLAUDE.md reworded to match |
 | D14 `period_agg` per metric | In code, `kpi/catalogue.py` |
 | D15 at-risk band | In code, `judge()` in `kpi/engine.py`, 2 percent default per definition |
 | D16 formula grammar | In code, `kpi/formulas.py`. AC_PO uses a simple mean, flagged placeholder |

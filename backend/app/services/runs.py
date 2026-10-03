@@ -29,6 +29,7 @@ from app.agents.skills.plan_skill import (
     PlanError,
     apply_patch,
     clarify,
+    diff_plans,
     lock_plan,
     propose_plan,
     revise_plan,
@@ -189,19 +190,26 @@ class RunService:
     def edit_plan(self, user: AppUser, run_id: str, patch: dict[str, Any]) -> RunRecord:
         with self._lock:
             record = self._open(run_id, RunStatus.PLANNING)
-            assert record.plan is not None
-            record.plan = self._plan_call(
-                lambda: apply_patch(record.plan, patch, self._catalogue())
-            )
+            before = record.plan
+            assert before is not None
+            catalogue = self._catalogue()
+            record.plan = self._plan_call(lambda: apply_patch(before, patch, catalogue))
+            changes = diff_plans(before, record.plan, catalogue)
+            if record.plan.steps != before.steps:
+                changes.append("Reworded the outline")
             record.plan_history.append(
                 {
                     "revision": record.plan.revision,
-                    "changes": ["Edited directly"],
+                    "changes": changes or ["Saved with no change"],
                     "at": self._clock().isoformat(),
                 }
             )
         self._log_user(
-            user, "plan.edit", record, {"patch": patch}, {"revision": record.plan.revision}
+            user,
+            "plan.edit",
+            record,
+            {"patch": patch},
+            {"revision": record.plan.revision, "changes": changes},
         )
         return record
 

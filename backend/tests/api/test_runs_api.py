@@ -100,6 +100,18 @@ class TestPlan:
         ).json()["plan"]
         assert plan["period_year"] == "2024-25" and plan["kpi_keys"] == ["PL_PCT", "AC_CO"]
 
+    def test_a_direct_edit_is_recorded_in_plain_words(self, pipeline):
+        client, run = self.make(pipeline)
+        steps = {run["plan"]["steps"][0]["id"]: {"title": "Check who may read what"}}
+        body = client.put(
+            f"/api/runs/{run['id']}/plan",
+            json={"period_year": "2024-25", "options_for": "all", "steps": steps},
+        ).json()
+        changes = body["plan_history"][-1]["changes"]
+        assert "Period set to 2024-25" in changes
+        assert "Options will be drafted for every KPI" in changes
+        assert "Reworded the outline" in changes
+
     def test_a_nonsense_edit_is_refused_with_the_reason(self, pipeline):
         client, run = self.make(pipeline)
         response = client.put(f"/api/runs/{run['id']}/plan", json={"period_year": "1999-00"})

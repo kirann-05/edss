@@ -31,7 +31,7 @@ Four domain agents (Academic, Research, Placement, Finance) aggregate department
 7. Real data never leaves the machine. Hosted LLMs are allowed only when data_mode is synthetic, enforced in code and checked against the database, not only the env file. No LangSmith or any external tracing.
 8. Retry is bounded (MAX_ATTEMPTS, default 3). On exhaustion, escalate to the human with a diagnosis. Never loop forever.
 9. The audit log is append-only and hash-chained. Log inputs and outputs of every step, not only messages.
-10. Validation is a hard gate. Nothing reaches human review without a green report.
+10. Validation is a hard gate. A draft reaches human review with a green report, or flagged `escalated` with its diagnosis once the retry budget is spent. An escalated draft can never be approved past a failed integrity check (V1, V4, V5, V6, V7, V9), only sent back or overridden. Completeness failures (V2, V3, V8) can be approved only with the approver's recorded acknowledgement (decision D13).
 11. Percentages are aggregated from numerators and denominators, never by averaging department percentages.
 12. Do not invent NIRF or NAAC definitions, parameter codes or targets. Use `PLACEHOLDER_PENDING_IQAC` markers until the university supplies them.
 

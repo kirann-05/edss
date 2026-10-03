@@ -301,7 +301,7 @@ def build_graph(deps: GraphDeps, checkpointer: Any):
 
     @rt.traced(
         "draft_options",
-        lambda s: f"Options for {s['figure']['key']}",
+        lambda s: f"Options for {s['figure']['name']}",
         node_id=lambda s: f"options:{s['figure']['key']}",
     )
     def draft_options(state: dict[str, Any]) -> dict[str, Any]:
