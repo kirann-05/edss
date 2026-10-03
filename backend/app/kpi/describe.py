@@ -51,3 +51,23 @@ def _render(node: ast.AST) -> str:
 
 def describe_formula(formula: str) -> str:
     return _render(parse_formula(formula, CATALOGUE).tree.body)
+
+
+def describe_term(label: str) -> str:
+    """Plain-language name for an input term such as 'sum(plc.registered)'."""
+    name, _, rest = label.partition("(")
+    args = [a.strip() for a in rest.rstrip(")").split(",") if a.strip()]
+    try:
+        if name == "sum":
+            text = f"total {_label(args[0])}"
+        elif name == "mean":
+            text = f"average {_label(args[0])}"
+        elif name == "weighted_mean":
+            text = f"{_label(args[0])}, weighted by {_label(args[1])}"
+        elif name == "unique_publications":
+            text = "unique publications"
+        else:
+            return label
+    except (IndexError, KeyError):
+        return label
+    return text[:1].upper() + text[1:]

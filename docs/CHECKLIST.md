@@ -30,7 +30,7 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 
 - [x] B1 Makefile with `dev`, `test`, `lint`, `seed`, `acceptance`, `demo` targets (some stubs for now). Check: `make test` runs both suites
 - [x] B2 `backend/` uv project, FastAPI app with `/api/health`, pytest and ruff configured. Check: `make test` green
-- [ ] B3 `frontend/` Next.js app, TypeScript, Tailwind, shadcn/ui, TanStack Query, ECharts. Check: `pnpm build` and `pnpm lint` green
+- [x] B3 `frontend/` Next.js app, TypeScript, Tailwind, shadcn/ui, TanStack Query, ECharts. Check: `pnpm build` and `pnpm lint` green
 - [x] B4 Frontend proxies `/api/*` to the backend, one origin for cookies and SSE. Check: browser fetch of `/api/health` returns JSON
 - [ ] B5 `.env.example` kept in sync, `.env` never committed. Check: `git ls-files | grep -c '^\.env$'` is 0
 - [ ] B6 CI workflow running backend tests, frontend lint, typecheck, unit tests and build. Check: workflow file lints locally with `act` or is run on first push
@@ -38,44 +38,44 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 
 ## C. Backend core (pure logic, tests written first)
 
-- [ ] C1 Domain schemas (Pydantic v2): DomainView, KpiResult, Option, Brief, ValidationReport, Plan, RunState. Check: schema tests, OpenAPI exports cleanly
-- [ ] C2 Synthetic generator, seed 42, 8 departments, 3 years, traps T1 to T10. Check: one test per trap asserts the planted value and the expected handling
-- [ ] C3 FakeLLM and provider factory with data_mode guard (also checks the base URL host, decision D17). Check: real mode plus hosted provider refuses at start and at call time
-- [ ] C4 KPI engine: restricted AST evaluator, Decimal arithmetic, weighted aggregation, variance, unrounded status, undefined on zero denominator (decisions D14 to D16). Check: tests green including T6, T7, T9, every result lists its input fact ids
+- [~] C1 Domain schemas (Pydantic v2): DomainView, KpiResult, Option, Brief, ValidationReport, Plan, RunState. Check: schema tests, OpenAPI exports cleanly (KpiResult, DepartmentValue and the API models exist, Brief, Plan and RunState come with slices 2 and 3)
+- [x] C2 Synthetic generator, seed 42, 8 departments, 3 years, traps T1 to T10. Check: one test per trap asserts the planted value and the expected handling
+- [~] C3 FakeLLM and provider factory with data_mode guard (also checks the base URL host, decision D17). Check: real mode plus hosted provider refuses at start and at call time (the rule 7 tracing guard is done, the LLM factory and data_mode guard are not)
+- [x] C4 KPI engine: restricted AST evaluator, Decimal arithmetic, weighted aggregation, variance, unrounded status, undefined on zero denominator (decisions D14 to D16). Check: tests green including T6, T7, T9, every result lists its input fact ids
 - [ ] C5 Reference tokens `{{kpi:KEY}}` and `{{fact:ID}}`, renderer, digit and number-word lint (decision D21). Check: stray digit and spelled-out number both rejected
 - [ ] C6 Validation checks V1 to V9 as pure functions with locators. Check: each check has a passing and a failing fixture
 - [ ] C7 Fault injection helpers (8 faults from ARCHITECTURE section 10). Check: every injected fault is detected by the intended check
 - [ ] C8 Hash-chained audit log logic with verifier (decision D18 for the single writer). Check: tampering with any row breaks verification at that row
-- [ ] C9 RBAC matrix and HOD and Dean scoping functions. Check: table-driven tests for every role and action
+- [x] C9 RBAC matrix and HOD and Dean scoping functions. Check: table-driven tests for every role and action (RBAC matrix and department scope, tested against SPEC section 2)
 - [ ] C10 Clarify and plan skills on FakeLLM, case-agnostic. Check: vague request gives at least 2 questions, same skill handles two different requests, plan lock is immutable
 - [ ] C11 Brief composer and options drafting through FakeLLM with structured output and repair retry. Check: every off-target KPI gets 2 or 3 options with assumptions, risks, trade-offs
 - [ ] C12 Governance logic: approve, edit, override, publish, versions, current pointer, rollback. Check: publish v1 and v2, roll back to v1, audit rows written, unauthorised role refused
 
 ## D. API layer
 
-- [ ] D1 Cookie session auth, roles, demo login for synthetic mode only (guarded). Check: demo login refused when data_mode is real
-- [ ] D2 Routers per docs/ARCHITECTURE.md: runs, kpis, briefs, drilldown, audit, health, auth, admin. Check: OpenAPI lists every route
-- [ ] D3 Authorisation test for every route, including HOD scoping. Check: HOD cannot read another department's detail by any route
+- [x] D1 Cookie session auth, roles, demo login for synthetic mode only (guarded). Check: demo login refused when data_mode is real
+- [~] D2 Routers per docs/ARCHITECTURE.md: runs, kpis, briefs, drilldown, audit, health, auth, admin. Check: OpenAPI lists every route (auth, system, kpis, domains and data health so far)
+- [x] D3 Authorisation test for every route, including HOD scoping. Check: HOD cannot read another department's detail by any route (the route-table walk covers routes added later automatically)
 - [ ] D4 SSE run progress with node timings and retry attempt. Check: event stream test, browser shows live rows
-- [ ] D5 OpenAPI to TypeScript types generation so the UI contract cannot drift. Check: `make types` then `pnpm typecheck` green
-- [ ] D6 In-memory services behind the same interfaces the Postgres versions will implement. Check: swap is a one-file change per service
+- [x] D5 OpenAPI to TypeScript types generation so the UI contract cannot drift. Check: `make types` then `pnpm typecheck` green (also covers the plain-language input names)
+- [~] D6 In-memory services behind the same interfaces the Postgres versions will implement. Check: swap is a one-file change per service (data store and users are in memory behind the final interfaces, runs, briefs and audit come next)
 
 ## E. Frontend (against the API above)
 
-- [ ] E1 Design tokens, shell, navigation by role, data mode badge, skip link, status badge components. Check: 1280px screenshot reviewed, axe has no serious issues
-- [ ] E2 Login page with role shown after sign in. Check: Playwright logs in as each seeded role
-- [ ] E3 Dashboard: KPI cards with target, variance chip, status, badges, rounded-miss notice, current report card. Check: T6 KPI shows "75.0" with Missed and "0.04 pts below"
-- [ ] E4 Drill-down drawer, deep-linkable: formula, inputs, per-department chart and table, fact list with badges, source refs. Check: click KPI, see domain metric, department, source ref
-- [ ] E5 Domain tabs with department comparison charts (bar with target line) and table toggle. Check: stale and missing departments shown explicitly, never as zero
-- [ ] E6 Data health page: department by domain matrix, batches, refresh. Check: T1 stale and T2 missing visible
+- [~] E1 Design tokens, shell, navigation by role, data mode badge, skip link, status badge components. Check: 1280px screenshot reviewed, axe has no serious issues (tokens, shell, role navigation, badges and mode chips are done, the axe check is still to run)
+- [~] E2 Login page with role shown after sign in. Check: Playwright logs in as each seeded role (the page works for every role by hand, the Playwright check is still to write)
+- [x] E3 Dashboard: KPI cards with target, variance chip, status, badges, rounded-miss notice, current report card. Check: T6 KPI shows "75.0" with Missed and "0.04 pts below"
+- [x] E4 Drill-down drawer, deep-linkable: formula, inputs, per-department chart and table, fact list with badges, source refs. Check: click KPI, see domain metric, department, source ref
+- [x] E5 Domain tabs with department comparison charts (bar with target line) and table toggle. Check: stale and missing departments shown explicitly, never as zero
+- [x] E6 Data health page: department by domain matrix, batches, refresh. Check: T1 stale and T2 missing visible (the refresh button waits for the ingestion work in F2)
 - [ ] E7 New Run: clarify chat, editable plan, lock, live progress. Check: demo script step 2 and 3 clickable
 - [ ] E8 Review queue and Brief review: options, risks, trade-offs, assumptions, tabs for evidence, validation, data health, prior briefs, bottom action bar. Check: Approve disabled until green or escalated with acknowledgement
 - [ ] E9 Inline option edit with diff against the draft. Check: edit shows changed text, approver sees the diff
 - [ ] E10 Reports: versions, diff, rollback with reason and confirmation, print to PDF view. Check: demo script step 7 and 8
 - [ ] E11 Audit page: filters, chain verification banner, run trace timeline. Check: demo script step 8
 - [ ] E12 Admin page: users and scope grants. Cut line 6 candidate, build last
-- [ ] E13 Every number in the UI opens its drill-down. Check: grep-style test that no bare figure is rendered outside the number component
-- [ ] E14 Empty, loading, error and stale states for every panel. Check: Storybook-free checklist walk-through in the browser
+- [~] E13 Every number in the UI opens its drill-down. Check: grep-style test that no bare figure is rendered outside the number component (KPI cards and chart rows open the drill-down, numbers inside the drawer do not yet)
+- [~] E14 Empty, loading, error and stale states for every panel. Check: Storybook-free checklist walk-through in the browser (loading, error, empty and stale states exist on the dashboard and data health, the rest come with their pages)
 - [ ] E15 Accessibility: keyboard path, visible focus, AA contrast, chart table toggle, no colour-only meaning. Check: axe and manual keyboard pass
 - [x] E16 Unit tests (Vitest) for number formatting that never hides a miss. Check: 74.96 against 75 never renders as equal
 - [ ] E17 One Playwright E2E: Principal logs in, opens draft, approves, sees published version, rolls back. Check: `pnpm e2e` green

@@ -6,8 +6,8 @@ Update at the end of every session. Keep it short and true.
 
 | Lab | Topic | Status | Notes |
 | --- | --- | --- | --- |
-| 1 | Planner loop (clarify, plan, revise) | not started | |
-| 2 | Tool-using agent, KPI engine | not started | |
+| 1 | Planner loop (clarify, plan, revise) | not started | Slice 2 |
+| 2 | Tool-using agent, KPI engine | engine done | KPI engine, formulas, status and traps tested. Typed tool layer for the agent comes with slice 2 |
 | 3 | Reusable skills | not started | |
 | 4 | Memory and retrieval | not started | |
 | 5 | MCP connector | not started | |
@@ -36,6 +36,9 @@ Backend (`backend/pyproject.toml`, pinned by `uv.lock`)
 | pytest | Test runner |
 | httpx2 | Starlette's test client dependency. Starlette 1.7 deprecates plain httpx for it |
 | ruff | Lint and format in one tool |
+| pyyaml, types-pyyaml | KPI definitions and targets are YAML data (decision D8). safe_load only |
+| argon2-cffi | Password hashing. Argon2 is the current recommendation, passlib is unmaintained |
+| pyjwt | Signed session tokens in an httpOnly cookie |
 
 Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 
@@ -51,20 +54,15 @@ Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 | @playwright/test | The one E2E approval-flow test (docs/ARCHITECTURE.md section 10) |
 | openapi-typescript | Generates API types from the backend OpenAPI contract so schema drift is a compile error (D22) |
 
-## Environment (updated 2026-10-03)
-
-Xcode license accepted. uv 0.12, Python 3.12.15, pnpm 12.8, OrbStack with Docker 29.4 all installed and working. Ollama still not installed, deliberately (FakeLLM until Day 4, decision C3). Node is v26.6 and Next.js 16.3 builds and runs on it.
-
-## Environment (Day 0, 2026-10-03)
+## Environment (2026-10-03)
 
 | Tool | State |
 | --- | --- |
-| Xcode license | Not accepted. Blocks `/usr/bin/python3`, `/usr/bin/make` and Homebrew. Kiran must run `sudo xcodebuild -license accept` |
-| Python 3.12, uv | Missing, install via Homebrew after the license |
-| pnpm | Missing, install via Homebrew after the license |
-| OrbStack | Missing, install via Homebrew cask after the license |
-| Ollama | Not needed until Day 4 (FakeLLM until then) |
-| Node | v26.6.0 from Homebrew. Confirm Next.js supports it, otherwise pin 22 LTS |
+| Xcode license | Accepted |
+| uv 0.12, Python 3.12.15 | Installed, backend runs on it |
+| pnpm 12.8, Node 26.6 | Installed. Next.js 16.3 builds and runs on Node 26 (verified by a production build) |
+| OrbStack, Docker 29.4 | Installed and answering. Not used yet, Postgres arrives with section F of docs/CHECKLIST.md |
+| Ollama | Not installed, deliberately. FakeLLM until Day 4 (decision C3) |
 | git, gh | OK, gh logged in as kirann-05 |
 | Machine | Apple Silicon, 16 GB RAM, 185 GB free |
 
@@ -72,4 +70,5 @@ Xcode license accepted. uv 0.12, Python 3.12.15, pnpm 12.8, OrbStack with Docker
 
 | Date | Goal | Done | Next |
 | --- | --- | --- | --- |
+| 2026-10-03 (later) | Slice 1: data to engine to API to dashboard | Generator with traps T1 to T10, KPI engine, definitions and targets as YAML, RBAC with department scoping, cookie auth with guarded demo sign-in, KPI list and drill-down and data health endpoints, Next.js shell, login, dashboard, drill-down drawer, department charts, data health page. 245 backend and 80 frontend tests, production build passes | Slice 2: FakeLLM clarify and plan, run lifecycle, SSE progress, New Run page |
 | 2026-10-03 | Day 0: review pack, environment, repo | Pack reviewed, repo created at ~/Claude/edss with docs as first commit, decisions C1 to C4 recorded, review findings D13 to D21 logged | Kiran accepts Xcode license, then install uv, Python 3.12, pnpm, OrbStack. Confirm D13 to D21. Then Day 1 |

@@ -447,6 +447,8 @@ export interface components {
         };
         /** InputTermOut */
         InputTermOut: {
+            /** Description */
+            description: string;
             /** Label */
             label: string;
             /** Value */

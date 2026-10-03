@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { formatNumber, formatVariance, roundDecimal, roundingHidesMiss } from "./format";
+import {
+  formatExact,
+  formatNumber,
+  formatVariance,
+  formatWithUnit,
+  roundDecimal,
+  roundingHidesMiss,
+} from "./format";
 
 describe("roundDecimal (exact, half up, no floats)", () => {
   it.each([
@@ -99,5 +106,35 @@ describe("formatVariance", () => {
 
   it("has no variance to describe when the KPI is undefined", () => {
     expect(formatVariance({ varianceAbs: null, precision: 1, unit: "%" })).toBe("no target gap");
+  });
+});
+
+describe("formatWithUnit", () => {
+  it("attaches a percent sign and spaces other units", () => {
+    expect(formatWithUnit("74.96", 1, "%")).toBe("75.0%");
+    expect(formatWithUnit("6.239", 2, "LPA")).toBe("6.24 LPA");
+    expect(formatWithUnit("2.6467", 2, "level")).toBe("2.65 level");
+    expect(formatWithUnit("2199", 0, "INR lakh")).toBe("2,199 INR lakh");
+  });
+
+  it("never turns an undefined figure into a number or adds a unit to it", () => {
+    expect(formatWithUnit(null, 1, "%")).toBe("n/a");
+    expect(formatWithUnit(null, 1, "LPA")).toBe("n/a");
+  });
+
+  it("returns the bare figure when there is no unit", () => {
+    expect(formatWithUnit("12", 0, "")).toBe("12");
+  });
+});
+
+describe("formatExact", () => {
+  it.each([
+    ["74.96", "74.96"],
+    ["74.960000000000000000000001", "74.96"],
+    ["75.00004", "75"],
+    ["86.30434782608695652173913043", "86.3043"],
+    ["100", "100"],
+  ])("trims %s to %s", (input, expected) => {
+    expect(formatExact(input)).toBe(expected);
   });
 });

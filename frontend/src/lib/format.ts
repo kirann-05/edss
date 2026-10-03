@@ -32,8 +32,8 @@ function group(whole: string): string {
 }
 
 /** Fixed places with thousands grouping. An undefined value is shown as n/a, never as zero. */
-export function formatNumber(value: string | null, places: number): string {
-  if (value === null) return "n/a";
+export function formatNumber(value: string | null | undefined, places: number): string {
+  if (value === null || value === undefined) return "n/a";
   const rounded = roundDecimal(value, places);
   const negative = rounded.startsWith("-");
   const [whole, fraction] = (negative ? rounded.slice(1) : rounded).split(".");
@@ -47,12 +47,12 @@ export type KpiStatus = "met" | "at_risk" | "missed" | "undefined";
  * for example 74.96 against 75 shown to one place. The UI must then say so out loud.
  */
 export function roundingHidesMiss(input: {
-  value: string | null;
+  value: string | null | undefined;
   target: string;
   precision: number;
   status: KpiStatus;
 }): boolean {
-  if (input.status !== "missed" || input.value === null) return false;
+  if (input.status !== "missed" || input.value === null || input.value === undefined) return false;
   return roundDecimal(input.value, input.precision) === roundDecimal(input.target, input.precision);
 }
 
@@ -68,11 +68,11 @@ function isZero(decimal: string): boolean {
  * never printed as "0.0 below target".
  */
 export function formatVariance(input: {
-  varianceAbs: string | null;
+  varianceAbs: string | null | undefined;
   precision: number;
   unit: string;
 }): string {
-  if (input.varianceAbs === null) return "no target gap";
+  if (input.varianceAbs === null || input.varianceAbs === undefined) return "no target gap";
   if (isZero(input.varianceAbs)) return "on target";
 
   const direction = input.varianceAbs.startsWith("-") ? "below target" : "above target";
@@ -85,4 +85,26 @@ export function formatVariance(input: {
     if (!isZero(rounded)) return withUnit(rounded);
   }
   return withUnit(`under ${roundDecimal("0.0001", MAX_VARIANCE_PLACES)}`);
+}
+
+/** A figure with its unit: "75.0%", "6.24 LPA", "2.65 level". Undefined is n/a, never zero. */
+export function formatWithUnit(
+  value: string | null | undefined,
+  places: number,
+  unit: string,
+): string {
+  const figure = formatNumber(value, places);
+  if (value === null || value === undefined || unit === "") return figure;
+  return unit === "%" ? `${figure}%` : `${figure} ${unit}`;
+}
+
+/** A raw input or record: whole numbers stay whole, anything else to two places. */
+export function formatFigure(value: string): string {
+  return formatNumber(value, value.includes(".") ? 2 : 0);
+}
+
+/** The exact figure without a long tail: up to four places, trailing zeros removed. */
+export function formatExact(value: string): string {
+  const rounded = roundDecimal(value, 4);
+  return rounded.includes(".") ? rounded.replace(/0+$/, "").replace(/\.$/, "") : rounded;
 }

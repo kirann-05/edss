@@ -37,6 +37,12 @@ The acceptance suite (checks V1 to V9), the planted-trap fixtures with exact exp
 **Are the KPIs the real NIRF and NAAC ones?**
 Only once IQAC supplies approved definitions. Until then the seed definitions are marked placeholders, and the system is built so swapping them is a data change. Say this plainly.
 
+**How do you know a HOD cannot see another department?**
+Because the response does not contain it. A restricted department row carries its name and nothing else. A test signs in as a HOD, reads the raw JSON of the drill-down, domain and data-health responses, and checks that no other department's value, input or fact id is present, with a positive control proving the check can find them. A second test walks the route table, so a route added later that forgets to check the session fails on its own.
+
+**What happens when a department has no data, or only unreconciled data?**
+It is left out of that KPI and said so, in words, next to the figure. It is never counted as zero. The drill-down lists the unreconciled record with its badge and marks it as not used. This is deliberately strict (D24). The cost is that one unreconciled figure removes a department from a KPI, and the alternative of summing the final quarters only would risk an apples to oranges ratio.
+
 **What is the weakest part?**
 Update this with the truth as the build proceeds. Initial candidates: small local models and structured output reliability, dependence on how clean the university's data is, and the placeholder KPI definitions.
 
@@ -44,14 +50,14 @@ Update this with the truth as the build proceeds. Initial candidates: small loca
 
 | Component | What it is | Why this choice | Rejected alternative | Known weakness |
 | --- | --- | --- | --- | --- |
-| KPI engine | | | | |
+| KPI engine | Decimal-only engine. A KPI formula is YAML data, parsed with Python's own parser and checked against an allow-list (no eval). It computes one value per department and one for the institution, from totals, and decides status on the unrounded value | Auditable and reproducible: a figure never depends on a model. Tests carry the planted traps with exact expected values | Letting an LLM compute KPIs, or evaluating formulas with eval | A department is kept out of a KPI if any input it needs is missing or not final, so one unreconciled figure removes that department from that KPI (D24). `period_agg` and the 2 percent at-risk band are my defaults, not IQAC's. Citations can double count shared papers (D23) |
 | Connector | | | | |
-| Ingestion | | | | |
+| Ingestion | Only the synthetic generator exists so far: deterministic (seed 42), calibrated to exact totals, with ten planted traps and one test each | The demo and the tests need known answers, so the data is built to have them | Random data with no traps, which would prove nothing | It is not real data, and its dates are relative to the day it is seeded, so it goes stale after 90 days until re-seeded. Real adapters, validation and rejection counts are still to build (F2) |
 | Graph | | | | |
 | LLM layer | | | | |
 | Validation gate | | | | |
 | Human gate | | | | |
 | Versioning and rollback | | | | |
 | Audit chain | | | | |
-| RBAC | | | | |
-| Dashboard | | | | |
+| RBAC | A permission matrix written out from SPEC section 2, plus a department scope. Scope is applied in one place, the view builders, so a restricted department row carries its identity and nothing else | The guarantee has to hold in what is sent, not in what the UI chooses to draw. A test reads raw response bodies as a HOD and a generic test walks every route | Hiding data in the UI only, or ad hoc checks in each route | Users are in memory with one shared synthetic password. No login lockout, no SSO. The demo sign-in exists only in synthetic mode and is covered by a test, but it is a deliberate bypass of passwords |
+| Dashboard | Next.js against the real API, with types generated from its OpenAPI contract. Every status is an icon plus a label. Figures are exact decimal strings rounded by the UI with BigInt, and a missed target that rounds to equal is called out in words | Rules 4 and 5 made visible, and a contract that cannot drift quietly (D22) | The Streamlit prototype from Labs 1 and 2, which cannot do roles, a review queue or an audit view, and a mock API inside the browser | Light theme only, no axe or Playwright run yet, ECharts bundle size not measured, and it still runs against the in-memory synthetic store rather than Postgres |

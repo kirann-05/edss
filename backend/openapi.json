@@ -639,6 +639,10 @@
       },
       "InputTermOut": {
         "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
           "label": {
             "title": "Label",
             "type": "string"
@@ -650,6 +654,7 @@
         },
         "required": [
           "label",
+          "description",
           "value"
         ],
         "title": "InputTermOut",

@@ -140,7 +140,8 @@ class KpiListOut(Api):
 
 
 class InputTermOut(Api):
-    label: str
+    label: str  # the engine's own name, for example sum(plc.registered)
+    description: str  # the same in plain language, for example Total students registered
     value: DecimalStr
 
 

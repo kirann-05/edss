@@ -1,7 +1,18 @@
+import type { Metadata } from "next";
+import { Suspense } from "react";
+
+import { LoginForm } from "./login-form";
+
+export const metadata: Metadata = { title: "Sign in" };
+
 export default function LoginPage() {
   return (
-    <main className="p-8">
-      <h1 className="text-2xl font-semibold">Sign in</h1>
+    <main className="flex min-h-dvh items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        <Suspense>
+          <LoginForm />
+        </Suspense>
+      </div>
     </main>
   );
 }

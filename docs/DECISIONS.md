@@ -92,6 +92,36 @@ Each of these is a gap or contradiction found in the pack. The proposed default 
 
 Provisional default: A, delivered as vertical slices so a page is usable as soon as its slice is done. Cost of changing later: low, the UI only talks to `/api/*` and does not know which backend answers.
 
+## Implemented defaults (2026-10-03, Kiran to confirm)
+
+### D23: citations and shared papers
+
+RS_CIT_PP divides total citations by unique publications, but citations are department-level facts, so a paper shared by two departments would be counted twice if both report its citations. The synthetic data credits a paper's citations to its lead department only, which avoids the double count. Real adapters must do the same, or `research_publication` needs a citations column. Confirm with IQAC together with D12.
+
+### D24: how a department drops out of a KPI
+
+| Option | Behaviour | Cost |
+| --- | --- | --- |
+| A. All or nothing per department (implemented) | A department is in a KPI only if every metric the formula needs has data and every record for it is final or audited. Otherwise it is listed as missing or excluded, with the reason | One unreconciled figure removes a department from that KPI |
+| B. Partial sums over the final records | Use the quarters that are final, flag the gap | Shows more, but a ratio can mix unlike periods, for example two quarters of spend over a full-year budget |
+| C. Fail the KPI | The institution figure is undefined if any department is incomplete | Too fragile, one late department blanks the whole dashboard |
+
+Default A. Stale data is the exception: it is used and flagged, because old data is better flagged than silently dropped. Cost of changing later: low, it is one function in `kpi/engine.py`.
+
+### Where D13 to D21 stand
+
+| ID | Status |
+| --- | --- |
+| D13 escalated drafts cannot be approved past an integrity failure | Not built, comes with the gate in slice 3 |
+| D14 `period_agg` per metric | In code, `kpi/catalogue.py` |
+| D15 at-risk band | In code, `judge()` in `kpi/engine.py`, 2 percent default per definition |
+| D16 formula grammar | In code, `kpi/formulas.py`. AC_PO uses a simple mean, flagged placeholder |
+| D17 host check on the LLM base URL | Not built, comes with the LLM factory |
+| D18 single writer for the audit chain | Not built, comes with the audit work in slice 4 |
+| D19 honest parallel benchmark | Not built |
+| D20 seeded prior briefs | Not built |
+| D21 number-word lint and structured direction | Not built, comes with check V1 in slice 3 |
+
 ## Open questions for Kiran to answer or chase
 
 1. Which departments are in the pilot, and does IQAC already have approved KPI definitions and targets? Is NIRF or NAAC the priority?

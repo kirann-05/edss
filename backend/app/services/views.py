@@ -12,7 +12,7 @@ from app.core.rbac import Scope
 from app.domain.enums import Domain, FactStatus, KpiStatus
 from app.domain.models import Department, MetricFact
 from app.kpi.catalogue import CATALOGUE
-from app.kpi.describe import describe_formula
+from app.kpi.describe import describe_formula, describe_term
 from app.kpi.results import DepartmentValue, DeptState
 from app.services.store import DataStore
 
@@ -112,7 +112,10 @@ def department_row(scope: Scope, dept: Department, value: DepartmentValue) -> s.
         access="visible",
         state=value.state,
         value=value.value,
-        inputs=[s.InputTermOut(label=t.label, value=t.value) for t in value.inputs],
+        inputs=[
+            s.InputTermOut(label=t.label, description=describe_term(t.label), value=t.value)
+            for t in value.inputs
+        ],
         stale=value.stale,
         as_of=value.as_of,
         reason=value.reason,
@@ -177,7 +180,10 @@ def build_drilldown(store: DataStore, scope: Scope, key: str, period: str) -> s.
 
     return s.KpiDrilldownOut(
         kpi=build_kpi(store, scope, key, period),
-        inputs=[s.InputTermOut(label=t.label, value=t.value) for t in result.inputs],
+        inputs=[
+            s.InputTermOut(label=t.label, description=describe_term(t.label), value=t.value)
+            for t in result.inputs
+        ],
         departments=_rows(store, scope, result.departments),
         spread=spread,
         facts=facts,
