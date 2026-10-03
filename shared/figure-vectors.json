@@ -1,0 +1,56 @@
+{
+  "_comment": "Test vectors for figure formatting. Run by BOTH backend/tests/agents/test_figures.py and frontend/src/lib/figure-vectors.test.ts, so the brief renderer and the dashboard can never round the same number differently. Rule 5: a miss is never hidden by rounding.",
+  "round_decimal": [
+    {"value": "74.96", "places": 1, "expected": "75.0"},
+    {"value": "74.949", "places": 1, "expected": "74.9"},
+    {"value": "74.95", "places": 1, "expected": "75.0"},
+    {"value": "1.005", "places": 2, "expected": "1.01"},
+    {"value": "0.5", "places": 0, "expected": "1"},
+    {"value": "12", "places": 2, "expected": "12.00"},
+    {"value": "-3.449", "places": 1, "expected": "-3.4"},
+    {"value": "-3.45", "places": 1, "expected": "-3.5"},
+    {"value": "0", "places": 1, "expected": "0.0"},
+    {"value": "-0.04", "places": 1, "expected": "0.0"},
+    {"value": "86.30434782608695652173913043", "places": 1, "expected": "86.3"},
+    {"value": "99.95", "places": 1, "expected": "100.0"}
+  ],
+  "format_number": [
+    {"value": "1234567.891", "places": 1, "expected": "1,234,567.9"},
+    {"value": "-1234.5", "places": 0, "expected": "-1,235"},
+    {"value": "999.5", "places": 0, "expected": "1,000"},
+    {"value": "0.04", "places": 2, "expected": "0.04"},
+    {"value": null, "places": 1, "expected": "n/a"}
+  ],
+  "format_with_unit": [
+    {"value": "74.96", "places": 1, "unit": "%", "expected": "75.0%"},
+    {"value": "6.239", "places": 2, "unit": "LPA", "expected": "6.24 LPA"},
+    {"value": "2.6467", "places": 2, "unit": "level", "expected": "2.65 level"},
+    {"value": "2199", "places": 0, "unit": "INR lakh", "expected": "2,199 INR lakh"},
+    {"value": null, "places": 1, "unit": "%", "expected": "n/a"},
+    {"value": "12", "places": 0, "unit": "", "expected": "12"}
+  ],
+  "format_variance": [
+    {"variance_abs": "-3.4", "precision": 1, "unit": "%", "expected": "3.4 pts below target"},
+    {"variance_abs": "2.1", "precision": 1, "unit": "%", "expected": "2.1 pts above target"},
+    {"variance_abs": "-0.3", "precision": 1, "unit": "LPA", "expected": "0.3 LPA below target"},
+    {"variance_abs": "-0.04", "precision": 1, "unit": "%", "expected": "0.04 pts below target"},
+    {"variance_abs": "-0.0004", "precision": 1, "unit": "%", "expected": "0.0004 pts below target"},
+    {"variance_abs": "-0.000004", "precision": 1, "unit": "%", "expected": "under 0.0001 pts below target"},
+    {"variance_abs": "0", "precision": 1, "unit": "%", "expected": "on target"},
+    {"variance_abs": "0.000", "precision": 1, "unit": "%", "expected": "on target"},
+    {"variance_abs": null, "precision": 1, "unit": "%", "expected": "no target gap"}
+  ],
+  "rounding_hides_miss": [
+    {"value": "74.96", "target": "75", "precision": 1, "status": "missed", "expected": true},
+    {"value": "71.2", "target": "75", "precision": 1, "status": "missed", "expected": false},
+    {"value": "75.04", "target": "75", "precision": 1, "status": "met", "expected": false},
+    {"value": null, "target": "75", "precision": 1, "status": "undefined", "expected": false}
+  ],
+  "format_exact": [
+    {"value": "74.96", "expected": "74.96"},
+    {"value": "74.960000000000000000000001", "expected": "74.96"},
+    {"value": "75.00004", "expected": "75"},
+    {"value": "86.30434782608695652173913043", "expected": "86.3043"},
+    {"value": "100", "expected": "100"}
+  ]
+}

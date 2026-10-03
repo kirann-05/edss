@@ -29,6 +29,8 @@ class Settings(BaseSettings):
     llm_model: str = ""
     llm_embed_model: str = ""
     allow_hosted_llm: bool = False
+    # Comma separated university server names that count as local for real data (decision D17)
+    llm_local_hosts: str = ""
 
     # storage
     database_url: str = "postgresql+psycopg://edss:edss@localhost:5432/edss"

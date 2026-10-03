@@ -51,3 +51,13 @@ class Role(StrEnum):
     HOD = "hod"
     VIEWER = "viewer"  # Governing Council
     ADMIN = "admin"
+
+
+class BriefStatus(StrEnum):
+    DRAFT = "draft"
+    ESCALATED = "escalated"  # validation could not be satisfied within the retry budget
+    APPROVED = "approved"
+    PUBLISHED = "published"
+    ROLLED_BACK = "rolled_back"
+    OVERRIDDEN = "overridden"
+    RETURNED = "returned"  # sent back by the approver

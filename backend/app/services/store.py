@@ -96,10 +96,13 @@ class DataStore:
     def target(self, key: str, period: str) -> KpiTarget | None:
         return self._target.get((key, period))
 
+    def targets(self, period: str) -> list[KpiTarget]:
+        return [t for (_, p), t in self._target.items() if p == period]
+
     def results(self, period: str) -> dict[str, KpiResult]:
         """Every active KPI for one period, in definition order. Computed once, then cached."""
         if period not in self._results:
-            targets = {k: t for (k, p), t in self._target.items() if p == period}
+            targets = {t.kpi_key: t for t in self.targets(period)}
             computed = compute_all(
                 self.definitions,
                 targets,
