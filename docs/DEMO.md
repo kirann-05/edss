@@ -1,6 +1,6 @@
 # The live demo, step by step
 
-About 12 minutes. Read this once before the first rehearsal. Every label in quotes below is the exact text on screen, checked on 2026-10-04 against the running demo. If one changes, `make rehearse` (once D3 is built) fails and tells you which.
+About 12 minutes. Read this once before the first rehearsal. Every label in quotes below is the exact text on screen, checked on 2026-10-04 against the running demo. If one changes, `make rehearse` fails and names the step.
 
 | Step | Who | What it proves | Time |
 | --- | --- | --- | --- |
@@ -19,7 +19,7 @@ About 12 minutes. Read this once before the first rehearsal. Every label in quot
 
 **The night before**
 
-- [ ] `git pull`, then `make check`. It must be green.
+- [ ] `git pull`, then `make check` and `make rehearse`. Both must be green. The rehearsal walks steps 1 to 9 in a browser in about 20 seconds.
 - [ ] `make demo`, walk all nine steps once, then `make demo-reset`.
 - [ ] Laptop charged. Charger, and the HDMI or USB-C adapter for the projector, in the bag.
 - [ ] A screen recording of one full rehearsal on the laptop and on a USB stick (the last-resort backup below).

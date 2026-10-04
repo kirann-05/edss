@@ -73,5 +73,5 @@ Kiran develops on an Apple Silicon MacBook Air (no NVIDIA GPU). Check before ass
 - `make seed` writes the synthetic sample to `data/sample`, reads it back through the real ingestion path and checks every planted trap
 - `make ingest DIR=data/real/<folder>` checks a folder of exports and prints the reconciliation report
 - `uv run python ../scripts/evaluate_llm.py` (from `backend`) measures a model, results go to `docs/evals`
-- `make demo` the live demo in one command, starting with one approved report and one draft waiting. `make demo-reset` goes back to that start without stopping
+- `make demo` the live demo in one command, starting with one approved report and one draft waiting. `make demo-reset` goes back to that start without stopping. `make rehearse` walks docs/DEMO.md in a browser
 - Not built yet and it fails loudly: `make acceptance`. What is not ours to finish is in `docs/PENDING.md`

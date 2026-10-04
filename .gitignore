@@ -27,3 +27,4 @@ pgdata/
 # the demo's build and logs
 .demo/
 .next-demo/
+.next-rehearse/

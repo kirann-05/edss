@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -10,6 +10,7 @@ help:
 	@echo "make check-all  check, then e2e"
 	@echo "make demo       the live demo in one command (production build, demo settings)"
 	@echo "make demo-reset back to the start of the demo without stopping it"
+	@echo "make rehearse   walks docs/DEMO.md in a browser, steps 1 to 9"
 	@echo "make types      export the OpenAPI contract and regenerate frontend types"
 	@echo "make seed       write the synthetic sample to data/sample, read it back, check every planted trap"
 	@echo "make ingest DIR=data/real/2026-10   check a folder of exports and print the reconciliation report"
@@ -68,3 +69,7 @@ demo:
 # back to the demo's ready-made start, without stopping it
 demo-reset:
 	./scripts/demo_reset.sh
+
+# docs/DEMO.md walked in a browser, steps 1 to 9, against its own copy of the demo
+rehearse:
+	cd frontend && pnpm exec playwright test -c playwright.rehearse.config.ts
