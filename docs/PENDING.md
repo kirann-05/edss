@@ -28,4 +28,4 @@ Not needed any more: a hosted model key. The local model runs through Ollama.
 
 Nothing. Everything above that needed no one else is built and tested (2026-10-05): the acceptance suite and benchmark, the framework packs, the MCP connector with per-run tokens, PostgreSQL with pgvector and an append-only audit log, checkpoints that survive a restart, the containers with backups and a runbook, the hybrid planner, and loading real data into the database (docs/RUNBOOK.md, Real data). What is done, part by part, is in [NEXT_STEPS.md](NEXT_STEPS.md).
 
-Known gaps that are not scheduled, said plainly: no SSO and no HTTPS in front (both wait on item 5 and 9 above); in database mode, refreshing data from the web page and the demo reset are refused; the API runs as one process.
+Known gaps that are not scheduled, said plainly: no SSO and no HTTPS in front (both wait on item 5 and 9 above); the API runs as one process (D31). By design, not gaps: real data is loaded from the command line only (D34), so the web page's refresh is refused in database mode, and so is the demo reset, because the audit log there cannot be emptied.

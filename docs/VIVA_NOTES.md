@@ -61,6 +61,12 @@ It is small and I say so: ten planning requests and nine drafts, one run each, w
 **What did you need from the university, and what is still missing?**
 Real exports with a signed data specification, the IQAC's official KPI definitions and targets, the GPU server's specification, hosting, and real user accounts. The full list is in `docs/PENDING.md`. Nothing in the agents, the engine or the screens changes when they arrive: real data goes in through the same ingestion path, with a reconciliation report for the data owner.
 
+**What happens the day the university's data arrives?**
+The data owner's folder is checked first, and nothing is written: the report lists every refused row with its reason and every department with no record. Once it is clean, one command loads it into PostgreSQL, only ever adding, so a record an approved brief cites never changes. The first real load switches the database to real mode once, and that is audited: the synthetic data is kept but no longer read, the synthetic accounts are switched off, and the app will not start in real mode without a real administrator, a JWT secret and a local model. Weakness: it has only been run on our synthetic sample exported as files, and a real extract will surely surprise us; that is what the reconciliation report is for.
+
+**Why is the demo not running on the database, if it is built?**
+Deliberately. The demo resets in two seconds and needs nothing but this laptop, and the database version keeps everything and cannot be reset, by design, because its audit log cannot be emptied. Both run the same services and the same tests: the whole API suite passes in both modes.
+
 ## Component notes
 
 | Component | What it is | Why this choice | Rejected alternative | Known weakness |
