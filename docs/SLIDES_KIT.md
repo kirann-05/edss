@@ -88,4 +88,3 @@ What to say: drafting is reliable. Reading a request is where a small model is w
 Do not show these as working. The system diagram draws them dashed.
 
 - The demo itself runs in memory. PostgreSQL storage is built and tested (`EDSS_DATABASE=true`, `make test-api-db`), but the demo does not use it
-- Docker packaging

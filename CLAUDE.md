@@ -75,6 +75,6 @@ Kiran develops on an Apple Silicon MacBook Air (no NVIDIA GPU). Check before ass
 - `uv run python ../scripts/evaluate_llm.py` (from `backend`) measures a model, results go to `docs/evals`
 - `make demo` the live demo in one command, starting with one approved report and one draft waiting. `make demo-reset` goes back to that start without stopping. `make rehearse` walks docs/DEMO.md in a browser
 - `make acceptance` injects every fault into every plan it applies to and writes `docs/acceptance-report.md`. It fails if any fault slips through. `make benchmark` times parallel against one-at-a-time domain agents into `docs/benchmark.md`
-- `make up` runs the whole system in containers (database, migrate and seed, API in database mode, web app on 127.0.0.1:3000), `make down` stops it
+- `make up` runs the whole system in containers (database, migrate and seed, API in database mode, web app on 127.0.0.1:3000), `make down` stops it, `make smoke` proves it from a fresh clone. Operations are in docs/RUNBOOK.md
 - `make db-up` starts PostgreSQL with pgvector on 127.0.0.1 (`compose.yaml`), `make db-check` checks it, `make db-down` stops it. `make db-backup` backs it up into `backups/` and proves the backup restores. `make db-migrate` applies the schema, `make test-db` runs the database tests, `make seed-db` fills it with the synthetic sample and checks the traps there, `make test-api-db` runs the API tests with the app in database mode (`EDSS_DATABASE=true`)
 - What is not ours to finish is in `docs/PENDING.md`
