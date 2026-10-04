@@ -206,3 +206,34 @@ def test_the_real_administrator_can_sign_in(real_app):
         json={"email": "it.admin@university.example", "password": "a-long-admin-password"},
     )
     assert signed.status_code == 200, signed.text
+
+
+def test_in_real_mode_the_archive_fills_only_with_reports_published_here(real_app):
+    from app.governance.service import Decision
+
+    app, _ = real_app
+    state = app.state.edss
+    assert state.archive.all() == []
+    # no real approver role exists yet in this test database, so publish as an approver made here
+    from app.domain.enums import Role
+
+    approver = state.users.create(
+        email="principal@university.example", name="The Principal", role=Role.PRINCIPAL,
+        password="a-long-principal-password",
+    )  # fmt: skip
+    registrar = state.users.create(
+        email="registrar@university.example", name="The Registrar", role=Role.REGISTRAR,
+        password="a-long-registrar-password",
+    )  # fmt: skip
+    record = state.runs.create(
+        registrar, "Placement and research brief for the Governing Council for 2025-26"
+    )
+    if record.questions:
+        record = state.runs.skip_questions(registrar, record.id)
+    state.runs.lock(registrar, record.id, [])
+    from app.services.demo_state import _finish
+
+    done = _finish(state, state.runs.get(record.id))
+    assert done.brief_id, done.error
+    version = state.governance.decide(done.brief_id, approver, Decision(kind="approve")).version
+    assert [p.id for p in state.archive.all()] == [f"report-v{version.version}"]

@@ -220,3 +220,17 @@ def test_a_run_stopped_by_a_restart_resumes_from_its_last_step(database):
     # the domain agents had finished before the stop, so the resume did not run them again
     nodes = {e.node for e in state.events.all(run.id)}
     assert not [n for n in nodes if n.startswith("domain:")]
+
+
+def test_a_published_report_stays_in_the_archive_across_a_restart(database):
+    from app.governance.service import Decision
+    from app.services.demo_state import DRAFT_REQUEST, _draft
+
+    _, app = start()
+    state = app.state.edss
+    principal = state.users.by_email("principal@edss.test")
+    version = state.governance.decide(
+        _draft(state, DRAFT_REQUEST).brief_id, principal, Decision(kind="approve")
+    ).version
+    _, restarted = start()
+    assert f"report-v{version.version}" in [p.id for p in restarted.state.edss.archive.all()]

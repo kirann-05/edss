@@ -17,6 +17,7 @@ from app.agents.models import BriefDocument, KpiFigure
 from app.agents.skills.options_skill import draft_option_set
 from app.domain.enums import KpiStatus
 from app.domain.models import Frozen
+from app.governance.service import BriefVersion
 from app.services.store import DataStore
 
 
@@ -28,6 +29,7 @@ class PriorBrief(Frozen):
     decision: str  # what leadership did, in words
     off_target: dict[str, str]  # kpi key to its status at the time
     chosen: dict[str, str]  # kpi key to the title of the option leadership chose
+    brief_id: str | None = None  # set for a report published in this system
 
 
 class PriorMatch(Frozen):
@@ -44,11 +46,18 @@ class Archive:
     def all(self) -> list[PriorBrief]:
         return list(self._priors)
 
-    def similar(self, doc: BriefDocument, limit: int = 3) -> list[PriorMatch]:
+    def add(self, prior: PriorBrief) -> None:
+        self._priors = [p for p in self._priors if p.id != prior.id] + [prior]
+
+    def similar(
+        self, doc: BriefDocument, limit: int = 3, exclude_brief: str | None = None
+    ) -> list[PriorMatch]:
         """Prior briefs ranked by overlap in which KPIs were off target. Jaccard over the KPI keys."""
         now = {k.key for k in doc.kpis if k.status in (KpiStatus.MISSED, KpiStatus.AT_RISK)}
         matches = []
         for prior in self._priors:
+            if exclude_brief is not None and prior.brief_id == exclude_brief:
+                continue
             before = set(prior.off_target)
             union = now | before
             shared = sorted(now & before)
@@ -102,3 +111,31 @@ def seed_archive(store: DataStore, model: ChatModel) -> Archive:
             )
         )
     return Archive(priors)
+
+
+def prior_from_version(version: BriefVersion) -> PriorBrief:
+    """A published report, kept as a prior for the briefs that come after it. The approval is of
+    the whole brief, so it records the options put forward, not one chosen among them."""
+    doc = version.document
+    names = {k.key: k.name for k in doc.kpis}
+    put_forward = [
+        f"{names.get(s.kpi_key, s.kpi_key)}: {s.options[0].title}"
+        for s in doc.option_sets
+        if s.options
+    ]
+    edits = f", with {len(version.edits)} edits" if version.edits else ""
+    return PriorBrief(
+        id=f"report-v{version.version}",
+        period_year=doc.period_year,
+        title=f"{doc.title}, version {version.version}",
+        decided_on=version.approved_at.date(),
+        decision=f"Approved by {version.approved_by} as version {version.version}{edits}."
+        + (f" Options put forward: {'; '.join(put_forward)}." if put_forward else ""),
+        off_target={
+            k.key: k.status.value
+            for k in doc.kpis
+            if k.status in (KpiStatus.MISSED, KpiStatus.AT_RISK)
+        },
+        chosen={},
+        brief_id=version.brief_id,
+    )

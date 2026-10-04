@@ -34,7 +34,7 @@ from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
 from app.mcp_connector.context import RunConnector, mcp_session
 from app.mcp_connector.tokens import RunTokens
-from app.services.archive import Archive, seed_archive
+from app.services.archive import Archive, prior_from_version, seed_archive
 from app.services.connector import InMemoryConnector, ScopeRegistry
 from app.services.refresh import DataSource
 from app.services.runs import RunRecord, RunService, plan_catalogue_from
@@ -84,10 +84,24 @@ def build_state(
     drafter = get_chat_model("drafter", llm, system_config)
     clarifier = get_chat_model("clarifier", llm, system_config)
 
+    archive = _archive(settings, store, engine)
+
+    def remember(version) -> None:
+        """A published report becomes a prior for the briefs after it. If that fails, say so: the
+        approval itself stands, and it is already audited."""
+        try:
+            archive.add(prior_from_version(version))
+        except Exception as error:  # noqa: BLE001  never undo an approval over the archive
+            audit.append(
+                actor_type="system", actor_id="archive", action="archive.add_failed",
+                inputs={"version": version.version}, outputs={"error": str(error)[:300]},
+            )  # fmt: skip
+
     governance = GovernanceService(
         audit,
         validator=lambda doc: validate(doc, context_for_document(doc, connector)),
         store=GovernanceRows(engine) if engine else None,
+        on_publish=remember,
     )
     runtime = Runtime(audit, events, budget_seconds=settings.run_budget_seconds)
     graph_connector: Connector = connector
@@ -141,7 +155,7 @@ def build_state(
         system_config=system_config,
         governance=governance,
         runs=runs,
-        archive=_archive(settings, store, engine),
+        archive=archive,
         data_source=data_source,
         clock=clock or date.today,
         drafter=drafter,

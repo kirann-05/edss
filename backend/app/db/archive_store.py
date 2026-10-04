@@ -21,9 +21,8 @@ from app.services.archive import PriorBrief, PriorMatch
 def prior_text(prior: PriorBrief, names: dict[str, str]) -> str:
     off = "; ".join(f"{names.get(k, k)} {s.replace('_', ' ')}" for k, s in prior.off_target.items())
     chosen = "; ".join(prior.chosen.values())
-    return (
-        f"{prior.title}. Off target: {off or 'nothing'}. Leadership chose: {chosen or 'nothing'}."
-    )
+    said = f"Leadership chose: {chosen}." if chosen else prior.decision
+    return f"{prior.title}. Off target: {off or 'nothing'}. {said}"
 
 
 def draft_text(doc: BriefDocument) -> str:
@@ -47,7 +46,8 @@ class DbArchive:
         with self._engine.begin() as conn:
             for prior, text, vector in zip(priors, texts, vectors, strict=True):
                 values = {
-                    "ref": prior.id, "content": text, "record": prior.model_dump(mode="json"),
+                    "ref": prior.id, "brief_id": prior.brief_id, "content": text,
+                    "record": prior.model_dump(mode="json"),
                     "embedding": vector, "tags": sorted(prior.off_target),
                 }  # fmt: skip
                 statement = insert(t.brief_embedding).values(**values)
@@ -65,15 +65,19 @@ class DbArchive:
             ).scalars()
             return [PriorBrief.model_validate(r) for r in records]
 
-    def similar(self, doc: BriefDocument, limit: int = 3) -> list[PriorMatch]:
+    def add(self, prior: PriorBrief) -> None:
+        self.index([prior])
+
+    def similar(
+        self, doc: BriefDocument, limit: int = 3, exclude_brief: str | None = None
+    ) -> list[PriorMatch]:
         (query,) = self._embedder.embed([draft_text(doc)], "query")
         distance = t.brief_embedding.c.embedding.cosine_distance(query)
+        nearest = select(t.brief_embedding.c.record, distance.label("distance"))
+        if exclude_brief is not None:
+            nearest = nearest.where(t.brief_embedding.c.brief_id.is_distinct_from(exclude_brief))
         with self._engine.connect() as conn:
-            rows = conn.execute(
-                select(t.brief_embedding.c.record, distance.label("distance"))
-                .order_by(distance)
-                .limit(limit)
-            ).all()
+            rows = conn.execute(nearest.order_by(distance).limit(limit)).all()
         now = {
             k.key: k.status.value
             for k in doc.kpis

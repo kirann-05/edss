@@ -73,7 +73,7 @@ def evidence(brief_id: str, state: State, user: AppUser = Reviewer) -> list[s.Ev
 
 @router.get("/briefs/{brief_id}/prior", response_model=list[s.PriorMatchOut])
 def prior(brief_id: str, state: State, user: AppUser = Reviewer) -> list[s.PriorMatchOut]:
-    matches = state.archive.similar(_record(state, brief_id).document)
+    matches = state.archive.similar(_record(state, brief_id).document, exclude_brief=brief_id)
     return [
         s.PriorMatchOut(
             id=m.brief.id, period_year=m.brief.period_year, title=m.brief.title,

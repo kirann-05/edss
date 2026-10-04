@@ -185,6 +185,7 @@ class GovernanceService:
         validator: Callable[[BriefDocument], ValidationReport],
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
         store: Any = None,
+        on_publish: Callable[[BriefVersion], None] | None = None,
     ) -> None:
         """With a `store` (app/db/work_store.py) briefs, versions and the pointer are restored
         from it and every change is written through (decision D31)."""
@@ -192,6 +193,7 @@ class GovernanceService:
         self._validate = validator
         self._clock = clock
         self._store = store
+        self._on_publish = on_publish  # e.g. the archive keeps every published report as a prior
         self._briefs: dict[str, BriefRecord] = {}
         self._versions: list[BriefVersion] = []
         self._pointer: int | None = None
@@ -431,6 +433,8 @@ class GovernanceService:
         if self._store is not None:
             self._store.save_version(version)
         self._pointer_moved(version.approved_by_id)
+        if self._on_publish is not None:
+            self._on_publish(version)
         self._audit.append(
             actor_type="system",
             actor_id="governance",
