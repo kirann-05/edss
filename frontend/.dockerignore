@@ -1,0 +1,14 @@
+node_modules
+.next*
+test-results
+playwright-report
+.env*
+# tests and test tooling stay out of the production image
+**/*.test.ts
+**/*.test.tsx
+e2e
+rehearse
+vitest.config.*
+vitest.setup.*
+playwright*.config.ts
+scripts

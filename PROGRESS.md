@@ -19,7 +19,7 @@ Update at the end of every session. Keep it short and true.
 | 11 | Acceptance suite as gate | done | V1 to V9 gate every draft. `make acceptance` runs every fault over 18 plans: 94 of 94 caught by the intended check and repaired (docs/acceptance-report.md) |
 | 12 | Governance, approval, rollback | done | Approve, edit, override, send back, versions, diff, rollback with a reason, print to PDF, audit viewer with chain check and run trace |
 | 13 | Framework specialists | done | One `Specialist` implementation and a YAML pack per framework (`app/specialists/packs`). The Strategic pack guides every option draft in words and each option set records it ("Strategic plan pack" on the brief). NIRF and NAAC packs are registered but hold nothing until IQAC supplies definitions (rule 12): the loader refuses them guidance, the app refuses to start if a KPI is tagged with them, and every brief says they have no approved definitions |
-| 14 | Capstone and deployment | partial | Every page, 15 browser tests, accessibility scan, CI written (waiting for a GitHub scope). Docker deployment not built |
+| 14 | Capstone and deployment | partial | Every page, 15 browser tests, accessibility scan, CI written (waiting for a GitHub scope). `make up` runs the whole system in containers on PostgreSQL. Backup, restore and the runbook are next (L6c, L6d) |
 
 ## Decisions confirmed by Kiran
 

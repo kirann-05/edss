@@ -21,6 +21,7 @@ LOGS="$ROOT/.demo"
 mkdir -p "$LOGS"
 
 export DATA_MODE=synthetic
+export NEXT_TELEMETRY_DISABLED=1  # nothing leaves this machine (rule 7)
 export EDSS_DEMO_LOGIN=true
 export EDSS_DEMO_STATE="$([ "${DEMO_STATE:-1}" = "0" ] && echo false || echo true)"
 export LLM_PROVIDER="${LLM_PROVIDER:-fake}"

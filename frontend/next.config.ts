@@ -8,6 +8,8 @@ const apiOrigin = process.env.EDSS_API_ORIGIN ?? "http://127.0.0.1:8000";
 const nextConfig: NextConfig = {
   // The browser tests build into their own folder, so they never touch a dev server that is running
   distDir: process.env.EDSS_DIST_DIR ?? ".next",
+  // the container image runs the small server Next.js traces for itself (frontend/Dockerfile)
+  output: process.env.EDSS_STANDALONE === "1" ? "standalone" : undefined,
   async rewrites() {
     return [{ source: "/api/:path*", destination: `${apiOrigin}/api/:path*` }];
   },

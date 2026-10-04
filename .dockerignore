@@ -1,0 +1,13 @@
+# never into an image: secrets, real data, local builds
+.env
+.env.*
+!.env.example
+data/real
+**/.venv
+**/node_modules
+**/.next*
+**/__pycache__
+**/test-results
+.git
+.demo
+docs

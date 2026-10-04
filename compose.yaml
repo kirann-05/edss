@@ -1,7 +1,9 @@
 # PostgreSQL 16 with pgvector, for EDSS on this machine (docs/ARCHITECTURE.md section 6).
 #
-#   make db-up      start it and wait until it is healthy
+#   make db-up      start the database alone and wait until it is healthy
 #   make db-check   connect and print the server and pgvector versions
+#   make up         the whole system: database, migrations and seed, API, web app (profile app)
+#   make down       stop it all, keeping the data
 #
 # Bound to 127.0.0.1 only, so nothing outside this machine can reach it: real data never leaves
 # the machine (rule 7). The owner's password is EDSS_DB_PASSWORD in .env, which is never committed.
@@ -23,6 +25,55 @@ services:
       interval: 2s
       timeout: 3s
       retries: 30
+    restart: unless-stopped
+
+  # one-shot: schema, the app role's password, LangGraph's checkpoint tables, the synthetic data
+  migrate:
+    profiles: ["app"]
+    build: { context: ., dockerfile: backend/Dockerfile }
+    image: edss-backend:local
+    environment:
+      EDSS_DB_HOST: db
+      EDSS_DB_PASSWORD: ${EDSS_DB_PASSWORD:?set EDSS_DB_PASSWORD in .env}
+      EDSS_DB_APP_PASSWORD: ${EDSS_DB_APP_PASSWORD:?run make db-migrate once, it generates EDSS_DB_APP_PASSWORD}
+    command: >-
+      sh -c "alembic upgrade head && python /edss/scripts/db_roles.py
+      && python /edss/scripts/seed.py --db --out /tmp/sample"
+    depends_on:
+      db: { condition: service_healthy }
+    restart: "no"
+
+  # the API in database mode, as the app role. Not published: the web app is the only way in
+  backend:
+    profiles: ["app"]
+    build: { context: ., dockerfile: backend/Dockerfile }
+    image: edss-backend:local
+    environment:
+      DATA_MODE: synthetic
+      EDSS_DATABASE: "true"
+      EDSS_DB_HOST: db
+      EDSS_DB_APP_PASSWORD: ${EDSS_DB_APP_PASSWORD:?run make db-migrate once}
+      EDSS_SEED_PASSWORD: ${EDSS_SEED_PASSWORD:-}
+      JWT_SECRET: ${JWT_SECRET:-}
+      EDSS_DEMO_LOGIN: ${EDSS_DEMO_LOGIN:-false}
+      LLM_PROVIDER: ${LLM_PROVIDER:-fake}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      # runs read through the API's own MCP endpoint, one token per run (decision D29)
+      CONNECTOR_URL: http://127.0.0.1:8000/mcp/
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    restart: unless-stopped
+
+  frontend:
+    profiles: ["app"]
+    build:
+      context: frontend
+      args: { EDSS_API_ORIGIN: "http://backend:8000" }
+    image: edss-frontend:local
+    ports:
+      - "${EDSS_BIND:-127.0.0.1}:${EDSS_WEB_PORT:-3000}:3000"
+    depends_on:
+      backend: { condition: service_healthy }
     restart: unless-stopped
 
 volumes:

@@ -22,23 +22,27 @@ def env_value(name: str) -> str | None:
     return None
 
 
-def owner_url(database: str | None = None) -> URL:
-    password = env_value("EDSS_DB_PASSWORD")
+def _url(user: str, password_name: str, database: str | None) -> URL:
+    password = env_value(password_name)
     if not password:
-        raise RuntimeError("EDSS_DB_PASSWORD is not set in .env (see .env.example)")
+        raise RuntimeError(
+            f"{password_name} is not set in .env (see .env.example, make db-migrate)"
+        )
     return URL.create(
         "postgresql+psycopg",
-        username="edss_owner",
+        username=user,
         password=password,
-        host="127.0.0.1",
+        host=env_value("EDSS_DB_HOST") or "127.0.0.1",  # db inside compose
         port=int(env_value("EDSS_DB_PORT") or 5432),
         database=database or env_value("EDSS_DB_NAME") or "edss",
     )
 
 
+def owner_url(database: str | None = None) -> URL:
+    """The owner, who runs migrations and loads the synthetic data. Never the app."""
+    return _url("edss_owner", "EDSS_DB_PASSWORD", database)
+
+
 def app_url(database: str | None = None) -> URL:
     """The narrower role the app runs as: it cannot change or delete the audit log (L5e)."""
-    password = env_value("EDSS_DB_APP_PASSWORD")
-    if not password:
-        raise RuntimeError("EDSS_DB_APP_PASSWORD is not set in .env: run make db-migrate")
-    return owner_url(database).set(username="edss_app", password=password)
+    return _url("edss_app", "EDSS_DB_APP_PASSWORD", database)
