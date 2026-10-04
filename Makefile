@@ -1,7 +1,7 @@
 # Next.js sends anonymous usage telemetry by default. Nothing leaves this machine (rule 7)
 export NEXT_TELEMETRY_DISABLED := 1
 
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down up down db-check db-backup db-migrate test-db test-api-db seed-db
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down up down smoke db-check db-backup db-migrate test-db test-api-db seed-db
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -90,6 +90,10 @@ up:
 
 down:
 	docker compose --env-file .env --profile app down
+
+# from a fresh clone of the committed repository: up, a brief to review, backup and restore, down
+smoke:
+	./scripts/smoke_clean_clone.sh
 
 db-check:
 	cd backend && uv run python ../scripts/db_check.py

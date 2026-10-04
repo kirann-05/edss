@@ -8,7 +8,8 @@ RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm build
+# public/ may be empty, and git keeps no empty folder, so a fresh clone has none
+RUN mkdir -p public && pnpm build
 
 FROM node:22-slim
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 HOSTNAME=0.0.0.0 PORT=3000
