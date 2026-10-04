@@ -34,7 +34,7 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 - [x] B4 Frontend proxies `/api/*` to the backend, one origin for cookies and SSE. Check: browser fetch of `/api/health` returns JSON
 - [x] B5 `.env.example` kept in sync, `.env` never committed. Check: `git ls-files | grep -c '^\.env$'` is 0
 - [~] B6 CI workflow running backend tests, frontend lint, typecheck, unit tests and build. Check: workflow file lints locally with `act` or is run on first push (written, pinned to commit SHAs, linted with actionlint and every step run locally, but it sits in docs/ci until the GitHub token has the workflow scope, see PROGRESS.md)
-- [ ] B7 `docker-compose.yml` with `db` (Postgres 16 and pgvector) and health check. Check: `docker compose up -d db` healthy. Needs A4
+- [x] B7 `docker-compose.yml` with `db` (Postgres 16 and pgvector) and health check. Check: `docker compose up -d db` healthy. Needs A4. Done 2026-10-04 as `compose.yaml`: `make db-up` healthy in about 3 s
 
 ## C. Backend core (pure logic, tests written first)
 
@@ -82,19 +82,19 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 
 ## F. Needs Docker (do as soon as A4 is done)
 
-- [ ] F1 SQLAlchemy models and Alembic baseline for every table in DATA_CONTRACT. Check: `alembic upgrade head` on empty DB
+- [x] F1 SQLAlchemy models and Alembic baseline for every table in DATA_CONTRACT. Check: `alembic upgrade head` on empty DB. Done 2026-10-04: 19 tables, migrations 0001 to 0007, tested on a throwaway database
 - [~] F2 Loader from generator output into Postgres, row counts asserted, traps queryable. Check: `make seed` (adapters, validator, ledger and the seed check are done and tested against files and a SQL source, loading into Postgres waits for F1)
-- [ ] F3 Postgres implementations of the services from D6. Check: same API tests pass against Postgres
-- [ ] F4 App DB role with no UPDATE or DELETE on `audit_log`. Check: an UPDATE from the app role fails
-- [ ] F5 pgvector retrieval of similar past briefs with seeded history (decision D20). Check: similar and tag-matched items returned
-- [ ] F6 `system_config.data_mode` is the source of truth for the LLM guard. Check: flipping it in the DB changes behaviour with no restart
+- [x] F3 Postgres implementations of the services from D6. Check: same API tests pass against Postgres. Done 2026-10-05: write-through services (D31); `make test-api-db` passes the API suite in database mode
+- [x] F4 App DB role with no UPDATE or DELETE on `audit_log`. Check: an UPDATE from the app role fails. Done 2026-10-05: role `edss_app`, plus a trigger for every role (migration 0004); tested
+- [x] F5 pgvector retrieval of similar past briefs with seeded history (decision D20). Check: similar and tag-matched items returned. Done 2026-10-05: pgvector with an HNSW index; seeded priors plus every published report; tested, including with the real local model
+- [x] F6 `system_config.data_mode` is the source of truth for the LLM guard. Check: flipping it in the DB changes behaviour with no restart. Done 2026-10-05: read from the table on every call; tested with no restart
 
 ## G. Needs a docs-first spike (APIs move fast)
 
 - [~] G1 LangGraph: Send fan-out, interrupt and resume, Postgres checkpointer, bounded back-edge. Read current docs, pin versions, small spike before use (fan-out, interrupt and resume, the bounded back-edge and crash recovery pass on the in-memory checkpointer, the Postgres checkpointer waits for F)
-- [ ] G2 MCP server with scoped tokens consumed through langchain-mcp-adapters, auth header per call. Same rule
+- [x] G2 MCP server with scoped tokens consumed through langchain-mcp-adapters, auth header per call. Same rule. Done 2026-10-04: per-run tokens and one audit row per call; read through our own client, not langchain-mcp-adapters (D29)
 - [x] G3 Test that fails the build if an agent module imports a database or file reader
-- [ ] G4 Parallel versus sequential benchmark with simulated source latency, labelled as such (decision D19)
+- [x] G4 Parallel versus sequential benchmark with simulated source latency, labelled as such (decision D19). Done 2026-10-04: `make benchmark`, docs/benchmark.md
 
 ## H. Blocked on other people (not ours, never block the build)
 
@@ -110,8 +110,8 @@ Vertical slices, as CLAUDE.md asks. Each slice goes from data to engine to API t
 
 - [~] I1 `docs/VIVA_NOTES.md` row for every component when built (what, why, rejected alternative, known weakness) (rows are filled for everything built so far, the pipeline pages are still to add)
 - [~] I2 `PROGRESS.md` updated at the end of every session, new dependencies listed with a reason
-- [ ] I3 `Makefile` commands section in CLAUDE.md filled in once the targets exist
-- [ ] I4 Runbook for the university IT cell (Day 19, needs F and the compose profile)
+- [x] I3 `Makefile` commands section in CLAUDE.md filled in once the targets exist. Done
+- [x] I4 Runbook for the university IT cell (Day 19, needs F and the compose profile). Done 2026-10-05: docs/RUNBOOK.md, exercised by `make smoke`
 
 ## J. Added during the build
 
