@@ -41,6 +41,41 @@ async function signOut(page: Page) {
   await expect(page).toHaveURL(/\/login/);
 }
 
+// What the room sees at the moment each step makes its point: no sideways scroll on the page, and
+// with REHEARSE_SCREENS=1 a picture of it in docs/demo-screens, the backup if the laptop fails.
+async function projector(page: Page, step: number) {
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow, `step ${step} scrolls sideways`).toBeLessThanOrEqual(0);
+  // nor a table on screen that has to be scrolled sideways to be read
+  const clipped = await page.evaluate(() =>
+    [...document.querySelectorAll<HTMLElement>("*")]
+      .filter((el) => ["auto", "scroll"].includes(getComputedStyle(el).overflowX))
+      .filter((el) => {
+        const box = el.getBoundingClientRect();
+        return box.bottom > 0 && box.top < window.innerHeight && box.width > 0;
+      })
+      .filter((el) => el.scrollWidth > el.clientWidth + 1)
+      .map((el) => el.getAttribute("aria-label") ?? el.textContent?.slice(0, 40)),
+  );
+  expect(clipped, `step ${step} has a region to scroll sideways`).toEqual([]);
+  // the picture is of the settled screen, not a sheet or dialog halfway through its animation
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => a.effect?.getTiming().iterations !== Infinity)
+        .map((a) => a.finished.catch(() => undefined)),
+    ),
+  );
+  // and not halfway through a smooth scroll
+  await page.waitForFunction(
+    () => new Promise((settled) => { const y = window.scrollY; setTimeout(() => settled(window.scrollY === y), 150); }),
+  );
+  if (process.env.REHEARSE_SCREENS) {
+    await page.screenshot({ path: join(__dirname, "..", "..", "docs", "demo-screens", `step-${step}.png`) });
+  }
+}
+
 test("DEMO.md has exactly the steps this rehearsal walks", () => {
   const doc = readFileSync(join(__dirname, "..", "..", "docs", "DEMO.md"), "utf8");
   const headings = [...doc.matchAll(/^### (Step \d+\. .+)$/gm)].map((m) => m[1].trim());
@@ -60,6 +95,7 @@ test("the demo, steps 1 to 9", async ({ page }) => {
     await expect(page.getByText(/^Stale, \d+ days$/)).toBeVisible();
     await expect(page.getByText("No record", { exact: true }).first()).toBeVisible();
     await expect(page.getByText("1 pending reconciliation")).toBeVisible();
+    await projector(page, 1);
   });
 
   await test.step(STEPS[1], async () => {
@@ -77,6 +113,7 @@ test("the demo, steps 1 to 9", async ({ page }) => {
     await page.getByRole("button", { name: "Save changes" }).click();
     await expect(page.getByText(/^Revision 2\./)).toBeVisible();
     await expect(page.getByText(/^12 of 13 chosen/)).toBeVisible();
+    await projector(page, 2);
   });
 
   await test.step(STEPS[2], async () => {
@@ -88,6 +125,7 @@ test("the demo, steps 1 to 9", async ({ page }) => {
       timeout: 30_000,
     });
     await expect(page.getByText("4 domain agents worked at the same time")).toBeVisible();
+    await projector(page, 3);
   });
 
   await test.step(STEPS[3], async () => {
@@ -98,6 +136,7 @@ test("the demo, steps 1 to 9", async ({ page }) => {
     await expect(sheet.getByText(/It is missed: the exact figure is 74\.96/)).toBeVisible();
     await expect(sheet.getByText("75.7%")).toBeVisible();
     await expect(sheet.getByText(/^\d+ records behind this figure\.$/)).toBeVisible();
+    await projector(page, 4);
     await page.keyboard.press("Escape");
   });
 
@@ -111,6 +150,7 @@ test("the demo, steps 1 to 9", async ({ page }) => {
     await expect(page.getByRole("heading", { name: "Assumptions and caveats" })).toBeVisible();
     await expect(page.getByText("Forecast figures are shown apart and are never added to actuals.")).toBeVisible();
     await expect(page.getByText("All nine checks passed on attempt 1 of the drafting loop.")).toBeVisible();
+    await projector(page, 5);
   });
 
   await test.step(STEPS[5], async () => {
@@ -126,6 +166,8 @@ test("the demo, steps 1 to 9", async ({ page }) => {
     await page.getByRole("link", { name: /Open the draft/ }).click();
     await expect(page.getByText("Attempt 1: failing V1")).toBeVisible();
     await expect(page.getByText("Attempt 2: all nine checks passed")).toBeVisible();
+    await page.getByText("Attempt 1: failing V1").scrollIntoViewIfNeeded();
+    await projector(page, 6);
   });
 
   await test.step(STEPS[6], async () => {
@@ -143,6 +185,8 @@ test("the demo, steps 1 to 9", async ({ page }) => {
     await confirm.getByRole("button", { name: "Approve with edits" }).click();
     await expect(page.getByText("Published as version 2")).toBeVisible();
     await expect(page.getByText("1 edit made on approval")).toBeVisible();
+    await expect(page.getByText("Published as version 2")).toBeInViewport();
+    await projector(page, 7);
   });
 
   await test.step(STEPS[7], async () => {
@@ -157,6 +201,7 @@ test("the demo, steps 1 to 9", async ({ page }) => {
     await expect(page.getByRole("row", { name: /^v2\b/ })).toContainText("Rolled back");
     await menu(page, "Audit").click();
     await expect(page.getByText("The audit chain verifies")).toBeVisible();
+    await projector(page, 8);
   });
 
   await test.step(STEPS[8], async () => {
@@ -169,6 +214,7 @@ test("the demo, steps 1 to 9", async ({ page }) => {
     ]);
     await page.getByRole("button", { name: "Placement percentage", exact: true }).first().click();
     await expect(page.getByRole("dialog").getByText("restricted").first()).toBeVisible();
+    await projector(page, 9);
     await page.keyboard.press("Escape");
     await menu(page, "Data health").click();
     await expect(page.getByText("Restricted").first()).toBeVisible();

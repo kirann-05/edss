@@ -5,6 +5,8 @@ import type { HealthCell } from "@/lib/api/types";
 import { FACT_STATUS } from "@/lib/status";
 
 const plural = (count: number, word: string) => `${count} ${word}`;
+// badges may wrap here, so the whole matrix fits a projector at 125 percent zoom without scrolling
+const WRAP = "whitespace-normal";
 
 /** One department in one domain: how fresh it is, and which of its figures are not final. */
 export function HealthCellView({ cell }: { cell: HealthCell }) {
@@ -24,22 +26,23 @@ export function HealthCellView({ cell }: { cell: HealthCell }) {
 
   return (
     <div className="flex flex-col items-start gap-1.5">
-      <HealthBadge state={cell.state} label={label} />
+      <HealthBadge state={cell.state} label={label} className={WRAP} />
       {cell.as_of && (
         <p className="text-sm text-muted-foreground">
-          <span className="tabular">Oldest {cell.as_of}</span>
-          {" · "}
-          {plural(cell.fact_count, "records")}
+          <span className="sr-only">Oldest record </span>
+          <span className="tabular block whitespace-nowrap">{cell.as_of}</span>
+          <span className="block">{plural(cell.fact_count, "records")}</span>
         </p>
       )}
       {nonFinal.provisional > 0 && (
-        <StatusChip style={FACT_STATUS.provisional} label={`${nonFinal.provisional} provisional`} />
+        <StatusChip style={FACT_STATUS.provisional} label={`${nonFinal.provisional} provisional`} className={WRAP} />
       )}
-      {nonFinal.forecast > 0 && <StatusChip style={FACT_STATUS.forecast} label={`${nonFinal.forecast} forecast`} />}
+      {nonFinal.forecast > 0 && <StatusChip style={FACT_STATUS.forecast} label={`${nonFinal.forecast} forecast`} className={WRAP} />}
       {nonFinal.pending_reconciliation > 0 && (
         <StatusChip
           style={FACT_STATUS.pending_reconciliation}
           label={`${nonFinal.pending_reconciliation} pending reconciliation`}
+          className={WRAP}
         />
       )}
     </div>

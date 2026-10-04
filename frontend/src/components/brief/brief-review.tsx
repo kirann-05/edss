@@ -104,6 +104,9 @@ export function BriefReview({ id }: { id: string }) {
           setDialog(null);
           setEditing(false);
           setDrafts({});
+          // the outcome is shown at the top, and the reviewer is usually far down among the options
+          const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
         },
       },
     );

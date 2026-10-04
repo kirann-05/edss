@@ -42,7 +42,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   if (me.isPending) {
     return (
       <div className="flex min-h-dvh">
-        <div className="hidden w-64 border-r bg-sidebar p-4 lg:block">
+        <div className="hidden w-60 border-r bg-sidebar p-4 lg:block xl:w-64">
           <Skeleton className="h-10 w-32" />
         </div>
         <div className="flex-1 p-8">
@@ -76,7 +76,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         Skip to main content
       </a>
 
-      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col gap-6 border-r bg-sidebar p-4 lg:flex print:hidden">
+      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 xl:w-64 flex-col gap-6 border-r bg-sidebar p-4 lg:flex print:hidden">
         <Brand />
         <NavList me={me.data} />
       </aside>

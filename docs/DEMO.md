@@ -31,7 +31,7 @@ About 12 minutes. Read this once before the first rehearsal. Every label in quot
 - [ ] One terminal tab: `make demo`. Wait for "EDSS is ready". The banner must say "Synthetic data only", "Drafts: fake" and "Ready-made: one approved report (version 1) and one draft waiting for review".
 - [ ] Now Wi-Fi off. Nothing needs the network once it is running, and it is worth saying so in step 1.
 - [ ] A second terminal tab in the repo folder, for `make demo-reset` if you need it.
-- [ ] Chrome, one window, one tab, at http://127.0.0.1:3000. Zoom 125 percent (Cmd and +). Mirror the display to the projector.
+- [ ] Chrome, one window, one tab, at http://127.0.0.1:3000. Zoom 125 percent (Cmd and +). Mirror the display to the projector. Every screen is checked to fit a 1280 by 720 projector at this zoom.
 - [ ] The sign-in page is showing.
 
 **Model off, and why.** The demo drafts with the canned FakeLLM, so every run takes about a second and says the same thing every time. The local model works (`LLM_PROVIDER=ollama LLM_MODEL=qwen3.5:4b make demo`), but on this MacBook Air a single brief takes minutes. If asked, say so plainly and point to the measured results: `docs/evals/ollama-qwen3.5-4b-v2-current-prompts-2026-10-03.md` (option drafting reliable on every off-target KPI, the planner asks the right questions only 4 times in 10). Production runs the model on the university GPU.
@@ -50,7 +50,7 @@ Top right, click your name (the account menu), then "Sign out", then the role bu
 
 **Click** "Open data health".
 
-**Screen shows** the grid of departments by area. CIVIL placement says "Stale, 150 days". MECH research says "No record". BIOTECH finance carries "1 pending reconciliation".
+**Screen shows** the grid of departments by area. Scroll down a little: CIVIL placement says "Stale, 150 days". MECH research says "No record". BIOTECH finance carries "1 pending reconciliation".
 
 **Say** "Before anyone looks at a KPI, the system says what the data cannot support. Civil's placement data is five months old, so it is used but flagged everywhere. Mechanical has no research record this year, so it is left out of research figures, never counted as zero. All of this is synthetic data, generated with these problems planted on purpose, and everything runs on this laptop with the Wi-Fi off."
 
@@ -106,7 +106,7 @@ Top right, click your name (the account menu), then "Sign out", then the role bu
 
 **Click** "New brief", the example "Placement and research brief for the Governing Council for 2025-26", "Start". Then "Demo: inject a failure", tick "A figure written by hand", and "Lock plan and start".
 
-**Screen shows** "Failing: V1 Every figure cites its source", then "Repair, attempt 2", then "All nine checks passed". **Click** "Open the draft": the validation report says "Attempt 1: failing V1" and "Attempt 2: all nine checks passed".
+**Screen shows** "Failing: V1 Every figure cites its source", then "Repair, attempt 2", then "All nine checks passed". **Click** "Open the draft" and scroll to "Every attempt" at the bottom: the validation report says "Attempt 1: failing V1" and "Attempt 2: all nine checks passed".
 
 **Say** "That made the model write a made-up percentage into an option, the commonest way a language model gets a report wrong. The first check caught it, the system repaired only the option that failed and checked everything again. The retry budget is three attempts. If it still fails, it stops and hands the draft to a person with the diagnosis, it never loops."
 
@@ -165,7 +165,7 @@ Try these in order. Keep talking while you do it: what the step was going to sho
 1. **Something is stuck or in a strange state.** `make demo-reset` in the second tab, sign in again, and carry on from the step you were on. 2 seconds.
 2. **A server crashed.** Ctrl-C in the first tab, then `DEMO_SKIP_BUILD=1 make demo`. About 5 seconds. The logs are in `.demo/`.
 3. **"Port 8000 (or 3000) is in use".** `DEMO_API_PORT=8100 DEMO_WEB_PORT=3100 make demo`, and open http://127.0.0.1:3100.
-4. **The laptop itself fails.** Play the recorded rehearsal from the USB stick and narrate over it with the Say lines. The screenshots of each step will be in `docs/demo-screens`.
+4. **The laptop itself fails.** Play the recorded rehearsal from the USB stick and narrate over it with the Say lines. One screenshot per step, at projector size, is in `docs/demo-screens` (`REHEARSE_SCREENS=1 make rehearse` makes them again).
 
 ## Things not to do live
 

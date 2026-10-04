@@ -16,7 +16,9 @@ export default defineConfig({
   use: {
     baseURL: WEB,
     channel: process.env.CI ? undefined : "chrome",
-    viewport: { width: 1280, height: 720 },
+    // a 1280 by 720 projector with the browser at 125 percent zoom
+    viewport: { width: 1024, height: 576 },
+    deviceScaleFactor: 1.25,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },

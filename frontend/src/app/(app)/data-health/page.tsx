@@ -63,7 +63,7 @@ function DataHealth() {
         title="Data health"
         description={
           data.is_current
-            ? `How fresh each department's data is for ${data.period_year}, judged against ${data.stale_after_days} days.`
+            ? `How fresh each department's data is for ${data.period_year}, judged against ${data.stale_after_days} days. Each cell shows its oldest record's date and how many records it has.`
             : `${data.period_year} is a closed year, so freshness no longer applies. Gaps are still shown.`
         }
         actions={
@@ -90,11 +90,11 @@ function DataHealth() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead scope="col" className="min-w-36">
+                <TableHead scope="col" className="min-w-24 whitespace-normal">
                   Department
                 </TableHead>
                 {data.domains.map((domain) => (
-                  <TableHead key={domain} scope="col" className="min-w-36">
+                  <TableHead key={domain} scope="col" className="min-w-24 whitespace-normal">
                     {DOMAIN_LABEL[domain]}
                   </TableHead>
                 ))}
