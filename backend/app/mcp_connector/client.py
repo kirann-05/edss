@@ -10,6 +10,7 @@ agent cannot mistake "not allowed" for "no records".
 """
 
 import asyncio
+import contextlib
 import threading
 from collections.abc import Sequence
 from datetime import date
@@ -92,10 +93,9 @@ class McpConnector:
         if self._stop is not None:
             self._loop.call_soon_threadsafe(self._stop.set)
         if self._session is not None:
-            try:
+            # closing must not raise over whatever error led to it
+            with contextlib.suppress(Exception):
                 self._session.result(self._timeout)
-            except Exception:  # noqa: BLE001  closing must not raise over the real error
-                pass
         self._loop.call_soon_threadsafe(self._loop.stop)
         self._thread.join(self._timeout)
 
