@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -65,6 +65,10 @@ acceptance:
 # the live demo: production build, demo settings, one command. See scripts/demo.sh for options
 demo:
 	./scripts/demo.sh
+
+# parallel against one-at-a-time domain agents, written to docs/benchmark.md
+benchmark:
+	cd backend && uv run python ../scripts/benchmark.py
 
 # back to the demo's ready-made start, without stopping it
 demo-reset:

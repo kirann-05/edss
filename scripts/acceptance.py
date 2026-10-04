@@ -95,28 +95,33 @@ class Trial:
 class Bench:
     store: DataStore
     model: FakeLLM = field(default_factory=lambda: FakeLLM("drafter"))
+    latency: float = 0.0  # seconds each domain agent waits, standing in for a slow source
     count: int = 0
+    run_id: str = ""
 
     def __post_init__(self) -> None:
         self.connector = InMemoryConnector(self.store, ScopeRegistry(REF))
         audit = AuditLog()
+        self.events = RunEvents()
         # its validator only runs on a person's decision, which this script never makes
         governance = GovernanceService(audit, lambda doc: ValidationReport(passed=True, checks=()))
         deps = GraphDeps(
             connector=self.connector,
             model=self.model,
-            runtime=Runtime(audit, RunEvents()),
+            runtime=Runtime(audit, self.events),
             create_draft=lambda **kw: governance.create_draft(**kw).id,
             max_attempts=MAX_ATTEMPTS,
+            source_latency=self.latency,
         )
         self.graph = build_graph(deps, InMemorySaver())
 
-    def run(self, plan: Plan, faults: list[str]) -> dict[str, Any]:
+    def run(self, plan: Plan, faults: list[str], **config: Any) -> dict[str, Any]:
         self.count += 1
-        run_id = f"acceptance-{self.count}"
+        self.run_id = run_id = f"acceptance-{self.count}"
         locked = lock_plan(plan, datetime(2026, 10, 3, tzinfo=UTC))
         return self.graph.invoke(
-            initial_state(run_id, locked, "registrar@edss.test", faults), run_config(run_id)
+            initial_state(run_id, locked, "registrar@edss.test", faults),
+            {**run_config(run_id), **config},
         )
 
     def context(self, plan: Plan, state: dict[str, Any]) -> ValidationContext:

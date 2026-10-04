@@ -13,7 +13,7 @@ Update at the end of every session. Keep it short and true.
 | 5 | MCP connector | partial | Connector interface, per-run scope, ingestion adapters (CSV, read-only SQL), validator, loader, manifest, reconciliation report, and a test proving the CSV and SQL sources give identical KPIs. The MCP server itself is not built |
 | 6 | Runtime, audit, checkpoints | partial | Traced nodes, hash-chained audit, crash and resume on the in-memory checkpointer. Postgres checkpointer and append-only database role not built |
 | 7 | Full node graph | done | Plan lock, access check, parallel domain agents, synthesis, options, compose, validate and repair, human gate, finish |
-| 8 | Parallel fan-out and merge | done, benchmark not written | Parallelism is measured from the events and shown. The timing script is not written |
+| 8 | Parallel fan-out and merge | done | Parallelism is measured from the events and shown. `make benchmark`: with a simulated 700 ms source, the domain phase takes about 0.71 s in parallel against 2.8 s one at a time (docs/benchmark.md) |
 | 9 | Grounding and evidence | done | Reference tokens, number lint, V1, evidence tab, source record dialog, scoped record lookup |
 | 10 | Validate, diagnose, repair | done | Eight injectable faults, detected and repaired inside the bound or escalated, shown live in the timeline |
 | 11 | Acceptance suite as gate | done | V1 to V9 gate every draft. `make acceptance` runs every fault over 18 plans: 94 of 94 caught by the intended check and repaired (docs/acceptance-report.md) |

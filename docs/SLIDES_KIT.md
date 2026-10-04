@@ -38,6 +38,7 @@ Four domain agents gather department data in parallel through one governed conne
 | Acceptance run | 18 plans; 94 fault trials, 94 caught first time by the intended check, 94 repaired; 18 of 18 clean drafts pass first time | `make acceptance`, `docs/acceptance-report.md` |
 | Retry budget | 3 attempts, then the draft goes to a person with a diagnosis | `max_attempts` in `backend/app/core/config.py` |
 | Parallel domain agents | 4, each waiting 700 ms to stand in for a slow source; a whole run takes about 750 ms | Shown on the run page, `docs/demo-screens/step-3.png` |
+| Parallel against one at a time | With a simulated 700 ms source per agent, the domain phase takes about 0.71 s in parallel and 2.8 s one at a time, close to the best possible four times. With no delay there is nothing to win | `make benchmark`, `docs/benchmark.md` |
 | Audit chain | SHA-256, each row hashing the previous hash with its own content | `backend/app/governance/audit.py` |
 | Tampering found | A changed row is found at exactly that row | `backend/tests/api/test_audit_api.py`, `test_tampering_is_detected_at_the_row_that_was_changed` |
 | Sign-in throttle | After 5 failed sign-ins in 15 minutes, that email is refused for a while | `backend/tests/test_throttle.py` |
