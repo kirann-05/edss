@@ -7,7 +7,7 @@ time, so a published version never changes underneath its readers.
 from datetime import date, datetime
 from typing import Literal
 
-from app.domain.enums import Domain, FactStatus, KpiStatus
+from app.domain.enums import Domain, FactStatus, KpiFramework, KpiStatus
 from app.domain.models import DecimalStr, Frozen
 from app.kpi.formulas import InputTerm
 from app.kpi.results import KpiFlags
@@ -57,6 +57,7 @@ class KpiFigure(Frozen):
     key: str
     name: str
     domain: Domain
+    framework: KpiFramework = KpiFramework.STRATEGIC  # the pack whose definition it is
     unit: str
     precision: int
     higher_is_better: bool
@@ -107,6 +108,7 @@ class OptionSet(Frozen):
     kpi_key: str
     options: tuple[Option, ...]
     attempt: int = 1  # which generation this is, 2 or more means it was repaired
+    framework: KpiFramework = KpiFramework.STRATEGIC  # the specialist pack that guided the draft
 
 
 # --- the brief ---------------------------------------------------------------------------------

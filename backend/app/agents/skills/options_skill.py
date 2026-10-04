@@ -10,7 +10,7 @@ misbehave on purpose on its first attempt (`inject`), so failure injection has s
 to detect and repair.
 """
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -51,6 +51,7 @@ def option_payload(
     diagnosis: str | None = None,
     inject: Sequence[str] = (),
     fault_fact_id: int | None = None,
+    framework: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Everything the model is told. No figures: statuses, directions and trends are words."""
     flags = figure.flags
@@ -69,6 +70,8 @@ def option_payload(
             "undefined": list(flags.undefined_departments),
         },
         "placeholder": figure.placeholder,
+        # the specialist pack's guidance for this KPI's framework (Lab 13), in words
+        "framework": dict(framework) if framework else None,
         "attempt": attempt,
         "diagnosis": diagnosis,
         "inject": list(inject),
@@ -151,6 +154,7 @@ def draft_option_set(
     diagnosis: str | None = None,
     inject: Sequence[str] = (),
     fault_fact_id: int | None = None,
+    framework: Mapping[str, Any] | None = None,
 ) -> OptionSet:
     canned = getattr(model, "provider", "") == "fake"
     # a canned model misbehaves when asked, a real one has the faults applied to its answer
@@ -160,6 +164,7 @@ def draft_option_set(
         diagnosis=diagnosis,
         inject=inject if canned else (),
         fault_fact_id=fault_fact_id if canned else None,
+        framework=framework,
     )
     draft = model.generate(  # type: ignore[attr-defined]
         "draft_options", payload, OptionSetDraft, check=_check_options(figure)
@@ -169,6 +174,7 @@ def draft_option_set(
     return OptionSet(
         kpi_key=figure.key,
         attempt=attempt,
+        framework=figure.framework,
         options=tuple(
             Option(
                 id=f"{figure.key}-{number}",

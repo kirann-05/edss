@@ -32,6 +32,7 @@ from app.services.store import DataStore
 from app.services.system_config import SystemConfig
 from app.services.users import build_seed_users
 from app.services.validation_context import context_for_document
+from app.specialists import SPECIALISTS
 
 
 def build_state(
@@ -81,6 +82,8 @@ def build_state(
             assert record.plan is not None
             return mcp_session(url, tokens, record.id, record.created_by, record.plan.domains)
 
+    # Lab 13: a KPI tagged with a framework that waits for IQAC stops the app (rule 12)
+    SPECIALISTS.check_definitions(d.framework for d in store.definitions)
     graph = build_graph(
         GraphDeps(
             connector=graph_connector,
@@ -89,6 +92,7 @@ def build_state(
             create_draft=lambda **kw: governance.create_draft(**kw).id,
             max_attempts=settings.max_attempts,
             source_latency=settings.source_latency_ms / 1000,
+            frameworks=SPECIALISTS,
         ),
         InMemorySaver(),
     )

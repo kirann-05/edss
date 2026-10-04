@@ -147,6 +147,7 @@ test("the demo, steps 1 to 9", async ({ page }) => {
     await expect(page.getByText("Validation passed")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Options for decision" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Confirm provisional offers quickly" })).toBeVisible();
+    await expect(page.getByText("Strategic plan pack").first()).toBeVisible();
     await expect(page.getByRole("heading", { name: "Assumptions and caveats" })).toBeVisible();
     await expect(page.getByText("Forecast figures are shown apart and are never added to actuals.")).toBeVisible();
     await expect(page.getByText("All nine checks passed on attempt 1 of the drafting loop.")).toBeVisible();

@@ -94,7 +94,9 @@ _OPTIONS = """TASK: draft options for one KPI that is off target, for the leader
 
 You are given the KPI's name, its area, whether it is missed or at risk, which way it differs \
 from target (words only), its trend, and data-quality flags for departments. You are not given \
-any figure, on purpose.
+any figure, on purpose. You may also be given "framework": the planning framework this KPI \
+belongs to, with guidance and the areas every option should weigh. Follow that guidance, and let \
+the areas shape the assumptions, risks and trade-offs.
 
 Write two or three genuinely different options. Each option has:
 - title: a short plain title.

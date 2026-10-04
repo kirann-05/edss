@@ -14,6 +14,7 @@ from dataclasses import dataclass
 
 from app.agents.compose import build_assumptions, build_health_notes, build_summary
 from app.agents.connector import HealthCellInfo
+from app.agents.frameworks import FrameworkGuide
 from app.agents.llm import ChatModel
 from app.agents.models import BriefDocument, KpiFigure, OptionSet, Plan, ValidationReport
 from app.agents.skills.options_skill import draft_option_set
@@ -28,6 +29,7 @@ class RepairContext:
     figures: Mapping[str, KpiFigure]  # straight from the engine, the one source of truth
     health: Sequence[HealthCellInfo]
     model: ChatModel
+    frameworks: FrameworkGuide | None = None  # the specialist packs, so a repair is guided too
 
 
 def _in_plan_order(plan: Plan, items, key):
@@ -76,8 +78,9 @@ def repair(
             for v in violations
             if v.fix == "regenerate_options" and v.locator.kpi_key == key
         )
+        guide = rctx.frameworks.drafting_context(figure.framework) if rctx.frameworks else None
         sets[key] = draft_option_set(
-            rctx.model, figure, attempt=attempt, diagnosis=diagnosis, inject=()
+            rctx.model, figure, attempt=attempt, diagnosis=diagnosis, inject=(), framework=guide
         )
         log.append(f"Regenerated options for {key}")
     option_sets: tuple[OptionSet, ...] = _in_plan_order(
@@ -89,7 +92,8 @@ def repair(
     if sections or flags_changed:
         health_domains: tuple[Domain, ...] = (*rctx.plan.domains, Domain.REFERENCE)
         updates["summary"] = build_summary(figures)
-        updates["assumptions"] = build_assumptions(figures, rctx.health, health_domains)
+        pending = rctx.frameworks.pending_labels() if rctx.frameworks else ()
+        updates["assumptions"] = build_assumptions(figures, rctx.health, health_domains, pending)
         updates["data_health"] = build_health_notes(rctx.health, health_domains)
         log.append("Rebuilt the summary, assumptions and data health sections")
 

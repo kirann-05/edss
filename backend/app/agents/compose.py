@@ -46,6 +46,7 @@ def figure_from(definition: KpiDefinition, result: KpiResult, trend: str = "unkn
         precision=definition.display_precision,
         higher_is_better=definition.higher_is_better,
         placeholder=definition.placeholder,
+        framework=definition.framework,
         definition_active=definition.active,
         definition_approved=definition.approved_by is not None,
         kpi_version=result.kpi_version,
@@ -96,7 +97,10 @@ def _by_department(figures: Sequence[KpiFigure], pick) -> dict[str, list[str]]:
 
 
 def build_assumptions(
-    figures: Sequence[KpiFigure], health: Sequence[HealthCellInfo], domains: Sequence[Domain]
+    figures: Sequence[KpiFigure],
+    health: Sequence[HealthCellInfo],
+    domains: Sequence[Domain],
+    pending_frameworks: Sequence[str] = (),
 ) -> tuple[AssumptionItem, ...]:
     """What the reader must know to read the figures correctly, stated, never implied."""
     items: list[AssumptionItem] = []
@@ -115,6 +119,12 @@ def build_assumptions(
                 text=(
                     "KPI definitions and targets are placeholders pending IQAC approval, so statuses "
                     "show how the system works and are not official."
+                    + (
+                        f" {' and '.join(pending_frameworks)} have no approved definitions yet, so "
+                        "nothing here is reported against them."
+                        if pending_frameworks
+                        else ""
+                    )
                 ),
                 kpi_keys=tuple(f.key for f in figures if f.placeholder),
             )
@@ -177,6 +187,7 @@ def compose_brief(
     figures: Sequence[KpiFigure],
     option_sets: Sequence[OptionSet],
     health: Sequence[HealthCellInfo],
+    pending_frameworks: Sequence[str] = (),
 ) -> BriefDocument:
     order = {key: i for i, key in enumerate(plan.kpi_keys)}
     ordered = sorted(figures, key=lambda f: order.get(f.key, len(order)))
@@ -191,7 +202,7 @@ def compose_brief(
         kpis=tuple(ordered),
         summary=build_summary(ordered),
         option_sets=tuple(sorted(option_sets, key=lambda s: order.get(s.kpi_key, len(order)))),
-        assumptions=build_assumptions(ordered, health, health_domains),
+        assumptions=build_assumptions(ordered, health, health_domains, pending_frameworks),
         data_health=build_health_notes(health, health_domains),
     )
 

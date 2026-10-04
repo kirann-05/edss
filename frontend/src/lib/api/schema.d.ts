@@ -1670,6 +1670,8 @@ export interface components {
         OptionSetOut: {
             /** Attempt */
             attempt: number;
+            /** Guided By */
+            guided_by: string;
             /** Kpi Key */
             kpi_key: string;
             /** Kpi Name */

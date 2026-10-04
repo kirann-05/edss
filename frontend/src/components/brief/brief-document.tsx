@@ -98,6 +98,7 @@ export function BriefDocument({
                     )}
                   </h3>
                   <KpiStatusBadge status={set.status} />
+                  <span className="text-sm text-muted-foreground">{set.guided_by} pack</span>
                   {set.attempt > 1 && (
                     <span className="text-sm text-muted-foreground">Redrafted on attempt {set.attempt}</span>
                   )}

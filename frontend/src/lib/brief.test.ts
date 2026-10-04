@@ -40,7 +40,9 @@ function brief(overrides: Partial<Brief> = {}): Brief {
       period_year: "2025-26",
       kpis: [],
       summary: [],
-      option_sets: [{ kpi_key: "PL_PCT", kpi_name: "Placement percentage", status: "missed", attempt: 1, options: [OPTION] }],
+      option_sets: [
+        { kpi_key: "PL_PCT", kpi_name: "Placement percentage", status: "missed", attempt: 1, guided_by: "Strategic plan", options: [OPTION] },
+      ],
       assumptions: [],
       data_health: [],
     },

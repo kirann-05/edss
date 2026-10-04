@@ -16,6 +16,7 @@ from app.domain.enums import KpiStatus
 from app.domain.models import AppUser
 from app.governance.service import ApprovalState, BriefRecord, BriefVersion, Edit
 from app.services.views import _flag_list
+from app.specialists import SPECIALISTS
 
 _EVERYTHING = Scope(everything=True)
 
@@ -72,6 +73,7 @@ def render_document(doc: BriefDocument, ctx: ValidationContext) -> s.BriefDocume
                 if option_set.kpi_key in names
                 else KpiStatus.UNDEFINED,
                 attempt=option_set.attempt,
+                guided_by=SPECIALISTS.get(option_set.framework).label,
                 options=[
                     s.OptionOut(
                         id=o.id,

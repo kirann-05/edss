@@ -1,0 +1,9 @@
+# Rule 12: no NAAC parameter, definition or target is ever invented. This pack stays empty, and
+# says so, until IQAC supplies the approved list. The loader refuses it if it gains guidance, or if
+# any KPI is tagged NAAC while it is pending.
+framework: NAAC
+label: NAAC
+status: pending_iqac
+note: "PLACEHOLDER_PENDING_IQAC. No NAAC parameter, definition or target is used until IQAC supplies the approved list."
+guidance: ""
+consider: []

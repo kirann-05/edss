@@ -23,6 +23,7 @@ from langgraph.types import Send, interrupt
 
 from app.agents.compose import compose_brief, figure_from, off_target, trend_word
 from app.agents.connector import Connector
+from app.agents.frameworks import FrameworkGuide
 from app.agents.llm import ChatModel
 from app.agents.models import BriefDocument, KpiFigure, OptionSet, Plan, ValidationReport
 from app.agents.repair import RepairContext, repair
@@ -104,6 +105,7 @@ class GraphDeps:
     source_latency: float = (
         0.0  # seconds a domain agent waits on its source, to model a slow system
     )
+    frameworks: FrameworkGuide | None = None  # the specialist packs (Lab 13)
 
 
 def run_config(run_id: str) -> dict[str, Any]:
@@ -145,6 +147,7 @@ def build_graph(deps: GraphDeps, checkpointer: Any):
             figures={f.key: f for f in figures_of(state)},
             health=tuple(conn.get_data_health(plan.period_year)),
             model=deps.model,
+            frameworks=deps.frameworks,
         )
 
     # --- nodes -----------------------------------------------------------------------------
@@ -307,12 +310,14 @@ def build_graph(deps: GraphDeps, checkpointer: Any):
     )
     def draft_options(state: dict[str, Any]) -> dict[str, Any]:
         figure = KpiFigure.model_validate(state["figure"])
+        guide = deps.frameworks.drafting_context(figure.framework) if deps.frameworks else None
         option_set = draft_option_set(
             deps.model,
             figure,
             attempt=1,
             inject=state.get("inject", ()),
             fault_fact_id=state.get("fault_fact_id"),
+            framework=guide,
         )
         return {"option_sets": {figure.key: option_set.model_dump(mode="json")}}
 
@@ -321,7 +326,11 @@ def build_graph(deps: GraphDeps, checkpointer: Any):
         plan = plan_of(state)
         sets = [OptionSet.model_validate(s) for s in state.get("option_sets", {}).values()]
         document = compose_brief(
-            plan, figures_of(state), sets, list(conn.get_data_health(plan.period_year))
+            plan,
+            figures_of(state),
+            sets,
+            list(conn.get_data_health(plan.period_year)),
+            deps.frameworks.pending_labels() if deps.frameworks else (),
         )
         if state.get("attempts", 0) == 0:
             context = validation_context(state)

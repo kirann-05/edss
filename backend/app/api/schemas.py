@@ -422,6 +422,7 @@ class OptionSetOut(Api):
     kpi_name: str
     status: KpiStatus
     attempt: int
+    guided_by: str  # the framework specialist pack that shaped the draft (Lab 13)
     options: list[OptionOut]
 
 

@@ -1,0 +1,9 @@
+# Rule 12: no NIRF parameter, definition or target is ever invented. This pack stays empty, and
+# says so, until IQAC supplies the approved list. The loader refuses it if it gains guidance, or if
+# any KPI is tagged NIRF while it is pending.
+framework: NIRF
+label: NIRF
+status: pending_iqac
+note: "PLACEHOLDER_PENDING_IQAC. No NIRF parameter, definition or target is used until IQAC supplies the approved list."
+guidance: ""
+consider: []

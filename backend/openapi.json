@@ -2531,6 +2531,10 @@
             "title": "Attempt",
             "type": "integer"
           },
+          "guided_by": {
+            "title": "Guided By",
+            "type": "string"
+          },
           "kpi_key": {
             "title": "Kpi Key",
             "type": "string"
@@ -2555,6 +2559,7 @@
           "kpi_name",
           "status",
           "attempt",
+          "guided_by",
           "options"
         ],
         "title": "OptionSetOut",

@@ -1,0 +1,16 @@
+# The university's own strategic plan. Its KPIs are the placeholder list in
+# app/kpi/definitions/placeholder_kpis.yaml until IQAC supplies the approved list.
+# Guidance and the areas to consider are words for the drafter, never figures, and general to any
+# university: they do not claim to know what this university's plan says.
+framework: STRATEGIC
+label: Strategic plan
+status: active
+note: "PLACEHOLDER_PENDING_IQAC. Definitions and targets are placeholders until IQAC approves them."
+guidance: >-
+  Options serve the university's own strategic plan. Each should say which office would own the
+  action, what it would cost in money and staff time, and when in the academic year it could start.
+consider:
+  - resourcing and budget
+  - faculty and staff workload
+  - timing within the academic year
+  - the departments whose data is flagged

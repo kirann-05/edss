@@ -17,6 +17,7 @@ Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded 
 - L4c tokens and audit (2026-10-04): a token per run carries the plan's areas plus reference data, expires on its own and is revoked at the end. Over real HTTP a read outside the run's areas is refused and audited, and no, unknown, revoked or expired tokens get a 401 before any tool runs. Every call is one audit row with a hash of what was returned.
 - L4d MCP client and swap test (2026-10-04): `McpConnector` implements the same protocol over MCP (one background loop holds the session, the four agents share it). Every method answers the same both ways, and a whole graph run gives identical KPIs and an identical brief, in-process and over HTTP with a run token.
 - L4e runs read through MCP (2026-10-04): with `CONNECTOR_URL` set, the API mounts the server at `/mcp` and each run opens its own session with a token for its plan's areas; `make demo` and `make rehearse` now run this way (`DEMO_DIRECT=1` to opt out). The token caught the trend calculation reading every area, now fixed. A test drives a run through the live app and checks every read is audited and the token is gone afterwards. Runs take about one second instead of 0.76.
+- L3 framework specialists (2026-10-04): Strategic, NIRF and NAAC packs as YAML over one implementation, outside the agents (they read files). The Strategic pack guides every draft and is shown on the brief. NIRF and NAAC hold nothing until IQAC supplies definitions, and the loader and the app enforce that. 13 tests.
 
 ## How to work through it
 

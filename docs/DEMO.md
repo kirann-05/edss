@@ -96,7 +96,7 @@ Top right, click your name (the account menu), then "Sign out", then the role bu
 
 **Click** "Review queue" in the menu, then "Prepare the leadership brief".
 
-**Screen shows** "Decision brief, 2025-26", "Draft", "Validation passed". "KPIs at a glance" with each status. "Options for decision" for Overall pass percentage, Publications per faculty and Placement percentage: two or three options each with assumptions, risks and trade-offs. Placement percentage has the option "Confirm provisional offers quickly". At the bottom, "Assumptions and caveats" lists Stale, No record, Excluded, Undefined, Provisional and Forecast, then the "Validation" tab with V1 to V9 passed.
+**Screen shows** "Decision brief, 2025-26", "Draft", "Validation passed". "KPIs at a glance" with each status. "Options for decision" for Overall pass percentage, Publications per faculty and Placement percentage: two or three options each with assumptions, risks and trade-offs, and a note that the "Strategic plan pack" guided them. Placement percentage has the option "Confirm provisional offers quickly". At the bottom, "Assumptions and caveats" lists Stale, No record, Excluded, Undefined, Provisional and Forecast, then the "Validation" tab with V1 to V9 passed.
 
 **Say** "The model drafts the words. It never writes a number: every figure in the text is filled in afterwards from the KPI engine, so it cannot be wrong or rounded differently. Provisional offers and forecast revenue are shown apart and never counted as final. Nine checks run before any person sees this, and the result is here."
 
