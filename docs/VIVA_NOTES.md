@@ -52,6 +52,9 @@ Every node writes a checkpoint, and a resume starts from the last one without re
 **What is the weakest part?**
 Reading the request. On its own, the small local model asked exactly the right questions for only 4 of 10 requests and planned 4 of 6 right. So it no longer decides: the planner is rules first and the model second, and where they disagree the person is asked (D30). That scores 9 of 10 and 6 of 6, the same as the rules, with fewer model calls, and planning carries on if the model's answer is unusable. The honest weakness that remains is that the rules are word lists, so a paraphrase they do not know is asked about rather than understood, and a person reviews every plan before anything runs. The other honest weaknesses, in order: everything is in memory, so a restart loses runs, versions and the audit log until PostgreSQL is in; the MCP server runs inside the API process, so the "one door" is a protocol and a per-run token rather than a separate process (D29); and no real data or official KPI definitions have arrived, so the traps are my guess at what real data gets wrong.
 
+**Have you run it end to end with the real model?**
+Yes, on this laptop with qwen3.5:4b and every read going through MCP: a vague request was asked exactly the two questions it needed, planned, drafted and passed all nine checks first time, and was waiting for review 27 seconds after it was asked.
+
 **Why does the demo use canned drafts instead of the model?**
 Speed and repeatability. On this MacBook Air the 4 billion parameter model takes about 28 seconds per option draft, so a full brief takes minutes. The canned model follows exactly the same path through the graph and the same nine checks. The real model works and is measured in `docs/evals`. In production it runs on the university's GPU server, whose specification is still awaited.
 

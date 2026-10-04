@@ -34,6 +34,7 @@ Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded 
 - Published reports in the archive (2026-10-05): every publish, by any path, adds the report as a prior for the briefs after it (embedded in database mode, kept across a restart); a brief is never offered as its own prior, and if the archive fails the approval stands and the failure is audited. In real mode the archive starts empty and fills only with reports published there. 4 tests.
 - Real mode seen in a browser (2026-10-05): sign-in has no demo buttons, the header says "Real data, local only", the dashboard starts with no approved report and the placeholder and data-gap notes, and a run reaches review with no invented priors.
 - CI staged with the database (2026-10-05): `docs/ci/ci.yml` gains a database job (PostgreSQL from compose.yaml, `make db-migrate`, `make test-db`, `make test-api-db`) and, on main, a containers job (`make smoke`). Not run yet: it switches on with L8.
+- One brief end to end with the real local model (2026-10-05): `LLM_PROVIDER=ollama make demo` with qwen3.5:4b and runs read through MCP. "Where did we miss target this year, and what should we do about it?" was asked exactly scope and audience, planned as placement, and drafted, validated (all nine checks, first attempt) and waiting for review 27 seconds after it was asked, with options shaped by the Strategic plan pack.
 
 ## How to work through it
 
