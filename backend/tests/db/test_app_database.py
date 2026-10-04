@@ -176,3 +176,47 @@ def test_a_run_working_when_the_server_stopped_is_shown_as_stopped(database):
     _, restarted = start()
     stopped = [r for r in restarted.state.edss.runs.runs() if r.error and "restarted" in r.error]
     assert stopped and all(r.status.value == "failed" for r in stopped)
+
+
+def test_a_draft_waiting_for_a_person_is_approved_after_a_restart_and_its_run_finishes(database):
+    from app.governance.service import Decision
+    from app.services.demo_state import DRAFT_REQUEST, _draft, _finish
+
+    _, app = start()
+    waiting = _draft(app.state.edss, DRAFT_REQUEST)
+    assert waiting.status.value == "awaiting_review"
+
+    _, restarted = start()  # a new process: nothing in memory, the checkpoint is in the database
+    state = restarted.state.edss
+    principal = state.users.by_email("principal@edss.test")
+    result = state.governance.decide(waiting.brief_id, principal, Decision(kind="approve"))
+    state.runs.on_decision(
+        waiting.id, result.brief.status.value, result.version.version, principal.email
+    )
+    done = _finish(state, state.runs.get(waiting.id))
+    assert done.status.value == "completed", done.error
+
+
+def test_a_run_stopped_by_a_restart_resumes_from_its_last_step(database):
+    from app.services.demo_state import DRAFT_REQUEST, _draft, _finish
+
+    _, app = start()
+    run = _draft(app.state.edss, DRAFT_REQUEST)
+    with database.begin() as conn:
+        conn.execute(
+            text(
+                "update run set status = 'running', "
+                "detail = jsonb_set(detail, '{status}', '\"running\"') where id = :id"
+            ),
+            {"id": run.id},
+        )
+    _, restarted = start()
+    state = restarted.state.edss
+    assert state.runs.get(run.id).status.value == "failed"
+    registrar = state.users.by_email("registrar@edss.test")
+    state.runs.resume(registrar, run.id)
+    back = _finish(state, state.runs.get(run.id))
+    assert back.status.value == "awaiting_review", back.error
+    # the domain agents had finished before the stop, so the resume did not run them again
+    nodes = {e.node for e in state.events.all(run.id)}
+    assert not [n for n in nodes if n.startswith("domain:")]

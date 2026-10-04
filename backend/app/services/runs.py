@@ -136,7 +136,7 @@ class RunService:
             for record in store.load():
                 if record.status is RunStatus.RUNNING:
                     record.status = RunStatus.FAILED
-                    record.error = "Stopped when the server restarted. Resume carries it on."
+                    record.error = "Stopped when the server restarted. Resume carries it on from its last step."
                     store.save(record)
                 self._runs[record.id] = record
 

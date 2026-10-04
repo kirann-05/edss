@@ -9,6 +9,7 @@ from alembic import command
 from alembic.config import Config
 from sqlalchemy import create_engine
 
+from app.db.checkpoints import setup as setup_checkpoints
 from app.db.urls import owner_url
 
 
@@ -44,6 +45,7 @@ ALEMBIC_INI = os.path.join(os.path.dirname(__file__), "..", "alembic.ini")
 def migrated(scratch_db, monkeypatch_module):
     monkeypatch_module.setenv("EDSS_DB_NAME", scratch_db)
     command.upgrade(Config(ALEMBIC_INI), "head")
+    setup_checkpoints(owner_url(database=scratch_db))
     engine = create_engine(owner_url(database=scratch_db))
     yield engine
     engine.dispose()

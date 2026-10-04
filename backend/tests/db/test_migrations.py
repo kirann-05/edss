@@ -9,14 +9,15 @@ from alembic.config import Config
 from sqlalchemy import inspect, text
 from sqlalchemy.exc import IntegrityError
 
-from app.db.schema import metadata
+from app.db.schema import FOREIGN_TABLES, metadata, ours
 
 pytestmark = pytest.mark.db
 ALEMBIC_INI = os.path.join(os.path.dirname(__file__), "..", "..", "alembic.ini")
 
 
 def test_every_table_in_the_contract_exists(migrated):
-    assert set(inspect(migrated).get_table_names()) == set(metadata.tables) | {"alembic_version"}
+    tables = set(inspect(migrated).get_table_names()) - set(FOREIGN_TABLES)
+    assert tables == set(metadata.tables) | {"alembic_version"}
 
 
 def test_the_database_matches_the_schema_with_nothing_left_to_migrate(migrated):
@@ -24,7 +25,8 @@ def test_the_database_matches_the_schema_with_nothing_left_to_migrate(migrated):
     from alembic.migration import MigrationContext
 
     with migrated.connect() as conn:
-        assert compare_metadata(MigrationContext.configure(conn), metadata) == []
+        context = MigrationContext.configure(conn, opts={"include_object": ours})
+        assert compare_metadata(context, metadata) == []
 
 
 def test_a_figure_keeps_every_digit(migrated):
@@ -88,5 +90,5 @@ def test_pgvector_is_on(migrated):
 
 def test_downgrade_takes_every_table_away(scratch_db, migrated, monkeypatch_module):
     command.downgrade(Config(ALEMBIC_INI), "base")
-    assert set(inspect(migrated).get_table_names()) == {"alembic_version"}
+    assert set(inspect(migrated).get_table_names()) - set(FOREIGN_TABLES) == {"alembic_version"}
     command.upgrade(Config(ALEMBIC_INI), "head")  # and back, so the order of tests does not matter

@@ -11,7 +11,7 @@ Update at the end of every session. Keep it short and true.
 | 3 | Reusable skills | done | Plan skill and options skill, each with a schema, a code-side check, and prompts as data |
 | 4 | Memory and retrieval | partial | Seeded prior briefs, token-overlap similarity, in memory. pgvector and embeddings are not built |
 | 5 | MCP connector | done | Ingestion adapters (CSV, read-only SQL), validator, loader, manifest, reconciliation report. The connector as an MCP server mounted at `/mcp` (D29), a token per run for its plan's areas, one audit row per call, refusals audited, and an MCP client behind the same protocol. A whole run gives identical KPIs through MCP and directly. `make demo` reads through MCP |
-| 6 | Runtime, audit, checkpoints | partial | Traced nodes, hash-chained audit, crash and resume on the in-memory checkpointer. Postgres checkpointer and append-only database role not built |
+| 6 | Runtime, audit, checkpoints | done | Traced nodes, hash-chained audit, crash and resume. In database mode the audit log is append-only for the app role and protected by a trigger, and checkpoints are in PostgreSQL, so a draft can be approved, or a stopped run resumed, after a restart |
 | 7 | Full node graph | done | Plan lock, access check, parallel domain agents, synthesis, options, compose, validate and repair, human gate, finish |
 | 8 | Parallel fan-out and merge | done | Parallelism is measured from the events and shown. `make benchmark`: with a simulated 700 ms source, the domain phase takes about 0.71 s in parallel against 2.8 s one at a time (docs/benchmark.md) |
 | 9 | Grounding and evidence | done | Reference tokens, number lint, V1, evidence tab, source record dialog, scoped record lookup |
@@ -45,6 +45,7 @@ Backend (`backend/pyproject.toml`, pinned by `uv.lock`)
 | sqlalchemy | The database layer. Core tables in `app/db/schema.py` rather than mapped classes, because the services already have their own domain models |
 | alembic | Schema migrations, generated from that metadata and read before committing (`make db-migrate`) |
 | pgvector | The `vector` column type for similar-brief search (Lab 4). The extension itself is in the database image |
+| langgraph-checkpoint-postgres, psycopg-pool | LangGraph's own checkpointer in PostgreSQL, over a small connection pool, so a run survives a restart (L5g). Its tables are created by the library's `setup()` in `make db-migrate` |
 
 Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 

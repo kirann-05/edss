@@ -1,4 +1,5 @@
-"""Give the app's database role its password and let it sign in (part of make db-migrate).
+"""Give the app's database role its password, and create LangGraph's checkpoint tables (part of
+make db-migrate).
 
 The password is EDSS_DB_APP_PASSWORD in .env. If it is not there yet, a long random one is
 generated and written there. It is never printed. Run after the migrations, which create the
@@ -13,6 +14,7 @@ import sys
 import psycopg
 from psycopg import sql
 
+from app.db.checkpoints import setup as setup_checkpoints
 from app.db.urls import ENV, env_value, owner_url
 
 
@@ -36,6 +38,8 @@ def main() -> int:
             sql.SQL("alter role edss_app with login password {}").format(sql.Literal(password))
         )
     print("The app role edss_app can sign in. It cannot change or delete the audit log.")
+    setup_checkpoints(url)
+    print("LangGraph's checkpoint tables are ready, so a run survives a restart.")
     return 0
 
 

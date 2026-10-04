@@ -5,7 +5,7 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import create_engine
 
-from app.db.schema import metadata
+from app.db.schema import metadata, ours
 from app.db.urls import owner_url
 
 config = context.config
@@ -30,7 +30,9 @@ def run_migrations_offline() -> None:
 def run_migrations_online() -> None:
     engine = create_engine(owner_url())
     with engine.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(
+            connection=connection, target_metadata=target_metadata, include_object=ours
+        )
         with context.begin_transaction():
             context.run_migrations()
     engine.dispose()

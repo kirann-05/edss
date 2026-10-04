@@ -44,6 +44,15 @@ metadata = MetaData(
     }
 )
 
+# Tables in the database that belong to a library, not to these migrations
+FOREIGN_TABLES = ("checkpoints", "checkpoint_blobs", "checkpoint_writes", "checkpoint_migrations")
+
+
+def ours(obj, name, type_, reflected, compare_to) -> bool:
+    """For Alembic's comparison: leave LangGraph's checkpoint tables to LangGraph."""
+    return not (type_ == "table" and name in FOREIGN_TABLES)
+
+
 # The dimension of the embeddings for similar-brief search. Provisional: it follows the local
 # embedding model chosen in Lab 4, and an empty table can change it in a later migration.
 EMBEDDING_DIMENSIONS = 768

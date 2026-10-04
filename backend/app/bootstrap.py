@@ -22,6 +22,7 @@ from app.api.deps import AppState
 from app.core.config import Settings
 from app.core.throttle import LoginThrottle
 from app.db.audit_store import DbAuditLog
+from app.db.checkpoints import checkpointer
 from app.db.dataset_store import load_dataset
 from app.db.state_store import DbSystemConfig, ScopeRows, UserRows
 from app.db.urls import app_url
@@ -109,7 +110,7 @@ def build_state(
             source_latency=settings.source_latency_ms / 1000,
             frameworks=SPECIALISTS,
         ),
-        InMemorySaver(),
+        checkpointer(app_url(), max_size=8) if engine else InMemorySaver(),
     )
     runs = RunService(
         store=RunRows(engine) if engine else None,
