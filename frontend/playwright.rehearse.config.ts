@@ -35,6 +35,8 @@ export default defineConfig({
         EDSS_DEMO_LOGIN: "true",
         EDSS_DEMO_STATE: "true",
         SOURCE_LATENCY_MS: "700",
+        // runs read through the API's own MCP endpoint, as in `make demo` (decision D29)
+        CONNECTOR_URL: `${API}/mcp/`,
         COOKIE_SECURE: "false",
       },
     },

@@ -57,9 +57,9 @@
   <text class="t" x="944" y="232">The one door to data</text>
   <text class="t" x="944" y="262">Scoped to the plan</text>
   <text class="t" x="944" y="292">Every call audited</text>
-  <rect class="planned" x="944" y="352" width="210" height="76" rx="8"/>
+  <rect class="box" x="944" y="352" width="210" height="76" rx="8"/>
   <text class="t" x="960" y="384">MCP server</text>
-  <text class="s" x="960" y="410">planned</text>
+  <text class="s" x="960" y="410">one token per run</text>
 
   <rect class="box" x="1216" y="150" width="336" height="510" rx="12"/>
   <text class="h" x="1236" y="190">Agent graph</text>

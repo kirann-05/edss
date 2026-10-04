@@ -10,7 +10,7 @@ Update at the end of every session. Keep it short and true.
 | 2 | Tool-using agent, KPI engine | engine and typed tools done | Domain agents call typed connector functions and the KPI engine. No LLM tool-calling loop, by design (small models are weak at it) |
 | 3 | Reusable skills | done | Plan skill and options skill, each with a schema, a code-side check, and prompts as data |
 | 4 | Memory and retrieval | partial | Seeded prior briefs, token-overlap similarity, in memory. pgvector and embeddings are not built |
-| 5 | MCP connector | partial | Connector interface, per-run scope, ingestion adapters (CSV, read-only SQL), validator, loader, manifest, reconciliation report, and a test proving the CSV and SQL sources give identical KPIs. The MCP server itself is not built |
+| 5 | MCP connector | done | Ingestion adapters (CSV, read-only SQL), validator, loader, manifest, reconciliation report. The connector as an MCP server mounted at `/mcp` (D29), a token per run for its plan's areas, one audit row per call, refusals audited, and an MCP client behind the same protocol. A whole run gives identical KPIs through MCP and directly. `make demo` reads through MCP |
 | 6 | Runtime, audit, checkpoints | partial | Traced nodes, hash-chained audit, crash and resume on the in-memory checkpointer. Postgres checkpointer and append-only database role not built |
 | 7 | Full node graph | done | Plan lock, access check, parallel domain agents, synthesis, options, compose, validate and repair, human gate, finish |
 | 8 | Parallel fan-out and merge | done | Parallelism is measured from the events and shown. `make benchmark`: with a simulated 700 ms source, the domain phase takes about 0.71 s in parallel against 2.8 s one at a time (docs/benchmark.md) |

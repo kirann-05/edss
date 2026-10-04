@@ -37,7 +37,8 @@ def _draft(state: AppState, request: str) -> RunRecord:
     record = state.runs.create(registrar, request)
     if record.questions:
         record = state.runs.skip_questions(registrar, record.id)
-    state.runs.lock(registrar, record.id, [])
+    # seeded while the server is starting, before it can answer its own connector endpoint
+    state.runs.lock(registrar, record.id, [], reads_direct=True)
     done = _finish(state, record)
     if done.brief_id is None:
         raise DemoStateError(f"the seeded run {record.id} ended without a draft: {done.error}")

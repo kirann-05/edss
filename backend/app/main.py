@@ -1,4 +1,8 @@
+from collections.abc import AsyncIterator, Callable
+from contextlib import asynccontextmanager
 from datetime import date
+from typing import Any
+from urllib.parse import urlsplit
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -22,6 +26,8 @@ from app.bootstrap import build_state
 from app.core.config import Settings, get_settings
 from app.core.tracing import enforce_no_external_tracing
 from app.governance.service import EditRejected, GovernanceError, PermissionDenied
+from app.mcp_connector.server import build_server
+from app.mcp_connector.tokens import RunTokens
 from app.services.demo_state import seed_demo_state
 from app.services.runs import RunError, RunNotFound
 from app.services.store import DataStore
@@ -44,7 +50,19 @@ def create_app(
     # API docs describe every endpoint, so they are a development aid only. No public docs, no
     # ReDoc and no OAuth redirect page, which nothing here uses.
     docs = settings.data_mode == "synthetic"
+    tokens = RunTokens() if settings.connector_url else None
+    mcp: Any = None
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        if mcp is None:
+            yield
+            return
+        async with mcp.session_manager.run():
+            yield
+
     app = FastAPI(
+        lifespan=lifespan,
         title="EDSS API",
         version=__version__,
         docs_url="/api/docs" if docs else None,
@@ -61,6 +79,7 @@ def create_app(
             store=store,
             # a fixed day in tests, the real day otherwise, so a refresh judges freshness by today
             clock=(lambda: today) if today else None,
+            run_tokens=tokens,
         )
         if state.demo_login_enabled and settings.edss_demo_state:
             seed_demo_state(state)
@@ -80,8 +99,29 @@ def create_app(
     app.include_router(audit.router, prefix="/api")
     app.include_router(admin.router, prefix="/api")
     app.include_router(demo.router, prefix="/api")
+    if tokens is not None:
+        # the connector's MCP endpoint (decision D29). It serves whatever state the app holds now,
+        # so a demo reset or a data refresh reaches it at once
+        parts = urlsplit(settings.connector_url)
+        mcp = build_server(
+            Live(lambda: app.state.edss.connector),
+            audit=Live(lambda: app.state.edss.audit),
+            tokens=tokens,
+            public_url=f"{parts.scheme}://{parts.netloc}",
+        )
+        app.mount("/mcp", mcp.streamable_http_app(streamable_http_path="/"))
     register_error_handlers(app)
     return app
+
+
+class Live:
+    """Whatever `get` returns at the moment of each call."""
+
+    def __init__(self, get: Callable[[], Any]) -> None:
+        self._get = get
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._get(), name)
 
 
 def register_error_handlers(app: FastAPI) -> None:

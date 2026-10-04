@@ -38,7 +38,6 @@ from app.kpi.engine import PeriodData, compute_all
 
 # Faults that a model cannot cause, applied to the first composed draft only
 POST_COMPOSE_FAULTS = tuple(f for f in FAULTS if f not in INJECTABLE_BY_MODEL)
-ALL_DOMAINS = tuple(Domain)
 
 
 class AccessDenied(RuntimeError):
@@ -250,7 +249,9 @@ def build_graph(deps: GraphDeps, checkpointer: Any):
         )
         previous: dict[str, Any] = {}
         if earlier is not None:
-            earlier_facts = [f for d in ALL_DOMAINS for f in conn.get_domain_metrics(d, earlier)]
+            # last year's figures for the trend, read from the plan's areas only, like this year's
+            areas = (*plan.domains, Domain.REFERENCE)
+            earlier_facts = [f for d in areas for f in conn.get_domain_metrics(d, earlier)]
             previous = results_for(earlier, earlier_facts)
 
         figures = []

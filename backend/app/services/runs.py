@@ -11,7 +11,8 @@ service, under its own rules, and only a successful decision resumes the graph.
 """
 
 import threading
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from contextlib import AbstractContextManager, contextmanager
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
@@ -19,6 +20,7 @@ from typing import Any
 
 from langgraph.types import Command
 
+from app.agents.connector import Connector
 from app.agents.graph import initial_state, run_config
 from app.agents.llm import ChatModel
 from app.agents.models import Clarification, ClarifyQuestion, Plan
@@ -37,6 +39,7 @@ from app.agents.skills.plan_skill import (
 from app.agents.validation.faults import FAULTS
 from app.domain.models import AppUser
 from app.governance.audit import AuditLog
+from app.mcp_connector.context import reading_through
 from app.services.system_config import SystemConfig
 
 
@@ -76,6 +79,7 @@ class RunRecord:
     faults: list[str] = field(default_factory=list)
     brief_id: str | None = None
     error: str | None = None
+    reads_direct: bool = False  # the demo's ready-made runs, seeded before the server can answer
 
 
 class RunService:
@@ -90,7 +94,11 @@ class RunService:
         system_config: SystemConfig,
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
         synchronous: bool = False,
+        open_reads: Callable[[RunRecord], AbstractContextManager[Connector]] | None = None,
+        direct: Connector | None = None,
     ) -> None:
+        """`open_reads` gives each run its own connector session, opened on the run's thread for
+        as long as the graph works. Without it the graph reads through what it was built with."""
         self._model = model
         self._graph = graph
         self._catalogue = catalogue
@@ -99,6 +107,8 @@ class RunService:
         self._config = system_config
         self._clock = clock
         self._synchronous = synchronous
+        self._open_reads = open_reads
+        self._direct = direct
         self._runs: dict[str, RunRecord] = {}
         self._lock = threading.RLock()
 
@@ -252,7 +262,16 @@ class RunService:
         return record
 
     # --- the lock and the run ---------------------------------------------------------------
-    def lock(self, user: AppUser, run_id: str, faults: list[str] | None = None) -> RunRecord:
+    def lock(
+        self,
+        user: AppUser,
+        run_id: str,
+        faults: list[str] | None = None,
+        *,
+        reads_direct: bool = False,
+    ) -> RunRecord:
+        """`reads_direct` is for code that runs before the server can answer its own connector
+        endpoint, which today means seeding the demo. No route passes it."""
         faults = list(faults or [])
         with self._lock:
             record = self._open(run_id, RunStatus.PLANNING)
@@ -264,6 +283,7 @@ class RunService:
                 raise RunError(f"unknown fault {unknown[0]!r}")
             record.plan = self._plan_call(lambda: lock_plan(record.plan, self._clock()))
             record.faults = faults
+            record.reads_direct = reads_direct
             record.status = RunStatus.RUNNING
         self._log_user(
             user,
@@ -310,7 +330,8 @@ class RunService:
         config = run_config(run_id)
         record = self.get(run_id)
         try:
-            result = self._graph.invoke(payload, config)
+            with self._reads(record):
+                result = self._graph.invoke(payload, config)
             state = self._graph.get_state(config).values
             with self._lock:
                 record.brief_id = state.get("brief_id", record.brief_id)
@@ -334,6 +355,19 @@ class RunService:
                 actor_type="system", actor_id="runtime", action="run.failed", run_id=run_id,
                 inputs={}, outputs={"error": str(error), "error_type": type(error).__name__},
             )  # fmt: skip
+
+    @contextmanager
+    def _reads(self, record: RunRecord) -> Iterator[None]:
+        if self._open_reads is None:
+            yield
+            return
+        if record.reads_direct:
+            assert self._direct is not None
+            with reading_through(self._direct):
+                yield
+            return
+        with self._open_reads(record) as connector, reading_through(connector):
+            yield
 
     def _log_user(
         self,

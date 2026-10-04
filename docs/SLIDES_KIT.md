@@ -37,8 +37,9 @@ Four domain agents gather department data in parallel through one governed conne
 | Faults that can be injected live | 8, each caught and repaired inside the retry budget | `backend/tests/agents/test_graph.py`, `test_every_fault_is_detected_and_repaired_inside_the_budget` |
 | Acceptance run | 18 plans; 94 fault trials, 94 caught first time by the intended check, 94 repaired; 18 of 18 clean drafts pass first time | `make acceptance`, `docs/acceptance-report.md` |
 | Retry budget | 3 attempts, then the draft goes to a person with a diagnosis | `max_attempts` in `backend/app/core/config.py` |
-| Parallel domain agents | 4, each waiting 700 ms to stand in for a slow source; a whole run takes about 750 ms | Shown on the run page, `docs/demo-screens/step-3.png` |
+| Parallel domain agents | 4, each waiting 700 ms to stand in for a slow source; a whole run in the demo takes about one second, reads through MCP included | Shown on the run page, `docs/demo-screens/step-3.png` |
 | Parallel against one at a time | With a simulated 700 ms source per agent, the domain phase takes about 0.71 s in parallel and 2.8 s one at a time, close to the best possible four times. With no delay there is nothing to win | `make benchmark`, `docs/benchmark.md` |
+| Connector over MCP | Every read the agents make goes through an MCP server with a token for the run's areas only. A whole run gives identical KPIs and brief through MCP and directly; a read outside the token's areas is refused and audited | `backend/tests/mcp_connector` (27 tests) |
 | Audit chain | SHA-256, each row hashing the previous hash with its own content | `backend/app/governance/audit.py` |
 | Tampering found | A changed row is found at exactly that row | `backend/tests/api/test_audit_api.py`, `test_tampering_is_detected_at_the_row_that_was_changed` |
 | Sign-in throttle | After 5 failed sign-ins in 15 minutes, that email is refused for a while | `backend/tests/test_throttle.py` |
@@ -84,7 +85,6 @@ What to say: drafting is reliable, the planner is the weak part, and the person 
 
 Do not show these as working. The system diagram draws them dashed.
 
-- The MCP server (the connector works in-process today, with the same scoping and audit)
 - PostgreSQL storage (data lives in memory, a restart starts fresh)
 - Docker packaging
 - Embeddings for finding similar past briefs (a simple word-overlap match is used instead)

@@ -76,9 +76,9 @@ Top right, click your name (the account menu), then "Sign out", then the role bu
 
 **Click** "Lock plan and start".
 
-**Screen shows** the timeline filling in: "Academic agent", "Research agent", "Placement agent", "Finance agent", each about 700 ms, then "KPI synthesis", "Options for ..." for the three off-target KPIs, "Brief composed", "Validation, attempt 1, All nine checks passed", and at the top "The draft passed all nine checks and is waiting for a person". Under Progress: "Elapsed" about 760 ms and "4 domain agents worked at the same time (measured from the events)".
+**Screen shows** the timeline filling in: "Academic agent", "Research agent", "Placement agent", "Finance agent", each about 700 ms, then "KPI synthesis", "Options for ..." for the three off-target KPIs, "Brief composed", "Validation, attempt 1, All nine checks passed", and at the top "The draft passed all nine checks and is waiting for a person". Under Progress: "Elapsed" about one second and "4 domain agents worked at the same time (measured from the events)".
 
-**Say** "Each domain agent pauses 700 milliseconds to stand in for a slow university system. The whole run took about 760, so the four ran at the same time, and that is measured from the events, not claimed. No agent touches a data source directly: everything goes through one governed connector that checks the agent's scope."
+**Say** "Each domain agent pauses 700 milliseconds to stand in for a slow university system. Four of those one after another would be almost three seconds; the whole run took about one, so they ran at the same time, and that is measured from the events, not claimed. No agent touches a data source directly: every read goes through an MCP server, with a token that opens only this plan's areas, and every read is a row in the audit log."
 
 **If it goes wrong.** It finishes in about a second, so it can be over before you turn round: point at the timings instead. To make it visible, start the demo with `SOURCE_LATENCY_MS=2500 make demo`. If the page stays on "Running" for more than 30 seconds, reload it: the run carries on in the server.
 
@@ -132,7 +132,7 @@ Top right, click your name (the account menu), then "Sign out", then the role bu
 
 **Click** "Make current" on the v1 row. Type a reason, for example "Restoring the version the Council already saw". **Click** "Roll back to version 1". **Screen shows** "Version 1 is current again", and v2 says "Rolled back".
 
-**Click** "Audit". **Screen shows** "The audit chain verifies", with every step listed, including the rollback.
+**Click** "Audit". **Screen shows** "The audit chain verifies", with every step listed, including the rollback and each "Read through the connector" the agents made.
 
 **Say** "Every approved brief is kept and nothing is deleted: a rollback moves the pointer back and needs a reason. Every step, by the agents and by people, is in an append-only log where each entry carries the hash of the one before, so changing any past entry breaks the chain."
 

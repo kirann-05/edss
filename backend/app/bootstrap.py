@@ -11,6 +11,7 @@ from datetime import date, timedelta
 
 from langgraph.checkpoint.memory import InMemorySaver
 
+from app.agents.connector import Connector
 from app.agents.fake_llm import FakeLLM
 from app.agents.graph import GraphDeps, build_graph
 from app.agents.llm import LlmSettings, get_chat_model
@@ -21,10 +22,12 @@ from app.core.config import Settings
 from app.core.throttle import LoginThrottle
 from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
+from app.mcp_connector.context import RunConnector, mcp_session
+from app.mcp_connector.tokens import RunTokens
 from app.services.archive import seed_archive
 from app.services.connector import InMemoryConnector, ScopeRegistry
 from app.services.refresh import DataSource
-from app.services.runs import RunService, plan_catalogue_from
+from app.services.runs import RunRecord, RunService, plan_catalogue_from
 from app.services.store import DataStore
 from app.services.system_config import SystemConfig
 from app.services.users import build_seed_users
@@ -38,8 +41,10 @@ def build_state(
     synchronous_runs: bool = False,
     store: DataStore | None = None,
     clock: Callable[[], date] | None = None,
+    run_tokens: RunTokens | None = None,
 ) -> AppState:
-    """`store` lets the same services run over data that came from files or a database."""
+    """`store` lets the same services run over data that came from files or a database.
+    `run_tokens` is the MCP server's token store, needed when runs read over MCP."""
     jwt_secret = settings.jwt_secret.get_secret_value() if settings.jwt_secret else None
     if jwt_secret is None:
         # Synthetic mode only: a throwaway secret, so sessions end when the server restarts
@@ -63,9 +68,22 @@ def build_state(
         audit, validator=lambda doc: validate(doc, context_for_document(doc, connector))
     )
     runtime = Runtime(audit, events, budget_seconds=settings.run_budget_seconds)
+    graph_connector: Connector = connector
+    open_reads = None
+    if settings.connector_url:
+        # rule 6 over the wire: each run reads through the MCP endpoint with its own token
+        if run_tokens is None:
+            raise ValueError("CONNECTOR_URL is set, so the app must pass its run tokens")
+        tokens, url = run_tokens, settings.connector_url
+        graph_connector = RunConnector()
+
+        def open_reads(record: RunRecord):
+            assert record.plan is not None
+            return mcp_session(url, tokens, record.id, record.created_by, record.plan.domains)
+
     graph = build_graph(
         GraphDeps(
-            connector=connector,
+            connector=graph_connector,
             model=drafter,
             runtime=runtime,
             create_draft=lambda **kw: governance.create_draft(**kw).id,
@@ -82,6 +100,8 @@ def build_state(
         events=events,
         system_config=system_config,
         synchronous=synchronous_runs,
+        open_reads=open_reads,
+        direct=connector,
     )
     return AppState(
         settings=settings,

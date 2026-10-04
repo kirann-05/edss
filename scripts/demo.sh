@@ -11,6 +11,7 @@
 #   DEMO_SKIP_BUILD=1 make demo                              reuse the last build
 #   DEMO_API_PORT=8100 DEMO_WEB_PORT=3100 make demo          other ports
 #   DEMO_STATE=0 make demo                                   start empty, with no report or draft ready
+#   DEMO_DIRECT=1 make demo                                  agents read in process, not through MCP
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -25,6 +26,8 @@ export EDSS_DEMO_STATE="$([ "${DEMO_STATE:-1}" = "0" ] && echo false || echo tru
 export LLM_PROVIDER="${LLM_PROVIDER:-fake}"
 export SOURCE_LATENCY_MS="${SOURCE_LATENCY_MS:-700}"
 export EDSS_API_ORIGIN="http://127.0.0.1:$API_PORT"
+# agents read through the API's own MCP endpoint with a token per run (decision D29)
+export CONNECTOR_URL="$([ "${DEMO_DIRECT:-0}" = "1" ] && echo "" || echo "http://127.0.0.1:$API_PORT/mcp/")"
 export EDSS_DIST_DIR=".next-demo"  # its own build folder, so a dev server can keep running beside it
 
 for port in "$API_PORT" "$WEB_PORT"; do
@@ -87,6 +90,7 @@ cat <<BANNER
   Sign in with the role buttons: Registrar, Principal, Dean, Head of Department (CSE or CIVIL),
   Governing Council, Administrator. Synthetic data only.
   Drafts: ${LLM_PROVIDER}. Simulated source delay: ${SOURCE_LATENCY_MS} ms per domain agent.
+  Data: $([ -n "$CONNECTOR_URL" ] && echo "agents read through the MCP connector, one token per run" || echo "agents read in process (DEMO_DIRECT=1)").
   Ready-made: $([ "$EDSS_DEMO_STATE" = "true" ] && echo "one approved report (version 1) and one draft waiting for review" || echo "nothing, it starts empty").
   Everything lives in memory. make demo-reset goes back to the start without stopping.
 
