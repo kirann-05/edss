@@ -28,3 +28,5 @@ pgdata/
 .demo/
 .next-demo/
 .next-rehearse/
+# database backups hold the data, and real data never leaves the machine
+backups/
