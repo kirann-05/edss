@@ -8,6 +8,13 @@ run cannot drift from what was agreed.
 What the model is sent is the request, the answers so far and a catalogue of what exists
 (periods, areas, KPIs). It is never told a figure. Code decides the facts that matter: which
 KPIs follow from which areas, and what changed between two versions of a plan.
+
+With a real model the planner is a hybrid, rules first and the model second (decision D30). The
+evaluation in docs/evals showed a small local model asking the right questions for 4 requests in
+10, where a few dozen lines of word rules managed 9. So the rules decide wherever the request's
+words say something. The model is asked only about what the rules cannot read, and where the two
+disagree the person is asked. If the model's answer is unusable, planning carries on with the
+rules; if the model server is down, that is said at once, because drafting will need it.
 """
 
 import re
@@ -19,7 +26,7 @@ from typing import Any, Literal
 from pydantic import BaseModel
 
 from app.agents.fake_llm import register
-from app.agents.llm import ChatModel
+from app.agents.llm import ChatModel, LLMOutputError
 from app.agents.models import Clarification, ClarifyQuestion, Plan, PlanStep
 from app.domain.enums import Domain
 
@@ -101,20 +108,26 @@ def _answers_payload(answers: Sequence[Clarification]) -> list[dict[str, str]]:
     return [{"question_id": a.question_id, "answer": a.answer} for a in answers]
 
 
+Planner = Literal["hybrid", "model"]
+
+
 def clarify(
-    model: ChatModel, request: str, answers: Sequence[Clarification], catalogue: PlanCatalogue
+    model: ChatModel,
+    request: str,
+    answers: Sequence[Clarification],
+    catalogue: PlanCatalogue,
+    planner: Planner = "hybrid",
 ) -> list[ClarifyQuestion]:
     """The questions still worth asking. An answered question is never asked again."""
-    draft = model.generate(  # type: ignore[attr-defined]
-        "clarify",
-        {
-            "request": request,
-            "answers": _answers_payload(answers),
-            "catalogue": catalogue.payload(),
-        },
-        ClarifyDraft,
-        check=_check_questions,
-    )
+    payload = {
+        "request": request,
+        "answers": _answers_payload(answers),
+        "catalogue": catalogue.payload(),
+    }
+    if _canned(model) or planner == "model":
+        draft = model.generate("clarify", payload, ClarifyDraft, check=_check_questions)  # type: ignore[attr-defined]
+    else:
+        draft = _hybrid_questions(model, payload)
     answered = {a.question_id for a in answers}
     questions: list[ClarifyQuestion] = []
     for q in draft.questions:
@@ -128,6 +141,35 @@ def clarify(
 
 
 ASKABLE = ("period", "scope", "audience")
+DISAGREE = (
+    " The language model read your request as already saying this, but none of its words do, "
+    "so please choose."
+)
+
+
+def _canned(model: ChatModel) -> bool:
+    return getattr(model, "provider", "") == "fake"
+
+
+def _hybrid_questions(model: ChatModel, payload: dict[str, Any]) -> ClarifyDraft:
+    """Ask what the rules cannot read in the words. The model is consulted only then, and a
+    question the model thinks is already answered is still asked, saying so."""
+    rules = ClarifyDraft.model_validate(_fake_clarify(payload))
+    if not rules.questions:
+        return rules  # the words say everything, so there is nothing to ask the model
+    try:
+        asked = {
+            q.id
+            for q in model.generate(
+                "clarify", payload, ClarifyDraft, check=_check_questions
+            ).questions
+        }  # type: ignore[attr-defined]
+    except LLMOutputError:
+        return rules
+    for question in rules.questions:
+        if question.id not in asked:
+            question.why += DISAGREE
+    return rules
 
 
 def _check_questions(draft: ClarifyDraft) -> list[str]:
@@ -182,19 +224,47 @@ def _to_plan(draft: PlanDraft, request: str, revision: int, catalogue: PlanCatal
 
 
 def propose_plan(
-    model: ChatModel, request: str, answers: Sequence[Clarification], catalogue: PlanCatalogue
+    model: ChatModel,
+    request: str,
+    answers: Sequence[Clarification],
+    catalogue: PlanCatalogue,
+    planner: Planner = "hybrid",
 ) -> Plan:
-    draft = model.generate(  # type: ignore[attr-defined]
-        "propose_plan",
-        {
-            "request": request,
-            "answers": _answers_payload(answers),
-            "catalogue": catalogue.payload(),
-        },
-        PlanDraft,
-        check=_check_plan(catalogue),
-    )
+    payload = {
+        "request": request,
+        "answers": _answers_payload(answers),
+        "catalogue": catalogue.payload(),
+    }
+    if _canned(model) or planner == "model":
+        draft = model.generate("propose_plan", payload, PlanDraft, check=_check_plan(catalogue))  # type: ignore[attr-defined]
+    else:
+        draft = _hybrid_plan(model, payload, catalogue)
     return _to_plan(draft, request, revision=1, catalogue=catalogue)
+
+
+def _hybrid_plan(model: ChatModel, payload: dict[str, Any], catalogue: PlanCatalogue) -> PlanDraft:
+    """The rules' plan, with the model's reading only for what the words did not say, which can
+    happen only when the person skipped the questions. Whether to draft options for every KPI is
+    never left to the model: it is a request a person makes in words, or it is off target."""
+    rules = PlanDraft.model_validate(_fake_propose_plan(payload))
+    text, raw = _all_text(payload), payload["catalogue"]
+    unread = {
+        "period_year": _period_in(text, raw["periods"], raw["current_period"]) is None,
+        "domains": not _mentioned_areas(text),
+        "audience": _audience_in(text) is None,
+    }
+    if not any(unread.values()):
+        return rules
+    try:
+        read = model.generate("propose_plan", payload, PlanDraft, check=_check_plan(catalogue))  # type: ignore[attr-defined]
+    except LLMOutputError:
+        return rules
+    chosen = {field: getattr(read, field) for field, missing in unread.items() if missing}
+    if "domains" in chosen and not chosen["domains"]:
+        del chosen["domains"]
+    if "domains" in chosen:
+        chosen["kpi_keys"] = []  # the areas decide the KPIs, in code
+    return rules.model_copy(update=chosen)
 
 
 def revise_plan(

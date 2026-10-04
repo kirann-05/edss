@@ -127,20 +127,20 @@ def build_model(args):
     return get_chat_model("drafter", settings, SystemConfig("synthetic"))
 
 
-def run_planner(model, catalogue: PlanCatalogue) -> list[PlannerRow]:
+def run_planner(model, catalogue: PlanCatalogue, planner: str = "hybrid") -> list[PlannerRow]:
     rows = []
     for case in CASES:
         row = PlannerRow(case.request, sorted(case.ask))
         before = getattr(getattr(model, "stats", None), "calls", 0)
         started = time.monotonic()
         try:
-            asked = clarify(model, case.request, [], catalogue)
+            asked = clarify(model, case.request, [], catalogue, planner=planner)
             row.ask_got = sorted(q.id for q in asked)
             row.ask_exact = set(row.ask_got) == set(case.ask)
             if case.domains is not None:
                 # the plan is judged on its own, as if the request had been enough: a model that asked
                 # too much is scored for that above, not a second time here
-                plan = propose_plan(model, case.request, [], catalogue)
+                plan = propose_plan(model, case.request, [], catalogue, planner=planner)
                 period = catalogue.current_period if case.period == "current" else case.period
                 row.plan_fields = {
                     "period": plan.period_year == period,
@@ -256,6 +256,9 @@ def report(
         "",
         "## Planner: ten requests",
         "",
+        f"Planner: {'rules first, the model second (decision D30), as the app runs' if getattr(args, 'planner', 'model') == 'hybrid' and args.provider != 'fake' else 'the model alone' if args.provider != 'fake' else 'the canned rules'}. "
+        f"Model calls made by the planner: {sum(r.calls for r in planner)}.",
+        "",
         f"- Asked exactly the right questions: **{pct(sum(r.ask_exact for r in asks), len(planner))}**",
         f"- Plan fully right (period, areas, audience, options scope): **{pct(sum(bool(r.plan_ok) for r in plans), len(plans))}**",
     ]
@@ -328,6 +331,10 @@ def main() -> int:
     parser.add_argument("--out", default="../docs/evals")
     parser.add_argument("--skip-planner", action="store_true")
     parser.add_argument("--skip-drafter", action="store_true")
+    parser.add_argument(
+        "--planner", default="hybrid", choices=["hybrid", "model"],
+        help="hybrid: rules first, the model second (what the app uses). model: the model alone",
+    )  # fmt: skip
     args = parser.parse_args()
     if args.provider == "fake":
         args.model = "canned"
@@ -345,7 +352,7 @@ def main() -> int:
     model = build_model(args)
     used = [model]  # every model built, so the cost line covers the planner and every draft
     try:
-        planner = [] if args.skip_planner else run_planner(model, catalogue)
+        planner = [] if args.skip_planner else run_planner(model, catalogue, args.planner)
         drafts = [] if args.skip_drafter else run_drafter(args, store, args.trials, used)
     except LLMUnavailable as error:
         print(f"\nStopped: {error}", file=sys.stderr)
@@ -366,7 +373,8 @@ def main() -> int:
     text = report(args, planner, drafts, stats, started)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    slug = f"{args.provider}-{args.model.replace(':', '-').replace('/', '-')}-{date.today().isoformat()}"
+    planner_tag = "" if args.provider == "fake" else f"-{args.planner}-planner"
+    slug = f"{args.provider}-{args.model.replace(':', '-').replace('/', '-')}{planner_tag}-{date.today().isoformat()}"
     (out / f"{slug}.md").write_text(text)
     (out / f"{slug}.json").write_text(
         json.dumps(

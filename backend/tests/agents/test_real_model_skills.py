@@ -62,6 +62,15 @@ def plan_answer(**over):
     return answer
 
 
+# the planner with the model alone, as it was measured in docs/evals. The app uses the hybrid
+def model_clarify(*args, **kwargs):
+    return clarify(*args, planner="model", **kwargs)
+
+
+def model_plan(*args, **kwargs):
+    return propose_plan(*args, planner="model", **kwargs)
+
+
 class TestClarifyWithARealModel:
     def question(self, id_, **over):
         return {"id": id_, "text": f"Question {id_}?", "why": "Because.", "choices": [], **over}
@@ -70,11 +79,11 @@ class TestClarifyWithARealModel:
         model = Scripted(
             {"questions": [self.question("period"), self.question("favourite_colour")]}
         )
-        assert [q.id for q in clarify(model, "x", [], catalogue)] == ["period"]
+        assert [q.id for q in model_clarify(model, "x", [], catalogue)] == ["period"]
 
     def test_an_answered_question_is_not_asked_again_whatever_the_model_says(self, catalogue):
         model = Scripted({"questions": [self.question("period"), self.question("scope")]})
-        asked = clarify(
+        asked = model_clarify(
             model, "x", [Clarification(question_id="period", answer="2025-26")], catalogue
         )
         assert [q.id for q in asked] == ["scope"]
@@ -88,15 +97,15 @@ class TestClarifyWithARealModel:
         answers = [
             Clarification(question_id=i, answer="x") for i in ("period", "scope", "audience")
         ]
-        assert clarify(Scripted(every), "x", answers, catalogue) == []
+        assert model_clarify(Scripted(every), "x", answers, catalogue) == []
 
     def test_a_repeated_id_is_asked_once(self, catalogue):
         model = Scripted({"questions": [self.question("scope"), self.question("scope")]})
-        assert len(clarify(model, "x", [], catalogue)) == 1
+        assert len(model_clarify(model, "x", [], catalogue)) == 1
 
     def test_period_choices_come_from_the_catalogue_not_from_the_model(self, catalogue):
         model = Scripted({"questions": [self.question("period", choices=["2099-00", "1066"])]})
-        (q,) = clarify(model, "x", [], catalogue)
+        (q,) = model_clarify(model, "x", [], catalogue)
         assert q.choices == tuple(reversed(catalogue.periods))
 
     def test_a_question_with_no_reason_is_sent_back_to_the_model(self, catalogue):
@@ -104,14 +113,14 @@ class TestClarifyWithARealModel:
             {"questions": [self.question("period", why=" ")]},
             {"questions": [self.question("period")]},
         )
-        assert [q.id for q in clarify(model, "x", [], catalogue)] == ["period"]
+        assert [q.id for q in model_clarify(model, "x", [], catalogue)] == ["period"]
         assert "needs both a text and a why" in model.payloads[1]["validation_error"]
 
 
 class TestPlanFromARealModel:
     def test_the_steps_are_written_in_code_whatever_the_model_writes(self, catalogue):
         wild = plan_answer(steps=[{"id": "x", "title": "Email the dean", "detail": "Send it"}])
-        plan = propose_plan(Scripted(wild), "x", [], catalogue)
+        plan = model_plan(Scripted(wild), "x", [], catalogue)
         assert "Email the dean" not in [s.title for s in plan.steps]
         assert [s.id for s in plan.steps] == [
             "access",
@@ -124,7 +133,7 @@ class TestPlanFromARealModel:
 
     def test_the_areas_follow_from_the_kpis_not_from_the_models_list(self, catalogue):
         # the model says only academic, but chose a placement KPI: code goes by the KPIs
-        plan = propose_plan(
+        plan = model_plan(
             Scripted(plan_answer(domains=["academic"], kpi_keys=["PL_PCT", "AC_CO"])),
             "x",
             [],
@@ -134,42 +143,40 @@ class TestPlanFromARealModel:
         assert plan.kpi_keys == ("AC_CO", "PL_PCT")  # catalogue order
 
     def test_with_no_kpis_chosen_the_areas_decide_them(self, catalogue):
-        plan = propose_plan(
+        plan = model_plan(
             Scripted(plan_answer(domains=["finance"], kpi_keys=[])), "x", [], catalogue
         )
         assert plan.domains == (Domain.FINANCE,)
         assert set(plan.kpi_keys) == set(catalogue.keys_for([Domain.FINANCE]))
 
     def test_repeated_kpis_are_kept_once(self, catalogue):
-        plan = propose_plan(
-            Scripted(plan_answer(kpi_keys=["PL_PCT", "PL_PCT"])), "x", [], catalogue
-        )
+        plan = model_plan(Scripted(plan_answer(kpi_keys=["PL_PCT", "PL_PCT"])), "x", [], catalogue)
         assert plan.kpi_keys == ("PL_PCT",)
 
     def test_an_invented_kpi_is_sent_back_with_the_real_ones_to_choose_from(self, catalogue):
         model = Scripted(plan_answer(kpi_keys=["PL_PCT", "NIRF_42"]), plan_answer())
-        plan = propose_plan(model, "x", [], catalogue)
+        plan = model_plan(model, "x", [], catalogue)
         assert plan.kpi_keys == ("PL_PCT", "PL_AVG")
         assert "unknown kpi_keys ['NIRF_42']" in model.payloads[1]["validation_error"]
 
     def test_a_period_we_have_no_data_for_is_sent_back(self, catalogue):
         model = Scripted(plan_answer(period_year="2031-32"), plan_answer())
-        assert propose_plan(model, "x", [], catalogue).period_year == "2025-26"
+        assert model_plan(model, "x", [], catalogue).period_year == "2025-26"
         assert "2031-32" in model.payloads[1]["validation_error"]
 
     def test_an_audience_the_system_does_not_have_is_sent_back(self, catalogue):
         model = Scripted(plan_answer(audience="Everyone"), plan_answer())
-        assert propose_plan(model, "x", [], catalogue).audience == "Internal leadership review"
+        assert model_plan(model, "x", [], catalogue).audience == "Internal leadership review"
         assert "audience must be exactly one of" in model.payloads[1]["validation_error"]
 
     def test_a_model_that_cannot_make_a_valid_plan_is_stopped_after_the_budget(self, catalogue):
         model = Scripted(*[plan_answer(period_year="1999-00")] * 5)
         with pytest.raises(LLMOutputError):
-            propose_plan(model, "x", [], catalogue)
+            model_plan(model, "x", [], catalogue)
         assert len(model.payloads) == 3
 
     def test_a_revision_is_checked_the_same_way(self, catalogue):
-        first = propose_plan(Scripted(plan_answer()), "x", [], catalogue)
+        first = model_plan(Scripted(plan_answer()), "x", [], catalogue)
         model = Scripted(plan_answer(kpi_keys=["MADE_UP"]), plan_answer(kpi_keys=["PL_PCT"]))
         revised, changes = revise_plan(model, first, "only the placement percentage", catalogue)
         assert revised.kpi_keys == ("PL_PCT",) and revised.revision == 2

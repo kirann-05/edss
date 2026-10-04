@@ -71,10 +71,11 @@ A small local model (qwen3.5, 4 billion parameters, through Ollama) on Kiran's M
 | Option drafts that passed all nine checks | 9 of 9 |
 | Option drafts that needed a repair | 0 of 9 |
 | Time per option draft | median 27.9 seconds |
-| Planner asked exactly the right questions | 4 of 10 requests |
-| Planner's plan fully right, when it planned | 4 of 6 |
+| Option drafts that needed a repair, with the framework guidance | 1 of 9, repaired inside the same call |
+| Planner, the model alone: right questions / plans fully right | 4 of 10 / 4 of 6 |
+| Planner as the app runs it, rules first and the model second | 9 of 10 / 6 of 6, with 6 model calls instead of 16 |
 
-What to say: drafting is reliable, the planner is the weak part, and the person reviewing the plan is the safeguard for that. The demo uses canned drafts so it is fast and the same every time; production runs the model on the university GPU.
+What to say: drafting is reliable. Reading a request is where a small model is weak, so the rules read it first and the model only flags what they may have missed; a person reviews every plan. The demo uses canned drafts so it is fast and the same every time; production runs the model on the university GPU.
 
 ## Say plainly on any slide that shows figures
 

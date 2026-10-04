@@ -1,7 +1,5 @@
 """The API when the model is a real server rather than the canned one."""
 
-import json
-
 import pytest
 from fastapi.testclient import TestClient
 
@@ -66,33 +64,27 @@ class TestWhenTheModelFails:
             and "LLM_PROVIDER=fake" in response.json()["detail"]
         )
 
-    def test_a_model_that_only_ever_returns_nonsense_is_a_502_not_a_hang_or_a_crash(self, server):
+    def test_a_model_that_only_ever_returns_nonsense_does_not_stop_planning(self, server):
+        # the planner reads the request with rules first (D30), so an unusable model answer
+        # costs three bounded tries and the rules' questions, not a failed request
         for _ in range(6):
             server.answer("not json")
         response = client_for(**real(server)).post(
             "/api/runs", json={"request": "Prepare the leadership brief"}
         )
-        assert response.status_code == 502
-        assert "could not give a usable answer" in response.json()["detail"]
+        assert response.status_code == 201
+        assert [q["id"] for q in response.json()["questions"]] == ["period", "scope", "audience"]
         assert len(server.requests) == 3  # the first try and two repairs, then it stopped
 
     def test_a_run_whose_model_dies_midway_is_marked_stopped_and_can_be_resumed(self, server):
-        # a real planner answer, so the run reaches the graph, then the server stops answering
-        plan = {
-            "period_year": "2025-26",
-            "domains": ["placement"],
-            "kpi_keys": ["PL_PCT"],
-            "options_for": "off_target",
-            "audience": "Internal leadership review",
-            "steps": [],
-        }
-        server.answer(json.dumps({"questions": []}))  # clarify: nothing more to ask
-        server.answer(json.dumps(plan))
+        # the words say everything, so the rules plan it without asking the model (D30), and the
+        # run reaches the graph, where the server has nothing to say
         client = client_for(**real(server))
         run = client.post(
             "/api/runs", json={"request": "Placement brief for the Principal for 2025-26"}
         ).json()
-        assert run["status"] == "planning" and run["plan"]["kpi_keys"] == ["PL_PCT"]
+        assert run["status"] == "planning" and run["plan"]["domains"] == ["placement"]
+        assert server.requests == []
         # the options step now asks the server, which has nothing left to say
         locked = client.post(f"/api/runs/{run['id']}/plan/lock", json={"faults": []})
         assert locked.status_code == 200

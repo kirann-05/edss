@@ -1,0 +1,109 @@
+{
+  "provider": "ollama",
+  "model": "qwen3.5:4b",
+  "seed": 7,
+  "temperature": 0.2,
+  "trials": 3,
+  "planner": [],
+  "drafts": [
+    {
+      "kpi": "AC_PASS_PCT",
+      "seed": 7,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 17.034521874971688,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "AC_PASS_PCT",
+      "seed": 8,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 16.313419458980206,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "AC_PASS_PCT",
+      "seed": 9,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 16.391131291980855,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "RS_PUB_PF",
+      "seed": 7,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 17.64523491699947,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "RS_PUB_PF",
+      "seed": 8,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 14.030247374961618,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "RS_PUB_PF",
+      "seed": 9,
+      "drafted": true,
+      "first_try": false,
+      "calls": 2,
+      "seconds": 40.82294775004266,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "PL_PCT",
+      "seed": 7,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 26.60557549999794,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "PL_PCT",
+      "seed": 8,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 27.3159685000428,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    },
+    {
+      "kpi": "PL_PCT",
+      "seed": 9,
+      "drafted": true,
+      "first_try": true,
+      "calls": 1,
+      "seconds": 24.413478791015223,
+      "passed_gate": true,
+      "failing_checks": [],
+      "error": null
+    }
+  ]
+}
