@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" font-family="Inter, Helvetica, Arial, sans-serif">
+  <title>Approval, versions and the audit chain</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#52606d"/>
+    </marker>
+  </defs>
+  <style>
+    .title { font-size: 36px; font-weight: 700; fill: #1f2933; }
+    .sub { font-size: 21px; fill: #52606d; }
+    .h { font-size: 23px; font-weight: 600; fill: #1f2933; }
+    .t { font-size: 19px; fill: #3e4c59; }
+    .s { font-size: 17px; fill: #52606d; }
+    .code { font-size: 17px; font-family: ui-monospace, Menlo, Consolas, monospace; fill: #1f2933; }
+    .lab { font-size: 18px; fill: #3e4c59; font-style: italic; }
+    .box { fill: #ffffff; stroke: #9aa5b1; stroke-width: 2; }
+    .people { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+    .done { fill: #f0fdf4; stroke: #15803d; stroke-width: 2; }
+    .old { fill: #f5f7fa; stroke: #9aa5b1; stroke-width: 2; }
+    .audit { fill: #f5f7fa; stroke: #52606d; stroke-width: 2; }
+    .arrow { stroke: #52606d; stroke-width: 2.5; fill: none; marker-end: url(#a); }
+  </style>
+  <rect width="1600" height="900" fill="#ffffff"/>
+
+  <text class="title" x="48" y="66">Approval, versions and the audit chain</text>
+  <text class="sub" x="48" y="104">Agents draft and flag. A named person decides. Nothing is ever deleted.</text>
+
+  <!-- top row: the decision -->
+  <rect class="box" x="48" y="150" width="270" height="204" rx="12"/>
+  <text class="h" x="68" y="190">Draft</text>
+  <text class="t" x="68" y="230">all nine checks</text>
+  <text class="t" x="68" y="258">passed, or escalated</text>
+  <text class="t" x="68" y="286">with a diagnosis</text>
+
+  <rect class="people" x="378" y="150" width="300" height="204" rx="12"/>
+  <text class="h" x="398" y="190">A named approver</text>
+  <text class="t" x="398" y="230">Principal, Director</text>
+  <text class="t" x="398" y="258">or Registrar</text>
+  <text class="s" x="398" y="300">Nobody else can publish</text>
+
+  <rect class="people" x="738" y="150" width="340" height="204" rx="12"/>
+  <text class="h" x="758" y="190">Decides</text>
+  <text class="t" x="758" y="228">Approve</text>
+  <text class="t" x="758" y="256">Approve with edits,</text>
+  <text class="t" x="758" y="280">which are checked again</text>
+  <text class="t" x="758" y="308">Send back</text>
+  <text class="t" x="758" y="332">Override, with a reason</text>
+
+  <rect class="done" x="1138" y="150" width="414" height="204" rx="12"/>
+  <text class="h" x="1158" y="190">Published version</text>
+  <text class="t" x="1158" y="230">Immutable. Records who</text>
+  <text class="t" x="1158" y="258">approved, when, and</text>
+  <text class="t" x="1158" y="286">the text before every edit</text>
+
+  <path class="arrow" d="M318,245 H374"/>
+  <path class="arrow" d="M678,245 H734"/>
+  <path class="arrow" d="M1078,245 H1134"/>
+
+  <!-- middle row: versions and rollback -->
+  <rect class="box" x="48" y="390" width="630" height="190" rx="12"/>
+  <text class="h" x="68" y="430">Who sees what</text>
+  <text class="t" x="68" y="470">A HOD sees institution KPIs, and detail</text>
+  <text class="t" x="68" y="498">only for their own department</text>
+  <text class="t" x="68" y="538">Checked on the server for every request,</text>
+  <text class="t" x="68" y="566">not by hiding things on the page</text>
+
+  <rect class="done" x="738" y="420" width="200" height="130" rx="12"/>
+  <text class="h" x="758" y="460">Version 1</text>
+  <text class="t" x="758" y="496">current again</text>
+  <rect class="old" x="978" y="420" width="200" height="130" rx="12"/>
+  <text class="h" x="998" y="460">Version 2</text>
+  <text class="t" x="998" y="496">rolled back,</text>
+  <text class="t" x="998" y="522">still kept</text>
+  <path class="arrow" d="M1078,412 C1078,392 838,392 838,416"/>
+  <text class="lab" x="880" y="384">rollback moves the current pointer</text>
+
+  <rect class="box" x="1218" y="390" width="334" height="190" rx="12"/>
+  <text class="h" x="1238" y="430">Rollback</text>
+  <text class="t" x="1238" y="470">needs a reason</text>
+  <text class="t" x="1238" y="498">and deletes nothing.</text>
+  <text class="t" x="1238" y="538">Any two versions</text>
+  <text class="t" x="1238" y="566">can be compared</text>
+
+  <!-- bottom row: the audit chain -->
+  <text class="h" x="48" y="650">Audit log, append-only</text>
+  <text class="s" x="330" y="650">example rows</text>
+  <rect class="audit" x="48" y="670" width="320" height="130" rx="12"/>
+  <text class="t" x="68" y="708">Row 75: brief.edit</text>
+  <text class="code" x="68" y="744">prev = hash(74)</text>
+  <text class="code" x="68" y="774">hash = SHA-256(...)</text>
+  <rect class="audit" x="428" y="670" width="320" height="130" rx="12"/>
+  <text class="t" x="448" y="708">Row 76: report.publish</text>
+  <text class="code" x="448" y="744">prev = hash(75)</text>
+  <text class="code" x="448" y="774">hash = SHA-256(...)</text>
+  <rect class="audit" x="808" y="670" width="320" height="130" rx="12"/>
+  <text class="t" x="828" y="708">Row 77: report.rollback</text>
+  <text class="code" x="828" y="744">prev = hash(76)</text>
+  <text class="code" x="828" y="774">hash = SHA-256(...)</text>
+  <path class="arrow" d="M368,735 H424"/>
+  <path class="arrow" d="M748,735 H804"/>
+
+  <rect class="box" x="1188" y="670" width="364" height="130" rx="12"/>
+  <text class="t" x="1208" y="708">Change any past row and</text>
+  <text class="t" x="1208" y="736">the chain check fails at</text>
+  <text class="t" x="1208" y="764">exactly that row</text>
+
+  <text class="s" x="48" y="850">Each hash covers the previous hash and the row's content, inputs and outputs included. The audit page recomputes the whole chain on demand.</text>
+</svg>

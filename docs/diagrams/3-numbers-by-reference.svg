@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" font-family="Inter, Helvetica, Arial, sans-serif">
+  <title>Numbers by reference</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#52606d"/>
+    </marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <style>
+    .title { font-size: 36px; font-weight: 700; fill: #1f2933; }
+    .sub { font-size: 21px; fill: #52606d; }
+    .h { font-size: 23px; font-weight: 600; fill: #1f2933; }
+    .t { font-size: 19px; fill: #3e4c59; }
+    .s { font-size: 17px; fill: #52606d; }
+    .big { font-size: 26px; font-weight: 700; fill: #1f2933; }
+    .miss { font-size: 19px; font-weight: 600; fill: #b91c1c; }
+    .code { font-size: 18px; font-family: ui-monospace, Menlo, Consolas, monospace; fill: #1f2933; }
+    .lab { font-size: 18px; fill: #3e4c59; font-style: italic; }
+    .box { fill: #ffffff; stroke: #9aa5b1; stroke-width: 2; }
+    .model { fill: #fffbeb; stroke: #b45309; stroke-width: 2; }
+    .people { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+    .check { fill: #fef2f2; stroke: #b91c1c; stroke-width: 2; }
+    .num { stroke: #2563eb; stroke-width: 3; fill: none; marker-end: url(#b); }
+    .arrow { stroke: #52606d; stroke-width: 2.5; fill: none; marker-end: url(#a); }
+  </style>
+  <rect width="1600" height="900" fill="#ffffff"/>
+
+  <text class="title" x="48" y="66">Numbers by reference</text>
+  <text class="sub" x="48" y="104">The language model never sees or writes a figure. Every number on screen comes from the KPI engine and opens to its source.</text>
+
+  <text class="lab" x="48" y="152">The figure's path (blue)</text>
+
+  <rect class="box" x="48" y="170" width="330" height="220" rx="12"/>
+  <text class="h" x="68" y="210">Source records</text>
+  <text class="t" x="68" y="250">937 placed, verified</text>
+  <text class="t" x="68" y="278">1,250 registered</text>
+  <text class="s" x="68" y="322">each with its source system,</text>
+  <text class="s" x="68" y="348">reference, as-of date</text>
+  <text class="s" x="68" y="374">and status</text>
+
+  <rect class="box" x="438" y="170" width="330" height="220" rx="12"/>
+  <text class="h" x="458" y="210">KPI engine</text>
+  <text class="t" x="458" y="250">100 × 937 ÷ 1,250</text>
+  <text class="big" x="458" y="290">= 74.96</text>
+  <text class="t" x="458" y="330">target 75, decided on</text>
+  <text class="t" x="458" y="358">the exact figure: </text>
+  <text class="miss" x="618" y="358">Missed</text>
+
+  <rect class="box" x="828" y="170" width="330" height="220" rx="12"/>
+  <text class="h" x="848" y="210">Renderer</text>
+  <text class="t" x="848" y="250">fills every token in</text>
+  <text class="t" x="848" y="278">from the engine</text>
+  <text class="code" x="848" y="326">{{kpi:PL_PCT}}</text>
+  <text class="t" x="848" y="358">becomes 75.0% (Missed)</text>
+
+  <rect class="people" x="1218" y="170" width="334" height="220" rx="12"/>
+  <text class="h" x="1238" y="210">On screen</text>
+  <text class="t" x="1238" y="250">Reads as 75.0, still</text>
+  <text class="t" x="1238" y="278">marked Missed</text>
+  <text class="t" x="1238" y="322">Click it: the 16 source</text>
+  <text class="t" x="1238" y="350">records behind it</text>
+
+  <path class="num" d="M378,280 H434"/>
+  <path class="num" d="M768,280 H824"/>
+  <path class="num" d="M1158,280 H1214"/>
+
+  <text class="lab" x="438" y="476">The words' path</text>
+
+  <path class="arrow" d="M603,390 V490"/>
+  <text class="lab" x="618" y="440">words only: missed,</text>
+  <text class="lab" x="618" y="464">below target, improving</text>
+
+  <rect class="model" x="438" y="494" width="330" height="230" rx="12"/>
+  <text class="h" x="458" y="534">Language model</text>
+  <text class="t" x="458" y="572">is never given a figure.</text>
+  <text class="t" x="458" y="600">It writes tokens:</text>
+  <text class="code" x="458" y="644">{{kpi:PL_PCT}} is</text>
+  <text class="code" x="458" y="672">{{kpi:PL_PCT.gap}}</text>
+
+  <rect class="check" x="828" y="494" width="330" height="230" rx="12"/>
+  <text class="h" x="848" y="534">Check V1</text>
+  <text class="t" x="848" y="572">Any number the model</text>
+  <text class="t" x="848" y="600">writes itself fails the</text>
+  <text class="t" x="848" y="628">check, and only that</text>
+  <text class="t" x="848" y="656">part is drafted again</text>
+
+  <path class="arrow" d="M768,609 H824"/>
+  <path class="arrow" d="M993,494 V394"/>
+  <text class="lab" x="1008" y="440">text with tokens</text>
+  <text class="lab" x="1008" y="464">and no digits</text>
+
+  <rect class="box" x="48" y="772" width="1504" height="84" rx="12"/>
+  <text class="t" x="72" y="808">Percentages come from totals, never by averaging departments: the institution figure is 75.0,</text>
+  <text class="t" x="72" y="836">where a simple average of the departments would say 75.7. A department with nothing to divide by has no value, not zero.</text>
+</svg>

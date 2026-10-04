@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -69,6 +69,10 @@ demo:
 # back to the demo's ready-made start, without stopping it
 demo-reset:
 	./scripts/demo_reset.sh
+
+# docs/diagrams/*.svg to PNG for the slides
+diagrams:
+	cd frontend && node scripts/render-diagrams.mjs
 
 # docs/DEMO.md walked in a browser, steps 1 to 9, against its own copy of the demo
 rehearse:

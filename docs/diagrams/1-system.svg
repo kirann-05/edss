@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" font-family="Inter, Helvetica, Arial, sans-serif">
+  <title>How EDSS is put together</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#52606d"/>
+    </marker>
+  </defs>
+  <style>
+    .title { font-size: 36px; font-weight: 700; fill: #1f2933; }
+    .sub { font-size: 21px; fill: #52606d; }
+    .h { font-size: 23px; font-weight: 600; fill: #1f2933; }
+    .t { font-size: 19px; fill: #3e4c59; }
+    .s { font-size: 17px; fill: #52606d; }
+    .box { fill: #ffffff; stroke: #9aa5b1; stroke-width: 2; }
+    .planned { fill: #f5f7fa; stroke: #7b8794; stroke-width: 2; stroke-dasharray: 9 6; }
+    .model { fill: #fffbeb; stroke: #b45309; stroke-width: 2; }
+    .people { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+    .done { fill: #f0fdf4; stroke: #15803d; stroke-width: 2; }
+    .audit { fill: #f5f7fa; stroke: #52606d; stroke-width: 2; }
+    .arrow { stroke: #52606d; stroke-width: 2.5; fill: none; marker-end: url(#a); }
+  </style>
+  <rect width="1600" height="900" fill="#ffffff"/>
+
+  <text class="title" x="48" y="66">How EDSS is put together</text>
+  <text class="sub" x="48" y="104">Data flows right along the top, decisions come back along the bottom. Dashed boxes are planned, not built.</text>
+
+  <!-- top row: the data path -->
+  <rect class="box" x="48" y="150" width="250" height="300" rx="12"/>
+  <text class="h" x="68" y="190">University systems</text>
+  <text class="t" x="68" y="232">CSV and Excel exports</text>
+  <text class="t" x="68" y="262">Read-only SQL views</text>
+  <text class="s" x="68" y="320">Today: synthetic data,</text>
+  <text class="s" x="68" y="346">8 departments,</text>
+  <text class="s" x="68" y="372">3 academic years,</text>
+  <text class="s" x="68" y="398">10 traps planted</text>
+
+  <rect class="box" x="340" y="150" width="250" height="300" rx="12"/>
+  <text class="h" x="360" y="190">Ingestion</text>
+  <text class="t" x="360" y="232">Checks every row</text>
+  <text class="t" x="360" y="262">Each reject gets</text>
+  <text class="t" x="360" y="290">a plain reason</text>
+  <text class="t" x="360" y="332">Immutable batches</text>
+  <text class="t" x="360" y="374">Reconciliation report</text>
+
+  <rect class="box" x="632" y="150" width="250" height="300" rx="12"/>
+  <text class="h" x="652" y="190">Fact store</text>
+  <text class="t" x="652" y="232">Every figure keeps</text>
+  <text class="t" x="652" y="260">its source, as-of</text>
+  <text class="t" x="652" y="288">date and status</text>
+  <text class="s" x="652" y="330">In memory today</text>
+  <rect class="planned" x="652" y="352" width="210" height="76" rx="8"/>
+  <text class="t" x="668" y="384">PostgreSQL</text>
+  <text class="s" x="668" y="410">planned</text>
+
+  <rect class="box" x="924" y="150" width="250" height="300" rx="12"/>
+  <text class="h" x="944" y="190">Connector</text>
+  <text class="t" x="944" y="232">The one door to data</text>
+  <text class="t" x="944" y="262">Scoped to the plan</text>
+  <text class="t" x="944" y="292">Every call audited</text>
+  <rect class="planned" x="944" y="352" width="210" height="76" rx="8"/>
+  <text class="t" x="960" y="384">MCP server</text>
+  <text class="s" x="960" y="410">planned</text>
+
+  <rect class="box" x="1216" y="150" width="336" height="510" rx="12"/>
+  <text class="h" x="1236" y="190">Agent graph</text>
+  <text class="s" x="1236" y="216">LangGraph</text>
+  <text class="t" x="1236" y="260">Four domain agents</text>
+  <text class="t" x="1236" y="288">run in parallel</text>
+  <text class="t" x="1236" y="330">KPI engine: plain code,</text>
+  <text class="t" x="1236" y="358">exact decimals</text>
+  <text class="t" x="1236" y="400">Validation gate: nine</text>
+  <text class="t" x="1236" y="428">checks, then repair</text>
+  <rect class="model" x="1236" y="460" width="296" height="180" rx="8"/>
+  <text class="h" x="1254" y="496">Language model</text>
+  <text class="t" x="1254" y="530">Drafts words only,</text>
+  <text class="t" x="1254" y="558">never a figure</text>
+  <text class="t" x="1254" y="590">Local, on this machine</text>
+  <text class="s" x="1254" y="620">Canned drafts in the demo</text>
+
+  <path class="arrow" d="M298,300 H336"/>
+  <path class="arrow" d="M590,300 H628"/>
+  <path class="arrow" d="M882,300 H920"/>
+  <path class="arrow" d="M1174,300 H1212"/>
+
+  <!-- bottom row: the decision path, right to left -->
+  <rect class="box" x="924" y="500" width="250" height="160" rx="12"/>
+  <text class="h" x="944" y="540">API</text>
+  <text class="t" x="944" y="578">FastAPI, live progress</text>
+  <text class="t" x="944" y="608">Role checked on</text>
+  <text class="t" x="944" y="636">every request</text>
+
+  <rect class="box" x="632" y="500" width="250" height="160" rx="12"/>
+  <text class="h" x="652" y="540">Web app</text>
+  <text class="t" x="652" y="578">Next.js</text>
+  <text class="t" x="652" y="608">Dashboard, review,</text>
+  <text class="t" x="652" y="636">reports, audit</text>
+
+  <rect class="people" x="340" y="500" width="250" height="160" rx="12"/>
+  <text class="h" x="360" y="540">People</text>
+  <text class="t" x="360" y="578">A named approver</text>
+  <text class="t" x="360" y="608">publishes, edits</text>
+  <text class="t" x="360" y="636">or overrides</text>
+
+  <rect class="done" x="48" y="500" width="250" height="160" rx="12"/>
+  <text class="h" x="68" y="540">Report</text>
+  <text class="t" x="68" y="578">Immutable versions</text>
+  <text class="t" x="68" y="608">Rollback needs</text>
+  <text class="t" x="68" y="636">a reason</text>
+
+  <path class="arrow" d="M1216,580 H1178"/>
+  <path class="arrow" d="M924,580 H886"/>
+  <path class="arrow" d="M632,580 H594"/>
+  <path class="arrow" d="M340,580 H302"/>
+
+  <!-- the audit log under everything -->
+  <rect class="audit" x="48" y="712" width="1504" height="104" rx="12"/>
+  <text class="h" x="72" y="752">Audit log, append-only</text>
+  <text class="t" x="72" y="790">Every step, by agents and people, is a row carrying the SHA-256 hash of the row before it, so a changed row is found.</text>
+
+  <text class="s" x="48" y="862">Real data never leaves the machine: a hosted model is refused unless the data is synthetic.</text>
+</svg>

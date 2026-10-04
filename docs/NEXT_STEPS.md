@@ -9,6 +9,7 @@ Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded 
 - D2 `docs/DEMO.md` (2026-10-04): nine steps with the exact on-screen labels, checked against the running demo, plus pre-flight, fallbacks and a last-resort path.
 - D3 `make rehearse` (2026-10-04): walks DEMO.md steps 1 to 9 against a production build with the ready-made state, at 1280 by 720. The steps take 8.5 seconds, about 20 with server start. It fails if DEMO.md and the test disagree on the steps (checked by removing step 6).
 - D4 projector pass (2026-10-04): the rehearsal now runs as a 1280 by 720 projector at 125 percent zoom and fails on sideways scroll or a clipped table on any of the nine screens (checked by undoing the fix). Fixed: the data health table ran off the right edge, and after approving the outcome was off screen. Screenshots in `docs/demo-screens`.
+- D6 slides kit (2026-10-04): `docs/SLIDES_KIT.md` with every number tied to a test or report, and four diagrams in `docs/diagrams` (SVG and PNG, `make diagrams`). Planned pieces are drawn dashed.
 
 ## How to work through it
 
