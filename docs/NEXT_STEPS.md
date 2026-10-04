@@ -6,6 +6,7 @@ Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded 
 
 - D1 `make demo` (2026-10-04): ready in about 10 seconds including the production build, Ctrl-C stops both servers. Tested through a terminal with a real Ctrl-C.
 - D5 ready-made state (2026-10-04): `make demo` starts with report version 1 approved and a placement and research draft waiting. `make demo-reset` puts it back in about 2 seconds without stopping. `DEMO_STATE=0 make demo` starts empty. 8 API tests.
+- D2 `docs/DEMO.md` (2026-10-04): nine steps with the exact on-screen labels, checked against the running demo, plus pre-flight, fallbacks and a last-resort path.
 
 ## How to work through it
 
