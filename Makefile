@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down db-check
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down db-check db-migrate test-db
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -75,6 +75,14 @@ db-down:
 
 db-check:
 	cd backend && uv run python ../scripts/db_check.py
+
+# bring the database schema up to date (alembic, as the owner)
+db-migrate:
+	cd backend && uv run alembic upgrade head
+
+# the tests that need PostgreSQL, failing rather than skipping if it is not running
+test-db:
+	cd backend && EDSS_REQUIRE_DB=1 uv run pytest -q -m db
 
 # parallel against one-at-a-time domain agents, written to docs/benchmark.md
 benchmark:

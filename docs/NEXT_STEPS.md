@@ -20,6 +20,7 @@ Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded 
 - L3 framework specialists (2026-10-04): Strategic, NIRF and NAAC packs as YAML over one implementation, outside the agents (they read files). The Strategic pack guides every draft and is shown on the brief. NIRF and NAAC hold nothing until IQAC supplies definitions, and the loader and the app enforce that. 13 tests.
 - L7 hybrid planner (2026-10-04): rules first, the model second, the person asked where they disagree, the rules if the model's answer is unusable, a clear 503 if the model is down (D30). Measured with qwen3.5:4b: 9 of 10 and 6 of 6, equal to the rule baseline, with 6 model calls instead of 16. The drafter was measured again with the framework guidance: 9 of 9 pass. 8 tests.
 - L5a database (2026-10-04): `compose.yaml` runs PostgreSQL 16 with pgvector on 127.0.0.1 only, with the owner's password generated into `.env`. `make db-up` is healthy in about 3 seconds and `make db-check` reports PostgreSQL 16.15 and pgvector 0.8.7.
+- L5b schema and migration (2026-10-04): the 19 data-contract tables as SQLAlchemy Core in `app/db/schema.py`, the first Alembic migration, and 7 tests on a throwaway database: every table exists, nothing is left to migrate, figures stay NUMERIC, the contract's statuses and rule 12 are database constraints, and downgrade takes it all away. `make db-migrate`, `make test-db`.
 
 ## How to work through it
 
