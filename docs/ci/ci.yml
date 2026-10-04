@@ -4,8 +4,10 @@
 # token has no workflow scope. Actions are pinned to commit SHAs, the version is in the comment.
 #
 # Every push and pull request: the same checks as `make check`, plus a contract check that fails
-# when the API schema and the frontend's generated types disagree. Synthetic data only, no
-# secrets: the backend runs on its built-in synthetic defaults.
+# when the API schema and the frontend's generated types disagree; the database tests and the API
+# suite in database mode against the same compose.yaml a server runs; and on main, the whole system
+# built and run from a fresh clone (make smoke). Synthetic data only. The database's passwords are
+# made up for each run and thrown away with it.
 name: ci
 
 on:
@@ -72,6 +74,55 @@ jobs:
         run: pnpm test
       - name: Build
         run: pnpm build
+
+  database:
+    # the tests that need PostgreSQL, and the API tests again with the app keeping everything in it
+    runs-on: ubuntu-latest
+    needs: [backend]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          working-directory: backend
+          python-version: "3.12"
+      - name: Passwords for a throwaway database
+        run: |
+          {
+            echo "EDSS_DB_PASSWORD=$(openssl rand -hex 24)"
+            echo "EDSS_DB_APP_PASSWORD=$(openssl rand -hex 24)"
+          } > .env
+          chmod 600 .env
+      - name: PostgreSQL with pgvector, from compose.yaml
+        run: docker compose --env-file .env up -d --wait db
+      - name: Install
+        working-directory: backend
+        run: uv sync --frozen
+      - name: Migrate, the app role, the checkpoint tables
+        run: make db-migrate
+      - name: Database tests, failing rather than skipping
+        run: make test-db
+      - name: The API tests in database mode
+        run: make test-api-db
+
+  containers:
+    # both images built and the whole system run from a fresh clone: up, a brief to review, the
+    # audit chain, a backup restored, down. Slower, so on main only
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # the smoke test clones this checkout
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          working-directory: backend
+          python-version: "3.12"
+      - name: Install the backend, for the smoke test's own checks
+        working-directory: backend
+        run: uv sync --frozen
+      - name: From a fresh clone
+        run: make smoke
 
   e2e:
     # the approval flow, the demo's fault injection, scoping, sign-in, keyboard use and an axe scan,
