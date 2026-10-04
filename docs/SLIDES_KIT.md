@@ -2,7 +2,7 @@
 
 Everything the slides need, in one place. Every number below has its source next to it. If a slide needs a number that is not here, ask Kiran rather than estimating it.
 
-Checked on 2026-10-04 against commit `439a2ee` and the files named.
+Checked on 2026-10-04 against commit `e42ce00` and the files named.
 
 ## The four diagrams
 
@@ -27,7 +27,7 @@ Four domain agents gather department data in parallel through one governed conne
 
 | Fact | Number | Source |
 | --- | --- | --- |
-| Backend tests | 964, all passing | `make check` |
+| Backend tests | 991, all passing | `make check` |
 | Frontend unit and component tests | 224 in 14 files, all passing | `make check` |
 | Browser tests, real API and pages | 15, all passing, including an accessibility scan (WCAG 2.2 AA rules) | `make e2e` |
 | The whole demo walked by a browser | 9 steps in about 9 seconds | `make rehearse` |
