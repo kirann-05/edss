@@ -34,7 +34,7 @@ About 12 minutes. Read this once before the first rehearsal. Every label in quot
 - [ ] Chrome, one window, one tab, at http://127.0.0.1:3000. Zoom 125 percent (Cmd and +). Mirror the display to the projector. Every screen is checked to fit a 1280 by 720 projector at this zoom.
 - [ ] The sign-in page is showing.
 
-**Model off, and why.** The demo drafts with the canned FakeLLM, so every run takes about a second and says the same thing every time. The local model works (`LLM_PROVIDER=ollama LLM_MODEL=qwen3.5:4b make demo`), but on this MacBook Air a single brief takes minutes. If asked, say so plainly and point to the measured results: `docs/evals/ollama-qwen3.5-4b-v2-current-prompts-2026-10-03.md` (option drafting reliable on every off-target KPI, the planner asks the right questions only 4 times in 10). Production runs the model on the university GPU.
+**Model off, and why.** The demo drafts with the canned FakeLLM, so every run takes about a second and says the same thing every time. The local model works (`LLM_PROVIDER=ollama LLM_MODEL=qwen3.5:4b make demo`), but on this MacBook Air a full brief takes about a minute instead of a second, and its wording changes from run to run. If asked, say so plainly and point to the measured results in `docs/evals`: option drafts pass all nine checks, and the planner reads requests with rules first because the model alone asked the right questions only 4 times in 10 (with the rules first, 9 in 10). Production runs the model on the university GPU.
 
 ## Switching person
 
@@ -169,6 +169,6 @@ Try these in order. Keep talking while you do it: what the step was going to sho
 
 ## Things not to do live
 
-- Do not switch to the real model. It works, but it is slow on this laptop.
+- Do not switch to the real model live. It works, but a brief takes about a minute and the wording is different each time.
 - Do not press "Refresh data" while a run is going: it is refused until the run finishes.
 - Do not open Admin unless asked. It works, it just is not the story.

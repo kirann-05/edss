@@ -56,7 +56,7 @@ Reading the request. On its own, the small local model asked exactly the right q
 Yes, on this laptop with qwen3.5:4b and every read going through MCP: a vague request was asked exactly the two questions it needed, planned, drafted and passed all nine checks first time, and was waiting for review 27 seconds after it was asked.
 
 **Why does the demo use canned drafts instead of the model?**
-Speed and repeatability. On this MacBook Air the 4 billion parameter model takes about 28 seconds per option draft, so a full brief takes minutes. The canned model follows exactly the same path through the graph and the same nine checks. The real model works and is measured in `docs/evals`. In production it runs on the university's GPU server, whose specification is still awaited.
+Speed and repeatability. On this MacBook Air a full four-area brief with the 4 billion parameter model takes about a minute (three option drafts in parallel, measured 57 seconds), against about a second canned, and its wording changes from run to run. The canned model follows exactly the same path through the graph and the same nine checks. The real model works and is measured in `docs/evals`. In production it runs on the university's GPU server, whose specification is still awaited.
 
 **Is the model evaluation fair?**
 It is small and I say so: ten planning requests and nine drafts, one run each, with the expected answers labelled by me. To avoid marking the model on its own homework, the worked examples in the prompts use different requests from the ones it is scored on. The rule-based baseline scores 9 of 10 and 6 of 6, which shows the requests are answerable.
