@@ -76,7 +76,7 @@ Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 
 ## Where to resume
 
-State on 2026-10-04: every page works and is tested (955 backend tests, 224 frontend tests, 15 browser tests including an accessibility scan). Everything is committed and pushed to the private repo `kirann-05/edss`.
+State on 2026-10-05: the demo track (D1 to D7) and the lab track (L1 to L7) are done; L8 and D8 are Kiran's. 1054 backend tests (39 of them need the PostgreSQL from `make db-up`, and skip without it), 224 frontend tests, 15 browser tests, the 9-step rehearsal, and the API suite again in database mode (`make test-api-db`, 235). Everything is committed and pushed to the private repo `kirann-05/edss`. The one piece of ours left before real data can be used: loading the university's exports into PostgreSQL and letting the app run with `DATA_MODE=real`, which has design choices for Kiran (NEXT_STEPS.md, R1).
 
 What is not ours is in **docs/PENDING.md**. What is still ours is split into small parts in **docs/NEXT_STEPS.md**, demo first. Do one part per session, start from those two files, and commit at the end of each part.
 

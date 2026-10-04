@@ -79,6 +79,18 @@ Ask the professor today, it decides whether this track matters: *"Is each lab al
 | L7 | Hybrid planner: rules first, model second, ask where they disagree | The evaluation shows the planner scores at least the rule-based baseline | 45 min |
 | L8 | **Kiran:** `gh auth refresh -h github.com -s workflow`, then move `docs/ci/ci.yml` to `.github/workflows/` | CI runs on the next push | 5 min |
 
+## Track R: real data (needs Kiran's choices first)
+
+| Part | What | Done when | Size |
+| --- | --- | --- | --- |
+| R1 | Load a folder of the university's exports into PostgreSQL, append-only, and let the app start with `DATA_MODE=real` | A real-mode folder goes in, the reconciliation report is shown, the app starts in real mode with only those records, and a hosted model is refused | 90 min |
+
+Choices for Kiran before R1, with their costs:
+
+1. **What happens to the synthetic data when the first real batch arrives.** (a) Kept in the same tables and excluded once the mode is real, as the data contract says: nothing is lost, but every query must filter by mode. (b) Real data in a separate database: the cleanest separation, but two databases to back up. (c) The synthetic data deleted on the switch: simplest, but it breaks "nothing is wiped silently" unless a person confirms it.
+2. **Departments.** The real list will differ from the eight synthetic ones. (a) The real manifest's list becomes the list, synthetic departments kept but hidden. (b) A department list maintained by an administrator in the app, the manifest checked against it.
+3. **Who may load data.** (a) The command line only, on the server, by the IT cell. (b) An upload page for the Registrar, which needs file-upload hardening and its own audit trail.
+
 ## A calendar that fits
 
 | When | What |
