@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down db-check
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -65,6 +65,16 @@ acceptance:
 # the live demo: production build, demo settings, one command. See scripts/demo.sh for options
 demo:
 	./scripts/demo.sh
+
+# PostgreSQL with pgvector on 127.0.0.1 (compose.yaml). The password is EDSS_DB_PASSWORD in .env
+db-up:
+	docker compose --env-file .env up -d --wait db
+
+db-down:
+	docker compose --env-file .env stop db
+
+db-check:
+	cd backend && uv run python ../scripts/db_check.py
 
 # parallel against one-at-a-time domain agents, written to docs/benchmark.md
 benchmark:

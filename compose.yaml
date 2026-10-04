@@ -1,0 +1,29 @@
+# PostgreSQL 16 with pgvector, for EDSS on this machine (docs/ARCHITECTURE.md section 6).
+#
+#   make db-up      start it and wait until it is healthy
+#   make db-check   connect and print the server and pgvector versions
+#
+# Bound to 127.0.0.1 only, so nothing outside this machine can reach it: real data never leaves
+# the machine (rule 7). The owner's password is EDSS_DB_PASSWORD in .env, which is never committed.
+name: edss
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: edss_owner
+      POSTGRES_PASSWORD: ${EDSS_DB_PASSWORD:?set EDSS_DB_PASSWORD in .env}
+      POSTGRES_DB: edss
+    ports:
+      - "127.0.0.1:${EDSS_DB_PORT:-5432}:5432"
+    volumes:
+      - edss-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U edss_owner -d edss"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+volumes:
+  edss-db:

@@ -41,6 +41,7 @@ Backend (`backend/pyproject.toml`, pinned by `uv.lock`)
 | pyjwt | Signed session tokens in an httpOnly cookie |
 | langgraph | The agent graph: parallel fan-out with `Send`, `interrupt` for the human gate, checkpointing for resume, a bounded back-edge for repair (decision D2, Labs 6 to 8). It pulls in `langchain-core`, `langsmith`, `langgraph-checkpoint`, `langgraph-prebuilt` and `langgraph-sdk`. `langsmith` is the tracing client, which rule 7 forbids using, so `enforce_no_external_tracing` pins tracing off at start and a test asserts it stays off during a run |
 | mcp | The connector as an MCP server and client (rule 6, Lab 5). The official Python SDK. It pulls in `opentelemetry-api` only, with no SDK or exporter, so its spans go nowhere; a test asserts no OpenTelemetry SDK is installed (rule 7) |
+| psycopg[binary] | The PostgreSQL driver (psycopg 3, with its bundled libpq so nothing else is installed). PostgreSQL itself runs from `compose.yaml` |
 
 Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 
