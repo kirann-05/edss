@@ -27,6 +27,8 @@ const ACTION_WORDS: Record<string, string> = {
   "brief.refused": "Refused",
   "report.publish": "Published a version",
   "report.rollback": "Rolled back",
+  "connector.call": "Read through the connector",
+  "connector.refused": "Connector refused a read outside the run's areas",
 };
 
 export function actionWords(action: string): string {

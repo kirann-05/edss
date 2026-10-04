@@ -14,6 +14,7 @@ Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded 
 - L1 `make acceptance` (2026-10-04): 18 plans, 94 fault trials, all caught by the intended check and repaired, 18 of 18 clean drafts pass, and a stubborn model is stopped at 3 attempts. Writes `docs/acceptance-report.md` in about 2 seconds. Fails when a fault slips through (checked by making one undetectable).
 - L2 `make benchmark` (2026-10-04): the same graph in parallel and with LangGraph's max_concurrency at 1, at four simulated delays, with the events confirming the agents overlapped or did not. About 3.9 to 4.0 times faster in parallel, nothing to win at zero delay. `docs/benchmark.md`.
 - L4a and L4b MCP server (2026-10-04): `mcp` 2.3 read from the installed package (notes in PROGRESS.md), and every connector read served as a read-only tool. A client test calls each one and gets exactly what the in-memory connector gives, decimals included. Where it runs is D29, provisional.
+- L4c tokens and audit (2026-10-04): a token per run carries the plan's areas plus reference data, expires on its own and is revoked at the end. Over real HTTP a read outside the run's areas is refused and audited, and no, unknown, revoked or expired tokens get a 401 before any tool runs. Every call is one audit row with a hash of what was returned.
 
 ## How to work through it
 
