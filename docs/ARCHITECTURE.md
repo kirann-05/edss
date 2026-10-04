@@ -86,7 +86,7 @@ Each run gets a bearer token when its plan is locked (`app/mcp_connector/tokens.
 
 ## 5. LLM layer
 
-`agents/llm.py` exposes `get_chat_model(role)` for roles `clarifier`, `drafter`, `judge`, and `get_embedder()`.
+`agents/llm.py` exposes `get_chat_model(role, settings, system_config)`. The app uses the roles `clarifier` and `drafter`; `judge` is reserved and unused, because the nine checks are code, not a model. Embeddings are separate (`app/db/embeddings.py`) and refuse any server that is not local.
 
 Config:
 
