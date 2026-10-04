@@ -74,4 +74,5 @@ Kiran develops on an Apple Silicon MacBook Air (no NVIDIA GPU). Check before ass
 - `make ingest DIR=data/real/<folder>` checks a folder of exports and prints the reconciliation report
 - `uv run python ../scripts/evaluate_llm.py` (from `backend`) measures a model, results go to `docs/evals`
 - `make demo` the live demo in one command, starting with one approved report and one draft waiting. `make demo-reset` goes back to that start without stopping. `make rehearse` walks docs/DEMO.md in a browser
-- Not built yet and it fails loudly: `make acceptance`. What is not ours to finish is in `docs/PENDING.md`
+- `make acceptance` injects every fault into every plan it applies to and writes `docs/acceptance-report.md`. It fails if any fault slips through
+- What is not ours to finish is in `docs/PENDING.md`

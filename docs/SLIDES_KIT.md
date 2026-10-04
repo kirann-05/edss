@@ -27,7 +27,7 @@ Four domain agents gather department data in parallel through one governed conne
 
 | Fact | Number | Source |
 | --- | --- | --- |
-| Backend tests | 963, all passing | `make check` |
+| Backend tests | 964, all passing | `make check` |
 | Frontend unit and component tests | 224 in 14 files, all passing | `make check` |
 | Browser tests, real API and pages | 15, all passing, including an accessibility scan (WCAG 2.2 AA rules) | `make e2e` |
 | The whole demo walked by a browser | 9 steps in about 9 seconds | `make rehearse` |
@@ -35,6 +35,7 @@ Four domain agents gather department data in parallel through one governed conne
 | Traps planted in that data | 10, each with its own test (15 trap tests in all) | `backend/tests/synthetic/test_traps.py`, `test_trap_checks.py` |
 | Validation checks on every draft | 9 (V1 to V9) | `backend/app/agents/validation/checks.py` |
 | Faults that can be injected live | 8, each caught and repaired inside the retry budget | `backend/tests/agents/test_graph.py`, `test_every_fault_is_detected_and_repaired_inside_the_budget` |
+| Acceptance run | 18 plans; 94 fault trials, 94 caught first time by the intended check, 94 repaired; 18 of 18 clean drafts pass first time | `make acceptance`, `docs/acceptance-report.md` |
 | Retry budget | 3 attempts, then the draft goes to a person with a diagnosis | `max_attempts` in `backend/app/core/config.py` |
 | Parallel domain agents | 4, each waiting 700 ms to stand in for a slow source; a whole run takes about 750 ms | Shown on the run page, `docs/demo-screens/step-3.png` |
 | Audit chain | SHA-256, each row hashing the previous hash with its own content | `backend/app/governance/audit.py` |
@@ -87,4 +88,3 @@ Do not show these as working. The system diagram draws them dashed.
 - Docker packaging
 - Embeddings for finding similar past briefs (a simple word-overlap match is used instead)
 - The framework specialists of Lab 13
-- A single command that reports measured detection rates (`make acceptance`)

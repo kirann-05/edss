@@ -60,7 +60,7 @@ ingest:
 
 # Not built yet. It fails loudly instead of pretending to succeed.
 acceptance:
-	@echo "make acceptance is not implemented yet (CHECKLIST C6 and C7)" && exit 1
+	cd backend && uv run python ../scripts/acceptance.py
 
 # the live demo: production build, demo settings, one command. See scripts/demo.sh for options
 demo:

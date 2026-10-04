@@ -93,6 +93,18 @@ _FAULTS: dict[str, Callable[[BriefDocument, ValidationContext], BriefDocument]] 
 
 FAULTS: tuple[str, ...] = tuple(_FAULTS)
 
+# The check each fault exists to prove (CHECKLIST C7). `make acceptance` measures against it
+CAUGHT_BY: dict[str, frozenset[str]] = {
+    "fake_number": frozenset({"V1"}),
+    "dropped_source": frozenset({"V7"}),
+    "provisional_as_final": frozenset({"V4"}),
+    "missing_risks": frozenset({"V3"}),
+    "stale_hidden": frozenset({"V2", "V8"}),
+    "double_count": frozenset({"V9"}),
+    "rounded_miss": frozenset({"V6"}),
+    "approval_bypass": frozenset({"V5"}),
+}
+
 
 def apply_fault(doc: BriefDocument, fault: str, ctx: ValidationContext) -> BriefDocument:
     try:

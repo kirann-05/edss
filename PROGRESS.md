@@ -16,7 +16,7 @@ Update at the end of every session. Keep it short and true.
 | 8 | Parallel fan-out and merge | done, benchmark not written | Parallelism is measured from the events and shown. The timing script is not written |
 | 9 | Grounding and evidence | done | Reference tokens, number lint, V1, evidence tab, source record dialog, scoped record lookup |
 | 10 | Validate, diagnose, repair | done | Eight injectable faults, detected and repaired inside the bound or escalated, shown live in the timeline |
-| 11 | Acceptance suite as gate | partial | V1 to V9 gate every draft. `make acceptance` and the measured detection rates are not built |
+| 11 | Acceptance suite as gate | done | V1 to V9 gate every draft. `make acceptance` runs every fault over 18 plans: 94 of 94 caught by the intended check and repaired (docs/acceptance-report.md) |
 | 12 | Governance, approval, rollback | done | Approve, edit, override, send back, versions, diff, rollback with a reason, print to PDF, audit viewer with chain check and run trace |
 | 13 | Framework specialists | not started | |
 | 14 | Capstone and deployment | partial | Every page, 15 browser tests, accessibility scan, CI written (waiting for a GitHub scope). Docker deployment not built |

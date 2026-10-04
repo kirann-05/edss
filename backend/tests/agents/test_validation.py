@@ -11,7 +11,7 @@ import pytest
 from app.agents.compose import compose_brief, off_target
 from app.agents.models import OptionSet
 from app.agents.skills.options_skill import draft_option_set
-from app.agents.validation.faults import FAULTS, apply_fault
+from app.agents.validation.faults import CAUGHT_BY, FAULTS, apply_fault
 from app.agents.validation.suite import ValidationContext, validate
 from app.domain.enums import KpiStatus
 
@@ -322,6 +322,9 @@ class TestFailureInjection:
 
     def test_there_are_exactly_the_eight_faults_the_architecture_lists(self):
         assert set(FAULTS) == set(self.DETECTED_BY)
+
+    def test_the_contract_make_acceptance_measures_against_is_this_one(self):
+        assert {fault: set(checks) for fault, checks in CAUGHT_BY.items()} == self.DETECTED_BY
 
     @pytest.mark.parametrize("fault", sorted(DETECTED_BY))
     def test_the_fault_is_detected_by_its_check(self, fault, clean, context):
