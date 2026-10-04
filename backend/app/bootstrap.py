@@ -10,6 +10,7 @@ from collections.abc import Callable
 from datetime import date, timedelta
 
 from langgraph.checkpoint.memory import InMemorySaver
+from sqlalchemy import create_engine
 
 from app.agents.connector import Connector
 from app.agents.fake_llm import FakeLLM
@@ -20,6 +21,9 @@ from app.agents.validation.suite import validate
 from app.api.deps import AppState
 from app.core.config import Settings
 from app.core.throttle import LoginThrottle
+from app.db.dataset_store import load_dataset
+from app.db.state_store import DbSystemConfig, ScopeRows, UserRows
+from app.db.urls import owner_url
 from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
 from app.mcp_connector.context import RunConnector, mcp_session
@@ -30,7 +34,7 @@ from app.services.refresh import DataSource
 from app.services.runs import RunRecord, RunService, plan_catalogue_from
 from app.services.store import DataStore
 from app.services.system_config import SystemConfig
-from app.services.users import build_seed_users
+from app.services.users import UserStore, build_seed_users
 from app.services.validation_context import context_for_document
 from app.specialists import SPECIALISTS
 
@@ -55,11 +59,15 @@ def build_state(
     )
 
     data_source = DataSource(settings)
-    store = store or data_source.load(today)
     audit, events = AuditLog(), RunEvents()
-    scopes = ScopeRegistry(today)
+    if settings.edss_database:
+        store, scopes, system_config, users = _from_database(settings, today, store, seed_password)
+    else:
+        store = store or data_source.load(today)
+        scopes = ScopeRegistry(today)
+        system_config = SystemConfig(settings.data_mode)
+        users = build_seed_users(seed_password)
     connector = InMemoryConnector(store, scopes)
-    system_config = SystemConfig(settings.data_mode)
 
     llm = LlmSettings.from_settings(settings)
     drafter = get_chat_model("drafter", llm, system_config)
@@ -110,7 +118,7 @@ def build_state(
     return AppState(
         settings=settings,
         store=store,
-        users=build_seed_users(seed_password),
+        users=users,
         jwt_secret=jwt_secret,
         audit=audit,
         events=events,
@@ -130,3 +138,35 @@ def build_state(
             lockout=timedelta(minutes=settings.login_lockout_minutes),
         ),
     )
+
+
+def _from_database(
+    settings: Settings, today: date, store: DataStore | None, seed_password: str | None
+) -> tuple[DataStore, ScopeRegistry, DbSystemConfig, UserStore]:
+    """The data, the grants, the data mode and the people, from PostgreSQL (CHECKLIST L5d).
+    A first start writes the seed people and the default grants there once."""
+    engine = create_engine(owner_url(), pool_pre_ping=True)  # the narrower app role is L5e
+    if store is None:
+        with engine.connect() as conn:
+            try:
+                dataset, definitions, targets = load_dataset(conn)
+            except KeyError:
+                raise RuntimeError(
+                    "the database holds no data yet: run make db-migrate and make seed-db"
+                ) from None
+        store = DataStore(dataset, definitions, targets, today, settings.stale_after_days)
+
+    grants = ScopeRows(engine)
+    held = grants.load()
+    scopes = ScopeRegistry(today, grants=held or None, on_change=grants.replace)
+    if not held:
+        grants.replace(scopes.all())
+
+    rows = UserRows(engine)
+    people, hashes, versions = rows.load()
+    if people:
+        users = UserStore(people, "", stored_hashes=hashes, versions=versions, on_change=rows.save)
+    else:
+        users = build_seed_users(seed_password, on_change=rows.save)
+        users.save_all()
+    return store, scopes, DbSystemConfig(engine, settings.data_mode), users

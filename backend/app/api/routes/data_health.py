@@ -24,6 +24,12 @@ Refresher = Depends(require(Permission.REFRESH_DATA))
 @router.post("/data/refresh", response_model=s.RefreshOut)
 def refresh(state: State, user: AppUser = Refresher) -> s.RefreshOut:
     """Read the sources again (FR-16). The data in use is replaced only when the whole read worked."""
+    if state.settings.edss_database:
+        raise HTTPException(
+            status.HTTP_409_CONFLICT,
+            "With the database, new data is loaded by make seed-db for now. Refreshing from this "
+            "page in database mode is not built yet.",
+        )
     if state.runs.any_running():
         # a run reads several times as it goes, and must see one snapshot from start to finish
         raise HTTPException(

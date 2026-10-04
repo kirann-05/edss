@@ -5,7 +5,7 @@ get one of these through the protocol. The Postgres version, and later the MCP s
 of it, replace this file only.
 """
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from datetime import date, timedelta
 
 from app.agents.connector import Connector, HealthCellInfo, ScopeGrant
@@ -28,7 +28,20 @@ _ALL_DOMAINS = (Domain.ACADEMIC, Domain.RESEARCH, Domain.PLACEMENT, Domain.FINAN
 class ScopeRegistry:
     """Who authorised which domain to be read. The Registrar manages it (docs/SPEC.md FR-2)."""
 
-    def __init__(self, today: date, granted_by: str = "registrar@edss.test") -> None:
+    def __init__(
+        self,
+        today: date,
+        granted_by: str = "registrar@edss.test",
+        *,
+        grants: list[ScopeGrant] | None = None,
+        on_change: Callable[[list[ScopeGrant]], None] | None = None,
+    ) -> None:
+        """`grants` restores the Registrar's grants from the database, and `on_change` writes
+        every change back. Without them, every area starts granted for a year."""
+        self._on_change = on_change
+        if grants is not None:
+            self._grants = list(grants)
+            return
         self._grants = [
             ScopeGrant(
                 domain=domain,
@@ -49,6 +62,11 @@ class ScopeRegistry:
             ScopeGrant(**{**g.__dict__, "active": False}) if g.domain is domain else g
             for g in self._grants
         ]
+        self._changed()
+
+    def _changed(self) -> None:
+        if self._on_change is not None:
+            self._on_change(list(self._grants))
 
     def grant(
         self, domain: Domain, granted_by: str, today: date, expires_on: date | None = None
@@ -58,6 +76,7 @@ class ScopeRegistry:
             domain, None, granted_by, today, expires_on or today + timedelta(days=365), True
         )
         self._grants = [g for g in self._grants if g.domain is not domain] + [grant]
+        self._changed()
         return grant
 
     @staticmethod

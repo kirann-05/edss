@@ -322,6 +322,7 @@ app_user = Table(
     Column("name", Text, nullable=False),
     Column("role", String(24), nullable=False),
     Column("dept_code", ForeignKey("department.code")),
+    Column("school", Text),  # beyond the contract: a Dean belongs to one school
     Column("active", Boolean, nullable=False, server_default="true"),
     Column("password_hash", Text),
     Column("session_version", Integer, nullable=False, server_default="0"),  # ends old sessions

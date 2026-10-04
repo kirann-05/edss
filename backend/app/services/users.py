@@ -1,4 +1,5 @@
-"""Users and sign-in. In memory for now, behind the same methods the Postgres version will have.
+"""Users and sign-in. The rules live here; with a database every change is also written through
+to it (app/db/state_store.py), so people, passwords and ended sessions survive a restart.
 
 Seed users are synthetic personas on the reserved .test domain. Nothing here is a real person.
 """
@@ -6,7 +7,7 @@ Seed users are synthetic personas on the reserved .test domain. Nothing here is 
 import re
 import secrets
 import threading
-from collections.abc import Collection
+from collections.abc import Callable, Collection
 
 from pydantic import ValidationError
 
@@ -41,12 +42,28 @@ class UserError(ValueError):
 
 
 class UserStore:
-    def __init__(self, users: tuple[AppUser, ...], password: str) -> None:
+    def __init__(
+        self,
+        users: tuple[AppUser, ...],
+        password: str,
+        *,
+        stored_hashes: dict[int, str] | None = None,
+        versions: dict[int, int] | None = None,
+        on_change: Callable[[AppUser, str, int], None] | None = None,
+    ) -> None:
+        """`stored_hashes` and `versions` restore people from the database, and `on_change`
+        writes each change back, with the person's hash and session version."""
         self._by_id = {u.id: u for u in users}
         self._by_email = {u.email.lower(): u for u in users}
-        shared = hash_password(password, demo=True)  # one synthetic password for every seed user
-        self._hashes = {u.id: shared for u in users}
-        self._versions: dict[int, int] = {}
+        if stored_hashes is not None:
+            self._hashes = dict(stored_hashes)
+        else:
+            shared = hash_password(
+                password, demo=True
+            )  # one synthetic password for every seed user
+            self._hashes = {u.id: shared for u in users}
+        self._versions: dict[int, int] = dict(versions or {})
+        self._on_change = on_change
         self._lock = threading.Lock()
         # An unknown email still costs one verification, so response time does not reveal
         # which emails exist.
@@ -57,6 +74,16 @@ class UserStore:
 
     def _end_sessions(self, user_id: int) -> None:
         self._versions[user_id] = self.session_version(user_id) + 1
+
+    def _saved(self, user: AppUser) -> None:
+        if self._on_change is not None:
+            self._on_change(user, self._hashes[user.id], self.session_version(user.id))
+
+    def save_all(self) -> None:
+        """Write every person through, as when a new database is first filled."""
+        with self._lock:
+            for user in self._by_id.values():
+                self._saved(user)
 
     @staticmethod
     def _check_password(password: str) -> None:
@@ -95,6 +122,7 @@ class UserStore:
             self._by_id[user.id] = user
             self._by_email[email] = user
             self._hashes[user.id] = hash_password(password)
+            self._saved(user)
         return user
 
     def update(
@@ -144,6 +172,7 @@ class UserStore:
             self._by_email[updated.email.lower()] = updated
             if user.active and not updated.active:
                 self._end_sessions(user.id)
+            self._saved(updated)
         return updated, diff
 
     def set_password(self, user_id: int, password: str) -> AppUser:
@@ -155,6 +184,7 @@ class UserStore:
                 raise UserError("there is no such person")
             self._hashes[user.id] = hash_password(password)
             self._end_sessions(user.id)
+            self._saved(user)
         return user
 
     def get(self, user_id: int) -> AppUser | None:
@@ -176,6 +206,8 @@ class UserStore:
         return tuple(self._by_id.values())
 
 
-def build_seed_users(password: str | None) -> UserStore:
+def build_seed_users(
+    password: str | None, on_change: Callable[[AppUser, str, int], None] | None = None
+) -> UserStore:
     """With no password configured, a random one is used, so only demo sign-in can open an account."""
-    return UserStore(SEED_USERS, password or secrets.token_urlsafe(24))
+    return UserStore(SEED_USERS, password or secrets.token_urlsafe(24), on_change=on_change)

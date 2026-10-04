@@ -61,6 +61,9 @@ class Settings(BaseSettings):
     # where runs read their data. Empty: directly, in process. Otherwise this server's own MCP
     # endpoint, such as http://127.0.0.1:8000/mcp/, with a token per run (decision D29)
     connector_url: str = ""
+    # keep people, the Registrar's grants, the data mode and the data itself in PostgreSQL
+    # (compose.yaml, make db-migrate, make seed-db). Off: everything lives in memory
+    edss_database: bool = False
     # failed sign-ins for one email inside the window before that email is locked for a while
     login_max_failures: int = 5
     login_lockout_minutes: int = 15

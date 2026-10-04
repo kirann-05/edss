@@ -16,7 +16,7 @@ def status(state: State) -> s.SystemStatusOut:
     ping = getattr(state.drafter, "reachable", None)
     return s.SystemStatusOut(
         version=__version__,
-        data_mode=settings.data_mode,
+        data_mode=state.system_config.data_mode(),  # the stored mode, not the env file (rule 7)
         llm_provider=settings.llm_provider,
         llm_is_fake=fake,
         llm_name=getattr(state.drafter, "name", settings.llm_provider),
