@@ -78,17 +78,11 @@ Run state (short term, checkpointed) is kept separate from the archive (long ter
 
 ## 4. Connector (MCP server)
 
-Tools, all read-only, all taking a scoped bearer token:
+The agents' only way to data is the `Connector` protocol (`app/agents/connector.py`). It has three implementations: in memory over the store (`app/services/connector.py`), an MCP client (`app/mcp_connector/client.py`), and, for runs, `RunConnector`, which answers with the current run's own MCP session.
 
-- `list_departments()`
-- `get_domain_metrics(domain, period, dept=None)` returns facts with status, as_of, source ref
-- `get_kpi_definitions(framework=None)`
-- `get_targets(period, framework=None)`
-- `get_external_benchmarks(framework)`
-- `get_data_health(period)`: freshness and missing per department and domain
-- `get_evidence(fact_id)`: the fact, its batch, its source ref
+The MCP server (`app/mcp_connector/server.py`, mcp 2.3) serves each protocol method as a read-only tool: `get_calendar`, `list_departments`, `get_kpi_definitions`, `get_targets(period)`, `get_domain_metrics(domain, period)`, `get_publications(period)`, `get_data_health(period)`, `get_scope_grants`, `get_evidence(fact_id)`, `get_source(id)`. It is mounted in the API process at `/mcp` (decision D29) and used when `CONNECTOR_URL` points at it, as `make demo`, `make up` and `make rehearse` do.
 
-Each call writes an audit row (token subject, tool, arguments, result hash). Swapping a source means swapping an adapter in the ingestion layer. No agent changes.
+Each run gets a bearer token when its plan is locked (`app/mcp_connector/tokens.py`): scopes `read:<area>` for the plan's areas plus `read:reference`, an expiry, and revocation when the run stops. A read outside the token's areas is refused. Every call and every refusal is one audit row: who, the tool, the arguments, and a hash of the answer. Not built from the original list: `get_external_benchmarks`, and `framework` filters on definitions and targets, which wait for IQAC (rule 12). `langchain-mcp-adapters` is not used: the graph needs the typed protocol, not LangChain tools.
 
 ## 5. LLM layer
 
@@ -114,9 +108,15 @@ Rules:
 
 ## 6. Persistence
 
-- PostgreSQL 16 with pgvector. SQLAlchemy 2 models, Alembic migrations.
-- LangGraph checkpointer on Postgres (package names and APIs must be verified against current docs). SQLite is acceptable only for the first two days.
-- Embeddings for Lab 4: local embedding model, stored in pgvector, used to retrieve similar past briefs and KPIs ("previously proposed options and what leadership did").
+Two modes behind the same services. In memory (the default, the demo and most tests), or with `EDSS_DATABASE=true` in PostgreSQL 16 with pgvector (`compose.yaml`, on 127.0.0.1):
+
+- Schema as SQLAlchemy Core tables (`app/db/schema.py`), one per data-contract table, migrated by Alembic (`backend/migrations`, `make db-migrate`). Figures are NUMERIC.
+- The services keep their rules and write every change through (decision D31): data (`dataset_store.py`), people, grants and the data mode (`state_store.py`), runs, briefs, versions and the pointer (`work_store.py`), the audit log (`audit_store.py`). The data mode is read from `system_config` on every call.
+- The app connects as `edss_app`, which cannot update, delete or truncate the audit log; a trigger refuses those to the owner too (migration 0004). Audit writers take an advisory lock, so the chain stays gapless across processes.
+- LangGraph's Postgres checkpointer (`checkpoints.py`), so a run survives a restart.
+- Prior briefs embedded locally (nomic-embed-text through Ollama, or a word-hashing stand-in) and searched by cosine distance behind an HNSW index (`archive_store.py`). Every published report is added.
+- Real data is loaded from the command line, append-only (`real_data.py`, decisions D32 to D34). Synthetic and real records share the tables and are read by mode.
+- Backups with `pg_dump`, proven by restoring them (`backup.py`, `make db-backup`).
 
 ## 7. Governance
 
@@ -129,45 +129,46 @@ Rules:
 
 ```
 edss/
-  CLAUDE.md  PROGRESS.md  Makefile  docker-compose.yml  .env.example
-  docs/
+  CLAUDE.md  PROGRESS.md  Makefile  compose.yaml  .env.example
+  docs/                  this file, SPEC, DATA_CONTRACT, DECISIONS, DEMO, RUNBOOK, SLIDES_KIT, VIVA_NOTES,
+                         evals/, diagrams/, demo-screens/, ci/ (the workflow, staged)
   backend/
-    pyproject.toml
+    Dockerfile  pyproject.toml  uv.lock  alembic.ini  migrations/
     app/
-      api/            routers: runs, kpis, briefs, drilldown, audit, health, auth, admin
-      core/           config, security, rbac, logging
-      db/             models, migrations
-      ingestion/      adapters (csv, sql), validators, loader
-      connector/      mcp_server.py, tools, auth
-      kpi/            engine.py, formulas.py, definitions/ (seed yaml)
-      agents/
-        graph.py  state.py  llm.py  runtime.py
-        nodes/        intake, plan, access, academic, research, placement, finance,
-                      kpi, options_risks, report, validate, regenerate, gate, publish
-        skills/       plan_skill.py, format_decision_skill.py
-        specialists/  registry.py, nirf.py, naac.py, strategic.py
-      validation/     v1_sources.py ... v9_dedup.py, suite.py, fault_injection.py
-      governance/     versioning.py, rollback.py, audit.py
-      synthetic/      generator.py, traps.py
+      api/               routes (auth, runs, briefs, reports, kpis, data health, audit, admin, system, demo), schemas
+      core/              config, security, rbac, throttle, tracing guard, canonical form
+      domain/            enums, models, dataset
+      kpi/               engine, formulas (restricted AST), catalogue, definitions/ (placeholder YAML)
+      ingestion/         adapters (csv, read-only sql), validator, loader (ledger), manifest, reconcile, export
+      agents/            graph, connector protocol, llm and llm_http, fake_llm, prompts, compose, repair,
+                         runtime, frameworks; skills/ (plan, options); validation/ (checks V1 to V9, faults, suite)
+      mcp_connector/     server, client, tokens, run context
+      specialists/       framework packs (strategic, NIRF, NAAC) as YAML over one implementation
+      services/          store, connector, runs, users, archive, views, refresh, demo state, system config
+      governance/        service (decisions, versions, rollback), audit (hash chain)
+      db/                schema, the database stores, checkpoints, embeddings, real data, backup, urls
+      synthetic/         generator, traps
     tests/
-  frontend/           Next.js app
+  frontend/              Next.js app, Dockerfile, e2e/ (Playwright), rehearse/ (the demo walked)
   data/
-    sample/           synthetic, committed
-    real/             gitignored, never committed
-  scripts/            benchmark_parallel.py, verify_audit_chain.py, backup.sh
+    sample/              synthetic, committed
+    real/                gitignored, never committed
+  scripts/               demo, rehearse helpers, seed, ingest, acceptance, benchmark, evaluate_llm,
+                         db_check, db_roles, db_backup, create_user, smoke_clean_clone, export_openapi
 ```
 
-## 9. Deployment target
+## 9. Deployment
 
-Docker Compose with services `db`, `backend`, `connector`, `frontend`, and `llm` (or the host's Ollama or vLLM). Everything configured by env. Health checks on each service. A backup script for the database. A short runbook for the university IT cell. Production hardware is unknown, so size nothing until the open questions in docs/DECISIONS.md are answered.
+`compose.yaml` with services `db`, `migrate` (one-shot: schema, the app role, checkpoint tables, the synthetic seed), `backend` (database mode, MCP on) and `frontend`, with health checks, on 127.0.0.1 only. `make up` brings it all up; `make smoke` proves it from a fresh clone; `docs/RUNBOOK.md` is for the IT cell. The connector is not a separate service (D29), and the model server is the host's Ollama or the university's vLLM, configured by env. Not built: HTTPS in front, SSO.
 
 ## 10. Testing
 
-- Unit: KPI engine, every validation check, RBAC, formula safety.
-- Integration: the graph on FakeLLM with the synthetic dataset, including crash and resume.
-- Failure injection: inject a fake number, a dropped source, a provisional figure described as final, a missing risks list, a stale department hidden, a double-counted paper, a rounded miss, an approval bypass. Every one must be detected.
-- E2E: one Playwright flow, login as Principal, open draft, approve, see published version, roll back.
-- Benchmark: parallel versus sequential domain aggregation, reported with numbers.
+- Unit and integration (pytest): the KPI engine and formula safety, every validation check, RBAC and HOD scoping on what is sent, the graph on FakeLLM including crash and resume, the planner and drafter with scripted models, the MCP server, client and tokens over real HTTP, the swap test (identical KPIs through MCP and directly).
+- Failure injection: the eight faults, each caught by its intended check and repaired (`make acceptance` measures 94 trials over 18 plans).
+- Database (`make test-db`): migrations, the data round trip with every trap, people and grants, the audit role and trigger, concurrent writers, restarts, checkpoints, pgvector search, backups, real data. `make test-api-db` runs the API suite again in database mode.
+- Browser (Playwright): approval and rollback, fault injection, scoping, sign-in and lockout, keyboard use, an accessibility scan; `make rehearse` walks the nine demo steps at projector size.
+- Benchmark: parallel against one at a time (`make benchmark`). Model evaluation: `scripts/evaluate_llm.py`, results in `docs/evals`.
+- Containers: `make smoke`.
 
 ## 11. Security notes
 

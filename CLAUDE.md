@@ -39,7 +39,7 @@ Four domain agents (Academic, Research, Placement, Finance) aggregate department
 
 - Backend: Python 3.12, FastAPI, SQLAlchemy 2, Alembic, Pydantic v2
 - Orchestration: LangGraph with LangChain components (checkpointer, interrupt, Send fan-out)
-- Connector: MCP server (Python MCP SDK) with scoped tokens, consumed through langchain-mcp-adapters
+- Connector: MCP server (Python MCP SDK) with scoped tokens, mounted in the API (D29) and read through our own client behind the Connector protocol
 - Storage: PostgreSQL 16 with pgvector
 - LLM: local first (Ollama in dev, vLLM on a university GPU in production) behind one provider factory
 - Frontend: Next.js (App Router), TypeScript, Tailwind, shadcn/ui, ECharts, TanStack Query, SSE for run progress
