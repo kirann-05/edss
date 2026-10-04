@@ -21,9 +21,11 @@ from app.agents.validation.suite import validate
 from app.api.deps import AppState
 from app.core.config import Settings
 from app.core.throttle import LoginThrottle
+from app.db.archive_store import DbArchive
 from app.db.audit_store import DbAuditLog
 from app.db.checkpoints import checkpointer
 from app.db.dataset_store import load_dataset
+from app.db.embeddings import HashingEmbedder, OllamaEmbedder
 from app.db.state_store import DbSystemConfig, ScopeRows, UserRows
 from app.db.urls import app_url
 from app.db.work_store import GovernanceRows, RunRows
@@ -136,7 +138,7 @@ def build_state(
         system_config=system_config,
         governance=governance,
         runs=runs,
-        archive=seed_archive(store, FakeLLM("drafter")),  # fixture history, never a live model call
+        archive=_archive(settings, store, engine),
         data_source=data_source,
         clock=clock or date.today,
         drafter=drafter,
@@ -181,3 +183,19 @@ def _from_database(
         users.save_all()
     audit = DbAuditLog(engine)
     return store, scopes, DbSystemConfig(engine, settings.data_mode), users, audit, engine
+
+
+def _archive(settings: Settings, store: DataStore, engine: Engine | None):
+    """Prior briefs: fixture history built by the canned model, never a live model call. In
+    database mode they are embedded and searched by meaning with pgvector (Lab 4, L5h)."""
+    priors = seed_archive(store, FakeLLM("drafter"))
+    if engine is None:
+        return priors
+    embedder = (
+        OllamaEmbedder(settings.llm_base_url, settings.llm_embed_model)
+        if settings.llm_embed_model
+        else HashingEmbedder()
+    )
+    archive = DbArchive(engine, embedder, {d.key: d.name for d in store.definitions})
+    archive.index(priors.all())
+    return archive

@@ -353,8 +353,20 @@ brief_embedding = Table(
     "brief_embedding",
     metadata,
     Column("id", BigInteger, Identity(), primary_key=True),
-    Column("brief_id", ForeignKey("brief.id"), nullable=False),
+    # beyond the contract: a prior brief from before the system is not a row in `brief`, so the
+    # link is optional and every embedding has its own reference and record
+    Column("brief_id", ForeignKey("brief.id")),
+    Column("ref", Text, nullable=False),
     Column("kpi_key", String(32)),
+    Column("content", Text, nullable=False, server_default=""),  # exactly what was embedded
+    Column("record", JSONB, nullable=False, server_default="{}"),
     Column("embedding", VECTOR(EMBEDDING_DIMENSIONS), nullable=False),
     Column("tags", ARRAY(Text), nullable=False, server_default="{}"),
+    UniqueConstraint("ref", name="uq_brief_embedding_ref"),
+    Index(
+        "ix_brief_embedding_embedding",
+        "embedding",
+        postgresql_using="hnsw",
+        postgresql_ops={"embedding": "vector_cosine_ops"},
+    ),
 )
