@@ -5144,6 +5144,30 @@
         ]
       }
     },
+    "/api/demo/reset": {
+      "post": {
+        "description": "Start the demo again from its ready-made state. Everything made since is discarded.",
+        "operationId": "reset_api_demo_reset_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Reset Api Demo Reset Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Reset",
+        "tags": [
+          "demo"
+        ]
+      }
+    },
     "/api/domains/{domain}": {
       "get": {
         "operationId": "domain_view_api_domains__domain__get",

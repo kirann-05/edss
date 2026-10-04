@@ -11,6 +11,7 @@ from app.api.routes import (
     auth,
     briefs,
     data_health,
+    demo,
     health,
     kpis,
     reports,
@@ -21,6 +22,7 @@ from app.bootstrap import build_state
 from app.core.config import Settings, get_settings
 from app.core.tracing import enforce_no_external_tracing
 from app.governance.service import EditRejected, GovernanceError, PermissionDenied
+from app.services.demo_state import seed_demo_state
 from app.services.runs import RunError, RunNotFound
 from app.services.store import DataStore
 
@@ -50,14 +52,22 @@ def create_app(
         redoc_url=None,
         swagger_ui_oauth2_redirect_url=None,
     )
-    app.state.edss = build_state(
-        settings,
-        today or date.today(),
-        synchronous_runs=synchronous_runs,
-        store=store,
-        # a fixed day in tests, the real day otherwise, so a refresh judges freshness by today
-        clock=(lambda: today) if today else None,
-    )
+
+    def fresh_state():
+        state = build_state(
+            settings,
+            today or date.today(),
+            synchronous_runs=synchronous_runs,
+            store=store,
+            # a fixed day in tests, the real day otherwise, so a refresh judges freshness by today
+            clock=(lambda: today) if today else None,
+        )
+        if state.demo_login_enabled and settings.edss_demo_state:
+            seed_demo_state(state)
+        return state
+
+    app.state.edss_factory = fresh_state  # the demo reset builds a new state the same way
+    app.state.edss = fresh_state()
 
     app.include_router(health.router, prefix="/api")
     app.include_router(auth.router, prefix="/api")
@@ -69,6 +79,7 @@ def create_app(
     app.include_router(reports.router, prefix="/api")
     app.include_router(audit.router, prefix="/api")
     app.include_router(admin.router, prefix="/api")
+    app.include_router(demo.router, prefix="/api")
     register_error_handlers(app)
     return app
 

@@ -56,6 +56,8 @@ class Settings(BaseSettings):
     # Lets the login page offer one-click sign-in for the seeded demo users. Refused unless
     # data_mode is synthetic, however this flag is set.
     edss_demo_login: bool = False
+    # With demo sign-in on, start with one approved report and one draft waiting (make demo sets it)
+    edss_demo_state: bool = False
     # failed sign-ins for one email inside the window before that email is locked for a while
     login_max_failures: int = 5
     login_lockout_minutes: int = 15

@@ -10,6 +10,7 @@
 #   LLM_PROVIDER=ollama LLM_MODEL=qwen3.5:4b make demo      the local model instead of canned drafts
 #   DEMO_SKIP_BUILD=1 make demo                              reuse the last build
 #   DEMO_API_PORT=8100 DEMO_WEB_PORT=3100 make demo          other ports
+#   DEMO_STATE=0 make demo                                   start empty, with no report or draft ready
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -20,6 +21,7 @@ mkdir -p "$LOGS"
 
 export DATA_MODE=synthetic
 export EDSS_DEMO_LOGIN=true
+export EDSS_DEMO_STATE="$([ "${DEMO_STATE:-1}" = "0" ] && echo false || echo true)"
 export LLM_PROVIDER="${LLM_PROVIDER:-fake}"
 export SOURCE_LATENCY_MS="${SOURCE_LATENCY_MS:-700}"
 export EDSS_API_ORIGIN="http://127.0.0.1:$API_PORT"
@@ -85,7 +87,8 @@ cat <<BANNER
   Sign in with the role buttons: Registrar, Principal, Dean, Head of Department (CSE or CIVIL),
   Governing Council, Administrator. Synthetic data only.
   Drafts: ${LLM_PROVIDER}. Simulated source delay: ${SOURCE_LATENCY_MS} ms per domain agent.
-  Everything lives in memory: stopping the demo starts the next one fresh.
+  Ready-made: $([ "$EDSS_DEMO_STATE" = "true" ] && echo "one approved report (version 1) and one draft waiting for review" || echo "nothing, it starts empty").
+  Everything lives in memory. make demo-reset goes back to the start without stopping.
 
   Ctrl-C to stop. Logs in .demo/
 

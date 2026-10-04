@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -9,6 +9,7 @@ help:
 	@echo "make e2e        browser tests: approval flow, faults, scoping, sign-in, keyboard, axe"
 	@echo "make check-all  check, then e2e"
 	@echo "make demo       the live demo in one command (production build, demo settings)"
+	@echo "make demo-reset back to the start of the demo without stopping it"
 	@echo "make types      export the OpenAPI contract and regenerate frontend types"
 	@echo "make seed       write the synthetic sample to data/sample, read it back, check every planted trap"
 	@echo "make ingest DIR=data/real/2026-10   check a folder of exports and print the reconciliation report"
@@ -63,3 +64,7 @@ acceptance:
 # the live demo: production build, demo settings, one command. See scripts/demo.sh for options
 demo:
 	./scripts/demo.sh
+
+# back to the demo's ready-made start, without stopping it
+demo-reset:
+	./scripts/demo_reset.sh
