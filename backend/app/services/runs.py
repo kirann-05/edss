@@ -10,6 +10,7 @@ When the graph reaches the human gate it stops. The decision itself is made by t
 service, under its own rules, and only a successful decision resumes the graph.
 """
 
+import functools
 import threading
 from collections.abc import Callable, Iterator
 from contextlib import AbstractContextManager, contextmanager
@@ -82,6 +83,21 @@ class RunRecord:
     reads_direct: bool = False  # the demo's ready-made runs, seeded before the server can answer
 
 
+def _persists(method):
+    """Write the run through to the store once the change is made."""
+
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        result = method(self, *args, **kwargs)
+        record = result[0] if isinstance(result, tuple) else result
+        if not isinstance(record, RunRecord):
+            record = self.get(kwargs.get("run_id") or next(a for a in args if isinstance(a, str)))
+        self._persist(record)
+        return result
+
+    return wrapper
+
+
 class RunService:
     def __init__(
         self,
@@ -96,6 +112,7 @@ class RunService:
         synchronous: bool = False,
         open_reads: Callable[[RunRecord], AbstractContextManager[Connector]] | None = None,
         direct: Connector | None = None,
+        store: Any = None,
     ) -> None:
         """`open_reads` gives each run its own connector session, opened on the run's thread for
         as long as the graph works. Without it the graph reads through what it was built with."""
@@ -111,6 +128,22 @@ class RunService:
         self._direct = direct
         self._runs: dict[str, RunRecord] = {}
         self._lock = threading.RLock()
+        # with a store (app/db/work_store.py) runs are restored from it and every change is
+        # written through (decision D31). A run that was working when the server stopped is
+        # marked stopped, never shown as still running
+        self._store = store
+        if store is not None:
+            for record in store.load():
+                if record.status is RunStatus.RUNNING:
+                    record.status = RunStatus.FAILED
+                    record.error = "Stopped when the server restarted. Resume carries it on."
+                    store.save(record)
+                self._runs[record.id] = record
+
+    def _persist(self, record: RunRecord) -> None:
+        if self._store is not None:
+            with self._lock:  # one save at a time, each of the state as it is now
+                self._store.save(record)
 
     # --- lookups ----------------------------------------------------------------------------
     def get(self, run_id: str) -> RunRecord:
@@ -132,6 +165,7 @@ class RunService:
         return self.get(run_id).status in SETTLED
 
     # --- the conversation before the lock ---------------------------------------------------
+    @_persists
     def create(self, user: AppUser, request: str) -> RunRecord:
         request = request.strip()
         if len(request) < 3:
@@ -173,6 +207,7 @@ class RunService:
         )
         record.status = RunStatus.PLANNING
 
+    @_persists
     def answer(self, user: AppUser, run_id: str, answers: list[Clarification]) -> RunRecord:
         with self._lock:
             record = self._open(run_id, RunStatus.CLARIFYING)
@@ -193,6 +228,7 @@ class RunService:
         )
         return record
 
+    @_persists
     def skip_questions(self, user: AppUser, run_id: str) -> RunRecord:
         """Go on with what is known. Anything unanswered gets a plain default in the plan."""
         with self._lock:
@@ -201,6 +237,7 @@ class RunService:
         self._log_user(user, "run.skip_questions", record, {}, {"status": record.status.value})
         return record
 
+    @_persists
     def edit_plan(self, user: AppUser, run_id: str, patch: dict[str, Any]) -> RunRecord:
         with self._lock:
             record = self._open(run_id, RunStatus.PLANNING)
@@ -227,6 +264,7 @@ class RunService:
         )
         return record
 
+    @_persists
     def revise_plan(self, user: AppUser, run_id: str, feedback: str) -> tuple[RunRecord, list[str]]:
         if not feedback.strip():
             raise RunError("Say what you would like changed")
@@ -262,6 +300,7 @@ class RunService:
         return record
 
     # --- the lock and the run ---------------------------------------------------------------
+    @_persists
     def lock(
         self,
         user: AppUser,
@@ -300,6 +339,7 @@ class RunService:
         self._launch(record.id, initial_state(record.id, record.plan, user.email, faults))
         return record
 
+    @_persists
     def resume(self, user: AppUser, run_id: str) -> RunRecord:
         """Continue a run that stopped, from its last checkpoint (FR-13)."""
         with self._lock:
@@ -310,6 +350,7 @@ class RunService:
         self._launch(record.id, None)
         return record
 
+    @_persists
     def on_decision(self, run_id: str, status: str, version: int | None, by: str) -> None:
         """A person has decided, under the governance rules. Let the graph record it and finish."""
         with self._lock:
@@ -327,8 +368,14 @@ class RunService:
         ).start()
 
     def _execute(self, run_id: str, payload: Any) -> None:
-        config = run_config(run_id)
         record = self.get(run_id)
+        try:
+            self._run_graph(run_id, payload, record)
+        finally:
+            self._persist(record)
+
+    def _run_graph(self, run_id: str, payload: Any, record: RunRecord) -> None:
+        config = run_config(run_id)
         try:
             with self._reads(record):
                 result = self._graph.invoke(payload, config)

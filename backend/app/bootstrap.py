@@ -10,7 +10,7 @@ from collections.abc import Callable
 from datetime import date, timedelta
 
 from langgraph.checkpoint.memory import InMemorySaver
-from sqlalchemy import create_engine
+from sqlalchemy import Engine, create_engine
 
 from app.agents.connector import Connector
 from app.agents.fake_llm import FakeLLM
@@ -25,6 +25,7 @@ from app.db.audit_store import DbAuditLog
 from app.db.dataset_store import load_dataset
 from app.db.state_store import DbSystemConfig, ScopeRows, UserRows
 from app.db.urls import app_url
+from app.db.work_store import GovernanceRows, RunRows
 from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
 from app.mcp_connector.context import RunConnector, mcp_session
@@ -61,8 +62,9 @@ def build_state(
 
     data_source = DataSource(settings)
     audit, events = AuditLog(), RunEvents()
+    engine = None
     if settings.edss_database:
-        store, scopes, system_config, users, audit = _from_database(
+        store, scopes, system_config, users, audit, engine = _from_database(
             settings, today, store, seed_password
         )
     else:
@@ -77,7 +79,9 @@ def build_state(
     clarifier = get_chat_model("clarifier", llm, system_config)
 
     governance = GovernanceService(
-        audit, validator=lambda doc: validate(doc, context_for_document(doc, connector))
+        audit,
+        validator=lambda doc: validate(doc, context_for_document(doc, connector)),
+        store=GovernanceRows(engine) if engine else None,
     )
     runtime = Runtime(audit, events, budget_seconds=settings.run_budget_seconds)
     graph_connector: Connector = connector
@@ -108,6 +112,7 @@ def build_state(
         InMemorySaver(),
     )
     runs = RunService(
+        store=RunRows(engine) if engine else None,
         model=clarifier,
         graph=graph,
         catalogue=lambda: plan_catalogue_from(connector),
@@ -145,7 +150,7 @@ def build_state(
 
 def _from_database(
     settings: Settings, today: date, store: DataStore | None, seed_password: str | None
-) -> tuple[DataStore, ScopeRegistry, DbSystemConfig, UserStore, DbAuditLog]:
+) -> tuple[DataStore, ScopeRegistry, DbSystemConfig, UserStore, DbAuditLog, Engine]:
     """The data, the grants, the data mode and the people, from PostgreSQL (CHECKLIST L5d).
     A first start writes the seed people and the default grants there once. It connects as the
     app role, which cannot change or delete the audit log (migration 0004)."""
@@ -173,4 +178,5 @@ def _from_database(
     else:
         users = build_seed_users(seed_password, on_change=rows.save)
         users.save_all()
-    return store, scopes, DbSystemConfig(engine, settings.data_mode), users, DbAuditLog(engine)
+    audit = DbAuditLog(engine)
+    return store, scopes, DbSystemConfig(engine, settings.data_mode), users, audit, engine

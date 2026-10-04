@@ -1,3 +1,4 @@
+import os
 from datetime import date
 
 import pytest
@@ -5,7 +6,10 @@ from fastapi.testclient import TestClient
 from pydantic import SecretStr
 
 from app.core.config import Settings
+from app.db.dataset_store import save_dataset
+from app.kpi.loader import load_seed_definitions, load_seed_targets
 from app.main import create_app
+from app.synthetic.generator import generate
 
 REF = date(2026, 10, 1)
 PASSWORD = "test-password-not-a-real-credential"  # only ever used against synthetic seed users
@@ -33,8 +37,17 @@ def make_settings(**overrides) -> Settings:
 
 
 @pytest.fixture(scope="session")
-def app():
-    return create_app(make_settings(), today=REF)
+def app(request):
+    """With EDSS_API_ON_DATABASE=1 (make test-api-db) the same API tests run against PostgreSQL:
+    the shared app keeps its people, runs, briefs, versions and audit log there (L5f)."""
+    if os.environ.get("EDSS_API_ON_DATABASE") != "1":
+        return create_app(make_settings(), today=REF)
+    engine = request.getfixturevalue("migrated")
+    with engine.begin() as conn:
+        save_dataset(
+            conn, generate(reference_date=REF), load_seed_definitions(), load_seed_targets()
+        )
+    return create_app(make_settings(edss_database=True), today=REF)
 
 
 @pytest.fixture

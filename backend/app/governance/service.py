@@ -184,15 +184,31 @@ class GovernanceService:
         audit: AuditLog,
         validator: Callable[[BriefDocument], ValidationReport],
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
+        store: Any = None,
     ) -> None:
+        """With a `store` (app/db/work_store.py) briefs, versions and the pointer are restored
+        from it and every change is written through (decision D31)."""
         self._audit = audit
         self._validate = validator
         self._clock = clock
+        self._store = store
         self._briefs: dict[str, BriefRecord] = {}
         self._versions: list[BriefVersion] = []
         self._pointer: int | None = None
         self._rolled_back: set[int] = set()
         self._lock = threading.RLock()
+        if store is not None:
+            briefs, self._versions, self._pointer, self._rolled_back = store.load()
+            self._briefs = {b.id: b for b in briefs}
+
+    def _put(self, record: BriefRecord) -> None:
+        self._briefs[record.id] = record
+        if self._store is not None:
+            self._store.save_brief(record)
+
+    def _pointer_moved(self, by: str) -> None:
+        if self._store is not None:
+            self._store.save_pointer(self._pointer, set(self._rolled_back), by)
 
     # --- drafts -----------------------------------------------------------------------------
     def create_draft(
@@ -223,7 +239,7 @@ class GovernanceService:
                 created_by=created_by,
                 history=history,
             )
-            self._briefs[record.id] = record
+            self._put(record)
         self._audit.append(
             actor_type="system",
             actor_id="governance",
@@ -309,7 +325,7 @@ class GovernanceService:
             raise GovernanceError("a reason is required")
         status = BriefStatus.OVERRIDDEN if decision.kind == "override" else BriefStatus.RETURNED
         closed = brief.model_copy(update={"status": status, "decision_reason": reason})
-        self._briefs[brief.id] = closed
+        self._put(closed)
         self._audit.append(
             actor_type="user",
             actor_id=actor.email,
@@ -392,7 +408,7 @@ class GovernanceService:
                 "version": version.version,
             }
         )
-        self._briefs[brief.id] = published
+        self._put(published)
         self._release(version)
         self._audit.append(
             actor_type="user",
@@ -412,6 +428,9 @@ class GovernanceService:
         """Private on purpose. Only an approval in _approve can reach it."""
         self._versions.append(version)
         self._pointer = version.version
+        if self._store is not None:
+            self._store.save_version(version)
+        self._pointer_moved(version.approved_by_id)
         self._audit.append(
             actor_type="system",
             actor_id="governance",
@@ -456,12 +475,11 @@ class GovernanceService:
             for number in replaced:
                 self._rolled_back.add(number)
                 brief = self._briefs[self._versions[number - 1].brief_id]
-                self._briefs[brief.id] = brief.model_copy(
-                    update={"status": BriefStatus.ROLLED_BACK}
-                )
+                self._put(brief.model_copy(update={"status": BriefStatus.ROLLED_BACK}))
             self._rolled_back.discard(to_version)
             previous = self._pointer
             self._pointer = to_version
+            self._pointer_moved(actor.email)
             self._audit.append(
                 actor_type="user",
                 actor_id=actor.email,

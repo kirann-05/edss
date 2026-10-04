@@ -285,6 +285,9 @@ brief_version = Table(
     Column("edits", JSONB, nullable=False, server_default="[]"),
     Column("reason", Text),
     Column("created_at", _now(), nullable=False),
+    # beyond the contract: whether a rollback took it out of service, and the whole record
+    Column("rolled_back", Boolean, nullable=False, server_default="false"),
+    Column("detail", JSONB, nullable=False, server_default="{}"),
     UniqueConstraint("version", name="uq_brief_version_version"),
 )
 

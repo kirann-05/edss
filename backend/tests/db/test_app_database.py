@@ -131,3 +131,48 @@ def test_the_apps_audit_rows_are_in_the_table_and_survive_a_restart(database):
         r.actor_id == "council@edss.test"
         for r in restarted.state.edss.audit.rows(action="auth.demo_login")
     )
+
+
+def test_runs_briefs_versions_and_a_rollback_survive_a_restart(database):
+    from app.governance.service import Decision
+    from app.services.demo_state import DRAFT_REQUEST, REPORT_REQUEST, _draft
+
+    _, app = start()
+    state = app.state.edss
+    principal = state.users.by_email("principal@edss.test")
+    # an earlier test revoked finance, and that stuck, as it should
+    from app.domain.enums import Domain
+
+    state.scopes.grant(Domain.FINANCE, "registrar@edss.test", REF)
+    first = _draft(state, REPORT_REQUEST)
+    second = _draft(state, DRAFT_REQUEST)
+    v1 = state.governance.decide(
+        first.brief_id, principal, Decision(kind="approve")
+    ).version.version
+    v2 = state.governance.decide(
+        second.brief_id, principal, Decision(kind="approve")
+    ).version.version
+    state.governance.rollback(principal, v1, "Restoring the first for the test")
+
+    _, restarted = start()
+    again = restarted.state.edss
+    assert again.runs.get(first.id).brief_id == first.brief_id
+    assert again.governance.get(second.brief_id).status.value == "rolled_back"
+    assert [v.version for v in again.governance.versions()][-2:] == [v1, v2]
+    assert again.governance.state_of(v1) == "current"
+    assert again.governance.state_of(v2) == "rolled_back"
+    assert again.audit.verify().ok
+
+
+def test_a_run_working_when_the_server_stopped_is_shown_as_stopped(database):
+    _, app = start()
+    with database.begin() as conn:
+        conn.execute(
+            text(
+                "update run set status = 'running', detail = jsonb_set(detail, '{status}', '\"running\"') "
+                "where id = (select id from run order by created_at desc limit 1)"
+            )
+        )
+    _, restarted = start()
+    stopped = [r for r in restarted.state.edss.runs.runs() if r.error and "restarted" in r.error]
+    assert stopped and all(r.status.value == "failed" for r in stopped)

@@ -15,6 +15,12 @@ def reset(request: Request, state: State, user: AppUser = Resetter) -> dict:
     """Start the demo again from its ready-made state. Everything made since is discarded."""
     if not state.demo_login_enabled:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Not found")
+    if state.settings.edss_database:
+        # the audit log there is append-only, so a reset cannot take the demo back to its start
+        raise HTTPException(
+            status.HTTP_409_CONFLICT,
+            "The demo reset works with in-memory data only. With the database, everything stays.",
+        )
     fresh = request.app.state.edss_factory()
     fresh.audit.append(
         actor_type="user", actor_id=user.email, action="demo.reset",

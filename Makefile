@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down db-check db-migrate test-db seed-db
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down db-check db-migrate test-db test-api-db seed-db
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -87,6 +87,10 @@ db-migrate:
 # the tests that need PostgreSQL, failing rather than skipping if it is not running
 test-db:
 	cd backend && EDSS_REQUIRE_DB=1 uv run pytest -q -m db
+
+# the whole API test suite again, with the shared app keeping everything in PostgreSQL
+test-api-db:
+	cd backend && EDSS_REQUIRE_DB=1 EDSS_API_ON_DATABASE=1 uv run pytest -q tests/api
 
 # parallel against one-at-a-time domain agents, written to docs/benchmark.md
 benchmark:

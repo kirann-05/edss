@@ -10,6 +10,8 @@ from app.domain.enums import Domain
 from app.services.connector import InMemoryConnector, ScopeRegistry
 from app.services.store import DataStore
 
+pytest_plugins = ["tests.database_fixtures"]  # scratch PostgreSQL, used by tests/db and tests/api
+
 REF = date(2026, 10, 1)
 DOMAINS = (Domain.ACADEMIC, Domain.RESEARCH, Domain.PLACEMENT, Domain.FINANCE)
 

@@ -81,7 +81,8 @@ def create_app(
             clock=(lambda: today) if today else None,
             run_tokens=tokens,
         )
-        if state.demo_login_enabled and settings.edss_demo_state:
+        # a database that already holds runs keeps them: the ready-made state is seeded once
+        if state.demo_login_enabled and settings.edss_demo_state and not state.runs.runs():
             seed_demo_state(state)
         return state
 
