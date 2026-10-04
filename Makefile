@@ -82,7 +82,7 @@ db-check:
 
 # bring the database schema up to date (alembic, as the owner)
 db-migrate:
-	cd backend && uv run alembic upgrade head
+	cd backend && uv run alembic upgrade head && uv run python ../scripts/db_roles.py
 
 # the tests that need PostgreSQL, failing rather than skipping if it is not running
 test-db:

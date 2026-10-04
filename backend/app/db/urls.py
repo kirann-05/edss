@@ -34,3 +34,11 @@ def owner_url(database: str | None = None) -> URL:
         port=int(env_value("EDSS_DB_PORT") or 5432),
         database=database or env_value("EDSS_DB_NAME") or "edss",
     )
+
+
+def app_url(database: str | None = None) -> URL:
+    """The narrower role the app runs as: it cannot change or delete the audit log (L5e)."""
+    password = env_value("EDSS_DB_APP_PASSWORD")
+    if not password:
+        raise RuntimeError("EDSS_DB_APP_PASSWORD is not set in .env: run make db-migrate")
+    return owner_url(database).set(username="edss_app", password=password)

@@ -113,3 +113,21 @@ def test_refreshing_from_the_page_is_refused_plainly_in_database_mode(database):
     client, _ = start()
     response = signed_in(client, "registrar@edss.test").post("/api/data/refresh")
     assert response.status_code == 409 and "make seed-db" in response.json()["detail"]
+
+
+def test_the_apps_audit_rows_are_in_the_table_and_survive_a_restart(database):
+    client, _ = start()
+    signed_in(client, "council@edss.test")
+    with database.connect() as conn:
+        found = conn.execute(
+            text(
+                "select count(*) from audit_log where action = 'auth.demo_login' and actor_id = 'council@edss.test'"
+            )
+        ).scalar_one()
+    assert found >= 1
+    _, restarted = start()
+    assert restarted.state.edss.audit.verify().ok
+    assert any(
+        r.actor_id == "council@edss.test"
+        for r in restarted.state.edss.audit.rows(action="auth.demo_login")
+    )

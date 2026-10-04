@@ -21,9 +21,10 @@ from app.agents.validation.suite import validate
 from app.api.deps import AppState
 from app.core.config import Settings
 from app.core.throttle import LoginThrottle
+from app.db.audit_store import DbAuditLog
 from app.db.dataset_store import load_dataset
 from app.db.state_store import DbSystemConfig, ScopeRows, UserRows
-from app.db.urls import owner_url
+from app.db.urls import app_url
 from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
 from app.mcp_connector.context import RunConnector, mcp_session
@@ -61,7 +62,9 @@ def build_state(
     data_source = DataSource(settings)
     audit, events = AuditLog(), RunEvents()
     if settings.edss_database:
-        store, scopes, system_config, users = _from_database(settings, today, store, seed_password)
+        store, scopes, system_config, users, audit = _from_database(
+            settings, today, store, seed_password
+        )
     else:
         store = store or data_source.load(today)
         scopes = ScopeRegistry(today)
@@ -142,10 +145,11 @@ def build_state(
 
 def _from_database(
     settings: Settings, today: date, store: DataStore | None, seed_password: str | None
-) -> tuple[DataStore, ScopeRegistry, DbSystemConfig, UserStore]:
+) -> tuple[DataStore, ScopeRegistry, DbSystemConfig, UserStore, DbAuditLog]:
     """The data, the grants, the data mode and the people, from PostgreSQL (CHECKLIST L5d).
-    A first start writes the seed people and the default grants there once."""
-    engine = create_engine(owner_url(), pool_pre_ping=True)  # the narrower app role is L5e
+    A first start writes the seed people and the default grants there once. It connects as the
+    app role, which cannot change or delete the audit log (migration 0004)."""
+    engine = create_engine(app_url(), pool_pre_ping=True)
     if store is None:
         with engine.connect() as conn:
             try:
@@ -169,4 +173,4 @@ def _from_database(
     else:
         users = build_seed_users(seed_password, on_change=rows.save)
         users.save_all()
-    return store, scopes, DbSystemConfig(engine, settings.data_mode), users
+    return store, scopes, DbSystemConfig(engine, settings.data_mode), users, DbAuditLog(engine)
