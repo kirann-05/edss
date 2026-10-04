@@ -40,6 +40,7 @@ Backend (`backend/pyproject.toml`, pinned by `uv.lock`)
 | argon2-cffi | Password hashing. Argon2 is the current recommendation, passlib is unmaintained |
 | pyjwt | Signed session tokens in an httpOnly cookie |
 | langgraph | The agent graph: parallel fan-out with `Send`, `interrupt` for the human gate, checkpointing for resume, a bounded back-edge for repair (decision D2, Labs 6 to 8). It pulls in `langchain-core`, `langsmith`, `langgraph-checkpoint`, `langgraph-prebuilt` and `langgraph-sdk`. `langsmith` is the tracing client, which rule 7 forbids using, so `enforce_no_external_tracing` pins tracing off at start and a test asserts it stays off during a run |
+| mcp | The connector as an MCP server and client (rule 6, Lab 5). The official Python SDK. It pulls in `opentelemetry-api` only, with no SDK or exporter, so its spans go nowhere; a test asserts no OpenTelemetry SDK is installed (rule 7) |
 
 Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 
@@ -76,7 +77,7 @@ What is not ours is in **docs/PENDING.md**. What is still ours is split into sma
 
 Facts for the next session, found by checking and not from memory:
 
-- `mcp` is at 1.30.0 on PyPI and `langchain-mcp-adapters` at 0.3.2. In 1.30 `mcp.server.FastMCP` exists and `ClientSession` is top level. A README summary fetched from the web described a different, newer API (`MCPServer`, `Client`), so read the installed package, not a summary.
+- `mcp` installed at 2.3.0 (2026-10-04), not the 1.30 noted earlier. In 2.x `FastMCP` is gone (importing it raises with a pointer to the migration guide): the server is `mcp.server.MCPServer` and the client `mcp.Client`, which takes a URL (streamable HTTP), a stdio command, or a server object for in-process tests. A tool returning a model gets an output schema; a list or an optional arrives as `{"result": ...}`, a single model as itself. An unknown tool or a bad argument comes back as `is_error`, not an exception. Auth is a `TokenVerifier` returning an `AccessToken`, read inside a tool with `get_access_token()`
 - Ollama needs `reasoning_effort: "none"` for qwen3.5, or it spends its budget thinking and returns nothing. It is sent by default (`LLM_REASONING_EFFORT`).
 - GitHub Actions: pin by commit SHA. `astral-sh/setup-uv` publishes no floating major tag.
 - zsh does not split unquoted variables in a shell loop. Use `bash -c` for loops over "a b" pairs.

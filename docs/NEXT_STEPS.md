@@ -13,6 +13,7 @@ Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded 
 - D7 viva notes pass (2026-10-04): every answer can be said out loud and carries the measured numbers, the weakest part is answered plainly (the planner on a small model), stale answers fixed, and questions added on the canned demo, the fairness of the evaluation and what the university still owes.
 - L1 `make acceptance` (2026-10-04): 18 plans, 94 fault trials, all caught by the intended check and repaired, 18 of 18 clean drafts pass, and a stubborn model is stopped at 3 attempts. Writes `docs/acceptance-report.md` in about 2 seconds. Fails when a fault slips through (checked by making one undetectable).
 - L2 `make benchmark` (2026-10-04): the same graph in parallel and with LangGraph's max_concurrency at 1, at four simulated delays, with the events confirming the agents overlapped or did not. About 3.9 to 4.0 times faster in parallel, nothing to win at zero delay. `docs/benchmark.md`.
+- L4a and L4b MCP server (2026-10-04): `mcp` 2.3 read from the installed package (notes in PROGRESS.md), and every connector read served as a read-only tool. A client test calls each one and gets exactly what the in-memory connector gives, decimals included. Where it runs is D29, provisional.
 
 ## How to work through it
 
