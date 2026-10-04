@@ -11,6 +11,7 @@ from alembic.config import Config
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 
+from app.agents.llm import DataModeViolation
 from app.core.security import hash_password
 from app.db.checkpoints import setup as setup_checkpoints
 from app.db.dataset_store import save_dataset
@@ -237,3 +238,11 @@ def test_in_real_mode_the_archive_fills_only_with_reports_published_here(real_ap
     assert done.brief_id, done.error
     version = state.governance.decide(done.brief_id, approver, Decision(kind="approve")).version
     assert [p.id for p in state.archive.all()] == [f"report-v{version.version}"]
+
+
+def test_real_mode_will_not_start_with_a_hosted_model(real_app, real_db):
+    with pytest.raises(DataModeViolation, match="never allowed when data mode is real"):
+        start(
+            real_db[1], data_mode="real", llm_provider="hosted", allow_hosted_llm=True,
+            llm_base_url="https://models.example.com/v1",
+        )  # fmt: skip

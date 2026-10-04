@@ -35,6 +35,23 @@ def start(**overrides):
     return TestClient(app), app
 
 
+def saved(database, run_id, status="awaiting_review"):
+    """Wait until the run's own last save has reached the table, so a test edit is not overwritten."""
+    import time
+
+    for _ in range(100):
+        with database.connect() as conn:
+            if (
+                conn.execute(
+                    text("select status from run where id = :id"), {"id": run_id}
+                ).scalar_one()
+                == status
+            ):
+                return
+        time.sleep(0.05)
+    raise AssertionError(f"{run_id} never reached {status} in the table")
+
+
 def signed_in(client, email):
     assert client.post("/api/auth/demo-login", json={"email": email}).status_code == 200
     return client
@@ -166,6 +183,8 @@ def test_runs_briefs_versions_and_a_rollback_survive_a_restart(database):
 
 def test_a_run_working_when_the_server_stopped_is_shown_as_stopped(database):
     _, app = start()
+    for run in app.state.edss.runs.runs():
+        saved(database, run.id, run.status.value)
     with database.begin() as conn:
         conn.execute(
             text(
@@ -202,6 +221,7 @@ def test_a_run_stopped_by_a_restart_resumes_from_its_last_step(database):
 
     _, app = start()
     run = _draft(app.state.edss, DRAFT_REQUEST)
+    saved(database, run.id)
     with database.begin() as conn:
         conn.execute(
             text(
