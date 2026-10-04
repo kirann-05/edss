@@ -34,6 +34,7 @@ def server(connector):
 
 def call(server, name: str, arguments: dict[str, Any] | None = None, *, wrapped: bool = True):
     """A tool's structured result. Lists and optionals arrive as {"result": ...}, a model as itself."""
+
     async def go():
         async with Client(server) as client:
             return await client.call_tool(name, arguments or {})
