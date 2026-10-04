@@ -10,7 +10,7 @@ PNG for any slide tool, SVG to scale without blur (PowerPoint and Keynote take S
 
 | File | Use it for |
 | --- | --- |
-| `docs/diagrams/1-system.png` | How the parts fit. Dashed boxes are planned, not built |
+| `docs/diagrams/1-system.png` | How the parts fit |
 | `docs/diagrams/2-agent-graph.png` | One run, step by step, and which steps use the language model |
 | `docs/diagrams/3-numbers-by-reference.png` | Why the model cannot get a number wrong |
 | `docs/diagrams/4-governance.png` | Approval, versions, rollback and the audit chain |

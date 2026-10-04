@@ -22,12 +22,12 @@
   <rect width="1600" height="900" fill="#ffffff"/>
 
   <text class="title" x="48" y="66">How EDSS is put together</text>
-  <text class="sub" x="48" y="104">Data flows right along the top, decisions come back along the bottom. Dashed boxes are planned, not built.</text>
+  <text class="sub" x="48" y="104">Data flows right along the top, decisions come back along the bottom. Everything here is built and tested.</text>
 
   <!-- top row: the data path -->
   <rect class="box" x="48" y="150" width="250" height="300" rx="12"/>
   <text class="h" x="68" y="190">University systems</text>
-  <text class="t" x="68" y="232">CSV and Excel exports</text>
+  <text class="t" x="68" y="232">CSV exports</text>
   <text class="t" x="68" y="262">Read-only SQL views</text>
   <text class="s" x="68" y="320">Today: synthetic data,</text>
   <text class="s" x="68" y="346">8 departments,</text>
@@ -47,10 +47,10 @@
   <text class="t" x="652" y="232">Every figure keeps</text>
   <text class="t" x="652" y="260">its source, as-of</text>
   <text class="t" x="652" y="288">date and status</text>
-  <text class="s" x="652" y="330">In memory today</text>
-  <rect class="planned" x="652" y="352" width="210" height="76" rx="8"/>
+  <text class="s" x="652" y="330">Append-only batches</text>
+  <rect class="box" x="652" y="352" width="210" height="76" rx="8"/>
   <text class="t" x="668" y="384">PostgreSQL</text>
-  <text class="s" x="668" y="410">planned</text>
+  <text class="s" x="668" y="410">with pgvector</text>
 
   <rect class="box" x="924" y="150" width="250" height="300" rx="12"/>
   <text class="h" x="944" y="190">Connector</text>
