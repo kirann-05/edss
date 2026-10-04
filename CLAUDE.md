@@ -71,7 +71,7 @@ Kiran develops on an Apple Silicon MacBook Air (no NVIDIA GPU). Check before ass
 - `make check` lint, typecheck and unit tests, run before every commit. `make e2e` the browser tests, `make check-all` both
 - `make types` exports the API contract and regenerates the frontend types. Run it after any change to `backend/app/api/schemas.py`
 - `make seed` writes the synthetic sample to `data/sample`, reads it back through the real ingestion path and checks every planted trap
-- `make ingest DIR=data/real/<folder>` checks a folder of exports and prints the reconciliation report
+- `make ingest DIR=data/real/<folder>` checks a folder of exports and prints the reconciliation report; with `ARGS=--db` it also loads them into PostgreSQL (the first real load switches the database to real mode). `make create-user ARGS=...` adds a person, such as the first real administrator
 - `uv run python ../scripts/evaluate_llm.py` (from `backend`) measures a model, results go to `docs/evals`
 - `make demo` the live demo in one command, starting with one approved report and one draft waiting. `make demo-reset` goes back to that start without stopping. `make rehearse` walks docs/DEMO.md in a browser
 - `make acceptance` injects every fault into every plan it applies to and writes `docs/acceptance-report.md`. It fails if any fault slips through. `make benchmark` times parallel against one-at-a-time domain agents into `docs/benchmark.md`

@@ -44,6 +44,40 @@ class Ledger:
         self.facts: list[MetricFact] = []
         self.publications: list[Publication] = []
         self._known_content: dict[tuple[str, str, str], int] = {}
+        # the highest ids already used elsewhere, so a ledger restored from the database never
+        # gives a new record an id that an approved brief already cites (D26)
+        self._floor = {"source": 0, "batch": 0, "fact": 0, "publication": 0}
+
+    @classmethod
+    def restored(
+        cls,
+        departments: Sequence[Department],
+        today: date,
+        data_mode: str,
+        *,
+        sources: Sequence[SourceSystem],
+        batches: Sequence[IngestBatch],
+        facts: Sequence[MetricFact],
+        publications: Sequence[Publication],
+        floors: dict[str, int],
+    ) -> "Ledger":
+        """A ledger that carries on from what the database holds: unchanged files add nothing,
+        changed files become new batches, and new ids start above every id already used."""
+        ledger = cls(departments, today, data_mode)
+        ledger.sources = list(sources)
+        ledger.batches = list(batches)
+        ledger.facts = list(facts)
+        ledger.publications = list(publications)
+        ledger._floor.update(floors)
+        names = {s.id: s.name for s in sources}
+        publication_batches = {p.batch_id for p in publications}
+        for batch in batches:
+            label = "publications" if batch.id in publication_batches else batch.domain.value
+            ledger._known_content[(names[batch.source_system_id], label, batch.checksum)] = batch.id
+        return ledger
+
+    def _next(self, kind: str, used: Sequence) -> int:
+        return max([self._floor[kind], *(item.id for item in used)]) + 1
 
     # --- sources --------------------------------------------------------------------------------
     def source(self, name: str, owner_office: str, kind: str) -> SourceSystem:
@@ -51,7 +85,7 @@ class Ledger:
             if existing.name == name:
                 return existing
         created = SourceSystem(
-            id=len(self.sources) + 1, name=name, owner_office=owner_office, kind=kind
+            id=self._next("source", self.sources), name=name, owner_office=owner_office, kind=kind
         )
         self.sources.append(created)
         return created
@@ -61,7 +95,7 @@ class Ledger:
         checksum: str, ingested_by: str,
     ) -> IngestBatch:  # fmt: skip
         batch = IngestBatch(
-            id=len(self.batches) + 1,
+            id=self._next("batch", self.batches),
             source_system_id=source.id,
             data_mode=self.data_mode,
             domain=domain,
@@ -95,7 +129,7 @@ class Ledger:
         batch = self._batch(
             source, domain, len(accepted), len(rejects), adapter, checksum, ingested_by
         )
-        start = len(self.facts)
+        start = self._next("fact", self.facts) - 1
         for offset, row in enumerate(accepted, start=1):
             self.facts.append(
                 MetricFact(
@@ -144,7 +178,7 @@ class Ledger:
                 ref=held.ref, dedup_key=held.dedup_key, title=held.title, venue=held.venue,
                 period_year=held.period_year, indexing=held.indexing, status=status, dept_codes=credit,
             )  # fmt: skip
-        start = len(self.publications)
+        start = self._next("publication", self.publications) - 1
         for offset, row in enumerate(merged.values(), start=1):
             self.publications.append(
                 Publication(

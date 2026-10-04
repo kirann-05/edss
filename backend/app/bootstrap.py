@@ -29,11 +29,12 @@ from app.db.embeddings import HashingEmbedder, OllamaEmbedder
 from app.db.state_store import DbSystemConfig, ScopeRows, UserRows
 from app.db.urls import app_url
 from app.db.work_store import GovernanceRows, RunRows
+from app.domain.enums import Role
 from app.governance.audit import AuditLog
 from app.governance.service import GovernanceService
 from app.mcp_connector.context import RunConnector, mcp_session
 from app.mcp_connector.tokens import RunTokens
-from app.services.archive import seed_archive
+from app.services.archive import Archive, seed_archive
 from app.services.connector import InMemoryConnector, ScopeRegistry
 from app.services.refresh import DataSource
 from app.services.runs import RunRecord, RunService, plan_catalogue_from
@@ -57,6 +58,8 @@ def build_state(
     `run_tokens` is the MCP server's token store, needed when runs read over MCP."""
     jwt_secret = settings.jwt_secret.get_secret_value() if settings.jwt_secret else None
     if jwt_secret is None:
+        if settings.data_mode == "real":
+            raise RuntimeError("DATA_MODE=real needs JWT_SECRET, a long random value in .env")
         # Synthetic mode only: a throwaway secret, so sessions end when the server restarts
         jwt_secret = secrets.token_urlsafe(32)
     seed_password = (
@@ -158,13 +161,22 @@ def _from_database(
     A first start writes the seed people and the default grants there once. It connects as the
     app role, which cannot change or delete the audit log (migration 0004)."""
     engine = create_engine(app_url(), pool_pre_ping=True)
+    config = DbSystemConfig(engine, settings.data_mode)
+    mode = config.data_mode()
+    if mode != settings.data_mode:
+        # the stored mode and the environment must agree, so every check keyed on either is right
+        raise RuntimeError(
+            f"the database is in {mode} mode but DATA_MODE={settings.data_mode}. Set DATA_MODE={mode}"
+            + (" (real data has been loaded)" if mode == "real" else "")
+        )
     if store is None:
         with engine.connect() as conn:
             try:
-                dataset, definitions, targets = load_dataset(conn)
-            except KeyError:
+                dataset, definitions, targets = load_dataset(conn, mode)
+            except LookupError:
                 raise RuntimeError(
-                    "the database holds no data yet: run make db-migrate and make seed-db"
+                    "the database holds no data yet: make db-migrate, then make seed-db for the "
+                    "synthetic sample or make ingest DIR=... MODE=real ARGS=--db for real data"
                 ) from None
         store = DataStore(dataset, definitions, targets, today, settings.stale_after_days)
 
@@ -176,18 +188,33 @@ def _from_database(
 
     rows = UserRows(engine)
     people, hashes, versions = rows.load()
+    # real data opens only to real people: the synthetic personas were switched off at the first
+    # real load, and nobody is seeded here
+    admins = [
+        p
+        for p in people
+        if p.role is Role.ADMIN and p.active and not p.email.endswith("@edss.test")
+    ]
+    if mode == "real" and not admins:
+        raise RuntimeError(
+            "real mode needs an administrator: make create-user ARGS='--role admin ...'"
+        )
     if people:
         users = UserStore(people, "", stored_hashes=hashes, versions=versions, on_change=rows.save)
     else:
         users = build_seed_users(seed_password, on_change=rows.save)
         users.save_all()
     audit = DbAuditLog(engine)
-    return store, scopes, DbSystemConfig(engine, settings.data_mode), users, audit, engine
+    return store, scopes, config, users, audit, engine
 
 
 def _archive(settings: Settings, store: DataStore, engine: Engine | None):
     """Prior briefs: fixture history built by the canned model, never a live model call. In
     database mode they are embedded and searched by meaning with pgvector (Lab 4, L5h)."""
+    if settings.data_mode == "real":
+        # the seeded priors are invented history built from the data by the canned model. Beside
+        # real figures they would read as real decisions, so with real data the archive starts empty
+        return Archive([])
     priors = seed_archive(store, FakeLLM("drafter"))
     if engine is None:
         return priors

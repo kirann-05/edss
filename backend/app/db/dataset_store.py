@@ -5,7 +5,9 @@ same `Dataset`, `KpiDefinition` and `KpiTarget` objects from here as from the fi
 written as they are, because approved briefs cite them, and they must never change (D26).
 
 Replacing what is there is allowed only for synthetic data, and refused if any real batch exists:
-real data is never wiped silently (docs/DATA_CONTRACT.md section 6).
+real data is never wiped silently (docs/DATA_CONTRACT.md section 6). Real data is only ever added,
+by app/db/real_data.py. Both are kept side by side and read by mode: once the mode is real, the
+synthetic records are still there, archived, but nothing reads them.
 """
 
 from datetime import UTC, date, datetime, time
@@ -39,6 +41,48 @@ def _midnight(day: date) -> datetime:
     return datetime.combine(day, time(), tzinfo=UTC)
 
 
+def real_data_present(conn: Connection) -> bool:
+    return bool(
+        conn.execute(
+            select(func.count())
+            .select_from(t.ingest_batch)
+            .where(t.ingest_batch.c.data_mode == "real")
+        ).scalar_one()
+    )
+
+
+def insert_records(conn: Connection, sources, batches, facts, publications) -> None:
+    """Add records with the ids they already have. Never updates or removes one."""
+    if sources:
+        conn.execute(insert(t.source_system), [s.model_dump() for s in sources])
+    if not batches:
+        return
+    conn.execute(
+        insert(t.ingest_batch),
+        [
+            {**b.model_dump(exclude={"finished_at"}), "started_at": _midnight(b.finished_at),
+             "finished_at": _midnight(b.finished_at)}
+            for b in batches
+        ],
+    )  # fmt: skip
+    now = datetime.now(UTC)
+    if facts:
+        conn.execute(insert(t.metric_fact), [{**f.model_dump(), "recorded_at": now} for f in facts])
+    if publications:
+        conn.execute(
+            insert(t.research_publication),
+            [p.model_dump(exclude={"dept_codes"}) for p in publications],
+        )
+        conn.execute(
+            insert(t.publication_author_dept),
+            [
+                {"publication_id": p.id, "dept_code": code, "position": i}
+                for p in publications
+                for i, code in enumerate(p.dept_codes)
+            ],
+        )
+
+
 def save_dataset(
     conn: Connection,
     dataset: Dataset,
@@ -58,36 +102,15 @@ def save_dataset(
             text(
                 "insert into department (code, name, school, active, position) "
                 "values (:code, :name, :school, :active, :position) on conflict (code) do update "
-                "set name = :name, school = :school, active = :active, position = :position"
+                "set position = :position, name = case when department.real_position is null "
+                "then :name else department.name end, school = case when department.real_position "
+                "is null then :school else department.school end"
             ),
             {**d.model_dump(), "position": position},
         )
-    conn.execute(insert(t.source_system), [s.model_dump() for s in dataset.source_systems])
-    conn.execute(
-        insert(t.ingest_batch),
-        [
-            {**b.model_dump(exclude={"finished_at"}), "started_at": _midnight(b.finished_at),
-             "finished_at": _midnight(b.finished_at)}
-            for b in dataset.batches
-        ],
-    )  # fmt: skip
-    now = datetime.now(UTC)
-    conn.execute(
-        insert(t.metric_fact), [{**f.model_dump(), "recorded_at": now} for f in dataset.facts]
+    insert_records(
+        conn, dataset.source_systems, dataset.batches, dataset.facts, dataset.publications
     )
-    if dataset.publications:
-        conn.execute(
-            insert(t.research_publication),
-            [p.model_dump(exclude={"dept_codes"}) for p in dataset.publications],
-        )
-        conn.execute(
-            insert(t.publication_author_dept),
-            [
-                {"publication_id": p.id, "dept_code": code, "position": i}
-                for p in dataset.publications
-                for i, code in enumerate(p.dept_codes)
-            ],
-        )
     conn.execute(
         insert(t.kpi_definition),
         [{**d.model_dump(), "domain_tags": [x.value for x in d.domain_tags]} for d in definitions],
@@ -114,11 +137,15 @@ def save_dataset(
         )
 
 
-def load_dataset(conn: Connection) -> tuple[Dataset, list[KpiDefinition], list[KpiTarget]]:
+def load_dataset(
+    conn: Connection, mode: str = "synthetic"
+) -> tuple[Dataset, list[KpiDefinition], list[KpiTarget]]:
+    """The records of one data mode, with that mode's list of departments."""
     config = dict(conn.execute(select(t.system_config.c.key, t.system_config.c.value)).all())
+    order = t.department.c.real_position if mode == "real" else t.department.c.position
     departments = tuple(
         Department(code=r.code, name=r.name, school=r.school, active=r.active)
-        for r in conn.execute(select(t.department).order_by(t.department.c.position))
+        for r in conn.execute(select(t.department).where(order.is_not(None)).order_by(order))
     )
     sources = tuple(
         SourceSystem(id=r.id, name=r.name, owner_office=r.owner_office, kind=r.kind)
@@ -131,8 +158,11 @@ def load_dataset(conn: Connection) -> tuple[Dataset, list[KpiDefinition], list[K
             file_ref=r.file_ref, checksum=r.checksum, ingested_by=r.ingested_by,
             finished_at=r.finished_at.astimezone(UTC).date(),
         )
-        for r in conn.execute(select(t.ingest_batch).order_by(t.ingest_batch.c.id))
+        for r in conn.execute(
+            select(t.ingest_batch).where(t.ingest_batch.c.data_mode == mode).order_by(t.ingest_batch.c.id)
+        )
     )  # fmt: skip
+    in_mode = {b.id for b in batches}
     facts = tuple(
         MetricFact(
             id=r.id, batch_id=r.batch_id, domain=Domain(r.domain), metric_key=r.metric_key,
@@ -141,7 +171,9 @@ def load_dataset(conn: Connection) -> tuple[Dataset, list[KpiDefinition], list[K
             status=FactStatus(r.status), as_of=r.as_of, source_system_id=r.source_system_id,
             source_ref=r.source_ref,
         )
-        for r in conn.execute(select(t.metric_fact).order_by(t.metric_fact.c.id))
+        for r in conn.execute(
+            select(t.metric_fact).where(t.metric_fact.c.batch_id.in_(in_mode or {-1})).order_by(t.metric_fact.c.id)
+        )
     )  # fmt: skip
     credits: dict[int, list[str]] = {}
     for r in conn.execute(
@@ -156,12 +188,24 @@ def load_dataset(conn: Connection) -> tuple[Dataset, list[KpiDefinition], list[K
             period_year=r.period_year, indexing=r.indexing, status=FactStatus(r.status),
             dept_codes=tuple(credits.get(r.id, ())),
         )
-        for r in conn.execute(select(t.research_publication).order_by(t.research_publication.c.id))
+        for r in conn.execute(
+            select(t.research_publication)
+            .where(t.research_publication.c.batch_id.in_(in_mode or {-1}))
+            .order_by(t.research_publication.c.id)
+        )
     )  # fmt: skip
     periods = tuple(sorted({f.period_year for f in facts} | {p.period_year for p in publications}))
+    if not periods:
+        raise LookupError(f"the database holds no {mode} records yet")
+    if mode == "real":
+        # as fresh as the latest reading, and the latest period the university has sent
+        reference, current = max(b.finished_at for b in batches), periods[-1]
+    else:
+        reference = date.fromisoformat(config["dataset_reference_date"])
+        current = config.get("current_period") or periods[-1]
     dataset = Dataset(
-        reference_date=date.fromisoformat(config["dataset_reference_date"]),
-        current_period=config.get("current_period") or periods[-1],
+        reference_date=reference,
+        current_period=current,
         periods=periods,
         departments=departments,
         source_systems=sources,

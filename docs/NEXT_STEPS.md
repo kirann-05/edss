@@ -30,6 +30,7 @@ Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded 
 - L6a and L6b containers (2026-10-05): a backend image (Python 3.12 slim, uv, non-root, 704 MB) and a web image (Next.js standalone, non-root, 404 MB, no tests inside). `make up` brings up the database, a one-shot migrate-and-seed, the API in database mode and the web app, all healthy in about 15 seconds once built, on 127.0.0.1 only. A run through the web app in the containers reaches review with 25 audited MCP reads and the chain verifying. Next.js telemetry is now off everywhere.
 - L6c backup and restore (2026-10-05): `make db-backup` dumps the database into `backups/` (owner-only, never committed), restores it at once into a throwaway database, compares every table with the live one and verifies the audit chain, in under 2 seconds. A test also shows that a row changed in a restored copy, with the trigger switched off by the owner, is caught by the chain check at that row.
 - L6d runbook and clean-clone smoke test (2026-10-05): `docs/RUNBOOK.md` for the IT cell (install, configure, start and stop, backups with a cron line, restore, upgrade, what is not ready, troubleshooting). `make smoke` clones the committed repository, writes fresh secrets, brings everything up in 28 seconds under its own project, runs a brief to review, checks the chain, backs up and restores, and takes it all down. It found one real problem on its first run: a fresh clone had no `frontend/public`, now fixed. The in-place restore in the runbook was run by hand and the chain verified afterwards.
+- R1 real data into the database (2026-10-05): `make ingest DIR=... ARGS=--db` adds a checked folder append-only, with new ids above every id already used. The first real load switches the database to real mode, keeps the synthetic records archived and unread, switches the synthetic personas off, and is audited. `make create-user` makes the first real administrator. The app in real mode needs EDSS_DATABASE, a matching stored mode, JWT_SECRET and a real administrator; it reads only real records and the manifest's departments, has no demo sign-in and no invented prior briefs. 9 tests on a database of their own, and the command line run by hand.
 
 ## How to work through it
 
@@ -85,11 +86,7 @@ Ask the professor today, it decides whether this track matters: *"Is each lab al
 | --- | --- | --- | --- |
 | R1 | Load a folder of the university's exports into PostgreSQL, append-only, and let the app start with `DATA_MODE=real` | A real-mode folder goes in, the reconciliation report is shown, the app starts in real mode with only those records, and a hosted model is refused | 90 min |
 
-Choices for Kiran before R1, with their costs:
-
-1. **What happens to the synthetic data when the first real batch arrives.** (a) Kept in the same tables and excluded once the mode is real, as the data contract says: nothing is lost, but every query must filter by mode. (b) Real data in a separate database: the cleanest separation, but two databases to back up. (c) The synthetic data deleted on the switch: simplest, but it breaks "nothing is wiped silently" unless a person confirms it.
-2. **Departments.** The real list will differ from the eight synthetic ones. (a) The real manifest's list becomes the list, synthetic departments kept but hidden. (b) A department list maintained by an administrator in the app, the manifest checked against it.
-3. **Who may load data.** (a) The command line only, on the server, by the IT cell. (b) An upload page for the Registrar, which needs file-upload hardening and its own audit trail.
+Kiran chose the recommended options on 2026-10-05: D32, D33, D34.
 
 ## A calendar that fits
 

@@ -109,11 +109,24 @@ make up
 
 `make up` rebuilds the images and the `migrate` container brings the schema up to date before the API starts.
 
-## 9. Not ready yet
+## 9. Real data
+
+Only after the data specification is signed and the exports have been checked with their data owners. Keep the folder under `data/real/`, which git never sees.
+
+1. **Check the folder** (nothing is written): `make ingest DIR=data/real/2026-10`. It reads `manifest.yml` and every file it names, and prints the reconciliation report: what was accepted, every refused row with its reason, and where there is no record at all. Fix refused rows at the source.
+2. **Back up**: `make db-backup`.
+3. **Load it**: `make ingest DIR=data/real/2026-10 ARGS=--db`. What was accepted is added to the database; a file that has not changed adds nothing, a changed file becomes a new batch, and earlier records are never changed, so a record an approved brief cites stays as it was. The departments in the manifest become the list the app shows.
+4. **The first real load switches the database to real mode**, once. From then the synthetic records are kept but never read, and the synthetic personas are switched off. It is a row in the audit log.
+5. **Create the first administrator**: `make create-user ARGS="--email it.admin@<university> --name 'IT Administrator' --role admin"`. It asks for the password twice and never shows it.
+6. **Start in real mode**: set `DATA_MODE=real` in `.env` (with `JWT_SECRET` and `EDSS_DEMO_LOGIN=false`), then `make up`. The app refuses to start if `DATA_MODE` and the database disagree, if `JWT_SECRET` is missing, or if there is no real administrator. In real mode the language model must be on this machine or a university server; a hosted model is refused.
+
+Inside the containers, steps 3 and 5 are the same scripts: `docker compose run --rm -v "$PWD/data/real:/data/real:ro" migrate python /edss/scripts/ingest.py /data/real/2026-10 --mode real --db`, and `docker compose run --rm migrate python /edss/scripts/create_user.py --email ... --name ... --role admin`.
+
+## 10. Not ready yet
 
 Said plainly, so nobody finds out the hard way:
 
-- **Real data.** `DATA_MODE=real` refuses to start. Loading the university's exports into the database is the next piece of work, after the data specification is signed (docs/PENDING.md).
+- **Official KPI definitions.** Every KPI is a placeholder until IQAC supplies the approved list, so statuses are not official, even on real data.
 - **Single sign-on.** People sign in with a password, or the demo buttons with synthetic data. University SSO is not built.
 - **HTTPS.** The web app speaks plain HTTP on 127.0.0.1. Serving it to others needs a reverse proxy with the university's certificate in front of it, and `COOKIE_SECURE=true`.
 - **One API process.** The backend is not built to run as several copies behind a load balancer (decision D31).
@@ -126,4 +139,6 @@ Said plainly, so nobody finds out the hard way:
 | `Port 3000 is in use` or `address already in use` | Set `EDSS_WEB_PORT` to a free port in `.env` |
 | The `migrate` container exits with an error | `docker compose --profile app logs migrate`. A seed that reports a lost trap means the data changed, which must be looked into before use |
 | Backend unhealthy | `docker compose --profile app logs backend`. A database it cannot reach usually means a wrong `EDSS_DB_APP_PASSWORD` |
+| `the database is in real mode but DATA_MODE=synthetic` | Real data has been loaded: set `DATA_MODE=real` in `.env` |
+| `real mode needs an administrator` | Step 5 of Real data |
 | "Backup FAILED ITS CHECK" | Do not rely on that file. Keep the previous good backup and report the message |

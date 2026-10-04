@@ -49,7 +49,8 @@ services:
     build: { context: ., dockerfile: backend/Dockerfile }
     image: edss-backend:local
     environment:
-      DATA_MODE: synthetic
+      # set DATA_MODE=real in .env once real data is loaded (docs/RUNBOOK.md, Real data)
+      DATA_MODE: ${DATA_MODE:-synthetic}
       EDSS_DATABASE: "true"
       EDSS_DB_HOST: db
       EDSS_DB_APP_PASSWORD: ${EDSS_DB_APP_PASSWORD:?run make db-migrate once}

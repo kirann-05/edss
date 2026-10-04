@@ -78,7 +78,10 @@ department = Table(
     Column("name", Text, nullable=False),
     Column("school", Text, nullable=False, server_default=""),
     Column("active", Boolean, nullable=False, server_default="true"),
-    Column("position", Integer, nullable=False, server_default="0"),  # the order offices list them
+    # each list's own order, and whether the department is on it: the synthetic sample's list,
+    # and the list in the university's own manifest. Once the mode is real, only the second shows
+    Column("position", Integer),
+    Column("real_position", Integer),
 )
 
 source_system = Table(

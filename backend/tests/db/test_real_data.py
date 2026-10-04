@@ -1,0 +1,208 @@
+"""R1: the university's exports loaded into PostgreSQL, and the app in real mode (D32 to D34)."""
+
+import csv
+import secrets
+from datetime import date
+from pathlib import Path
+
+import pytest
+from alembic import command
+from alembic.config import Config
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine, text
+
+from app.core.security import hash_password
+from app.db.checkpoints import setup as setup_checkpoints
+from app.db.dataset_store import save_dataset
+from app.db.real_data import load_real_folder
+from app.db.urls import owner_url
+from app.ingestion.export import export_dataset
+from app.kpi.loader import load_seed_definitions, load_seed_targets
+from app.main import create_app
+from app.synthetic.generator import generate
+from tests.api.conftest import PASSWORD, REF, make_settings
+from tests.database_fixtures import ALEMBIC_INI, _admin
+
+pytestmark = pytest.mark.db
+TODAY = date(2026, 10, 3)
+
+
+@pytest.fixture(scope="module")
+def real_db(scratch_db):
+    """A database of its own: going real is one-way, so it must not touch the shared one."""
+    name = f"edss_real_{secrets.token_hex(4)}"
+    with _admin() as admin:
+        admin.execute(f'create database "{name}"')
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setenv("EDSS_DB_NAME", name)
+        command.upgrade(Config(ALEMBIC_INI), "head")
+        setup_checkpoints(owner_url(database=name))
+        engine = create_engine(owner_url(database=name))
+        with engine.begin() as conn:  # the synthetic sample first, as a server would have it
+            save_dataset(
+                conn, generate(reference_date=REF), load_seed_definitions(), load_seed_targets()
+            )
+        yield engine, name
+        engine.dispose()
+    with _admin() as admin:
+        admin.execute(f'drop database "{name}" with (force)')
+
+
+@pytest.fixture(scope="module")
+def folder(tmp_path_factory) -> Path:
+    """The university's folder: here the sample's files, with BIOTECH left off the department list."""
+    path = tmp_path_factory.mktemp("real")
+    export_dataset(generate(reference_date=REF), path)
+    rows = list(csv.DictReader((path / "departments.csv").open()))
+    with (path / "departments.csv").open("w", newline="") as out:
+        writer = csv.DictWriter(out, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(r for r in rows if r["code"] != "BIOTECH")
+    return path
+
+
+@pytest.fixture(scope="module")
+def first_load(real_db, folder):
+    engine, _ = real_db
+    with engine.connect() as conn:
+        before = conn.execute(text("select coalesce(max(id), 0) from metric_fact")).scalar_one()
+        synthetic = conn.execute(
+            text("select count(*) from ingest_batch where data_mode = 'synthetic'")
+        ).scalar_one()
+    return load_real_folder(engine, folder, TODAY, "test"), before, synthetic
+
+
+def test_the_first_load_adds_the_records_and_switches_the_database_to_real(first_load, real_db):
+    load, before, synthetic = first_load
+    engine, _ = real_db
+    assert load.switched_to_real and load.written["facts"] > 0
+    assert load.outcome.rejected > 0  # every BIOTECH row is refused, with its reason, not added
+    with engine.connect() as conn:
+        assert (
+            conn.execute(
+                text("select value from system_config where key = 'data_mode'")
+            ).scalar_one()
+            == "real"
+        )
+        real_min = conn.execute(
+            text(
+                "select min(f.id) from metric_fact f join ingest_batch b on b.id = f.batch_id where b.data_mode = 'real'"
+            )
+        ).scalar_one()
+        kept = conn.execute(
+            text("select count(*) from ingest_batch where data_mode = 'synthetic'")
+        ).scalar_one()
+        actions = conn.execute(text("select action from audit_log order by id")).scalars().all()
+    assert real_min > before  # new ids above every id already used
+    assert kept == synthetic  # the synthetic records are archived, not deleted
+    assert {"data.load_real", "data.mode_real"} <= set(actions)
+
+
+def test_the_synthetic_personas_are_switched_off(first_load, real_db):
+    engine, _ = real_db
+    with engine.connect() as conn:
+        active = conn.execute(
+            text("select count(*) from app_user where email like '%@edss.test' and active")
+        ).scalar_one()
+    assert active == 0
+
+
+def test_loading_the_same_folder_again_adds_nothing(first_load, real_db, folder):
+    again = load_real_folder(real_db[0], folder, TODAY, "test")
+    assert again.written["batches"] == 0 and again.written["facts"] == 0
+    assert not again.switched_to_real
+
+
+def test_a_changed_file_is_a_new_batch_and_the_old_records_stay(first_load, real_db, folder):
+    engine, _ = real_db
+    with engine.connect() as conn:
+        held = conn.execute(text("select count(*) from metric_fact")).scalar_one()
+    placement = folder / "placement.csv"
+    lines = placement.read_text().splitlines()
+    header, first, *rest = lines
+    cells = first.split(",")
+    columns = header.split(",")
+    cells[columns.index("value")] = str(float(cells[columns.index("value")]) + 1)
+    placement.write_text("\n".join([header, ",".join(cells), *rest]) + "\n")
+    changed = load_real_folder(engine, folder, TODAY, "test")
+    assert changed.written["batches"] == 1
+    with engine.connect() as conn:
+        now = conn.execute(text("select count(*) from metric_fact")).scalar_one()
+    assert now == held + changed.written["facts"]  # added, never replaced
+
+
+def start(name, **overrides):
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setenv("EDSS_DB_NAME", name)
+        return create_app(make_settings(edss_database=True, **overrides), today=TODAY)
+
+
+def test_the_app_refuses_to_start_when_the_env_and_the_database_disagree(first_load, real_db):
+    with pytest.raises(RuntimeError, match="Set DATA_MODE=real"):
+        start(real_db[1])
+
+
+def test_real_mode_needs_a_real_administrator(first_load, real_db):
+    with pytest.raises(RuntimeError, match="needs an administrator"):
+        start(real_db[1], data_mode="real")
+
+
+@pytest.fixture(scope="module")
+def real_app(first_load, real_db):
+    engine, name = real_db
+    with engine.begin() as conn:
+        conn.execute(
+            text(
+                "insert into app_user (id, email, name, role, active, password_hash, session_version) "
+                "values (100, 'it.admin@university.example', 'IT Administrator', 'admin', true, :h, 0)"
+            ),
+            {"h": hash_password("a-long-admin-password")},
+        )
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setenv("EDSS_DB_NAME", name)
+        app = create_app(
+            make_settings(edss_database=True, data_mode="real", edss_demo_login=True), today=TODAY
+        )
+        yield app, TestClient(app)
+
+
+def test_in_real_mode_only_the_real_records_and_the_real_department_list_are_read(
+    real_app, real_db
+):
+    app, _ = real_app
+    store = app.state.edss.store
+    assert "BIOTECH" not in [d.code for d in store.dataset.departments]
+    assert all(b.data_mode == "real" for b in store.dataset.batches)
+    with real_db[0].connect() as conn:
+        real_facts = conn.execute(
+            text(
+                "select count(*) from metric_fact f join ingest_batch b on b.id = f.batch_id where b.data_mode = 'real'"
+            )
+        ).scalar_one()
+    assert len(store.dataset.facts) == real_facts
+
+
+def test_in_real_mode_no_demo_sign_in_no_synthetic_persona_and_no_invented_history(real_app):
+    app, client = real_app
+    assert (
+        client.post("/api/auth/demo-login", json={"email": "registrar@edss.test"}).status_code
+        == 404
+    )
+    assert (
+        client.post(
+            "/api/auth/login",
+            json={"email": "registrar@edss.test", "password": PASSWORD},
+        ).status_code
+        == 401
+    )
+    assert app.state.edss.archive.all() == []
+    assert app.state.edss.system_config.data_mode() == "real"
+
+
+def test_the_real_administrator_can_sign_in(real_app):
+    _, client = real_app
+    signed = client.post(
+        "/api/auth/login",
+        json={"email": "it.admin@university.example", "password": "a-long-admin-password"},
+    )
+    assert signed.status_code == 200, signed.text

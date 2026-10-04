@@ -85,10 +85,19 @@ def main() -> int:
 def into_database(dataset) -> list[str]:
     from sqlalchemy import create_engine  # noqa: PLC0415  only --db needs the database
 
-    from app.db.dataset_store import load_dataset, save_dataset  # noqa: PLC0415
+    from app.db.dataset_store import (  # noqa: PLC0415
+        load_dataset,
+        real_data_present,  # noqa: PLC0415
+        save_dataset,
+    )
     from app.db.urls import owner_url  # noqa: PLC0415
 
     engine = create_engine(owner_url())
+    with engine.connect() as conn:
+        if real_data_present(conn):
+            print("\nThe database holds real data, so the synthetic sample was not written there.")
+            engine.dispose()
+            return []
     with engine.begin() as conn:
         save_dataset(conn, dataset, load_seed_definitions(), load_seed_targets())
     with engine.connect() as conn:

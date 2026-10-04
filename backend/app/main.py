@@ -42,10 +42,9 @@ def create_app(
     settings = settings or get_settings()
     enforce_no_external_tracing()
 
-    if settings.data_mode == "real":
-        # Only the synthetic in-memory services exist so far. They must never stand in for real
-        # data (CHECKLIST F3 builds the Postgres services this mode needs).
-        raise RuntimeError("DATA_MODE=real needs the Postgres services, which are not built yet")
+    if settings.data_mode == "real" and not settings.edss_database:
+        # the in-memory services must never stand in for real data: it lives in PostgreSQL only
+        raise RuntimeError("DATA_MODE=real keeps the data in PostgreSQL: set EDSS_DATABASE=true")
 
     # API docs describe every endpoint, so they are a development aid only. No public docs, no
     # ReDoc and no OAuth redirect page, which nothing here uses.

@@ -142,7 +142,7 @@ class TestDemoLogin:
 
 class TestStartup:
     def test_real_data_mode_refuses_to_start_on_the_synthetic_services(self):
-        with pytest.raises(RuntimeError, match="Postgres"):
+        with pytest.raises(RuntimeError, match="PostgreSQL"):
             create_app(make_settings(data_mode="real"), today=REF)
 
     def test_without_a_seed_password_only_demo_sign_in_can_open_an_account(self):

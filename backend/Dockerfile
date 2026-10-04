@@ -14,7 +14,7 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY backend/app ./app
 COPY backend/migrations ./migrations
 COPY backend/alembic.ini ./
-COPY scripts/seed.py scripts/db_roles.py /edss/scripts/
+COPY scripts/seed.py scripts/db_roles.py scripts/ingest.py scripts/create_user.py /edss/scripts/
 RUN uv sync --frozen --no-dev && useradd --system --uid 10001 edss && chown -R edss /edss
 USER edss
 ENV PATH=/opt/venv/bin:$PATH

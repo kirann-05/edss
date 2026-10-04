@@ -26,13 +26,6 @@ Not needed any more: a hosted model key. The local model runs through Ollama.
 
 ## 2. Still ours, not done
 
-These need no one else. They are split into small parts, with the demo first, in [NEXT_STEPS.md](NEXT_STEPS.md). This table is the same work seen by lab.
+Nothing. Everything above that needed no one else is built and tested (2026-10-05): the acceptance suite and benchmark, the framework packs, the MCP connector with per-run tokens, PostgreSQL with pgvector and an append-only audit log, checkpoints that survive a restart, the containers with backups and a runbook, the hybrid planner, and loading real data into the database (docs/RUNBOOK.md, Real data). What is done, part by part, is in [NEXT_STEPS.md](NEXT_STEPS.md).
 
-| Item | Lab | Why it matters | Rough size |
-| --- | --- | --- | --- |
-| Acceptance suite as a gate with measured detection and repair rates, and the parallel versus sequential benchmark | 8, 11 | The definition of done asks for measured numbers, not claims. `make acceptance` is a stub that fails loudly. | An hour |
-| Framework specialists (NIRF, NAAC, strategic) as a registry of packs over one implementation | 13 | A lab deliverable. Real definitions wait for item 2 above, so these carry the placeholder marker. | An hour |
-| MCP connector server with scoped tokens, and agents reading through it | 5 | On the build plan's never-cut list. Today agents read through an in-process interface with the same shape, enforced by a test. | Two to three hours |
-| PostgreSQL with pgvector: models, migrations, services, append-only audit role, checkpointer, similar-brief retrieval, data mode read from the database | 4, 6 | Persistence across restarts and rule 7's "checked against the database". Today services are in memory, and real data mode refuses to start for that reason. | The largest item, a few hours |
-| Docker compose production profile, backup script, runbook for the IT cell, clean-machine smoke test | 14 | Deployment. | Two hours |
-| The hybrid planner (rules first, model second, ask where they disagree) | 1 | The measured weak spot of the small model, see `docs/evals`. | An hour, optional |
+Known gaps that are not scheduled, said plainly: no SSO and no HTTPS in front (both wait on item 5 and 9 above); published briefs are not yet added to the similar-briefs archive; in database mode, refreshing data from the web page and the demo reset are refused; the API runs as one process.

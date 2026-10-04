@@ -1,7 +1,7 @@
 # Next.js sends anonymous usage telemetry by default. Nothing leaves this machine (rule 7)
 export NEXT_TELEMETRY_DISABLED := 1
 
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down up down smoke db-check db-backup db-migrate test-db test-api-db seed-db
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down up down smoke db-check db-backup create-user db-migrate test-db test-api-db seed-db
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -63,7 +63,7 @@ seed-db:
 
 ingest:
 	@test -n "$(DIR)" || (echo "usage: make ingest DIR=data/real/2026-10" && exit 2)
-	cd backend && uv run python ../scripts/ingest.py ../$(DIR) --mode $${MODE:-real}
+	cd backend && uv run python ../scripts/ingest.py ../$(DIR) --mode $${MODE:-real} $(ARGS)
 
 # Not built yet. It fails loudly instead of pretending to succeed.
 acceptance:
@@ -81,6 +81,10 @@ db-down:
 	docker compose --env-file .env stop db
 
 # the whole system in containers: database, migrations and seed, API, web app (compose.yaml)
+# add a person to the database, asking for the password (the first real administrator)
+create-user:
+	cd backend && uv run python ../scripts/create_user.py $(ARGS)
+
 # a backup of the database into backups/, restored at once into a throwaway database to prove it
 db-backup:
 	cd backend && uv run python ../scripts/db_backup.py
