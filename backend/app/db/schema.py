@@ -69,6 +69,7 @@ department = Table(
     Column("name", Text, nullable=False),
     Column("school", Text, nullable=False, server_default=""),
     Column("active", Boolean, nullable=False, server_default="true"),
+    Column("position", Integer, nullable=False, server_default="0"),  # the order offices list them
 )
 
 source_system = Table(
@@ -86,6 +87,7 @@ ingest_batch = Table(
     metadata,
     Column("id", Integer, Identity(), primary_key=True),
     Column("source_system_id", ForeignKey("source_system.id"), nullable=False),
+    Column("domain", String(16), nullable=False),  # beyond the contract: a batch is one area's file
     Column("data_mode", String(16), nullable=False),
     Column("started_at", _now(), nullable=False),
     Column("finished_at", _now()),
@@ -95,6 +97,7 @@ ingest_batch = Table(
     Column("checksum", String(64), nullable=False),
     Column("ingested_by", Text, nullable=False),
     CheckConstraint("data_mode in ('synthetic', 'real')", name="data_mode"),
+    CheckConstraint(f"domain in ({DOMAINS})", name="domain"),
 )
 
 metric_fact = Table(
@@ -149,6 +152,7 @@ publication_author_dept = Table(
     metadata,
     Column("publication_id", ForeignKey("research_publication.id"), nullable=False),
     Column("dept_code", ForeignKey("department.code"), nullable=False),
+    Column("position", Integer, nullable=False, server_default="0"),  # credits keep their order
     PrimaryKeyConstraint("publication_id", "dept_code"),
 )
 

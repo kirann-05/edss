@@ -33,6 +33,11 @@ def main() -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument("--out", type=Path, default=Path("../data/sample"))
+    parser.add_argument(
+        "--db",
+        action="store_true",
+        help="also replace the synthetic data in PostgreSQL with it, read it back and check again",
+    )
     args = parser.parse_args()
 
     dataset = generate(reference_date=REFERENCE)
@@ -68,11 +73,38 @@ def main() -> int:
         if not trap.ok:
             problems.append(f"trap {trap.id} was lost")
 
+    if args.db and not problems:
+        problems += into_database(ledger.dataset())
     if problems:
         print("\nSEED FAILED:\n  " + "\n  ".join(problems), file=sys.stderr)
         return 1
     print("\nSeed passed.")
     return 0
+
+
+def into_database(dataset) -> list[str]:
+    from sqlalchemy import create_engine  # noqa: PLC0415  only --db needs the database
+
+    from app.db.dataset_store import load_dataset, save_dataset  # noqa: PLC0415
+    from app.db.urls import owner_url  # noqa: PLC0415
+
+    engine = create_engine(owner_url())
+    with engine.begin() as conn:
+        save_dataset(conn, dataset, load_seed_definitions(), load_seed_targets())
+    with engine.connect() as conn:
+        back, definitions, targets = load_dataset(conn)
+    engine.dispose()
+    problems = (
+        [] if back == dataset else ["what came back from the database differs from what went in"]
+    )
+    print(
+        f"\nWrote it to PostgreSQL and read it back: {len(back.facts)} facts, {len(back.publications)} publications"
+    )
+    for trap in observe(DataStore(back, definitions, targets, REFERENCE, 90)):
+        print(f"  {'ok  ' if trap.ok else 'LOST'} {trap.id:3} found in the database")
+        if not trap.ok:
+            problems.append(f"trap {trap.id} was lost in the database")
+    return problems
 
 
 if __name__ == "__main__":

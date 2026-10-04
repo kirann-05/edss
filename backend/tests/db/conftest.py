@@ -5,6 +5,9 @@ import secrets
 
 import psycopg
 import pytest
+from alembic import command
+from alembic.config import Config
+from sqlalchemy import create_engine
 
 from app.db.urls import owner_url
 
@@ -32,3 +35,21 @@ def scratch_db():
     finally:
         admin.execute(f'drop database "{name}" with (force)')
         admin.close()
+
+
+ALEMBIC_INI = os.path.join(os.path.dirname(__file__), "..", "..", "alembic.ini")
+
+
+@pytest.fixture(scope="session")
+def migrated(scratch_db, monkeypatch_module):
+    monkeypatch_module.setenv("EDSS_DB_NAME", scratch_db)
+    command.upgrade(Config(ALEMBIC_INI), "head")
+    engine = create_engine(owner_url(database=scratch_db))
+    yield engine
+    engine.dispose()
+
+
+@pytest.fixture(scope="session")
+def monkeypatch_module():
+    with pytest.MonkeyPatch.context() as patch:
+        yield patch

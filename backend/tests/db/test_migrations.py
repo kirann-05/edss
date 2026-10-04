@@ -6,29 +6,13 @@ from decimal import Decimal
 import pytest
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import create_engine, inspect, text
+from sqlalchemy import inspect, text
 from sqlalchemy.exc import IntegrityError
 
 from app.db.schema import metadata
-from app.db.urls import owner_url
 
 pytestmark = pytest.mark.db
 ALEMBIC_INI = os.path.join(os.path.dirname(__file__), "..", "..", "alembic.ini")
-
-
-@pytest.fixture(scope="module")
-def migrated(scratch_db, monkeypatch_module):
-    monkeypatch_module.setenv("EDSS_DB_NAME", scratch_db)
-    command.upgrade(Config(ALEMBIC_INI), "head")
-    engine = create_engine(owner_url(database=scratch_db))
-    yield engine
-    engine.dispose()
-
-
-@pytest.fixture(scope="module")
-def monkeypatch_module():
-    with pytest.MonkeyPatch.context() as patch:
-        yield patch
 
 
 def test_every_table_in_the_contract_exists(migrated):
@@ -57,23 +41,28 @@ def test_a_figure_keeps_every_digit(migrated):
 
 def test_a_status_the_contract_does_not_have_is_refused(migrated):
     with pytest.raises(IntegrityError, match="ck_metric_fact_status"), migrated.begin() as conn:
-        conn.execute(text("insert into department (code, name) values ('CSE', 'Computer Science')"))
         conn.execute(
-            text("insert into source_system (name, owner_office, kind) values ('s', 'o', 'csv')")
+            text("insert into department (code, name) values ('ZZZ', 'A test department')")
         )
+        source = conn.execute(
+            text(
+                "insert into source_system (name, owner_office, kind) values ('test', 'o', 'csv') returning id"
+            )
+        ).scalar_one()
+        batch = conn.execute(
+            text(
+                "insert into ingest_batch (source_system_id, domain, data_mode, started_at, file_ref, checksum, "
+                "ingested_by) values (:s, 'placement', 'synthetic', now(), 'f', 'c', 'test') returning id"
+            ),
+            {"s": source},
+        ).scalar_one()
         conn.execute(
             text(
-                "insert into ingest_batch (source_system_id, data_mode, started_at, file_ref, checksum, ingested_by) "
-                "values (1, 'synthetic', now(), 'f', 'c', 'test')"
-            )
-        )
-        conn.execute(
-            text(
-                "insert into metric_fact (batch_id, domain, metric_key, dept_code, period_year, period_sub, value, unit, "
-                "status, as_of, source_system_id, source_ref, recorded_at) "
-                "values (1, 'placement', 'plc.registered', 'CSE', '2025-26', 'AY', 1, 'students', 'approved', "
-                "current_date, 1, 'r', now())"
-            )
+                "insert into metric_fact (batch_id, domain, metric_key, dept_code, period_year, period_sub, value, "
+                "unit, status, as_of, source_system_id, source_ref, recorded_at) values (:b, 'placement', "
+                "'plc.registered', 'ZZZ', '2025-26', 'AY', 1, 'students', 'approved', current_date, :s, 'r', now())"
+            ),
+            {"b": batch, "s": source},
         )
 
 

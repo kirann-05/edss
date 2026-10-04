@@ -1,4 +1,4 @@
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down db-check db-migrate test-db
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down db-check db-migrate test-db seed-db
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -53,6 +53,10 @@ types:
 
 seed:
 	cd backend && uv run python ../scripts/seed.py
+
+# the same, and into PostgreSQL too (make db-up and make db-migrate first)
+seed-db:
+	cd backend && uv run python ../scripts/seed.py --db
 
 ingest:
 	@test -n "$(DIR)" || (echo "usage: make ingest DIR=data/real/2026-10" && exit 2)
