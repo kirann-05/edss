@@ -23,3 +23,7 @@ dist/
 pgdata/
 *.log
 .DS_Store
+
+# the demo's build and logs
+.demo/
+.next-demo/

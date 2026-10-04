@@ -2,6 +2,10 @@
 
 Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded thing is the live demo, and steps 1 to 9 of the demo script already work and are tested. So the order is: make the demo safe to run, then everything else only if there is time.
 
+## Done
+
+- D1 `make demo` (2026-10-04): ready in about 10 seconds including the production build, Ctrl-C stops both servers. Tested through a terminal with a real Ctrl-C.
+
 ## How to work through it
 
 - **One part per sitting, or two small ones.** Start a fresh session each time. Read only this file and `PROGRESS.md`. That keeps each session short, which is what keeps the usage low.

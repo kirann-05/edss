@@ -8,6 +8,7 @@ help:
 	@echo "make check      lint, typecheck, tests (run before every commit)"
 	@echo "make e2e        browser tests: approval flow, faults, scoping, sign-in, keyboard, axe"
 	@echo "make check-all  check, then e2e"
+	@echo "make demo       the live demo in one command (production build, demo settings)"
 	@echo "make types      export the OpenAPI contract and regenerate frontend types"
 	@echo "make seed       write the synthetic sample to data/sample, read it back, check every planted trap"
 	@echo "make ingest DIR=data/real/2026-10   check a folder of exports and print the reconciliation report"
@@ -55,9 +56,10 @@ ingest:
 	@test -n "$(DIR)" || (echo "usage: make ingest DIR=data/real/2026-10" && exit 2)
 	cd backend && uv run python ../scripts/ingest.py ../$(DIR) --mode $${MODE:-real}
 
-# Not built yet. They fail loudly instead of pretending to succeed.
+# Not built yet. It fails loudly instead of pretending to succeed.
 acceptance:
 	@echo "make acceptance is not implemented yet (CHECKLIST C6 and C7)" && exit 1
 
+# the live demo: production build, demo settings, one command. See scripts/demo.sh for options
 demo:
-	@echo "make demo is not implemented yet" && exit 1
+	./scripts/demo.sh
