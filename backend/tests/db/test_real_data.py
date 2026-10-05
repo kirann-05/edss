@@ -2,6 +2,7 @@
 
 import csv
 import secrets
+import shutil
 from datetime import date
 from pathlib import Path
 
@@ -18,7 +19,8 @@ from app.db.dataset_store import save_dataset
 from app.db.real_data import load_real_folder
 from app.db.urls import owner_url
 from app.ingestion.export import export_dataset
-from app.kpi.loader import load_seed_definitions, load_seed_targets
+from app.ingestion.manifest import ManifestError
+from app.kpi.loader import PLACEHOLDER_MARKER, load_seed_definitions, load_seed_targets
 from app.main import create_app
 from app.synthetic.generator import generate
 from tests.api.conftest import PASSWORD, REF, make_settings
@@ -278,3 +280,98 @@ def test_an_env_setting_alone_never_makes_a_database_real(scratch_db, migrated):
     finally:
         with _admin() as admin:
             admin.execute(f'drop database "{name}" with (force)')
+
+
+@pytest.fixture
+def bare_db(scratch_db):
+    """A server where only the migrations ran: no synthetic sample was ever loaded."""
+    name = f"edss_bare_{secrets.token_hex(4)}"
+    with _admin() as admin:
+        admin.execute(f'create database "{name}"')
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setenv("EDSS_DB_NAME", name)
+        command.upgrade(Config(ALEMBIC_INI), "head")
+        engine = create_engine(owner_url(database=name))
+        yield engine
+        engine.dispose()
+    with _admin() as admin:
+        admin.execute(f'drop database "{name}" with (force)')
+
+
+def counts(engine):
+    with engine.connect() as conn:
+        return {
+            table: conn.execute(text(f"select count(*) from {table}")).scalar_one()
+            for table in ("ingest_batch", "metric_fact", "kpi_definition", "kpi_target")
+        } | {
+            "mode": conn.execute(
+                text("select value from system_config where key = 'data_mode'")
+            ).scalar_one_or_none()
+        }
+
+
+def test_a_folder_without_a_manifest_is_refused(bare_db, tmp_path):
+    with pytest.raises(ManifestError, match="has no manifest.yml"):
+        load_real_folder(bare_db, tmp_path, TODAY, "test")
+
+
+def test_a_folder_with_a_file_that_cannot_be_read_writes_nothing(bare_db, folder, tmp_path):
+    broken = tmp_path / "broken"
+    shutil.copytree(folder, broken)
+    (broken / "finance.csv").unlink()
+    before = counts(bare_db)
+    load = load_real_folder(bare_db, broken, TODAY, "test")
+    assert any(e.startswith("finance facts") for e in load.outcome.errors)
+    assert not load.switched_to_real and not any(load.written.values())
+    assert counts(bare_db) == before  # the other three areas read fine, and still nothing was added
+
+
+def test_a_first_real_load_on_a_bare_server_brings_the_placeholder_definitions(bare_db, folder):
+    load = load_real_folder(bare_db, folder, TODAY, "test")
+    assert load.switched_to_real and load.written["facts"] > 0
+    after = counts(bare_db)
+    assert after["mode"] == "real"
+    assert after["kpi_definition"] == len(load_seed_definitions())
+    assert after["kpi_target"] == len(load_seed_targets())
+    with bare_db.connect() as conn:
+        notes = conn.execute(text("select placeholder, note from kpi_definition")).all()
+    assert all(placeholder and PLACEHOLDER_MARKER in note for placeholder, note in notes)  # rule 12
+
+
+def test_the_app_runs_in_real_mode_on_a_bare_server_after_the_first_load(bare_db, folder):
+    load_real_folder(bare_db, folder, TODAY, "test")
+    name = bare_db.url.database
+    setup_checkpoints(owner_url(database=name))
+    with bare_db.begin() as conn:
+        conn.execute(
+            text(
+                "insert into app_user (id, email, name, role, active, password_hash, session_version) "
+                "values (1, 'it.admin@university.example', 'IT Administrator', 'admin', true, :h, 0)"
+            ),
+            {"h": hash_password("a-long-admin-password")},
+        )
+    client = TestClient(start(name, data_mode="real"))
+    signed_in = client.post(
+        "/api/auth/login",
+        json={"email": "it.admin@university.example", "password": "a-long-admin-password"},
+    )
+    assert signed_in.status_code == 200
+    assert client.get("/api/system/status").json()["data_mode"] == "real"
+    created = client.post(
+        "/api/admin/users",
+        json={
+            "email": "registrar@university.example",
+            "name": "Registrar",
+            "role": "registrar",
+            "password": "a-long-registrar-password",
+        },
+    )
+    assert created.status_code == 201
+    registrar = TestClient(client.app)
+    registrar.post(
+        "/api/auth/login",
+        json={"email": "registrar@university.example", "password": "a-long-registrar-password"},
+    )
+    kpis = registrar.get("/api/kpis")
+    assert kpis.status_code == 200
+    assert len(kpis.json()["kpis"]) == len(load_seed_definitions())

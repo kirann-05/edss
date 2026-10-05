@@ -90,9 +90,8 @@ def load_real_folder(engine: Engine, folder: Path, today: date, ingested_by: str
     new_publications = [p for p in ledger.publications if p.id > floors["publication"]]
     with engine.begin() as conn:
         first = not real_data_present(conn)
-        insert_records(conn, new_sources, new_batches, new_facts, new_publications)
         conn.execute(text("update department set real_position = null"))
-        for position, d in enumerate(ledger.departments):
+        for position, d in enumerate(ledger.departments):  # first, as the records refer to them
             conn.execute(
                 text(
                     "insert into department (code, name, school, active, real_position) values "
@@ -101,6 +100,7 @@ def load_real_folder(engine: Engine, folder: Path, today: date, ingested_by: str
                 ),
                 {**d.model_dump(), "p": position},
             )
+        insert_records(conn, new_sources, new_batches, new_facts, new_publications)
         if not conn.execute(select(func.count()).select_from(t.kpi_definition)).scalar_one():
             # the placeholder list, marked PLACEHOLDER_PENDING_IQAC, until IQAC supplies its own
             definitions = load_seed_definitions()

@@ -128,6 +128,37 @@ class TestPeople:
         )
         assert response.status_code == 422
 
+    @pytest.mark.parametrize(
+        ("change", "reason"),
+        [
+            ({"dept_code": None}, "a HOD must have a department"),
+            ({"dept_code": "NOPE"}, "there is no department 'NOPE'"),
+            ({"name": "   "}, "a person needs a name"),
+        ],
+    )
+    def test_an_edit_that_breaks_the_rules_is_refused_and_changes_nothing(
+        self, pipeline, change, reason
+    ):
+        admin = pipeline.login("admin")
+        hod = next(
+            u for u in admin.get("/api/admin/users").json() if u["email"] == "hod.cse@edss.test"
+        )
+        response = admin.patch(f"/api/admin/users/{hod['id']}", json=change)
+        assert response.status_code == 422 and reason in response.json()["detail"]
+        after = next(u for u in admin.get("/api/admin/users").json() if u["id"] == hod["id"])
+        assert after == hod
+        assert pipeline.login("hod_cse").get("/api/auth/me").json()["scope"]["departments"] == [
+            hod["dept_code"]
+        ]
+
+    def test_an_unknown_person_cannot_be_edited_or_given_a_password(self, pipeline):
+        admin = pipeline.login("admin")
+        edit = admin.patch("/api/admin/users/99999", json={"name": "Nobody"})
+        reset = admin.post("/api/admin/users/99999/password", json={"password": NEW_PASSWORD})
+        for response in (edit, reset):
+            assert response.status_code == 422
+            assert "there is no such person" in response.json()["detail"]
+
 
 def test_the_last_active_administrator_must_stay_one(pipeline):
     store = pipeline.state.users
