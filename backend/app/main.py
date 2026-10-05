@@ -1,3 +1,4 @@
+import time
 from collections.abc import AsyncIterator, Callable
 from contextlib import asynccontextmanager
 from datetime import date
@@ -6,6 +7,7 @@ from urllib.parse import urlsplit
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from starlette.concurrency import run_in_threadpool
 
 from app import __version__
 from app.agents.llm import LLMOutputError, LLMUnavailable
@@ -113,8 +115,35 @@ def create_app(
             public_url=f"{parts.scheme}://{parts.netloc}",
         )
         app.mount("/mcp", mcp.streamable_http_app(streamable_http_path="/"))
+    if settings.edss_database:
+        guard_data_mode(app)
     register_error_handlers(app)
     return app
+
+
+def guard_data_mode(app: FastAPI) -> None:
+    """In database mode, the stored data mode can change under a running app: loading real data
+    switches it. A process that started in another mode still holds that mode's people and data in
+    memory, so from that moment it answers nothing but a plain 503 until it is restarted (rule 7).
+    The stored mode is read at most once a second."""
+    checked = {"at": 0.0, "mode": None}
+
+    @app.middleware("http")
+    async def same_mode_as_at_start(request: Request, call_next):
+        state = request.app.state.edss
+        now = time.monotonic()
+        if now - checked["at"] > 1.0:
+            checked["mode"] = await run_in_threadpool(state.system_config.data_mode)
+            checked["at"] = now
+        if checked["mode"] != state.settings.data_mode:
+            return JSONResponse(
+                {
+                    "detail": f"The database is now in {checked['mode']} mode, but this app started in "
+                    f"{state.settings.data_mode} mode. Restart it with DATA_MODE={checked['mode']}."
+                },
+                status_code=503,
+            )
+        return await call_next(request)
 
 
 class Live:

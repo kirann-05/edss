@@ -72,8 +72,19 @@ def test_flipping_the_data_mode_in_the_database_takes_effect_with_no_restart(dat
     with database.begin() as conn:
         conn.execute(text("update system_config set value = 'real' where key = 'data_mode'"))
     try:
+        # read from the table on every call: the model guard sees real at once, with no restart.
+        # The app itself then refuses to answer, see the test below
         assert app.state.edss.system_config.data_mode() == "real"
-        assert client.get("/api/system/status").json()["data_mode"] == "real"
+        from app.agents.llm import LlmSettings, get_chat_model
+
+        hosted = LlmSettings(
+            provider="hosted",
+            base_url="https://models.example.com/v1",
+            model="m",
+            allow_hosted=True,
+        )
+        with pytest.raises(Exception, match="never allowed when data mode is real"):  # noqa: PT011
+            get_chat_model("drafter", hosted, app.state.edss.system_config)
     finally:
         with database.begin() as conn:
             conn.execute(
@@ -262,3 +273,26 @@ def test_stopping_the_app_closes_its_database_connections(database):
         pool = app.state.edss.on_shutdown[0].__self__
         assert not pool.closed
     assert pool.closed
+
+
+def test_a_running_app_stops_answering_when_the_database_switches_mode_under_it(database):
+    import time
+
+    client, _ = start()
+    assert client.get("/api/health").status_code == 200
+    with database.begin() as conn:
+        conn.execute(text("update system_config set value = 'real' where key = 'data_mode'"))
+    try:
+        time.sleep(1.1)  # past the one-second cache
+        refused = client.post("/api/auth/demo-login", json={"email": "registrar@edss.test"})
+        assert (
+            refused.status_code == 503
+            and "Restart it with DATA_MODE=real" in refused.json()["detail"]
+        )
+    finally:
+        with database.begin() as conn:
+            conn.execute(
+                text("update system_config set value = 'synthetic' where key = 'data_mode'")
+            )
+    time.sleep(1.1)
+    assert client.get("/api/health").status_code == 200
