@@ -1,7 +1,7 @@
 # Next.js sends anonymous usage telemetry by default. Nothing leaves this machine (rule 7)
 export NEXT_TELEMETRY_DISABLED := 1
 
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse diagrams benchmark db-up db-down up down smoke db-check db-backup create-user db-migrate test-db test-api-db seed-db
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse demo-video diagrams benchmark db-up db-down up down smoke db-check db-backup create-user db-migrate test-db test-api-db seed-db
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -125,6 +125,12 @@ demo-reset:
 # docs/diagrams/*.svg to PNG for the slides
 diagrams:
 	cd frontend && node scripts/render-diagrams.mjs
+
+# the rehearsal recorded at projector size, slowed down, into demo-video/ (never committed)
+demo-video:
+	cd frontend && REHEARSE_VIDEO=1 pnpm exec playwright test -c playwright.rehearse.config.ts -g "steps 1 to 9" --output=../.demo-video-run
+	mkdir -p demo-video && cp "$$(find .demo-video-run -name '*.webm' | head -1)" demo-video/edss-demo.webm && rm -rf .demo-video-run
+	@echo "Recorded: demo-video/edss-demo.webm. Copy it to a USB stick and your phone (docs/DEMO.md)."
 
 # docs/DEMO.md walked in a browser, steps 1 to 9, against its own copy of the demo
 rehearse:

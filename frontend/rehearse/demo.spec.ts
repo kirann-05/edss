@@ -71,6 +71,9 @@ async function projector(page: Page, step: number) {
   await page.waitForFunction(
     () => new Promise((settled) => { const y = window.scrollY; setTimeout(() => settled(window.scrollY === y), 150); }),
   );
+  if (process.env.REHEARSE_VIDEO === "1") {
+    await page.waitForTimeout(6_000); // time to say the step's "Say" line over the recording
+  }
   if (process.env.REHEARSE_SCREENS) {
     await page.screenshot({ path: join(__dirname, "..", "..", "docs", "demo-screens", `step-${step}.png`) });
   }

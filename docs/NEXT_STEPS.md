@@ -38,6 +38,7 @@ Written 2026-10-04. The target date is 2026-10-22, so about 18 days. The graded 
 - Hardening pass (2026-10-06): only loading real data can switch a database to real (an env setting alone used to write it, then block synthetic mode too); connection pools close when the app stops; `create-user` checks everything before asking for a password. The runbook's real-data steps were run inside the containers on a throwaway stack: the load, the first administrator through a terminal, the restart in real mode, all three audited, no synthetic persona left active. That run showed the app must be stopped before a load, which the runbook now says.
 - Dependency audit (2026-10-06): `pip-audit` finds no known vulnerabilities in the backend's locked dependencies. `pnpm audit --prod` found one (`braces`, no fix published) through the `shadcn` command-line tool, which is not in the production image; `shadcn` moved to dev dependencies and the production audit is clean. The running app also stops answering if the database switches mode under it.
 - `docs/LABS.md` (2026-10-06): each of the 14 labs, what the book asks, where it lives, what to show in under a minute, and the test that proves it.
+- `make demo-video` (2026-10-06): records the rehearsal of steps 1 to 9 at projector size, slowed down with a six second pause on each step for the Say line, into `demo-video/edss-demo.webm` (about 75 seconds, never committed). It is the last-resort fallback in DEMO.md.
 
 ## How to work through it
 

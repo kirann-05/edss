@@ -3,6 +3,9 @@ import { defineConfig } from "@playwright/test";
 // `make rehearse`: the demo exactly as `make demo` serves it (a production build, the ready-made
 // state, the simulated source delay), on its own ports so it never touches a demo that is running.
 // The test walks docs/DEMO.md step by step and must finish inside the timeout below.
+// with REHEARSE_VIDEO=1 (make demo-video) it is recorded instead, slowed down and pausing at
+// each step, as the last-resort backup in docs/DEMO.md
+const VIDEO = process.env.REHEARSE_VIDEO === "1";
 const API = "http://127.0.0.1:8300";
 const WEB = "http://127.0.0.1:3300";
 
@@ -10,7 +13,7 @@ export default defineConfig({
   testDir: "./rehearse",
   workers: 1,
   retries: 0,
-  timeout: 90_000,
+  timeout: VIDEO ? 600_000 : 90_000,
   expect: { timeout: 15_000 },
   reporter: [["list"]],
   use: {
@@ -20,6 +23,8 @@ export default defineConfig({
     viewport: { width: 1024, height: 576 },
     deviceScaleFactor: 1.25,
     trace: "retain-on-failure",
+    video: VIDEO ? { mode: "on", size: { width: 1024, height: 576 } } : "off",
+    launchOptions: { slowMo: VIDEO ? 250 : 0 },
     screenshot: "only-on-failure",
   },
   webServer: [

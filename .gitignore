@@ -30,3 +30,6 @@ pgdata/
 .next-rehearse/
 # database backups hold the data, and real data never leaves the machine
 backups/
+# the recorded demo, for a USB stick, never into git
+demo-video/
+.demo-video-run/

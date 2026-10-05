@@ -22,7 +22,7 @@ About 12 minutes. Read this once before the first rehearsal. Every label in quot
 - [ ] `git pull`, then `make check` and `make rehearse`. Both must be green. The rehearsal walks steps 1 to 9 in a browser in about 20 seconds.
 - [ ] `make demo`, walk all nine steps once, then `make demo-reset`.
 - [ ] Laptop charged. Charger, and the HDMI or USB-C adapter for the projector, in the bag.
-- [ ] A screen recording of one full rehearsal on the laptop and on a USB stick (the last-resort backup below).
+- [ ] A screen recording of one full rehearsal on the laptop and on a USB stick (the last-resort backup below). `make demo-video` makes it: `demo-video/edss-demo.webm`, about 75 seconds, with a pause on each step to say its line. It plays in Chrome, Firefox and VLC; QuickTime does not play webm.
 
 **Fifteen minutes before**
 
@@ -165,7 +165,7 @@ Try these in order. Keep talking while you do it: what the step was going to sho
 1. **Something is stuck or in a strange state.** `make demo-reset` in the second tab, sign in again, and carry on from the step you were on. 2 seconds.
 2. **A server crashed.** Ctrl-C in the first tab, then `DEMO_SKIP_BUILD=1 make demo`. About 5 seconds. The logs are in `.demo/`.
 3. **"Port 8000 (or 3000) is in use".** `DEMO_API_PORT=8100 DEMO_WEB_PORT=3100 make demo`, and open http://127.0.0.1:3100.
-4. **The laptop itself fails.** Play the recorded rehearsal from the USB stick and narrate over it with the Say lines. One screenshot per step, at projector size, is in `docs/demo-screens` (`REHEARSE_SCREENS=1 make rehearse` makes them again).
+4. **The laptop itself fails.** Play the recorded rehearsal (`make demo-video`) from the USB stick and narrate over it with the Say lines. One screenshot per step, at projector size, is in `docs/demo-screens` (`REHEARSE_SCREENS=1 make rehearse` makes them again).
 
 ## Things not to do live
 
