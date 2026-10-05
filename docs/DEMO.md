@@ -29,7 +29,7 @@ About 12 minutes. Read this once before the first rehearsal. Every label in quot
 - [ ] Plugged into power.
 - [ ] Do Not Disturb on. Mail, chat and anything that pops up closed.
 - [ ] One terminal tab: `make demo`. Wait for "EDSS is ready". The banner must say "Synthetic data only", "Drafts: fake" and "Ready-made: one approved report (version 1) and one draft waiting for review".
-- [ ] Now Wi-Fi off. Nothing needs the network once it is running, and it is worth saying so in step 1.
+- [ ] Now Wi-Fi off. Nothing needs the network, and it is worth saying so in step 1. Checked on 2026-10-06: `make rehearse`, its build and both servers included, passes with the internet blocked, so a restart with Wi-Fi off works too.
 - [ ] A second terminal tab in the repo folder, for `make demo-reset` if you need it.
 - [ ] Chrome, one window, one tab, at http://127.0.0.1:3000. Zoom 125 percent (Cmd and +). Mirror the display to the projector. Every screen is checked to fit a 1280 by 720 projector at this zoom.
 - [ ] The sign-in page is showing.
@@ -163,7 +163,7 @@ Optional, in the second terminal tab: `MODE=synthetic make ingest DIR=data/sampl
 Try these in order. Keep talking while you do it: what the step was going to show is in the Say lines above.
 
 1. **Something is stuck or in a strange state.** `make demo-reset` in the second tab, sign in again, and carry on from the step you were on. 2 seconds.
-2. **A server crashed.** Ctrl-C in the first tab, then `DEMO_SKIP_BUILD=1 make demo`. About 5 seconds. The logs are in `.demo/`.
+2. **A server crashed.** Ctrl-C in the first tab, then `DEMO_SKIP_BUILD=1 make demo`. About 5 seconds, and Wi-Fi can stay off. The logs are in `.demo/`.
 3. **"Port 8000 (or 3000) is in use".** `DEMO_API_PORT=8100 DEMO_WEB_PORT=3100 make demo`, and open http://127.0.0.1:3100.
 4. **The laptop itself fails.** Play the recorded rehearsal (`make demo-video`) from the USB stick and narrate over it with the Say lines. One screenshot per step, at projector size, is in `docs/demo-screens` (`REHEARSE_SCREENS=1 make rehearse` makes them again).
 
