@@ -70,6 +70,22 @@ class TestEvaluation:
         source = '1 + 100 * sum("plc.placed_confirmed") / sum("plc.registered")'
         assert run(source, ["A"], values) is UNDEFINED
 
+    def test_subtraction_and_a_negative_result(self):
+        # a surplus as IQAC may define one: revenue less expenditure, which can go below zero
+        values = {("A", "fin.revenue_actual"): "120.5", ("A", "fin.expenditure_actual"): "130"}
+        source = 'sum("fin.revenue_actual") - sum("fin.expenditure_actual")'
+        assert run(source, ["A"], values) == Decimal("-9.5")
+
+    def test_unary_minus_and_plus(self):
+        values = {("A", "fin.revenue_actual"): "4"}
+        assert run('-sum("fin.revenue_actual") + 10', ["A"], values) == Decimal("6")
+        assert run('+sum("fin.revenue_actual")', ["A"], values) == Decimal("4")
+
+    def test_undefined_stays_undefined_under_a_minus_sign(self):
+        values = {("A", "plc.placed_confirmed"): "0", ("A", "plc.registered"): "0"}
+        source = '-(sum("plc.placed_confirmed") / sum("plc.registered"))'
+        assert run(source, ["A"], values) is UNDEFINED
+
     def test_mean_and_weighted_mean(self):
         values = {
             ("A", "acad.po_attainment"): "2",
@@ -150,6 +166,12 @@ class TestParsing:
     def test_syntax_error_is_a_formula_error(self):
         with pytest.raises(FormulaError, match="syntax"):
             parse_formula("100 * (", CATALOGUE)
+
+    def test_a_formula_longer_than_the_limit_is_refused_before_parsing(self):
+        source = " + ".join(['sum("acad.students_passed")'] * 20)
+        assert len(source) > 300
+        with pytest.raises(FormulaError, match="longer than 300"):
+            parse_formula(source, CATALOGUE)
 
 
 @pytest.mark.parametrize(

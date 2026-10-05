@@ -56,6 +56,11 @@ def without_source(context, fact_id, **update):
     return replace(context, facts=facts)
 
 
+def with_kpi(doc, key, **update):
+    kpis = tuple(f.model_copy(update=update) if f.key == key else f for f in doc.kpis)
+    return doc.model_copy(update={"kpis": kpis})
+
+
 def citing(doc, text):
     """The same brief, with the first option of the first option set describing itself with `text`."""
     first = doc.option_sets[0]
@@ -432,3 +437,34 @@ def test_a_kpi_without_a_value_is_expected_to_be_undefined(clean, context):
     assert "V6" not in failing_ids(
         validate(clean.model_copy(update={"kpis": tuple(fixed)}), context)
     )
+
+
+class TestConnectorContext:
+    """The context that re-checks a person's edit, reading records through the connector."""
+
+    @pytest.fixture
+    def through_connector(self, clean, connector):
+        from app.services.validation_context import context_for_document
+
+        return context_for_document(clean, connector)
+
+    def test_a_clean_brief_passes_every_check_through_the_connector(self, clean, through_connector):
+        report = validate(clean, through_connector)
+        assert report.passed, [(c.id, [v.message for v in c.violations]) for c in report.failing]
+
+    def test_an_edit_citing_a_record_that_does_not_exist_is_caught(self, clean, through_connector):
+        report = validate(citing(clean, "Based on record {{fact:999999}}."), through_connector)
+        assert "V1" in failing_ids(report)
+
+    def test_a_kpi_resting_on_a_record_the_connector_does_not_have_is_caught(
+        self, clean, through_connector
+    ):
+        figure = next(f for f in clean.kpis if f.value is not None)
+        bad = with_kpi(clean, figure.key, input_fact_ids=(999_999,))
+        assert "V7" in failing_ids(validate(bad, through_connector))
+
+    def test_a_record_from_a_source_the_connector_does_not_know_is_caught(
+        self, clean, connector, through_connector, monkeypatch
+    ):
+        monkeypatch.setattr(connector, "get_source", lambda source_id: None)
+        assert "V7" in failing_ids(validate(clean, through_connector))
