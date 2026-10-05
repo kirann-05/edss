@@ -15,7 +15,7 @@ from collections.abc import Callable
 from datetime import UTC, datetime
 from typing import Any, Literal
 
-from app.agents.figures import format_with_unit
+from app.agents.figures import MAX_VARIANCE_PLACES, format_with_unit
 from app.agents.models import BriefDocument, Option, OptionSet, ValidationReport
 from app.core.rbac import Permission, has_permission
 from app.domain.enums import BriefStatus
@@ -503,8 +503,25 @@ class GovernanceService:
         return diff_documents(self.version(a).document, self.version(b).document)
 
 
-def _figure_text(f) -> str:
-    return f"{format_with_unit(f.value, f.precision, f.unit)} ({f.status.value.replace('_', ' ')})"
+def _figure_text(f, places: int, target: bool) -> str:
+    detail = f.status.value.replace("_", " ")
+    if target:
+        detail += f", target {format_with_unit(f.target, places, f.unit)}"
+    return f"{format_with_unit(f.value, places, f.unit)} ({detail})"
+
+
+def _figure_texts(old, new) -> tuple[str, str]:
+    """Before and after in words. A change never reads as no change: places are added until the
+    two values differ on screen (rule 5), and a target that moved is named on both sides."""
+    target = old.target != new.target
+    places = max(old.precision, new.precision)
+
+    def alike(p: int) -> bool:
+        return format_with_unit(old.value, p, old.unit) == format_with_unit(new.value, p, new.unit)
+
+    while old.value != new.value and places < MAX_VARIANCE_PLACES and alike(places):
+        places += 1
+    return _figure_text(old, places, target), _figure_text(new, places, target)
 
 
 def diff_documents(before: BriefDocument, after: BriefDocument) -> list[Change]:
@@ -519,19 +536,14 @@ def diff_documents(before: BriefDocument, after: BriefDocument) -> list[Change]:
                     section="figures",
                     kind="added" if old is None else "removed",
                     kpi_key=key,
-                    after=_figure_text(new) if new else None,
-                    before=_figure_text(old) if old else None,
+                    after=_figure_text(new, new.precision, False) if new else None,
+                    before=_figure_text(old, old.precision, False) if old else None,
                 )
             )
         elif (old.value, old.status, old.target) != (new.value, new.status, new.target):
+            was, now = _figure_texts(old, new)
             changes.append(
-                Change(
-                    section="figures",
-                    kind="changed",
-                    kpi_key=key,
-                    before=_figure_text(old),
-                    after=_figure_text(new),
-                )
+                Change(section="figures", kind="changed", kpi_key=key, before=was, after=now)
             )
 
     def options(doc: BriefDocument) -> dict[str, tuple[str, Option]]:

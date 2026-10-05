@@ -4,6 +4,8 @@ Rule 2: agents draft and flag, a named human approves. Nothing is published with
 record from an authorised role, and any release can be rolled back cleanly.
 """
 
+from decimal import Decimal
+
 import pytest
 
 from app.agents.compose import compose_brief, off_target
@@ -12,7 +14,7 @@ from app.agents.models import CheckResult, Locator, ValidationReport, Violation
 from app.agents.skills.options_skill import draft_option_set
 from app.agents.validation.checks import ValidationContext
 from app.agents.validation.suite import validate
-from app.domain.enums import BriefStatus, Role
+from app.domain.enums import BriefStatus, KpiStatus, Role
 from app.domain.models import AppUser
 from app.governance.audit import AuditLog
 from app.governance.service import (
@@ -21,6 +23,7 @@ from app.governance.service import (
     GovernanceError,
     GovernanceService,
     PermissionDenied,
+    diff_documents,
 )
 
 
@@ -351,6 +354,57 @@ class TestDiff:
             draft(gov, clean, vctx, run="r2").id, PRINCIPAL, Decision(kind="approve")
         ).version
         assert gov.diff(a.version, b.version) == []
+
+
+def with_figure(doc, key, **update):
+    kpis = tuple(f.model_copy(update=update) if f.key == key else f for f in doc.kpis)
+    return doc.model_copy(update={"kpis": kpis})
+
+
+class TestFigureDiff:
+    """What compare versions shows when the data under a brief changed (a refresh, real data)."""
+
+    def test_a_clear_change_shows_both_figures_and_statuses(self, clean):
+        after = with_figure(clean, "PL_PCT", value=Decimal("80.00"), status=KpiStatus.MET)
+        [change] = diff_documents(clean, after)
+        assert (change.section, change.kind, change.kpi_key) == ("figures", "changed", "PL_PCT")
+        assert (change.before, change.after) == ("75.0% (missed)", "80.0% (met)")
+
+    def test_a_change_that_rounds_alike_is_shown_with_enough_places_to_see_it(self, clean):
+        after = with_figure(clean, "PL_PCT", value=Decimal("74.98"))
+        [change] = diff_documents(clean, after)
+        assert (change.before, change.after) == ("74.96% (missed)", "74.98% (missed)")
+
+    def test_a_moved_target_is_named_on_both_sides(self, clean):
+        after = with_figure(clean, "PL_PCT", target=Decimal("70"), status=KpiStatus.MET)
+        [change] = diff_documents(clean, after)
+        assert change.before == "75.0% (missed, target 75.0%)"
+        assert change.after == "75.0% (met, target 70.0%)"
+
+    def test_a_figure_that_is_no_longer_in_the_brief_is_listed_as_removed(self, clean):
+        removed = clean.kpis[0]
+        after = clean.model_copy(update={"kpis": clean.kpis[1:]})
+        [change] = diff_documents(clean, after)
+        assert (change.kind, change.kpi_key, change.after) == ("removed", removed.key, None)
+        assert change.before and diff_documents(after, clean)[0].kind == "added"
+
+    def test_an_option_dropped_from_a_set_is_listed_as_removed(self, clean):
+        first = clean.option_sets[0]
+        sets = (first.model_copy(update={"options": first.options[1:]}), *clean.option_sets[1:])
+        [change] = diff_documents(clean, clean.model_copy(update={"option_sets": sets}))
+        assert (change.section, change.kind) == ("options", "removed")
+        assert change.option_id == first.options[0].id and change.before == first.options[0].title
+
+    def test_assumptions_added_and_removed_are_listed(self, clean):
+        gone = clean.assumptions[0]
+        new = gone.model_copy(update={"text": "A new assumption"})
+        after = clean.model_copy(update={"assumptions": (new, *clean.assumptions[1:])})
+        changes = diff_documents(clean, after)
+        assert [(c.section, c.kind) for c in changes] == [
+            ("assumptions", "removed"),
+            ("assumptions", "added"),
+        ]
+        assert changes[0].before == gone.text and changes[1].after == "A new assumption"
 
 
 class TestAudit:
