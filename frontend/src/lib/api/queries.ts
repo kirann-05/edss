@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { api } from "./client";
+import { api, retryWhileStarting, startingDelay } from "./client";
 import type {
   AdminOptions,
   AdminUser,
@@ -87,7 +87,9 @@ export function useDemoUsers() {
   return useQuery({
     queryKey: keys.demoUsers,
     queryFn: () => api.get<DemoUser[]>("/auth/demo-users"),
-    retry: false,
+    // a 404 means demo sign-in is off; no answer means the API is still starting, so ask again
+    retry: retryWhileStarting,
+    retryDelay: startingDelay,
     staleTime: Infinity,
   });
 }

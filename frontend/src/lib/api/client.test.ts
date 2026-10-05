@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { api, ApiError } from "./client";
+import { api, ApiError, retryWhileStarting, startingDelay } from "./client";
 
 function answer(status: number, body?: unknown) {
   const text = body === undefined ? "" : typeof body === "string" ? body : JSON.stringify(body);
@@ -63,5 +63,17 @@ describe("api client", () => {
     const error = await failure(api.get("/x"));
     expect(error.message).toBe("Request failed with status 502");
     expect(error.detail).toBe("Bad Gateway");
+  });
+});
+
+describe("asking again while the server starts", () => {
+  it("retries no answer and server errors for about half a minute, never a refusal", () => {
+    expect(retryWhileStarting(0, new TypeError("Failed to fetch"))).toBe(true);
+    expect(retryWhileStarting(3, new ApiError(502, "Bad Gateway"))).toBe(true);
+    expect(retryWhileStarting(8, new ApiError(502, "Bad Gateway"))).toBe(false);
+    expect(retryWhileStarting(0, new ApiError(404, "Not found"))).toBe(false); // demo sign-in is off
+    const waited = Array.from({ length: 8 }, (_, n) => startingDelay(n)).reduce((a, b) => a + b, 0);
+    expect(waited).toBeGreaterThanOrEqual(25_000);
+    expect(waited).toBeLessThanOrEqual(40_000);
   });
 });

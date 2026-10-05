@@ -24,7 +24,19 @@
     {
       "name": "web",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--dir", "frontend", "dev"],
+      "runtimeArgs": [
+        "--dir",
+        "frontend",
+        "dev"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "demo",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "scripts/demo.sh"
+      ],
       "port": 3000
     }
   ]

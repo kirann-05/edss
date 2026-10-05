@@ -13,6 +13,15 @@ export class ApiError extends Error {
   }
 }
 
+/** For what a page needs before anyone signs in: keep asking while the server is still starting
+ * (no answer, or a 5xx), for about half a minute, but take a refusal (4xx) as final. */
+export function retryWhileStarting(failureCount: number, error: unknown): boolean {
+  if (error instanceof ApiError && error.status < 500) return false;
+  return failureCount < 8;
+}
+
+export const startingDelay = (attempt: number) => Math.min(1000 * 2 ** attempt, 5000);
+
 type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 function messageFrom(status: number, body: unknown): string {
