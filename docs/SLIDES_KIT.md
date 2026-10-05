@@ -27,7 +27,7 @@ Four domain agents gather department data in parallel through one governed conne
 
 | Fact | Number | Source |
 | --- | --- | --- |
-| Backend tests | 1054, all passing (39 need the database and skip without it) | `make check`, `make test-db` |
+| Backend tests | 1072, all passing (54 need the database and skip without it; 1 needs Ollama running) | `make check`, `make test-db` |
 | The API tests again, with everything in PostgreSQL | 235, all passing | `make test-api-db` |
 | Frontend unit and component tests | 224 in 14 files, all passing | `make check` |
 | Browser tests, real API and pages | 15, all passing, including an accessibility scan (WCAG 2.2 AA rules) | `make e2e` |

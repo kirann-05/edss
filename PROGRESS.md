@@ -76,7 +76,7 @@ Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 
 ## Where to resume
 
-State on 2026-10-05: the demo track (D1 to D7) and the lab track (L1 to L7) are done; L8 and D8 are Kiran's. 1054 backend tests (39 of them need the PostgreSQL from `make db-up`, and skip without it), 224 frontend tests, 15 browser tests, the 9-step rehearsal, and the API suite again in database mode (`make test-api-db`, 235). Everything is committed and pushed to the private repo `kirann-05/edss`. R1 is done too: the university's exports can be loaded into PostgreSQL and the app runs with `DATA_MODE=real` (docs/RUNBOOK.md, Real data). What remains is the university's: the data itself, IQAC's definitions, the GPU, hosting, accounts.
+State on 2026-10-06: everything that needs no one else is built, tested and pushed (docs/NEXT_STEPS.md, Done). 1072 backend tests (54 need the PostgreSQL from `make db-up` and skip without it, 1 needs Ollama), 224 frontend tests, 15 browser tests, the 9-step rehearsal, the API suite again in database mode (`make test-api-db`, 237), `make acceptance` (94 of 94) and `make smoke` (containers from a fresh clone). Real data can be loaded and the app run in real mode (docs/RUNBOOK.md, Real data). For "show me Lab N" see docs/LABS.md. What remains is Kiran's (D8 rehearsals, L8 gh scope, the professor's question) and the university's (the data, IQAC's definitions, the GPU, hosting, accounts).
 
 What is not ours is in **docs/PENDING.md**. What is still ours is split into small parts in **docs/NEXT_STEPS.md**, demo first. Do one part per session, start from those two files, and commit at the end of each part.
 
