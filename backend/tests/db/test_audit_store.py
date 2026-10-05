@@ -1,6 +1,8 @@
 """L5e: the audit log in PostgreSQL. One writer at a time, and nobody can rewrite it."""
 
+import secrets
 import threading
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from sqlalchemy import create_engine, text
@@ -8,6 +10,7 @@ from sqlalchemy.exc import DBAPIError
 
 from app.db.audit_store import DbAuditLog
 from app.db.urls import app_url
+from app.governance.audit import AuditLog
 
 pytestmark = pytest.mark.db
 
@@ -81,3 +84,41 @@ def test_two_processes_writing_at_once_still_make_one_unbroken_chain(log, scratc
 def test_the_app_role_cannot_touch_the_migration_record(app_engine):
     with pytest.raises(DBAPIError, match="permission denied"), app_engine.connect() as conn:
         conn.execute(text("select * from alembic_version"))
+
+
+def test_every_filter_the_audit_page_offers_matches_the_in_memory_log(log):
+    # the API tests filter an in-memory log; this proves the SQL behind the same filters
+    tag = secrets.token_hex(3)
+    base = datetime(2030, 1, 1, tzinfo=UTC)  # later than anything else in the shared database
+    memory = AuditLog()
+    for run, actor, action, hours in (
+        ("a", "alice", "x.one", 0),
+        ("a", "bob", "x.two", 1),
+        ("b", "alice", "x.two", 2),
+    ):
+        row = {
+            "actor_type": "user",
+            "actor_id": f"{actor}-{tag}",
+            "action": f"{action}-{tag}",
+            "run_id": f"run-{run}-{tag}",
+            "ts": base + timedelta(hours=hours),
+        }
+        log.append(**row)
+        memory.append(**row)
+
+    def actions(audit, **where):
+        return [(r.run_id, r.actor_id, r.action, r.ts) for r in audit.rows(**where)]
+
+    for where in (
+        {"run_id": f"run-a-{tag}"},
+        {"actor_id": f"alice-{tag}"},
+        {"action": f"x.two-{tag}"},
+        {"since": base + timedelta(hours=1)},
+        {"until": base + timedelta(hours=1), "actor_id": f"alice-{tag}"},
+        {"run_id": f"run-b-{tag}", "actor_id": f"bob-{tag}"},
+    ):
+        assert actions(log, **where) == actions(memory, **where), where
+    assert len(log.rows(run_id=f"run-a-{tag}")) == 2
+    assert len(log.rows(since=base + timedelta(hours=1))) == 2
+    assert log.rows(run_id=f"run-b-{tag}", actor_id=f"bob-{tag}") == []
+    assert log.verify().ok
