@@ -118,6 +118,7 @@ function QuestionField({
       <Input
         value={typed}
         onChange={(event) => onChange(event.target.value)}
+        maxLength={1000}
         aria-label={`Your own answer to: ${question.text}`}
         placeholder={question.choices.length > 0 ? "Or write your own answer" : "Your answer"}
         className="h-11 text-base"

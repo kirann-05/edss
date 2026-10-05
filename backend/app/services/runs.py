@@ -64,6 +64,15 @@ class RunNotFound(RunError):
     pass
 
 
+MAX_TEXT = 1000  # what a person may type in one go: a request, an answer, a revision
+
+
+def _short(text: str, what: str) -> None:
+    """Every word typed here reaches the model's prompt and the audit log, so keep it to a few lines."""
+    if len(text) > MAX_TEXT:
+        raise RunError(f"Keep {what} under {MAX_TEXT:,} characters: a sentence or two is enough")
+
+
 @dataclass
 class RunRecord:
     id: str
@@ -170,6 +179,7 @@ class RunService:
         request = request.strip()
         if len(request) < 3:
             raise RunError("Say what you want the brief to cover")
+        _short(request, "the request")
         with self._lock:
             record = RunRecord(
                 id=f"run-{len(self._runs) + 1}",
@@ -215,6 +225,8 @@ class RunService:
             unknown = [a.question_id for a in answers if a.question_id not in known]
             if unknown:
                 raise RunError(f"there is no question {unknown[0]!r} to answer")
+            for a in answers:
+                _short(a.answer, "an answer")
             merged = {a.question_id: a for a in record.answers}
             merged.update({a.question_id: a for a in answers if a.answer.strip()})
             record.answers = list(merged.values())
@@ -268,6 +280,7 @@ class RunService:
     def revise_plan(self, user: AppUser, run_id: str, feedback: str) -> tuple[RunRecord, list[str]]:
         if not feedback.strip():
             raise RunError("Say what you would like changed")
+        _short(feedback, "the change")
         with self._lock:
             record = self._open(run_id, RunStatus.PLANNING)
             assert record.plan is not None

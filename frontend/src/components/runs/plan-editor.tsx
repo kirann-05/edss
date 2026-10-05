@@ -259,6 +259,7 @@ export function PlanEditor({ run, catalogue }: { run: Run; catalogue: PlanCatalo
                   value={feedback}
                   onChange={(event) => setFeedback(event.target.value)}
                   rows={3}
+                  maxLength={1000}
                   className="text-base"
                   placeholder="What should change?"
                 />

@@ -41,6 +41,7 @@ export function NewRunForm() {
           value={text}
           onChange={(event) => setText(event.target.value)}
           rows={4}
+          maxLength={1000}
           placeholder="For example: where are we off target, and what are our options?"
           aria-describedby="request-help"
           className="min-h-28 text-base"

@@ -76,6 +76,24 @@ class TestClarify:
             pipeline.login("registrar").post("/api/runs", json={"request": "  "}).status_code == 409
         )
 
+    def test_typed_text_is_kept_to_a_thousand_characters(self, pipeline):
+        # everything typed reaches the model's prompt and the audit log
+        client = pipeline.login("registrar")
+        assert client.post("/api/runs", json={"request": "x" * 1000}).status_code == 201
+        long = client.post("/api/runs", json={"request": "x" * 1001})
+        assert long.status_code == 409 and "under 1,000 characters" in long.json()["detail"]
+
+        run = client.post("/api/runs", json={"request": VAGUE}).json()
+        answer = client.post(
+            f"/api/runs/{run['id']}/answers",
+            json={"answers": [{"question_id": run["questions"][0]["id"], "answer": "y" * 1001}]},
+        )
+        assert answer.status_code == 409 and "Keep an answer under" in answer.json()["detail"]
+
+        client.post(f"/api/runs/{run['id']}/skip-questions")
+        feedback = client.post(f"/api/runs/{run['id']}/plan/revise", json={"feedback": "z" * 1001})
+        assert feedback.status_code == 409 and "Keep the change under" in feedback.json()["detail"]
+
 
 class TestPlan:
     def make(self, pipeline):
