@@ -195,6 +195,13 @@ class TestManualEdit:
         assert edited.period_year == "2024-25" and edited.kpi_keys == ("PL_PCT", "AC_CO")
         assert edited.revision == plan.revision + 1
 
+    def test_changing_the_areas_brings_their_kpis_and_says_so(self, catalogue, plan):
+        edited = apply_patch(plan, {"domains": ["placement"]}, catalogue)
+        assert edited.domains == (Domain.PLACEMENT,)
+        assert edited.kpi_keys == catalogue.keys_for((Domain.PLACEMENT,))
+        back = apply_patch(edited, {"domains": ["placement", "research"]}, catalogue)
+        assert "Added Research" in diff_plans(edited, back, catalogue)
+
     def test_a_step_can_be_reworded_without_changing_its_id(self, catalogue, plan):
         edited = apply_patch(plan, {"steps": {"review": {"title": "Registrar review"}}}, catalogue)
         step = next(s for s in edited.steps if s.id == "review")
@@ -209,6 +216,9 @@ class TestManualEdit:
             {"domains": []},
             {"options_for": "sometimes"},
             {"steps": {"nope": {"title": "x"}}},
+            {"domains": ["astrology"]},
+            {"domains": ["reference"]},  # reference data serves the four areas, it is not one
+            {"audience": "   "},
         ],
     )
     def test_nonsense_is_refused_with_a_reason(self, catalogue, plan, patch):
@@ -233,6 +243,11 @@ class TestLock:
         with pytest.raises(PlanError, match="locked"):
             revise_plan(model, locked, "Drop finance", catalogue)
 
+    def test_a_plan_with_no_kpis_cannot_be_locked(self, model, catalogue):
+        plan = propose_plan(model, "Prepare the brief", [], catalogue)
+        with pytest.raises(PlanError, match="at least one area and one KPI"):
+            lock_plan(plan.model_copy(update={"kpi_keys": ()}), datetime.now(UTC))
+
     def test_a_plan_cannot_be_locked_twice(self, model, catalogue):
         locked = lock_plan(
             propose_plan(model, "Prepare the brief", [], catalogue), datetime.now(UTC)
@@ -252,3 +267,16 @@ def test_diff_plans_describes_each_kind_of_change(model, catalogue):
     assert "Period set to 2024-25" in changes
     assert any("every KPI" in c for c in changes)
     assert any("Governing Council review" in c for c in changes)
+
+
+@pytest.mark.parametrize(
+    ("request_text", "period"),
+    [
+        ("Placement brief for last year", "2024-25"),
+        ("Placement brief for the previous year", "2024-25"),
+        ("Placement brief for this year", "2025-26"),
+        ("Placement brief for 2023-24", "2023-24"),
+    ],
+)
+def test_a_period_said_in_words_is_read_from_the_request(model, catalogue, request_text, period):
+    assert propose_plan(model, request_text, [], catalogue).period_year == period
