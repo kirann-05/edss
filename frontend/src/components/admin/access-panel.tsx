@@ -91,6 +91,7 @@ export function AccessPanel({ options }: { options: AdminOptions }) {
                     <Input
                       id={`until-${area}`}
                       type="date"
+                      required
                       min={today}
                       value={until}
                       onChange={(e) => setExpiry({ ...expiry, [area]: e.target.value })}

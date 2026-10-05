@@ -19,6 +19,11 @@ function messageFrom(status: number, body: unknown): string {
   if (body && typeof body === "object" && "detail" in body) {
     const detail = (body as { detail: unknown }).detail;
     if (typeof detail === "string") return detail;
+    // FastAPI's own validation answers with a list of {loc, msg}: say the first one
+    if (Array.isArray(detail) && detail[0] && typeof detail[0].msg === "string") {
+      const field = Array.isArray(detail[0].loc) ? detail[0].loc.at(-1) : undefined;
+      return typeof field === "string" ? `${field.replaceAll("_", " ")}: ${detail[0].msg}` : detail[0].msg;
+    }
     if (detail && typeof detail === "object" && "message" in detail) {
       const message = (detail as { message: unknown }).message;
       if (typeof message === "string") return message;
