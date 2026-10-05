@@ -20,8 +20,6 @@ def _default(value: Any) -> Any:
         return value.value
     if isinstance(value, (set, frozenset)):
         return sorted(value, key=str)
-    if isinstance(value, tuple):
-        return list(value)
     if hasattr(value, "model_dump"):
         return value.model_dump(mode="json")
     raise TypeError(f"cannot serialise a value of type {type(value).__name__}")

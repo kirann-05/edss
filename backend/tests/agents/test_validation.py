@@ -4,6 +4,7 @@ The last class injects the eight faults from docs/ARCHITECTURE.md section 10 and
 each is caught by the check that is meant to catch it. A clean brief must pass all nine.
 """
 
+from dataclasses import replace
 from decimal import Decimal
 
 import pytest
@@ -44,6 +45,28 @@ def failing_ids(report):
     return {c.id for c in report.checks if not c.passed}
 
 
+def check(report, check_id):
+    return next(c for c in report.checks if c.id == check_id)
+
+
+def without_source(context, fact_id, **update):
+    """The same context, with one record stripped of its source reference (or given other fields)."""
+    facts = dict(context.facts)
+    facts[fact_id] = facts[fact_id].model_copy(update=update or {"source_ref": ""})
+    return replace(context, facts=facts)
+
+
+def citing(doc, text):
+    """The same brief, with the first option of the first option set describing itself with `text`."""
+    first = doc.option_sets[0]
+    option = first.options[0].model_copy(update={"description": text})
+    sets = (
+        OptionSet(kpi_key=first.kpi_key, options=(option, *first.options[1:])),
+        *doc.option_sets[1:],
+    )
+    return doc.model_copy(update={"option_sets": sets})
+
+
 class TestCleanBrief:
     def test_a_clean_brief_passes_every_check(self, clean, context):
         report = validate(clean, context)
@@ -82,6 +105,21 @@ class TestV1Figures:
         )
         v1 = next(c for c in validate(faulty, context).checks if c.id == "V1")
         assert any("NO_SUCH_KPI" in v.message for v in v1.violations)
+
+    def test_a_cited_record_with_its_source_passes(self, clean, context):
+        fact_id = clean.kpis[0].input_fact_ids[0]
+        report = validate(citing(clean, f"Based on record {{{{fact:{fact_id}}}}}."), context)
+        assert check(report, "V1").passed
+
+    def test_a_cited_record_without_a_source_reference_is_caught(self, clean, context):
+        fact_id = clean.kpis[0].input_fact_ids[0]
+        report = validate(
+            citing(clean, f"Based on record {{{{fact:{fact_id}}}}}."),
+            without_source(context, fact_id),
+        )
+        v1 = check(report, "V1")
+        assert not v1.passed
+        assert any(f"Record {fact_id} has no source reference" in v.message for v in v1.violations)
 
 
 class TestV2Assumptions:
@@ -259,6 +297,21 @@ class TestV7Traceability:
         )
         assert not v7.passed
 
+    def test_a_source_record_without_a_source_reference_is_caught(self, clean, context):
+        figure = next(f for f in clean.kpis if f.value is not None)
+        fact_id = figure.input_fact_ids[0]
+        v7 = check(validate(clean, without_source(context, fact_id)), "V7")
+        assert not v7.passed
+        assert v7.violations[0].message == f"Record {fact_id} behind {figure.key} has no source"
+
+    def test_a_source_record_from_an_unknown_system_is_caught(self, clean, context):
+        figure = next(f for f in clean.kpis if f.value is not None)
+        fact_id = figure.input_fact_ids[0]
+        v7 = check(
+            validate(clean, without_source(context, fact_id, source_system_id=999_999)), "V7"
+        )
+        assert not v7.passed
+
 
 class TestV8Coverage:
     def test_a_kpi_in_the_plan_but_not_the_brief_is_caught(self, clean, context):
@@ -297,6 +350,16 @@ class TestV8Coverage:
         v8 = next(c for c in validate(faulty, context).checks if c.id == "V8")
         assert not v8.passed
         assert "needs 2 or 3" in v8.violations[0].message
+
+    def test_an_excluded_department_left_out_of_data_health_is_caught(self, clean, context):
+        figure = next(f for f in clean.kpis if f.flags.excluded_departments)
+        dept = figure.flags.excluded_departments[0]
+        kept = tuple(
+            n for n in clean.data_health if (n.dept_code, n.domain) != (dept, figure.domain)
+        )
+        v8 = check(validate(clean.model_copy(update={"data_health": kept}), context), "V8")
+        assert not v8.passed
+        assert any(f"Excluded department {dept} is not flagged" in v.message for v in v8.violations)
 
 
 class TestV9DoubleCounting:
