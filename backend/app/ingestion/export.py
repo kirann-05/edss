@@ -12,6 +12,7 @@ import yaml
 
 from app.domain.dataset import Dataset
 from app.domain.enums import Domain
+from app.ingestion.manifest import TEMPLATE_MARKER
 from app.ingestion.rows import DEPARTMENT_COLUMNS, FACT_COLUMNS, PUBLICATION_COLUMNS
 
 _FILES = {
@@ -31,7 +32,9 @@ def _write(path: Path, header: tuple[str, ...], rows: list[list[str]]) -> None:
 
 
 def export_templates(folder: Path) -> None:
-    """Files with only the header and, for academic, one worked example row, for a data owner to fill in."""
+    """Files with only the header and, for academic, one worked example row, for a data owner to
+    fill in, and the manifest naming them. Its source names say CHANGE ME, which ingestion refuses
+    until a person writes in where each file really comes from."""
     folder.mkdir(parents=True, exist_ok=True)
     example = [
         "CSE",
@@ -55,7 +58,25 @@ def export_templates(folder: Path) -> None:
     _write(
         folder / "departments.csv",
         DEPARTMENT_COLUMNS,
-        [["CSE", "Computer Science and Engineering", "School of Computing"]],
+        [
+            ["CSE", "Computer Science and Engineering", "School of Computing"],
+            ["ECE", "Electronics and Communication Engineering", "School of Electronics"],
+        ],
+    )
+    entries = []
+    for domain, name in _FILES.items():
+        entry = {
+            "domain": domain.value,
+            "name": f"{TEMPLATE_MARKER}: the system {name} is exported from",
+            "owner_office": f"{TEMPLATE_MARKER}: the office that owns it",
+            "kind": "csv",
+            "file": name,
+        }
+        if domain is Domain.RESEARCH:
+            entry["publications"] = "publications.csv"
+        entries.append(entry)
+    (folder / "manifest.yml").write_text(
+        yaml.safe_dump({"departments": "departments.csv", "sources": entries}, sort_keys=False)
     )
 
 

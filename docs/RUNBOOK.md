@@ -111,7 +111,7 @@ make up
 
 ## 9. Real data
 
-Only after the data specification is signed and the exports have been checked with their data owners. Keep the folder under `data/real/`, which git never sees.
+Only after the data specification is signed and the exports have been checked with their data owners. Keep the folder under `data/real/`, which git never sees. Start from a copy of `data/sample/templates`: one file per area, a worked example row, and a `manifest.yml` whose source names say `CHANGE ME` until you write in where each file really comes from. Delete the example rows.
 
 1. **Check the folder** (nothing is written): `make ingest DIR=data/real/2026-10`. It reads `manifest.yml` and every file it names, and prints the reconciliation report: what was accepted, every refused row with its reason, and where there is no record at all. Fix refused rows at the source.
 2. **Back up, and stop the app**: `make db-backup`, then `docker compose --profile app stop backend frontend`. The app keeps people and data in memory while it runs, so it must not be running while a load changes the database underneath it (decision D31). If it is, it stops answering, with a 503 asking for a restart in real mode, within a second of the switch. The database itself stays up.

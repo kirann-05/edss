@@ -23,6 +23,8 @@ from app.ingestion.adapters import CsvAdapter
 from app.ingestion.loader import IngestResult, Ledger
 from app.ingestion.rows import DEPARTMENT_COLUMNS, FACT_REQUIRED, PUBLICATION_REQUIRED, SchemaError
 
+TEMPLATE_MARKER = "CHANGE ME"  # what the templates' manifest says until a person fills it in
+
 
 class ManifestError(ValueError):
     pass
@@ -97,6 +99,12 @@ def ingest_folder(
             raise ManifestError(
                 f"a source needs a domain from {[d.value for d in Domain]}: {entry}"
             ) from None
+        if any(TEMPLATE_MARKER in str(entry.get(k, "")) for k in ("name", "owner_office")):
+            # these words travel with every figure as its source, so they must be true
+            raise ManifestError(
+                f"the {domain.value} source still says {TEMPLATE_MARKER!r}: write in manifest.yml "
+                "which system the file was exported from and which office owns it"
+            )
         source = ledger.source(entry["name"], entry["owner_office"], entry.get("kind", "csv"))
         column_map = entry.get("column_map")
         for label, filename, required, ingest in (

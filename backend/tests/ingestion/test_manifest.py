@@ -148,3 +148,31 @@ class TestReconciliationReport:
             )
             < 400
         )
+
+
+class TestTemplates:
+    """What a data owner is handed (`make seed` writes it to data/sample/templates)."""
+
+    @pytest.fixture
+    def templates(self, tmp_path) -> Path:
+        from app.ingestion.export import export_templates
+
+        export_templates(tmp_path / "templates")
+        return tmp_path / "templates"
+
+    def test_a_template_folder_is_refused_until_its_sources_are_named(self, templates):
+        with pytest.raises(ManifestError, match="academic source still says 'CHANGE ME'"):
+            ingest_folder(templates, TODAY, "real")
+
+    def test_filled_in_as_its_example_rows_show_it_reads_cleanly(self, templates):
+        def name_sources(manifest):
+            for entry in manifest["sources"]:
+                entry["name"] = f"{entry['domain']} register"
+                entry["owner_office"] = "Registrar's Office"
+
+        edit_manifest(templates, name_sources)
+        outcome = ingest_folder(templates, TODAY, "real")
+        assert outcome.errors == [] and outcome.rejected == 0
+        assert outcome.accepted == 2  # the worked academic row and the example paper
+        [paper] = outcome.ledger.publications
+        assert paper.dept_codes == ("CSE", "ECE")

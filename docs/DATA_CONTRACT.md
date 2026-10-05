@@ -153,4 +153,4 @@ Real data replaces this by switching `data_mode` to real after ingesting a batch
 - Every row keeps its source reference (file name and row, or query id and key).
 - Re-ingesting the same checksum is a no-op.
 - Percent-like values arrive as numerator and denominator whenever the source has them.
-- CSV templates for each domain live in `data/sample/templates/` (create from this contract on Day 1).
+- CSV templates for each domain live in `data/sample/templates/` with the `manifest.yml` that names them (`make seed` writes them). Each source in that manifest says `CHANGE ME` until a person writes in the system the file comes from and the office that owns it, and ingestion refuses the folder until then, because those words travel with every figure as its source.

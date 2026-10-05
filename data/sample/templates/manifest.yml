@@ -1,0 +1,28 @@
+departments: departments.csv
+sources:
+- domain: academic
+  name: 'CHANGE ME: the system academic.csv is exported from'
+  owner_office: 'CHANGE ME: the office that owns it'
+  kind: csv
+  file: academic.csv
+- domain: research
+  name: 'CHANGE ME: the system research.csv is exported from'
+  owner_office: 'CHANGE ME: the office that owns it'
+  kind: csv
+  file: research.csv
+  publications: publications.csv
+- domain: placement
+  name: 'CHANGE ME: the system placement.csv is exported from'
+  owner_office: 'CHANGE ME: the office that owns it'
+  kind: csv
+  file: placement.csv
+- domain: finance
+  name: 'CHANGE ME: the system finance.csv is exported from'
+  owner_office: 'CHANGE ME: the office that owns it'
+  kind: csv
+  file: finance.csv
+- domain: reference
+  name: 'CHANGE ME: the system reference.csv is exported from'
+  owner_office: 'CHANGE ME: the office that owns it'
+  kind: csv
+  file: reference.csv
