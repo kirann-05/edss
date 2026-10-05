@@ -11,6 +11,7 @@ import argparse
 import getpass
 import sys
 
+from pydantic import ValidationError
 from sqlalchemy import create_engine, func, select, text
 
 from app.core.security import hash_password
@@ -19,7 +20,12 @@ from app.db.audit_store import DbAuditLog
 from app.db.urls import owner_url
 from app.domain.enums import Role
 from app.domain.models import AppUser
-from app.services.users import MIN_PASSWORD
+from app.services.users import _EMAIL, MIN_PASSWORD
+
+
+def refused(message: str) -> int:
+    print(message, file=sys.stderr)
+    return 2
 
 
 def main() -> int:
@@ -33,27 +39,53 @@ def main() -> int:
     parser.add_argument("--school", help="the school of a Dean")
     args = parser.parse_args()
     email = args.email.strip().lower()
+    dept = args.dept.strip().upper() if args.dept else None
+    if not _EMAIL.match(email):
+        return refused("That is not an email address.")
     if email.endswith("@edss.test"):
-        print("The .test domain is for synthetic personas only.", file=sys.stderr)
-        return 2
-    password = getpass.getpass("Password: ")
-    if len(password) < MIN_PASSWORD:
-        print(f"A password needs at least {MIN_PASSWORD} characters.", file=sys.stderr)
-        return 2
-    if getpass.getpass("Again: ") != password:
-        print("The two did not match.", file=sys.stderr)
-        return 2
+        return refused("The .test domain is for synthetic personas only.")
+    try:  # the role's own rules, such as a HOD's department, before anyone types a password
+        AppUser(
+            id=0,
+            email=email,
+            name=args.name.strip(),
+            role=Role(args.role),
+            dept_code=dept,
+            school=args.school,
+        )
+    except ValidationError as error:
+        return refused(error.errors()[0]["msg"].removeprefix("Value error, ") + ".")
+
     engine = create_engine(owner_url())
     try:
-        with engine.begin() as conn:
+        with engine.connect() as conn:
             if conn.execute(select(t.app_user.c.id).where(t.app_user.c.email == email)).first():
-                print("Someone already has that email.", file=sys.stderr)
-                return 2
+                return refused("Someone already has that email.")
+            if (
+                dept
+                and not conn.execute(
+                    select(t.department.c.code).where(t.department.c.code == dept)
+                ).first()
+            ):
+                return refused(f"There is no department {dept!r}.")
+
+        try:
+            password = getpass.getpass("Password: ")
+            if len(password) < MIN_PASSWORD:
+                return refused(f"A password needs at least {MIN_PASSWORD} characters.")
+            if getpass.getpass("Again: ") != password:
+                return refused("The two did not match.")
+        except (EOFError, KeyboardInterrupt):
+            return refused("\nStopped: no password was given, so nobody was added.")
+
+        with engine.begin() as conn:
             next_id = (
                 conn.execute(select(func.coalesce(func.max(t.app_user.c.id), 0))).scalar_one() + 1
             )
-            user = AppUser(id=next_id, email=email, name=args.name.strip(), role=Role(args.role),
-                           dept_code=args.dept, school=args.school)  # fmt: skip
+            user = AppUser(
+                id=next_id, email=email, name=args.name.strip(), role=Role(args.role),
+                dept_code=dept, school=args.school,
+            )  # fmt: skip
             conn.execute(
                 text(
                     "insert into app_user (id, email, name, role, dept_code, school, active, "
