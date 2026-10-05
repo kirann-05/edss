@@ -1,0 +1,28 @@
+# The 14 labs, and how to show each one
+
+If you are asked "show me Lab N": what the book asks, where it lives, what to show in under a minute, and the test that proves it. Paths are under `backend/` unless they say otherwise. Every command here has been run.
+
+| Lab | The book asks for | Where it is | Show it | Proved by |
+| --- | --- | --- | --- | --- |
+| 1 | Plan and revise: a vague request is clarified, planned, revised, locked | `app/agents/skills/plan_skill.py`, `app/services/runs.py` | New brief, "Prepare the leadership brief": the three questions, the plan, untick a KPI, save, "Revision 2", lock (DEMO.md step 2) | `tests/agents/test_plan_skill.py`, `test_hybrid_planner.py`, `tests/api/test_runs_api.py` |
+| 2 | A tool-using agent that calls data and computes | Domain agents in `app/agents/graph.py`, calling typed connector functions; the KPI engine in `app/kpi/engine.py` and `formulas.py` | Dashboard, open "Placement percentage": how it is calculated, 937 over 1,250, from totals (DEMO.md step 4) | `tests/kpi/test_engine.py`, `test_formulas.py`, `tests/agents/test_graph.py` |
+| 3 | Reusable skills with a contract | `app/agents/skills/plan_skill.py`, `options_skill.py`: each a schema, a code-side check, and its prompt as data in `app/agents/prompts.py` | Open `prompts.py` and one skill: what the model is told, what comes back, what is checked | `tests/agents/test_plan_skill.py`, `test_options_skill.py`, `test_prompts.py`, `test_real_model_skills.py` |
+| 4 | Memory split: short-term run state apart from long-term memory | Run state in the graph's checkpoints; the archive of prior briefs in `app/services/archive.py`, and with pgvector in `app/db/archive_store.py` | Review queue, a draft, the "Prior briefs" tab: earlier reports with what was decided and why they match | `tests/api/test_archive_publish.py`, `tests/db/test_archive_store.py` |
+| 5 | An MCP-style connector: one server for all sources | `app/mcp_connector/` (server, client, per-run tokens), ingestion adapters in `app/ingestion/` | Run a brief, then Audit: every "Read through the connector" row, with the tool and a hash of the answer | `tests/mcp_connector/` (swap test: identical KPIs through MCP and directly), `tests/ingestion/test_equivalence.py` |
+| 6 | Runtime: skills, tools, memory and audit under control | `app/agents/runtime.py` (traced steps, budget), `app/governance/audit.py` (hash chain), checkpoints | Audit page: "The audit chain verifies", a run's trace step by step | `tests/governance/test_audit.py`, `tests/api/test_audit_api.py` (tampering found at the row), `tests/db/test_audit_store.py` |
+| 7 | The full node graph | `app/agents/graph.py` | `docs/diagrams/2-agent-graph.png`, then a run's timeline from plan lock to the human gate (DEMO.md step 3) | `tests/agents/test_graph.py` |
+| 8 | Parallel fan-out and merge | `Send` fan-out to the four domain agents and to option drafting, in `graph.py` | Run page: "4 domain agents worked at the same time (measured from the events)"; `make benchmark` | `tests/agents/test_graph.py` (TestParallelism), `docs/benchmark.md` |
+| 9 | Grounding and evidence | Reference tokens `{{kpi:...}}` and `{{fact:...}}` in `app/agents/tokens.py`; check V1 | A brief: click any figure, then a source record with its system, reference and as-of date (DEMO.md steps 4 and 5) | `tests/agents/test_tokens.py`, `test_validation.py` |
+| 10 | Validate, diagnose, fix | Nine checks in `app/agents/validation/checks.py`, eight faults in `faults.py`, repair in `app/agents/repair.py`, budget of 3 | New brief, "Demo: inject a failure", "A figure written by hand": failing V1, repair, all nine pass (DEMO.md step 6) | `tests/agents/test_validation.py`, `test_repair.py`, `test_graph.py` (every fault, and escalation) |
+| 11 | From a spec to a tested output | V1 to V9 as a hard gate; `make acceptance` | `make acceptance`: 94 fault trials over 18 plans, all caught and repaired, in about 2 seconds | `docs/acceptance-report.md`, and the command fails if one slips through |
+| 12 | Safety and governance: approval, evaluation, rollback | `app/governance/service.py`, `app/core/rbac.py` | Principal edits and approves; Reports: compare versions, roll back with a reason; HOD sees only their department (DEMO.md steps 7 to 9) | `tests/governance/test_governance.py`, `tests/api/test_scoping.py`, `test_authorization.py`, the browser tests |
+| 13 | Discipline-specific agents: specialist packs | `app/specialists/` and its `packs/`, handed to drafting through `app/agents/frameworks.py` | A brief: "Strategic plan pack" on each KPI's options; open `packs/nirf.yaml`, empty until IQAC (rule 12) | `tests/specialists/test_specialists.py` |
+| 14 | Capstone: an integrated, deployed, team-owned system | Everything, packaged: `compose.yaml`, `backend/Dockerfile`, `frontend/Dockerfile`, `docs/RUNBOOK.md` | `make demo` for the live system; `make up` for containers on PostgreSQL; `make smoke` from a fresh clone | `make check`, `make e2e`, `make rehearse`, `make test-db`, `make test-api-db`, `make smoke` |
+
+## Where we read the book differently
+
+`docs/SPEC.md` section 9 lists each place, with the decision. The short version:
+
+- **Lab 8** asks for best-of-N candidate merging, which suits generated text, not KPI arithmetic. Here the four domain agents and the option drafts run in parallel and merge by plan coverage.
+- **Lab 13** describes domain packs. Here they are framework packs (Strategic plan, NIRF, NAAC), and the NIRF and NAAC packs stay empty until IQAC supplies definitions, because rule 12 forbids inventing them.
+- **The book's pseudocode** runs the human review before validation. Here validation is a hard gate before any person sees a draft.

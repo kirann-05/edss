@@ -1,6 +1,6 @@
 # VIVA NOTES
 
-Kiran must be able to explain and defend everything. Each answer below is written to be said out loud, and every number in it comes from a test or report named in `docs/SLIDES_KIT.md`. Last full pass 2026-10-04.
+Kiran must be able to explain and defend everything. Each answer below is written to be said out loud, and every number in it comes from a test or report named in `docs/SLIDES_KIT.md`. Last full pass 2026-10-06. For "show me Lab N", see `docs/LABS.md`.
 
 ## Likely questions
 
