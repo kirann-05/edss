@@ -1,7 +1,7 @@
 """Shared request dependencies: who is signed in, what they may do, and what they may see."""
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from typing import Annotated
 
@@ -50,6 +50,12 @@ class AppState:
     ]  # today, as freshness is judged. Fixed in tests, the real date otherwise
     drafter: object  # the model behind the graph's drafting steps
     clarifier: object
+    # what to close when the app stops: database connection pools, in database mode
+    on_shutdown: list[Callable[[], None]] = field(default_factory=list)
+
+    def close(self) -> None:
+        for close in self.on_shutdown:
+            close()
 
     @property
     def demo_login_enabled(self) -> bool:

@@ -16,15 +16,16 @@ from app.services.system_config import DataMode
 
 
 class DbSystemConfig:
-    def __init__(self, engine: Engine, default: DataMode) -> None:
+    def __init__(self, engine: Engine) -> None:
         self._engine = engine
         with engine.begin() as conn:
-            # first start: the environment's mode is written once, and from then on the table rules
+            # a first start always records synthetic. Only loading real data switches a database
+            # to real (app/db/real_data.py), so an env setting can never declare data real
             conn.execute(
                 text(
-                    "insert into system_config (key, value) values ('data_mode', :v) on conflict do nothing"
-                ),
-                {"v": default},
+                    "insert into system_config (key, value) values ('data_mode', 'synthetic') "
+                    "on conflict do nothing"
+                )
             )
 
     def data_mode(self) -> DataMode:

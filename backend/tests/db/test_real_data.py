@@ -246,3 +246,35 @@ def test_real_mode_will_not_start_with_a_hosted_model(real_app, real_db):
             real_db[1], data_mode="real", llm_provider="hosted", allow_hosted_llm=True,
             llm_base_url="https://models.example.com/v1",
         )  # fmt: skip
+
+
+def test_an_env_setting_alone_never_makes_a_database_real(scratch_db, migrated):
+    # a fresh database that has never held real data: starting with DATA_MODE=real is refused,
+    # and the stored mode stays synthetic, so the synthetic app can still start afterwards
+    name = f"edss_fresh_{secrets.token_hex(4)}"
+    with _admin() as admin:
+        admin.execute(f'create database "{name}"')
+    try:
+        with pytest.MonkeyPatch.context() as patch:
+            patch.setenv("EDSS_DB_NAME", name)
+            command.upgrade(Config(ALEMBIC_INI), "head")
+            setup_checkpoints(owner_url(database=name))
+            engine = create_engine(owner_url(database=name))
+            with engine.begin() as conn:
+                save_dataset(
+                    conn, generate(reference_date=REF), load_seed_definitions(), load_seed_targets()
+                )
+            with pytest.raises(RuntimeError, match="holds no real data"):
+                create_app(make_settings(edss_database=True, data_mode="real"), today=TODAY)
+            with engine.connect() as conn:
+                stored = conn.execute(
+                    text("select value from system_config where key = 'data_mode'")
+                ).scalar_one()
+            engine.dispose()
+            assert stored == "synthetic"
+            create_app(
+                make_settings(edss_database=True), today=TODAY
+            )  # still starts in synthetic mode
+    finally:
+        with _admin() as admin:
+            admin.execute(f'drop database "{name}" with (force)')

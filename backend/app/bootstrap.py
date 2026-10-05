@@ -119,6 +119,7 @@ def build_state(
 
     # Lab 13: a KPI tagged with a framework that waits for IQAC stops the app (rule 12)
     SPECIALISTS.check_definitions(d.framework for d in store.definitions)
+    saver = checkpointer(app_url(), max_size=8) if engine else InMemorySaver()
     graph = build_graph(
         GraphDeps(
             connector=graph_connector,
@@ -129,7 +130,7 @@ def build_state(
             source_latency=settings.source_latency_ms / 1000,
             frameworks=SPECIALISTS,
         ),
-        checkpointer(app_url(), max_size=8) if engine else InMemorySaver(),
+        saver,
     )
     runs = RunService(
         store=RunRows(engine) if engine else None,
@@ -143,7 +144,7 @@ def build_state(
         open_reads=open_reads,
         direct=connector,
     )
-    return AppState(
+    state = AppState(
         settings=settings,
         store=store,
         users=users,
@@ -166,6 +167,9 @@ def build_state(
             lockout=timedelta(minutes=settings.login_lockout_minutes),
         ),
     )
+    if engine is not None:
+        state.on_shutdown += [saver.conn.close, engine.dispose]
+    return state
 
 
 def _from_database(
@@ -175,13 +179,18 @@ def _from_database(
     A first start writes the seed people and the default grants there once. It connects as the
     app role, which cannot change or delete the audit log (migration 0004)."""
     engine = create_engine(app_url(), pool_pre_ping=True)
-    config = DbSystemConfig(engine, settings.data_mode)
+    config = DbSystemConfig(engine)
     mode = config.data_mode()
     if mode != settings.data_mode:
         # the stored mode and the environment must agree, so every check keyed on either is right
+        if mode == "real":
+            raise RuntimeError(
+                f"the database is in real mode (real data has been loaded) but DATA_MODE="
+                f"{settings.data_mode}. Set DATA_MODE=real"
+            )
         raise RuntimeError(
-            f"the database is in {mode} mode but DATA_MODE={settings.data_mode}. Set DATA_MODE={mode}"
-            + (" (real data has been loaded)" if mode == "real" else "")
+            "DATA_MODE=real but the database holds no real data. Load it first with "
+            "make ingest DIR=data/real/<folder> ARGS=--db, which switches the database to real mode"
         )
     if store is None:
         with engine.connect() as conn:

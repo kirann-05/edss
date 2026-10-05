@@ -54,11 +54,14 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-        if mcp is None:
-            yield
-            return
-        async with mcp.session_manager.run():
-            yield
+        try:
+            if mcp is None:
+                yield
+            else:
+                async with mcp.session_manager.run():
+                    yield
+        finally:
+            app.state.edss.close()  # the database connections, in database mode
 
     app = FastAPI(
         lifespan=lifespan,

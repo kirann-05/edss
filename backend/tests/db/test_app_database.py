@@ -254,3 +254,11 @@ def test_a_published_report_stays_in_the_archive_across_a_restart(database):
     ).version
     _, restarted = start()
     assert f"report-v{version.version}" in [p.id for p in restarted.state.edss.archive.all()]
+
+
+def test_stopping_the_app_closes_its_database_connections(database):
+    app = create_app(make_settings(edss_database=True), today=REF)
+    with TestClient(app):  # runs the lifespan: start, then stop
+        pool = app.state.edss.on_shutdown[0].__self__
+        assert not pool.closed
+    assert pool.closed
