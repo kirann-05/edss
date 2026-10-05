@@ -117,8 +117,29 @@ def create_app(
         app.mount("/mcp", mcp.streamable_http_app(streamable_http_path="/"))
     if settings.edss_database:
         guard_data_mode(app)
+    protective_headers(app)
     register_error_handlers(app)
     return app
+
+
+SAFE_HEADERS = {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Content-Security-Policy": "frame-ancestors 'none'",
+    "Referrer-Policy": "same-origin",
+}
+
+
+def protective_headers(app: FastAPI) -> None:
+    """On every API answer. The web app sets the same on its pages (next.config.ts), but it does
+    not add them to what it passes through from here, and the API can be reached on its own."""
+
+    @app.middleware("http")
+    async def add_headers(request: Request, call_next):
+        response = await call_next(request)
+        for key, value in SAFE_HEADERS.items():
+            response.headers.setdefault(key, value)
+        return response
 
 
 def guard_data_mode(app: FastAPI) -> None:

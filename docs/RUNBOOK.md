@@ -128,7 +128,7 @@ Said plainly, so nobody finds out the hard way:
 
 - **Official KPI definitions.** Every KPI is a placeholder until IQAC supplies the approved list, so statuses are not official, even on real data.
 - **Single sign-on.** People sign in with a password, or the demo buttons with synthetic data. University SSO is not built.
-- **HTTPS.** The web app speaks plain HTTP on 127.0.0.1. Serving it to others needs a reverse proxy with the university's certificate in front of it, and `COOKIE_SECURE=true`.
+- **HTTPS.** The web app speaks plain HTTP on 127.0.0.1. Serving it to others needs a reverse proxy with the university's certificate in front of it, sending `Strict-Transport-Security`, and `COOKIE_SECURE=true`. The app itself already refuses to be framed by another site and sends the other protective headers.
 - **One API process.** The backend is not built to run as several copies behind a load balancer (decision D31).
 
 ## Troubleshooting

@@ -10,6 +10,24 @@ const nextConfig: NextConfig = {
   distDir: process.env.EDSS_DIST_DIR ?? ".next",
   // the container image runs the small server Next.js traces for itself (frontend/Dockerfile)
   output: process.env.EDSS_STANDALONE === "1" ? "standalone" : undefined,
+  poweredByHeader: false, // no need to tell anyone what the server runs
+  async headers() {
+    // For every page and every /api answer. HSTS belongs on the university's HTTPS proxy (RUNBOOK).
+    // A full script Content-Security-Policy needs per-request nonces in Next.js, so only framing is
+    // limited here.
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" }, // no other site may frame a page, so no clickjacking
+          { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "same-origin" }, // a report's address never leaves the site
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [{ source: "/api/:path*", destination: `${apiOrigin}/api/:path*` }];
   },
