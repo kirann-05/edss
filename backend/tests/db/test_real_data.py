@@ -242,6 +242,12 @@ def test_in_real_mode_the_archive_fills_only_with_reports_published_here(real_ap
     assert [p.id for p in state.archive.all()] == [f"report-v{version.version}"]
 
 
+def test_real_mode_will_not_start_without_a_jwt_secret(real_app, real_db):
+    # a throwaway secret would end every session at each restart, and hide a missing setting
+    with pytest.raises(RuntimeError, match="DATA_MODE=real needs JWT_SECRET"):
+        start(real_db[1], data_mode="real", jwt_secret=None)
+
+
 def test_real_mode_will_not_start_with_a_hosted_model(real_app, real_db):
     with pytest.raises(DataModeViolation, match="never allowed when data mode is real"):
         start(
