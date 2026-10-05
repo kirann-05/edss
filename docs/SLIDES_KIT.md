@@ -27,9 +27,9 @@ Four domain agents gather department data in parallel through one governed conne
 
 | Fact | Number | Source |
 | --- | --- | --- |
-| Backend tests | 1072, all passing (54 need the database and skip without it; 1 needs Ollama running) | `make check`, `make test-db` |
-| The API tests again, with everything in PostgreSQL | 237, all passing | `make test-api-db` |
-| Frontend unit and component tests | 224 in 14 files, all passing | `make check` |
+| Backend tests | 1136, all passing (69 need the database and skip without it; 1 needs Ollama running) | `make check`, `make test-db` |
+| The API tests again, with everything in PostgreSQL | 241, all passing | `make test-api-db` |
+| Frontend unit and component tests | 234 in 16 files, all passing | `make check` |
 | Browser tests, real API and pages | 15, all passing, including an accessibility scan (WCAG 2.2 AA rules) | `make e2e` |
 | The whole demo walked by a browser | 9 steps in 9 to 11 seconds | `make rehearse` |
 | Synthetic data | 8 departments, 3 academic years (2023-24 to 2025-26), fixed seed, so every run gives the same figures | `docs/DATA_CONTRACT.md` section 6 |
