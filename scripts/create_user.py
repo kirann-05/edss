@@ -44,6 +44,8 @@ def main() -> int:
         return refused("That is not an email address.")
     if email.endswith("@edss.test"):
         return refused("The .test domain is for synthetic personas only.")
+    if not args.name.strip():
+        return refused("A person needs a name.")
     try:  # the role's own rules, such as a HOD's department, before anyone types a password
         AppUser(
             id=0,
