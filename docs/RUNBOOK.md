@@ -114,13 +114,13 @@ make up
 Only after the data specification is signed and the exports have been checked with their data owners. Keep the folder under `data/real/`, which git never sees.
 
 1. **Check the folder** (nothing is written): `make ingest DIR=data/real/2026-10`. It reads `manifest.yml` and every file it names, and prints the reconciliation report: what was accepted, every refused row with its reason, and where there is no record at all. Fix refused rows at the source.
-2. **Back up**: `make db-backup`.
+2. **Back up, and stop the app**: `make db-backup`, then `docker compose --profile app stop backend frontend`. The app keeps people and data in memory while it runs, so it must not be running while a load changes the database underneath it (decision D31). The database itself stays up.
 3. **Load it**: `make ingest DIR=data/real/2026-10 ARGS=--db`. What was accepted is added to the database; a file that has not changed adds nothing, a changed file becomes a new batch, and earlier records are never changed, so a record an approved brief cites stays as it was. The departments in the manifest become the list the app shows.
 4. **The first real load switches the database to real mode**, once. From then the synthetic records are kept but never read, and the synthetic personas are switched off. It is a row in the audit log.
 5. **Create the first administrator**: `make create-user ARGS="--email it.admin@<university> --name 'IT Administrator' --role admin"`. It asks for the password twice and never shows it.
 6. **Start in real mode**: set `DATA_MODE=real` in `.env` (with `JWT_SECRET` and `EDSS_DEMO_LOGIN=false`), then `make up`. The app refuses to start if `DATA_MODE` and the database disagree, if `JWT_SECRET` is missing, or if there is no real administrator. In real mode the language model must be on this machine or a university server; a hosted model is refused.
 
-Inside the containers, steps 3 and 5 are the same scripts: `docker compose run --rm -v "$PWD/data/real:/data/real:ro" migrate python /edss/scripts/ingest.py /data/real/2026-10 --mode real --db`, and `docker compose run --rm migrate python /edss/scripts/create_user.py --email ... --name ... --role admin`.
+Inside the containers, steps 3 and 5 are the same scripts, and both have been run this way on a throwaway stack: `docker compose run --rm -v "$PWD/data/real:/data/real:ro" migrate python /edss/scripts/ingest.py /data/real/2026-10 --mode real --db`, and `docker compose run --rm migrate python /edss/scripts/create_user.py --email ... --name ... --role admin`.
 
 ## 10. Not ready yet
 
