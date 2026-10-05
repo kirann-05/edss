@@ -1,7 +1,7 @@
 # Next.js sends anonymous usage telemetry by default. Nothing leaves this machine (rule 7)
 export NEXT_TELEMETRY_DISABLED := 1
 
-.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse demo-video diagrams benchmark db-up db-down up down smoke db-check db-backup create-user db-migrate test-db test-api-db seed-db
+.PHONY: help dev api web test test-api test-web e2e lint typecheck check check-all types seed ingest acceptance demo demo-reset rehearse demo-video diagrams benchmark db-up db-down up down smoke db-check db-backup create-user db-migrate test-db test-api-db seed-db coverage
 
 help:
 	@echo "make dev        run API (8000) and web (3000) together"
@@ -113,6 +113,15 @@ test-db:
 # the whole API test suite again, with the shared app keeping everything in PostgreSQL
 test-api-db:
 	cd backend && EDSS_REQUIRE_DB=1 EDSS_API_ON_DATABASE=1 uv run pytest -q tests/api
+
+# backend line coverage over every suite (needs make db-up). coverage is a one-off tool, not a dependency
+COV = uv run --with coverage==7.16.2 coverage
+coverage:
+	cd backend && rm -f .coverage-all .coverage-api && \
+	EDSS_REQUIRE_DB=1 $(COV) run --data-file=.coverage-all --source=app -m pytest -q -p no:cacheprovider && \
+	EDSS_REQUIRE_DB=1 EDSS_API_ON_DATABASE=1 $(COV) run --data-file=.coverage-api --source=app -m pytest -q -p no:cacheprovider tests/api && \
+	$(COV) combine --data-file=.coverage .coverage-all .coverage-api >/dev/null && \
+	$(COV) report --skip-covered --sort=miss && rm -f .coverage
 
 # parallel against one-at-a-time domain agents, written to docs/benchmark.md
 benchmark:

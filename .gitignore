@@ -33,3 +33,6 @@ backups/
 # the recorded demo, for a USB stick, never into git
 demo-video/
 .demo-video-run/
+
+# make coverage, if it stops part way
+backend/.coverage*

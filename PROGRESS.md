@@ -35,6 +35,7 @@ Backend (`backend/pyproject.toml`, pinned by `uv.lock`)
 | pydantic-settings | Typed, validated environment config. Secrets have no defaults |
 | pytest | Test runner |
 | httpx2 | Starlette's test client dependency. Starlette 1.7 deprecates plain httpx for it |
+| coverage 7.16 (one-off, not in the lockfile) | `make coverage` runs it through `uv run --with`, so it is fetched once for measuring and never installed into the app or the image (2026-10-06) |
 | ruff | Lint and format in one tool |
 | pyyaml, types-pyyaml | KPI definitions and targets are YAML data (decision D8). safe_load only |
 | argon2-cffi | Password hashing. Argon2 is the current recommendation, passlib is unmaintained |
