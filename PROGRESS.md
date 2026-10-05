@@ -52,7 +52,7 @@ Frontend (`frontend/package.json`, pinned by `pnpm-lock.yaml`)
 | Package | Why |
 | --- | --- |
 | next, react, react-dom | App framework from the stack in CLAUDE.md |
-| shadcn, radix-ui, class-variance-authority, lucide-react, tw-animate-css | shadcn/ui components, accessible primitives and icons. Components are copied into `src/components/ui`, so we own them |
+| shadcn, radix-ui, class-variance-authority, lucide-react, tw-animate-css | shadcn/ui components, accessible primitives and icons. Components are copied into `src/components/ui`, so we own them  `shadcn` itself is a dev dependency (2026-10-06): only its CSS is used, at build time, and its command-line tool pulls in `braces`, which has an advisory with no fix. It is not in the production image |
 | cn | shadcn's own class-name merge helper (replaces clsx plus tailwind-merge). Repository is under the shadcn-ui organisation |
 | @tanstack/react-query | Server state, caching and refetch for every page |
 | echarts | Charts, as chosen in docs/UI_SPEC.md |
