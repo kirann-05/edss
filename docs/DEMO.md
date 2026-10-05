@@ -54,7 +54,7 @@ Top right, click your name (the account menu), then "Sign out", then the role bu
 
 **Say** "Before anyone looks at a KPI, the system says what the data cannot support. Civil's placement data is five months old, so it is used but flagged everywhere. Mechanical has no research record this year, so it is left out of research figures, never counted as zero. All of this is synthetic data, generated with these problems planted on purpose, and everything runs on this laptop with the Wi-Fi off."
 
-**If it goes wrong.** No role buttons on the sign-in page means demo mode is off: you started `make dev`, not `make demo`. Ctrl-C and run `make demo`.
+**If it goes wrong.** If the page was opened before "EDSS is ready", the role buttons appear by themselves within a few seconds. Still none after half a minute means demo mode is off: you started `make dev`, not `make demo`. Ctrl-C and run `make demo`.
 
 ### Step 2. A vague request, questions, and an edited plan (Registrar)
 

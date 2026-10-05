@@ -76,6 +76,10 @@ function DataHealth() {
 
       {mayRefresh && <RefreshOutcome refresh={refresh} />}
 
+      <p className="text-sm text-muted-foreground">
+        Counted in cells, one for each department and area
+        {data.cells.some((c) => c.restricted) ? ", for the departments your role can see." : "."}
+      </p>
       <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label="Cells by state">
         {STATES.map((state) => (
           <li key={state} className="flex flex-col items-start gap-2 rounded-xl border bg-card p-4">

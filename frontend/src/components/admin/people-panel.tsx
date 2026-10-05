@@ -102,7 +102,8 @@ export function PeoplePanel({ options }: { options: AdminOptions }) {
                 </TableCell>
                 <TableCell className="py-3">{user.active ? "Active" : "Switched off"}</TableCell>
                 <TableCell className="py-3">
-                  <span className="flex justify-end gap-1">
+                  {/* stacked below xl, so the table fits a 1280 by 720 projector at 125 percent */}
+                  <span className="flex flex-col items-end gap-1 xl:flex-row xl:justify-end">
                     <Button variant="ghost" size="sm" onClick={() => setEditing(user)} aria-label={`Edit ${user.name}`}>
                       <Pencil aria-hidden />
                       Edit
