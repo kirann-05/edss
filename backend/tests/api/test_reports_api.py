@@ -34,7 +34,7 @@ class TestReading:
     def test_a_version_carries_the_fully_rendered_report_and_its_approver(self, pipeline):
         publish(pipeline)
         detail = pipeline.login("viewer").get("/api/reports/versions/1").json()
-        assert detail["approved_by"] == "Dr. Kavita Rao" and detail["state"] == "current"
+        assert detail["approved_by"] == "Jane Doe" and detail["state"] == "current"
         assert detail["document"]["title"] == "Decision brief, 2025-26"
         refs = [
             seg

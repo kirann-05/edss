@@ -112,7 +112,7 @@ class TestApprove:
         run_id, brief_id = pipeline.draft(pipeline.login("registrar"))
         body = client.post(f"/api/briefs/{brief_id}/decision", json={"kind": "approve"}).json()
         assert body["brief"]["status"] == "published" and body["version"] == 1
-        assert body["brief"]["approval"]["actor_name"] == "Dr. Kavita Rao"
+        assert body["brief"]["approval"]["actor_name"] == "Jane Doe"
         assert client.get("/api/reports/current").json()["current"]["version"] == 1
         assert (
             client.get(f"/api/runs/{run_id}").json()["status"] == "completed"

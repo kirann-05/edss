@@ -44,7 +44,7 @@ Top right, click your name (the account menu), then "Sign out", then the role bu
 
 ### Step 1. Data health first (Registrar)
 
-**Click** "Registrar" (Anand Deshpande) on the sign-in page.
+**Click** "Registrar" (John Doe) on the sign-in page.
 
 **Screen shows** the dashboard for "2025-26 (current)": "Current approved report, Decision brief, 2025-26, version 1", the note "13 of 13 KPI definitions and targets are placeholders pending IQAC approval", and "Some figures rest on incomplete data: No record: MECH, Excluded: BIOTECH, Stale: CIVIL, Undefined: AIML". Counts: 2 Missed, 1 At risk, 10 Met.
 
@@ -114,13 +114,13 @@ Top right, click your name (the account menu), then "Sign out", then the role bu
 
 ### Step 7. The Principal edits and approves
 
-**Click** your name, "Sign out", then "Principal / Director" (Dr. Kavita Rao). Then "Review queue" in the menu. It lists the drafts waiting. **Click** "Prepare the leadership brief".
+**Click** your name, "Sign out", then "Principal / Director" (Jane Doe). Then "Review queue" in the menu. It lists the drafts waiting. **Click** "Prepare the leadership brief".
 
 **Click** "Edit options". Change the first option's Title to "Targeted academic support, reviewed by the Dean each semester". **Click** "Check my edits": "Your edits pass all nine checks. Nothing is saved until you approve." **Click** "Approve with edits".
 
 **Screen shows** "Approve with your edits?" with the change shown as After. **Click** "Approve with edits" in the dialog.
 
-**Screen shows** "Published as version 2", "Approved by Dr. Kavita Rao (Principal / Director)" and "1 edit made on approval".
+**Screen shows** "Published as version 2", "Approved by Jane Doe (Principal / Director)" and "1 edit made on approval".
 
 **Say** "Agents draft and flag, a named person decides. My edit went through the same nine checks, and the draft's original text is kept beside it so anyone can see what I changed."
 
@@ -140,7 +140,7 @@ Top right, click your name (the account menu), then "Sign out", then the role bu
 
 ### Step 9. What a HOD can see (HOD, CSE)
 
-**Click** your name, "Sign out", then "Head of Department (CSE)" (Dr. Priya Joshi).
+**Click** your name, "Sign out", then "Head of Department (CSE)" (Mary Major).
 
 **Screen shows** a menu of only "Dashboard", "Reports" and "Data health". **Click** the "Placement percentage" card: CSE shows its figure and records, and every other department says "restricted". In "Data health", only the CSE row shows any detail.
 

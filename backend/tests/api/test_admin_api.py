@@ -15,7 +15,7 @@ NEW_PASSWORD = "a-long-new-password"
 def new_hod(**overrides):
     body = {
         "email": "hod.ece@edss.test",
-        "name": "Dr. Meera Kulkarni",
+        "name": "Sam Smith",
         "role": "hod",
         "dept_code": "ECE",
         "password": NEW_PASSWORD,

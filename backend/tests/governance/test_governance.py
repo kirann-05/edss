@@ -27,12 +27,12 @@ from app.governance.service import (
 )
 
 
-def person(role, name="Dr. Kavita Rao", **extra):
+def person(role, name="Jane Doe", **extra):
     return AppUser(id=1, email=f"{role.value}@edss.test", name=name, role=role, **extra)
 
 
 PRINCIPAL = person(Role.PRINCIPAL)
-REGISTRAR = person(Role.REGISTRAR, "Anand Deshpande")
+REGISTRAR = person(Role.REGISTRAR, "John Doe")
 
 
 @pytest.fixture(scope="module")
@@ -104,7 +104,7 @@ class TestApprove:
         assert result.brief.status is BriefStatus.PUBLISHED
         assert result.version.version == 1
         assert gov.current().version == 1
-        assert result.version.approved_by == "Dr. Kavita Rao"
+        assert result.version.approved_by == "Jane Doe"
 
     @pytest.mark.parametrize("role", [Role.DEAN, Role.HOD, Role.VIEWER, Role.ADMIN])
     def test_nobody_without_the_approve_permission_can_approve(self, gov, clean, vctx, role):
@@ -190,7 +190,7 @@ class TestEdit:
         (edit,) = result.version.edits
         assert (edit.option_id, edit.field) == (option.id, "description")
         assert edit.before == option.description and edit.after == new_text
-        assert edit.by == "Dr. Kavita Rao"
+        assert edit.by == "Jane Doe"
 
     def test_an_edit_that_writes_a_figure_by_hand_is_refused_and_nothing_is_published(
         self, gov, clean, vctx

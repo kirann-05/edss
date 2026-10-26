@@ -16,17 +16,17 @@ from app.domain.enums import Role
 from app.domain.models import AppUser
 
 SEED_USERS: tuple[AppUser, ...] = (
-    AppUser(id=1, email="registrar@edss.test", name="Anand Deshpande", role=Role.REGISTRAR),
-    AppUser(id=2, email="principal@edss.test", name="Dr. Kavita Rao", role=Role.PRINCIPAL),
+    AppUser(id=1, email="registrar@edss.test", name="John Doe", role=Role.REGISTRAR),
+    AppUser(id=2, email="principal@edss.test", name="Jane Doe", role=Role.PRINCIPAL),
     AppUser(
         id=3,
         email="dean.computing@edss.test",
-        name="Dr. Suresh Naik",
+        name="Mike Smith",
         role=Role.DEAN,
         school="School of Computer Science and Engineering",
     ),
-    AppUser(id=4, email="hod.cse@edss.test", name="Dr. Priya Joshi", role=Role.HOD, dept_code="CSE"),
-    AppUser(id=5, email="hod.civil@edss.test", name="Dr. Imran Shaikh", role=Role.HOD, dept_code="CIVIL"),
+    AppUser(id=4, email="hod.cse@edss.test", name="Mary Major", role=Role.HOD, dept_code="CSE"),
+    AppUser(id=5, email="hod.civil@edss.test", name="Richard Roe", role=Role.HOD, dept_code="CIVIL"),
     AppUser(id=6, email="council@edss.test", name="Governing Council Member", role=Role.VIEWER),
     AppUser(id=7, email="admin@edss.test", name="System Administrator", role=Role.ADMIN),
 )  # fmt: skip
