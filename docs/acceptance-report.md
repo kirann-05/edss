@@ -1,6 +1,6 @@
 # Acceptance report
 
-Written by `make acceptance` on 2026-10-05. Synthetic data (reference day 2026-10-01) and the canned model, so the same code gives the same numbers. 18 plans: every period, each with all four areas, each area alone, and placement with research. 113 graph runs in 1.2 seconds.
+Written by `make acceptance` on 2026-10-26. Synthetic data (reference day 2026-10-01) and the canned model, so the same code gives the same numbers. 18 plans: every period, each with all four areas, each area alone, and placement with research. 113 graph runs in 1.2 seconds.
 
 ## Summary
 
