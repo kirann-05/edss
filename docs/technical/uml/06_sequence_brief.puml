@@ -1,0 +1,52 @@
+@startuml
+!include _style.puml
+title A brief from request to human gate
+actor Registrar as U
+participant "Web app" as W
+participant "API\n(RunService)" as A
+participant "Planner skill" as P
+participant "LangGraph graph" as G
+participant "MCP connector" as C
+participant "KPI engine" as E
+participant "Model" as M
+participant "Validation\n+ repair" as V
+participant "GovernanceService" as Gov
+database "Audit log" as L
+
+U -> W : "Where did we miss target?"
+W -> A : POST /api/runs
+A -> P : clarify(request)
+P --> A : questions (period, scope)
+A --> W : status clarifying
+U -> W : answers
+W -> A : POST /api/runs/{id}/answers
+A -> P : propose_plan(answers)
+P --> A : plan, revision 1
+U -> W : edit plan, lock
+W -> A : POST /api/runs/{id}/plan/lock
+A -> L : plan.lock
+A -> G : start (background), token for the plan's areas
+G -> C : access_check
+par four domain agents
+  G -> C : get_domain_metrics(academic)
+  G -> C : get_domain_metrics(research)
+  G -> C : get_domain_metrics(placement)
+  G -> C : get_domain_metrics(finance)
+end
+C -> L : connector.call (each read)
+G -> E : kpi_synthesis(figures from totals)
+par one draft per off-target KPI
+  G -> M : draft options (words, {{kpi:KEY}} tokens)
+end
+G -> G : report_compose
+loop at most 3 attempts
+  G -> V : validate V1..V9
+  alt a check fails
+    V --> G : violations with locators
+    G -> G : regenerate only the failing part
+  end
+end
+G -> Gov : create_draft (green, or escalated with diagnosis)
+G -> L : gate.waiting
+W <-- A : SSE events all along
+@enduml

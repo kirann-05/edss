@@ -1,0 +1,58 @@
+@startuml
+!include _style.puml
+title EDSS use cases
+left to right direction
+actor "Registrar" as Reg
+actor "Principal / Director" as Pri
+actor "Dean" as Dean
+actor "Head of department" as HOD
+actor "Governing Council member" as GC
+actor "Administrator" as Adm
+actor "IT cell\n(command line)" as IT
+
+rectangle "EDSS" {
+  usecase "View institution KPIs\nand drill down to sources" as UC1
+  usecase "Check data health" as UC2
+  usecase "Ask for a brief:\nanswer questions, edit and lock the plan" as UC3
+  usecase "Watch the run\n(live progress)" as UC4
+  usecase "Review a draft brief" as UC5
+  usecase "Approve, edit,\noverride or send back" as UC6
+  usecase "Roll back a published version\n(reason required)" as UC7
+  usecase "Read published reports\nand compare versions" as UC8
+  usecase "Read and verify the audit log" as UC9
+  usecase "Authorise data areas\nfor the agents" as UC10
+  usecase "Refresh data" as UC11
+  usecase "Manage people and roles" as UC12
+  usecase "Load real data\n(check, then load)" as UC13
+  usecase "Create the first administrator" as UC14
+}
+
+Reg --> UC1
+Reg --> UC2
+Reg --> UC3
+Reg --> UC5
+Reg --> UC6
+Reg --> UC7
+Reg --> UC9
+Reg --> UC10
+Reg --> UC11
+Pri --> UC1
+Pri --> UC3
+Pri --> UC5
+Pri --> UC6
+Pri --> UC7
+Pri --> UC9
+Dean --> UC1
+Dean --> UC3
+HOD --> UC1
+HOD --> UC2
+GC --> UC8
+Reg --> UC8
+Adm --> UC12
+Adm --> UC11
+IT --> UC13
+IT --> UC14
+UC3 ..> UC4 : <<include>>
+UC6 ..> UC5 : <<include>>
+note right of HOD : sees only their own\ndepartment's detail
+@enduml

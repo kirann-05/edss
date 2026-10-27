@@ -1,0 +1,73 @@
+@startuml
+!include _style.puml
+title EDSS component architecture
+skinparam componentStyle rectangle
+
+actor "Leadership user" as User
+package "Web app (Next.js, port 3000)" {
+  component "Pages: dashboard, new brief,\nrun, review, reports, audit,\ndata health, admin" as Pages
+  component "API client + TanStack Query\n(SSE for run progress)" as Client
+}
+package "API (FastAPI, port 8000)" {
+  component "Routes + role checks\n(rbac.py)" as Routes
+  component "RunService" as Runs
+  component "GovernanceService" as Gov
+  component "UserStore, LoginThrottle" as Users
+  component "Archive (prior briefs)" as Archive
+  component "DataSource (refresh)" as Refresh
+}
+package "Agent layer (LangGraph)" {
+  component "Planner skill\n(rules first, model second)" as Planner
+  component "Graph: plan lock, access check,\n4 domain agents in parallel,\nKPI synthesis, draft options,\ncompose, validate, repair, human gate" as Graph
+  component "Validation gate V1-V9\n+ targeted repair" as Validate
+  component "Specialist packs\n(Strategic, NIRF, NAAC)" as Packs
+  component "Runtime: traced steps,\nevents, budget" as Runtime
+}
+package "Connector (MCP server, mounted at /mcp)" {
+  component "MCP tools: departments, KPI\ndefinitions, targets, metrics,\npublications, data health, facts" as Mcp
+  component "RunTokens\n(scoped per run)" as Tokens
+}
+package "Engine and data" {
+  component "KPI engine\n(exact decimals, formulas)" as Engine
+  component "DataStore" as Store
+  component "Ingestion: adapters,\nvalidator, ledger" as Ingest
+}
+package "Model layer" {
+  component "ChatModel protocol" as Model
+  component "FakeLLM (demo, tests)" as Fake
+  component "RemoteModel\n(Ollama / vLLM, local)" as Remote
+}
+database "PostgreSQL 16\n+ pgvector" as DB
+component "Audit log\n(hash chain, append-only)" as Audit
+folder "University exports\n(CSV, SQL views)" as Exports
+
+User --> Pages
+Pages --> Client
+Client --> Routes : HTTPS JSON, cookie session
+Routes --> Runs
+Routes --> Gov
+Routes --> Users
+Routes --> Refresh
+Runs --> Planner
+Runs --> Graph
+Graph --> Validate
+Graph --> Packs
+Graph --> Runtime
+Graph --> Mcp : every data read
+Mcp --> Tokens
+Mcp --> Store
+Graph --> Engine
+Engine --> Store
+Store --> DB
+Ingest --> DB
+Exports --> Ingest
+Planner --> Model
+Graph --> Model : words only, never numbers
+Model <|.. Fake
+Model <|.. Remote
+Runtime --> Audit
+Gov --> Audit
+Gov --> Archive
+Archive --> DB
+Audit --> DB
+@enduml

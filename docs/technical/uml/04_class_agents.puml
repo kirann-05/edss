@@ -1,0 +1,102 @@
+@startuml
+!include _style.puml
+title Agent layer and model abstraction
+
+interface ChatModel <<Protocol>> {
+  +generate(task, payload, schema, check) : Model
+}
+class FakeLLM {
+  canned, deterministic answers
+}
+class RemoteModel {
+  OpenAI-compatible client
+  local only in real mode
+}
+ChatModel <|.. FakeLLM
+ChatModel <|.. RemoteModel
+
+interface Connector <<Protocol>> {
+  +list_departments()
+  +get_kpi_definitions()
+  +get_targets(period)
+  +get_domain_metrics(domain, period)
+  +get_publications(period)
+  +get_data_health(period)
+  +get_fact(id)
+  +get_source(id)
+}
+class InMemoryConnector
+class McpConnector {
+  reads over MCP with a run token
+}
+class RunConnector {
+  the run's own connector, from a context variable
+}
+Connector <|.. InMemoryConnector
+Connector <|.. McpConnector
+Connector <|.. RunConnector
+RunConnector --> McpConnector
+
+class "build_graph()" as Graph <<LangGraph StateGraph>> {
+  plan_lock
+  access_check
+  domain_agent  x4 (Send)
+  kpi_synthesis
+  draft_options  (Send per KPI)
+  report_compose
+  validate
+  regenerate
+  prepare_gate
+  human_gate (interrupt)
+  finish
+}
+class RunState <<TypedDict>> {
+  plan
+  scope
+  domain_views
+  figures
+  option_sets
+  brief
+  validation
+  attempts
+  escalated
+}
+class "plan_skill" as PlanSkill {
+  clarify()
+  propose_plan()
+  revise_plan()
+  apply_patch()
+  lock_plan()
+}
+class "options_skill" as OptSkill {
+  draft_option_set()
+}
+class "validation suite" as Suite {
+  validate(doc, ctx) : ValidationReport
+  V1 ... V9
+}
+class "repair" as Repair {
+  plan the fix for each violation
+  redo only the failing part
+}
+class SpecialistRegistry {
+  strategic
+  nirf
+  naac
+}
+class Runtime {
+  traced steps
+  RunEvents
+  budget
+}
+
+Graph --> RunState
+Graph --> Connector
+Graph --> ChatModel
+Graph --> Suite
+Graph --> Repair
+Graph --> OptSkill
+OptSkill --> SpecialistRegistry
+PlanSkill --> ChatModel
+Graph --> Runtime
+@enduml

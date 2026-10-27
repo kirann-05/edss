@@ -1,0 +1,47 @@
+Name                                 Stmts   Miss  Cover
+--------------------------------------------------------
+app/agents/graph.py                    213      1    99%
+app/agents/runtime.py                  108      1    99%
+app/agents/tokens.py                    89      1    99%
+app/api/routes/demo.py                  16      1    94%
+app/db/archive_store.py                 50      1    98%
+app/db/dataset_store.py                 61      1    98%
+app/db/urls.py                          21      1    95%
+app/governance/audit.py                 64      1    98%
+app/ingestion/adapters.py              100      1    99%
+app/ingestion/export.py                 44      1    98%
+app/ingestion/manifest.py               71      1    99%
+app/services/archive.py                 64      1    98%
+app/services/brief_views.py             48      1    98%
+app/services/connector.py               69      1    99%
+app/services/store.py                   62      1    98%
+app/agents/llm.py                      137      2    99%
+app/agents/skills/options_skill.py      94      2    98%
+app/agents/validation/checks.py        195      2    99%
+app/agents/validation/faults.py         49      2    96%
+app/api/routes/admin.py                 74      2    97%
+app/db/audit_store.py                   43      2    95%
+app/kpi/engine.py                      133      2    98%
+app/kpi/formulas.py                    122      2    98%
+app/kpi/loader.py                       57      2    96%
+app/main.py                            114      2    98%
+app/mcp_connector/context.py            55      2    96%
+app/services/users.py                  117      2    98%
+app/specialists/__init__.py             67      2    97%
+app/agents/repair.py                    72      3    96%
+app/bootstrap.py                       123      3    98%
+app/db/state_store.py                   44      3    93%
+app/ingestion/reconcile.py              46      3    93%
+app/kpi/describe.py                     53      3    94%
+app/services/demo_state.py              36      3    92%
+app/agents/llm_http.py                  80      4    95%
+app/services/validation_context.py      34      4    88%
+app/api/routes/runs.py                 106      5    95%
+app/governance/service.py              304      5    98%
+app/mcp_connector/client.py            111      6    95%
+app/agents/skills/plan_skill.py        319     10    97%
+app/db/embeddings.py                    39     11    72%
+--------------------------------------------------------
+TOTAL                                 6655    104    98%
+
+60 files skipped due to complete coverage.

@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-27",
+  "commit": "8fffaea",
+  "backend_tests": {
+    "passed": 1136,
+    "skipped": 2
+  },
+  "web_tests": {
+    "passed": 238,
+    "files": 17
+  },
+  "database_tests": {
+    "passed": 68,
+    "skipped": 1
+  },
+  "api_tests_database_mode": {
+    "passed": 242
+  },
+  "browser_tests": {
+    "passed": 18
+  },
+  "rehearsal": {
+    "passed": 2
+  },
+  "fault_trials": {
+    "total": 94,
+    "problems": 0
+  },
+  "coverage_percent": 98,
+  "smoke": "passed",
+  "suites": {
+    "db-up": {
+      "exit": 0,
+      "time": "3s"
+    },
+    "check": {
+      "exit": 0,
+      "time": "58s"
+    },
+    "test-db": {
+      "exit": 0,
+      "time": "14s"
+    },
+    "test-api-db": {
+      "exit": 0,
+      "time": "22s"
+    },
+    "e2e": {
+      "exit": 0,
+      "time": "46s"
+    },
+    "rehearse": {
+      "exit": 0,
+      "time": "18s"
+    },
+    "acceptance": {
+      "exit": 0,
+      "time": "2s"
+    },
+    "benchmark": {
+      "exit": 0,
+      "time": "30s"
+    },
+    "coverage": {
+      "exit": 0,
+      "time": "91s"
+    },
+    "smoke": {
+      "exit": 0,
+      "time": "103s"
+    }
+  }
+}

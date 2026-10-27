@@ -1,0 +1,31 @@
+@startuml
+!include _style.puml
+title Approval, edit and rollback
+actor "Principal" as P
+participant "Web app" as W
+participant "API" as A
+participant "GovernanceService" as G
+participant "Validation" as V
+participant "Archive" as R
+database "Audit log" as L
+
+P -> W : open draft, Edit options
+W -> A : POST /api/briefs/{id}/check-edits
+A -> V : validate(document with edits)
+V --> A : report
+A --> W : passes all nine, or the failing check
+P -> W : Approve with edits (confirm)
+W -> A : POST /api/briefs/{id}/decision {kind: edit}
+A -> G : decide(brief, actor, decision)
+G -> G : role may approve? integrity checks green?
+G -> V : re-validate
+G -> G : publish version N, move pointer
+G -> R : add to archive (prior briefs)
+G -> L : brief.edit, report.publish
+A --> W : Published as version N
+P -> W : Reports: Make current v(N-1), reason
+W -> A : POST /api/reports/rollback
+A -> G : rollback(actor, to_version, reason)
+G -> G : pointer back, nothing deleted
+G -> L : report.rollback
+@enduml

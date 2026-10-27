@@ -1,0 +1,27 @@
+@startuml
+!include _style.puml
+title Deployment (compose.yaml, profile app)
+node "University server or laptop (Docker Compose)" {
+  node "frontend container\n(node:22-slim, non-root)" {
+    component "Next.js standalone" as FE
+  }
+  node "backend container\n(python:3.12-slim, non-root)" {
+    component "FastAPI + LangGraph\n+ MCP at /mcp" as BE
+  }
+  node "migrate container (runs once)" {
+    component "Alembic, roles,\ncheckpoint tables, seed" as MIG
+  }
+  node "db container" {
+    database "PostgreSQL 16 + pgvector\nvolume edss-db" as PG
+  }
+}
+node "Model server (local or university GPU)" {
+  component "Ollama / vLLM" as LLM
+}
+actor "Browser" as B
+B --> FE : 127.0.0.1:3000\n(HTTPS via the university proxy)
+FE --> BE : /api (internal network)
+BE --> PG : role edss_app\n(no update/delete on audit)
+MIG --> PG : owner role
+BE --> LLM : only local or university hosts\nwhen data is real
+@enduml

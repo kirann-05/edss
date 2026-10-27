@@ -1,0 +1,22 @@
+@startuml
+!include _style.puml
+title Validation gate and bounded repair
+start
+:compose brief from figures and option text;
+repeat
+  :run V1..V9 on the brief;
+  if (all nine pass?) then (yes)
+    :status draft, report green;
+    stop
+  else (no)
+    :collect violations with locators\n(which KPI, option, field);
+    :attempts = attempts + 1;
+    if (attempts < MAX_ATTEMPTS (3)?) then (yes)
+      :repair only the failing parts\n(redraft one option, rebuild a figure,\nrebuild a section);
+    else (no)
+      :status escalated,\nwith the diagnosis;
+      stop
+    endif
+  endif
+repeat while (try again)
+@enduml

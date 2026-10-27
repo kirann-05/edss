@@ -1,0 +1,175 @@
+@startuml
+!include _style.puml
+title Domain model (app/domain/models.py, app/agents/models.py)
+
+package "Data" {
+  class Department {
+    code
+    name
+    school
+    active
+  }
+  class SourceSystem {
+    id
+    name
+    owner_office
+    kind
+  }
+  class IngestBatch {
+    id
+    source_system_id
+    domain
+    data_mode
+    row_count
+    rejected_count
+    checksum
+  }
+  class MetricFact {
+    id
+    batch_id
+    domain
+    metric_key
+    dept_code
+    period_year
+    period_sub
+    value
+    numerator
+    denominator
+    unit
+    status
+    as_of
+    source_ref
+  }
+  class Publication {
+    id
+    dedup_key
+    title
+    period_year
+    status
+    dept_codes
+  }
+  class KpiDefinition {
+    key
+    name
+    framework
+    domain
+    formula
+    unit
+    higher_is_better
+    version
+    placeholder
+    display_precision
+    at_risk_band_pct
+  }
+  class KpiTarget {
+    kpi_key
+    period_year
+    target_value
+    placeholder
+  }
+  class AppUser {
+    id
+    email
+    name
+    role
+    dept_code
+    school
+    active
+  }
+}
+package "Brief" {
+  class Plan {
+    request
+    period_year
+    domains
+    kpi_keys
+    options_for
+    audience
+    steps
+    revision
+    locked_at
+  }
+  class KpiFigure {
+    key
+    name
+    value
+    target
+    status
+    variance_abs
+    precision
+    unit
+    input_fact_ids
+    flags
+    trend
+  }
+  class Option {
+    id
+    title
+    description
+    assumptions
+    risks
+    trade_offs
+  }
+  class OptionSet {
+    kpi_key
+    kpi_name
+    status
+    guided_by
+    attempt
+  }
+  class AssumptionItem {
+    kind
+    text
+    dept_code
+  }
+  class HealthNote {
+    dept_code
+    domain
+    state
+    non_final
+  }
+  class BriefDocument {
+    title
+    period_year
+    plan_kpi_keys
+    options_for
+  }
+  class ValidationReport {
+    passed
+    attempt
+  }
+  class CheckResult {
+    id
+    name
+    passed
+  }
+  class Violation {
+    message
+    diagnosis
+    fix
+  }
+  class Locator {
+    kpi_key
+    option_id
+    field
+    section
+  }
+}
+
+IngestBatch "1" --> "*" MetricFact
+SourceSystem "1" --> "*" IngestBatch
+Department "1" --> "*" MetricFact
+MetricFact ..> SourceSystem : traced to
+KpiDefinition "1" --> "*" KpiTarget
+BriefDocument "1" *-- "*" KpiFigure
+BriefDocument "1" *-- "*" OptionSet
+OptionSet "1" *-- "2..3" Option
+BriefDocument "1" *-- "*" AssumptionItem
+BriefDocument "1" *-- "*" HealthNote
+KpiFigure ..> MetricFact : input_fact_ids
+Plan ..> KpiDefinition : kpi_keys
+ValidationReport "1" *-- "9" CheckResult
+CheckResult "1" *-- "*" Violation
+Violation --> Locator
+note bottom of KpiFigure : value comes only from the KPI engine;\ntext reaches it through {{kpi:KEY}} tokens
+@enduml

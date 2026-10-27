@@ -1,0 +1,14 @@
+@startuml
+!include _style.puml
+title Brief lifecycle (BriefStatus)
+[*] --> draft : validation green
+[*] --> escalated : retry budget spent,\nwith diagnosis
+draft --> published : approve / edit\n(named approver)
+escalated --> published : approve with acknowledgement\n(completeness failures V2, V3, V8 only)
+draft --> overridden : override (reason)
+escalated --> overridden : override (reason)
+draft --> returned : send back (reason)
+escalated --> returned : send back (reason)
+published --> rolled_back : rollback to an earlier version\n(reason, nothing deleted)
+note right of escalated : an integrity failure (V1, V4, V5,\nV6, V7, V9) can never be approved
+@enduml

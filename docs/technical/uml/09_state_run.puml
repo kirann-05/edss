@@ -1,0 +1,14 @@
+@startuml
+!include _style.puml
+title Run lifecycle (RunStatus)
+[*] --> clarifying : create
+clarifying --> clarifying : answer (more questions)
+clarifying --> planning : all answered / skip
+planning --> planning : edit or revise plan\n(revision + 1)
+planning --> running : lock
+running --> awaiting_review : draft at the human gate
+running --> failed : error (resumable)
+failed --> running : resume from last checkpoint
+awaiting_review --> completed : approved, overridden\nor sent back
+completed --> [*]
+@enduml

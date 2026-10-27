@@ -1,0 +1,84 @@
+@startuml
+!include _style.puml
+title Services, governance and storage
+
+class RunService {
+  +create(user, request)
+  +answer(user, run_id, answers)
+  +edit_plan(user, run_id, patch)
+  +revise_plan(user, run_id, feedback)
+  +lock(user, run_id, faults)
+  +resume(user, run_id)
+}
+class GovernanceService {
+  +create_draft(...)
+  +decide(brief_id, actor, decision)
+  +approval_state(brief_id)
+  +rollback(actor, to_version, reason)
+  +diff(a, b)
+}
+class DataStore {
+  facts_by_id
+  definitions
+  result(kpi, period)
+}
+class "KPI engine" as Engine {
+  parse_formula()
+  evaluate()
+  status on unrounded values
+}
+class Archive {
+  similar prior briefs
+}
+class UserStore {
+  create()
+  update()
+  set_password()
+}
+class LoginThrottle
+class ScopeRegistry {
+  grants per area
+  expiry
+}
+class RunTokens {
+  issue(run, areas)
+  revoke()
+}
+class SystemConfig {
+  data_mode() read from the database
+}
+interface AuditSink <<Protocol>>
+class AuditLog {
+  in memory
+  hash chain
+}
+class DbAuditLog {
+  PostgreSQL
+  advisory lock
+  append-only role
+}
+AuditSink <|.. AuditLog
+AuditSink <|.. DbAuditLog
+class Ledger {
+  ingest_facts()
+  ingest_publications()
+  checksum dedupe
+}
+interface SourceAdapter <<Protocol>>
+class CsvAdapter
+class SqlAdapter
+SourceAdapter <|.. CsvAdapter
+SourceAdapter <|.. SqlAdapter
+class "RunRows, GovernanceRows,\nUserRows, ScopeRows, DbArchive" as Repos <<Repository>>
+
+RunService --> GovernanceService : on draft
+RunService --> RunTokens
+RunService --> AuditSink
+GovernanceService --> AuditSink
+GovernanceService --> Archive
+RunService --> Repos
+GovernanceService --> Repos
+DataStore --> Engine
+Ledger --> SourceAdapter
+UserStore --> LoginThrottle
+@enduml

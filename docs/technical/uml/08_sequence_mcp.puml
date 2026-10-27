@@ -1,0 +1,27 @@
+@startuml
+!include _style.puml
+title One governed read through the MCP connector
+participant "Domain agent" as D
+participant "RunConnector" as RC
+participant "McpConnector\n(client)" as MC
+participant "MCP server\n/mcp" as S
+participant "RunTokens" as T
+participant "DataStore" as DS
+database "Audit log" as L
+
+D -> RC : get_domain_metrics(placement, 2025-26)
+RC -> MC : same call, with this run's token
+MC -> S : tools/call get_domain_metrics (Bearer token)
+S -> T : verify token: not expired, scopes
+alt area in the token's scopes
+  S -> DS : facts for placement, 2025-26
+  DS --> S : MetricFact list
+  S -> L : connector.call (tool, args, hash of answer)
+  S --> MC : structured result
+  MC --> D : facts
+else outside the plan's areas
+  S -> L : connector.refused
+  S --> MC : error OutOfScope
+  MC --> D : ConnectorRefused
+end
+@enduml

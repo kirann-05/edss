@@ -1,0 +1,207 @@
+@startuml
+!include _style.puml
+title Database (backend/app/db/schema.py)
+hide circle
+skinparam linetype ortho
+entity department {
+  * code : varchar <<PK>>
+  --
+  name
+  school
+  active
+  position
+  real_position
+}
+entity source_system {
+  * id <<PK>>
+  --
+  name
+  owner_office
+  kind
+}
+entity ingest_batch {
+  * id <<PK>>
+  --
+  source_system_id <<FK>>
+  domain
+  data_mode
+  row_count
+  rejected_count
+  file_ref
+  checksum
+  ingested_by
+}
+entity metric_fact {
+  * id <<PK>>
+  --
+  batch_id <<FK>>
+  dept_code <<FK>>
+  source_system_id <<FK>>
+  domain
+  metric_key
+  period_year
+  period_sub
+  value
+  numerator
+  denominator
+  unit
+  status
+  as_of
+  source_ref
+}
+entity research_publication {
+  * id <<PK>>
+  --
+  batch_id <<FK>>
+  dedup_key
+  title
+  venue
+  period_year
+  indexing
+  status
+}
+entity publication_author_dept {
+  publication_id <<FK>>
+  dept_code <<FK>>
+  position
+}
+entity kpi_definition {
+  * id <<PK>>
+  --
+  key
+  version
+  name
+  framework
+  domain
+  formula
+  unit
+  placeholder
+  ...
+}
+entity kpi_target {
+  * id <<PK>>
+  --
+  kpi_key
+  period_year
+  target_value
+  placeholder
+}
+entity scope_grant {
+  * id <<PK>>
+  --
+  domain
+  dept_code <<FK>>
+  granted_by
+  expires_on
+  active
+}
+entity run {
+  * id <<PK>>
+  --
+  request
+  clarifications
+  plan
+  status
+  attempts
+  created_by
+}
+entity kpi_result {
+  * id <<PK>>
+  --
+  run_id <<FK>>
+  kpi_key
+  value
+  target
+  status
+  input_fact_ids
+  flags
+}
+entity evidence {
+  * id <<PK>>
+  --
+  run_id <<FK>>
+  kpi_result_id <<FK>>
+  fact_ids
+  source_systems
+}
+entity brief {
+  * id <<PK>>
+  --
+  run_id <<FK>>
+  status
+  content
+  validation
+}
+entity brief_version {
+  * id <<PK>>
+  --
+  brief_id <<FK>>
+  version
+  content
+  approved_by
+  edits
+  reason
+  rolled_back
+}
+entity system_pointer {
+  * name <<PK>>
+  --
+  brief_version_id <<FK>>
+  updated_by
+}
+entity brief_embedding {
+  * id <<PK>>
+  --
+  brief_id <<FK>>
+  kpi_key
+  content
+  embedding (vector)
+}
+entity audit_log {
+  * id <<PK>>
+  --
+  run_id
+  actor_type
+  actor_id
+  action
+  inputs
+  outputs
+  prev_hash
+  hash
+}
+entity app_user {
+  * id <<PK>>
+  --
+  email
+  name
+  role
+  dept_code <<FK>>
+  school
+  active
+  password_hash
+  session_version
+}
+entity system_config {
+  * key <<PK>>
+  --
+  value
+}
+
+source_system ||--o{ ingest_batch
+ingest_batch ||--o{ metric_fact
+department ||--o{ metric_fact
+source_system ||--o{ metric_fact
+ingest_batch ||--o{ research_publication
+research_publication ||--o{ publication_author_dept
+department ||--o{ publication_author_dept
+department ||--o{ scope_grant
+department ||--o{ app_user
+run ||--o{ kpi_result
+run ||--o{ evidence
+kpi_result ||--o{ evidence
+run ||--o{ brief
+brief ||--o{ brief_version
+brief_version ||--o| system_pointer
+brief ||--o{ brief_embedding
+note bottom of audit_log : append-only: the app role has no UPDATE,\nDELETE or TRUNCATE, and a trigger refuses the owner
+@enduml
