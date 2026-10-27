@@ -67,6 +67,8 @@ export function BriefDocument({
 
   return (
     <div className="flex flex-col gap-10">
+      <DecisionOverview document={document} />
+
       <Section title="KPIs at a glance" id="brief-glance">
         <div className="rounded-xl border bg-card px-2">
           <FigureTable figures={document.kpis} onKpi={handlers.onKpi} />
@@ -82,7 +84,11 @@ export function BriefDocument({
           document.option_sets.map((set) => {
             const line = headline.get(set.kpi_key);
             return (
-              <article key={set.kpi_key} className="flex flex-col gap-3 rounded-2xl border bg-card p-5">
+              <article
+                key={set.kpi_key}
+                id={`options-${set.kpi_key}`}
+                className="flex scroll-mt-24 flex-col gap-3 rounded-2xl border bg-card p-5"
+              >
                 <header className="flex flex-wrap items-center gap-3">
                   <h3 className="text-lg font-semibold">
                     {handlers.onKpi ? (
@@ -108,7 +114,14 @@ export function BriefDocument({
                     <RichText value={line} {...handlers} />
                   </p>
                 )}
-                <div className="flex flex-col gap-3">
+                {/* side by side to compare, one per row while editing so the fields have room */}
+                <div
+                  className={cn(
+                    "grid grid-cols-1 gap-3",
+                    !editing && "lg:grid-cols-2",
+                    !editing && set.options.length > 2 && "xl:grid-cols-3",
+                  )}
+                >
                   {set.options.map((option, index) => (
                     <OptionCard
                       key={option.id}
@@ -153,5 +166,47 @@ export function BriefDocument({
         </ul>
       </Section>
     </div>
+  );
+}
+
+/** What the reader is being asked to decide, before any detail: one line per KPI, linked to its options. */
+function DecisionOverview({ document }: { document: BriefDocumentValue }) {
+  const sets = document.option_sets;
+  const options = sets.reduce((sum, set) => sum + set.options.length, 0);
+  const caveats = document.assumptions.filter((a) => a.kind !== "as_of" && a.kind !== "placeholder").length;
+  return (
+    <section aria-labelledby="brief-decide" className="flex flex-col gap-3 rounded-2xl border bg-card p-5">
+      <h2 id="brief-decide" className="text-xl font-semibold">
+        What this brief asks you to decide
+      </h2>
+      {sets.length === 0 ? (
+        <p className="text-base text-muted-foreground">Every KPI in this brief is on target, so there is nothing to decide.</p>
+      ) : (
+        <>
+          <p className="text-base text-muted-foreground">
+            {sets.length} KPI{sets.length === 1 ? " is" : "s are"} off target, with {options} options in all.
+            {caveats > 0 && ` ${caveats} data caveat${caveats === 1 ? "" : "s"} apply, listed at the end.`}
+          </p>
+          <ul className="flex flex-col divide-y rounded-xl border">
+            {sets.map((set) => (
+              <li key={set.kpi_key}>
+                <a
+                  href={`#options-${set.kpi_key}`}
+                  className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="font-medium">{set.kpi_name}</span>
+                    <KpiStatusBadge status={set.status} />
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {set.options.length} options
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </section>
   );
 }

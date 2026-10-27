@@ -12,13 +12,13 @@ import { RichText, type FigureHandlers } from "./rich-text";
 
 function ListBlock({ label, items, handlers }: { label: string; items: RichTextValue[]; handlers: FigureHandlers }) {
   return (
-    <div className="grid gap-x-4 gap-y-1 sm:grid-cols-[7rem_minmax(0,1fr)]">
-      <dt className="text-sm font-semibold tracking-wide text-muted-foreground uppercase">{label}</dt>
+    <div className="flex flex-col gap-1">
+      <dt className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">{label}</dt>
       <dd>
         {items.length === 0 ? (
           <p className="text-base text-critical-ink">None listed</p>
         ) : (
-          <ul className="flex list-disc flex-col gap-1 pl-5 text-base">
+          <ul className="flex list-disc flex-col gap-1 pl-5 text-sm leading-relaxed">
             {items.map((item, index) => (
               <li key={index}>
                 <RichText value={item} {...handlers} />
@@ -53,8 +53,8 @@ export function OptionCard({
     return <OptionEditor option={option} index={index} draft={draft} onDraft={onDraft} />;
   }
   return (
-    <article className="flex flex-col gap-3 rounded-xl border bg-background p-4">
-      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+    <article className="flex h-full flex-col gap-3 rounded-xl border bg-background p-4">
+      <header className="flex flex-col gap-1">
         <span className="text-sm font-medium text-muted-foreground">Option {index + 1}</span>
         <h4 className="text-lg leading-snug font-semibold">{option.title}</h4>
         {edited && (

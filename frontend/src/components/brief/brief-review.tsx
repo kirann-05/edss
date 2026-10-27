@@ -135,7 +135,7 @@ export function BriefReview({ id }: { id: string }) {
         data.status === "escalated" && <EscalationNotice brief={data} />
       )}
 
-      <div className="grid items-start gap-8 xl:grid-cols-[minmax(0,1fr)_24rem]">
+      <div className="grid grid-cols-1 items-start gap-8 2xl:grid-cols-[minmax(0,1fr)_24rem]">
         <BriefDocument
           document={data.document}
           handlers={handlers}
@@ -144,7 +144,7 @@ export function BriefReview({ id }: { id: string }) {
           drafts={drafts}
           onDraft={(optionId, draft) => setDrafts((previous) => ({ ...previous, [optionId]: draft }))}
         />
-        <aside className="flex flex-col gap-4 xl:sticky xl:top-20 xl:max-h-[calc(100dvh-6rem)] xl:overflow-y-auto">
+        <aside className="flex min-w-0 flex-col gap-4 2xl:sticky 2xl:top-20 2xl:max-h-[calc(100dvh-6rem)] 2xl:overflow-y-auto">
           <BriefTabs brief={data} onKpi={handlers.onKpi} />
         </aside>
       </div>
