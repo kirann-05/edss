@@ -113,6 +113,7 @@ export function VersionView({ number }: { number: number }) {
         document={data.document}
         handlers={handlers}
         editedOptions={new Set(data.edits.map((e) => e.option_id))}
+        decided
       />
 
       {data.edits.length > 0 && (

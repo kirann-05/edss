@@ -138,6 +138,7 @@ export function BriefReview({ id }: { id: string }) {
       <div className="grid grid-cols-1 items-start gap-8 2xl:grid-cols-[minmax(0,1fr)_24rem]">
         <BriefDocument
           document={data.document}
+          decided={state.kind === "decided"}
           handlers={handlers}
           editedOptions={editedOptions}
           editing={editing}

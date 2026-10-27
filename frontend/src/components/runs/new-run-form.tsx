@@ -56,7 +56,13 @@ export function NewRunForm() {
         <ul className="flex flex-wrap gap-2">
           {EXAMPLES.map((example) => (
             <li key={example}>
-              <Button type="button" variant="outline" size="sm" onClick={() => setText(example)}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="h-auto max-w-full py-1.5 text-left whitespace-normal"
+                onClick={() => setText(example)}
+              >
                 {example}
               </Button>
             </li>

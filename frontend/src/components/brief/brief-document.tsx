@@ -55,6 +55,7 @@ export function BriefDocument({
   editing = false,
   drafts = {},
   onDraft,
+  decided = false,
 }: {
   document: BriefDocumentValue;
   handlers: FigureHandlers;
@@ -62,12 +63,14 @@ export function BriefDocument({
   editing?: boolean;
   drafts?: Record<string, OptionDraft>;
   onDraft?: (optionId: string, draft: OptionDraft) => void;
+  /** A published version: the decision is made, so the overview says what it covered */
+  decided?: boolean;
 }) {
   const headline = new Map(document.summary.map((s) => [s.kpi_key, s.text]));
 
   return (
     <div className="flex flex-col gap-10">
-      <DecisionOverview document={document} />
+      <DecisionOverview document={document} decided={decided} />
 
       <Section title="KPIs at a glance" id="brief-glance">
         <div className="rounded-xl border bg-card px-2">
@@ -170,14 +173,14 @@ export function BriefDocument({
 }
 
 /** What the reader is being asked to decide, before any detail: one line per KPI, linked to its options. */
-function DecisionOverview({ document }: { document: BriefDocumentValue }) {
+function DecisionOverview({ document, decided }: { document: BriefDocumentValue; decided: boolean }) {
   const sets = document.option_sets;
   const options = sets.reduce((sum, set) => sum + set.options.length, 0);
   const caveats = document.assumptions.filter((a) => a.kind !== "as_of" && a.kind !== "placeholder").length;
   return (
     <section aria-labelledby="brief-decide" className="flex flex-col gap-3 rounded-2xl border bg-card p-5">
       <h2 id="brief-decide" className="text-xl font-semibold">
-        What this brief asks you to decide
+        {decided ? "What this report covers" : "What this brief asks you to decide"}
       </h2>
       {sets.length === 0 ? (
         <p className="text-base text-muted-foreground">Every KPI in this brief is on target, so there is nothing to decide.</p>
