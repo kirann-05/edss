@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { DeptComparison } from "@/components/charts/dept-comparison";
 import { FlagLine } from "@/components/kpi/flag-line";
-import { UnitText } from "@/components/kpi/kpi-card";
+import { UnitText } from "@/components/kpi/unit-text";
 import { FactStatusBadge, KpiStatusBadge } from "@/components/status/status-badge";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";

@@ -38,7 +38,8 @@ test("a KPI opens its drill-down from the keyboard and focus returns when it clo
 
   await page.keyboard.press("Escape");
   await expect(page).not.toHaveURL(/kpi=/);
-  await expect(page.getByRole("button", { name: "Overall pass percentage" })).toBeFocused();
+  // it is off target, so it has an attention card above its table row: the card is the one tabbed to
+  await expect(page.getByRole("button", { name: "Overall pass percentage" }).first()).toBeFocused();
 });
 
 test("a brief can be approved with the keyboard alone, and a dialog traps focus", async ({ page }) => {

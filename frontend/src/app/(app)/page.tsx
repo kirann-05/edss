@@ -10,7 +10,8 @@ import { DomainTabs } from "@/components/domain/domain-tabs";
 import { DrilldownSheet } from "@/components/drilldown/drilldown-sheet";
 import { ErrorPanel } from "@/components/error-panel";
 import { DataQualityNotice } from "@/components/kpi/data-quality-notice";
-import { KpiCard } from "@/components/kpi/kpi-card";
+import { AttentionCard } from "@/components/kpi/attention-card";
+import { KpiTable } from "@/components/kpi/kpi-table";
 import { SummaryStrip } from "@/components/kpi/summary-strip";
 import { PageHeader } from "@/components/page-header";
 import { PeriodSelect } from "@/components/period-select";
@@ -85,6 +86,9 @@ function Dashboard() {
   }
 
   const data = kpis.data;
+  const offTarget = data.kpis.filter((k) => k.status === "missed" || k.status === "at_risk");
+  // missed before at risk, then the catalogue's own order
+  offTarget.sort((a, b) => (a.status === b.status ? 0 : a.status === "missed" ? -1 : 1));
   const shown = filter ? data.kpis.filter((k) => k.status === filter) : data.kpis;
   const placeholders = data.kpis.filter((k) => k.placeholder).length;
   const refreshing = kpis.isFetching;
@@ -104,42 +108,62 @@ function Dashboard() {
         actions={<PeriodSelect />}
       />
 
-      {me.data?.permissions.includes("view_reports") && <CurrentReportCard />}
+      <div className="grid grid-cols-1 gap-6 2xl:grid-cols-[minmax(0,1fr)_20rem]">
+        {/* context first on a narrow screen, a side column on a wide one */}
+        <aside aria-label="About these figures" className="grid content-start gap-4 md:grid-cols-3 2xl:order-last 2xl:grid-cols-1">
+          {me.data?.permissions.includes("view_reports") && <CurrentReportCard />}
+          <DataQualityNotice kpis={data.kpis} period={period} />
+          {placeholders > 0 && (
+            <Alert>
+              <Info aria-hidden />
+              <AlertDescription className="text-sm">
+                {placeholders} of {data.kpis.length} KPI definitions and targets are placeholders pending IQAC approval.
+                They show how the system works and are not the university&apos;s official figures.
+              </AlertDescription>
+            </Alert>
+          )}
+        </aside>
 
-      {placeholders > 0 && (
-        <Alert>
-          <Info aria-hidden />
-          <AlertDescription className="text-base">
-            {placeholders} of {data.kpis.length} KPI definitions and targets are placeholders pending IQAC approval. They
-            show how the system works and are not the university&apos;s official figures.
-          </AlertDescription>
-        </Alert>
-      )}
+        <div className={cn("flex min-w-0 flex-col gap-8", refreshing && "opacity-60 transition-opacity")}>
+          <SummaryStrip summary={data.summary} active={filter} onChange={setFilter} />
 
-      <DataQualityNotice kpis={data.kpis} period={period} />
+          {offTarget.length > 0 && !filter && (
+            <section aria-labelledby="attention" className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <h2 id="attention" className="text-xl font-semibold">
+                  Needs attention
+                </h2>
+                <p className="text-base text-muted-foreground">
+                  {offTarget.length} of {data.kpis.length} KPIs are off target. Open one to see how it is calculated and
+                  where its figures come from.
+                </p>
+              </div>
+              <ul className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+                {offTarget.map((kpi) => (
+                  <li key={kpi.key} className="flex">
+                    <AttentionCard kpi={kpi} onOpen={(key) => open(key)} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
-      <SummaryStrip summary={data.summary} active={filter} onChange={setFilter} />
+          <section aria-labelledby="kpi-grid" className="flex flex-col gap-3">
+            <h2 id="kpi-grid" className="text-xl font-semibold">
+              {filter ? `${KPI_STATUS[filter].label} KPIs` : "All KPIs"}
+            </h2>
+            {shown.length === 0 ? (
+              <p className="rounded-xl border border-dashed p-8 text-center text-base text-muted-foreground">
+                No KPIs are {filter ? KPI_STATUS[filter].label.toLowerCase() : "available"} for this period.
+              </p>
+            ) : (
+              <KpiTable kpis={shown} onOpen={(key) => open(key)} />
+            )}
+          </section>
 
-      <section aria-labelledby="kpi-grid" className={cn("flex flex-col gap-4", refreshing && "opacity-60 transition-opacity")}>
-        <h2 id="kpi-grid" className="sr-only">
-          KPIs{filter ? `: ${KPI_STATUS[filter].label}` : ""}
-        </h2>
-        {shown.length === 0 ? (
-          <p className="rounded-xl border border-dashed p-8 text-center text-base text-muted-foreground">
-            No KPIs are {filter ? KPI_STATUS[filter].label.toLowerCase() : "available"} for this period.
-          </p>
-        ) : (
-          <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {shown.map((kpi) => (
-              <li key={kpi.key} className="flex">
-                <KpiCard kpi={kpi} onOpen={(key) => open(key)} />
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <DomainTabs period={period} />
+          <DomainTabs period={period} />
+        </div>
+      </div>
       <DrilldownSheet period={period} />
     </>
   );

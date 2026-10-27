@@ -13,23 +13,22 @@ export function CurrentReportCard() {
   if (report.isPending || report.isError) return null;
   const current = report.data.current;
   return (
-    <section
-      aria-label="Current approved report"
-      className="flex flex-wrap items-center gap-4 rounded-xl border bg-card px-5 py-4"
-    >
-      <FileText aria-hidden className="size-6 text-primary" />
+    <section aria-label="Current approved report" className="flex flex-col gap-3 rounded-xl border bg-card p-4">
+      <p className="flex items-center gap-2 text-sm text-muted-foreground">
+        <FileText aria-hidden className="size-4 text-primary" />
+        Current approved report
+      </p>
       {current ? (
         <>
-          <div className="flex min-w-0 flex-1 flex-col">
-            <span className="text-sm text-muted-foreground">Current approved report</span>
-            <span className="text-lg font-semibold">
+          <div className="flex flex-col gap-0.5">
+            <span className="text-lg leading-snug font-semibold">
               {current.title}, version {current.version}
             </span>
             <span className="text-sm text-muted-foreground">
               Approved by {current.approved_by} on {formatWhen(current.approved_at)}
             </span>
           </div>
-          <Button asChild variant="outline">
+          <Button asChild variant="outline" className="self-start">
             <Link href={`/reports/${current.version}`}>
               Read it
               <ArrowRight aria-hidden data-icon="inline-end" />
@@ -38,7 +37,7 @@ export function CurrentReportCard() {
         </>
       ) : (
         <p className="text-base text-muted-foreground">
-          No report has been approved yet. The figures below are live from the engine, not an approved brief.
+          No report has been approved yet. The figures here are live from the engine, not an approved brief.
         </p>
       )}
     </section>
