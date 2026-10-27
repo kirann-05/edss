@@ -67,6 +67,8 @@ export interface AuditFilters {
   action: string;
   since: string; // YYYY-MM-DD, the viewer's local day
   until: string;
+  /** "people" shows only what people did: sign-ins, decisions, rollbacks */
+  who: "everyone" | "people";
   page: number;
 }
 
@@ -80,6 +82,7 @@ export function auditQuery(filters: AuditFilters): string {
   if (filters.action.trim()) query.set("action", filters.action.trim());
   if (filters.since) query.set("since", new Date(`${filters.since}T00:00:00`).toISOString());
   if (filters.until) query.set("until", new Date(`${filters.until}T23:59:59.999`).toISOString());
+  if (filters.who === "people") query.set("actor_type", "user");
   query.set("offset", String(Math.max(0, filters.page - 1) * PAGE_SIZE));
   query.set("limit", String(PAGE_SIZE));
   return query.toString();
@@ -92,6 +95,7 @@ export function filtersFrom(params: URLSearchParams): AuditFilters {
     action: params.get("action") ?? "",
     since: params.get("since") ?? "",
     until: params.get("until") ?? "",
+    who: params.get("who") === "people" ? "people" : "everyone",
     page: Math.max(1, Number(params.get("page") ?? "1") || 1),
   };
 }
@@ -102,6 +106,7 @@ export function filtersToParams(filters: AuditFilters): string {
   for (const key of ["run", "actor", "action", "since", "until"] as const) {
     if (filters[key].trim()) query.set(key, filters[key].trim());
   }
+  if (filters.who === "people") query.set("who", "people");
   if (filters.page > 1) query.set("page", String(filters.page));
   return query.toString();
 }

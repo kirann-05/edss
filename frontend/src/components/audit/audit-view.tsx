@@ -86,7 +86,7 @@ export function AuditView() {
         className="grid gap-4 rounded-xl border bg-card p-4 md:grid-cols-3 xl:grid-cols-6"
         onSubmit={(event) => {
           event.preventDefault();
-          go({ ...draft, page: 1 });
+          go({ ...draft, who: applied.who, page: 1 });
         }}
       >
         <Field id="f-run" label="Run">
@@ -139,6 +139,27 @@ export function AuditView() {
           </Button>
         </div>
       </form>
+
+      <div role="group" aria-label="Whose actions to show" className="flex flex-wrap items-center gap-2">
+        <span className="text-base text-muted-foreground">Show</span>
+        {(
+          [
+            ["everyone", "Everything"],
+            ["people", "People's actions only"],
+          ] as const
+        ).map(([value, label]) => (
+          <Button
+            key={value}
+            type="button"
+            size="sm"
+            variant={applied.who === value ? "default" : "outline"}
+            aria-pressed={applied.who === value}
+            onClick={() => go({ ...applied, who: value, page: 1 })}
+          >
+            {label}
+          </Button>
+        ))}
+      </div>
 
       {page.isPending ? (
         <Skeleton className="h-96 w-full" />
@@ -203,11 +224,11 @@ function AuditRowItem({ row, showRun }: { row: AuditRow; showRun: boolean }) {
         type="button"
         aria-expanded={open}
         onClick={() => setOpen(!open)}
-        className="grid grid-cols-[1.25rem_4rem_minmax(0,1fr)] items-start gap-x-3 gap-y-1 px-4 py-3 text-left outline-none hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring md:grid-cols-[1.25rem_4rem_9rem_minmax(0,14rem)_minmax(0,1fr)]"
+        className="grid grid-cols-[1.25rem_4rem_minmax(0,1fr)] items-start gap-x-3 gap-y-1 px-4 py-2 text-left outline-none hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring md:grid-cols-[1.25rem_4rem_10.5rem_minmax(0,13rem)_minmax(0,1fr)]"
       >
         <ChevronRight aria-hidden className={cn("mt-0.5 size-4 transition-transform motion-reduce:transition-none", open && "rotate-90")} />
         <span className="font-mono text-sm text-muted-foreground tabular-nums">#{row.id}</span>
-        <span className="col-start-3 text-sm text-muted-foreground tabular-nums md:col-start-auto">
+        <span className="col-start-3 text-sm whitespace-nowrap text-muted-foreground tabular-nums md:col-start-auto">
           {formatDay(row.ts)} {formatClock(row.ts)}
         </span>
         <span className="col-start-3 flex min-w-0 items-center gap-1.5 text-sm md:col-start-auto">

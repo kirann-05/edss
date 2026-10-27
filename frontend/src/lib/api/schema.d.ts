@@ -2449,6 +2449,7 @@ export interface operations {
                 action?: string | null;
                 since?: string | null;
                 until?: string | null;
+                actor_type?: ("user" | "agent" | "system") | null;
                 offset?: number;
                 limit?: number;
             };

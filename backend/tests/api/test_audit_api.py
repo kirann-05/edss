@@ -57,6 +57,15 @@ class TestRead:
         assert client.get(f"/api/audit?run_id={second}&action=plan.lock").json()["total"] == 1
         assert client.get("/api/audit?actor=domain:finance&limit=500").json()["total"] == 2
 
+    def test_people_only_shows_what_people_did(self, pipeline):
+        client = pipeline.login("registrar")
+        pipeline.draft(client)
+        everything = client.get("/api/audit?limit=500").json()
+        people = client.get("/api/audit?actor_type=user&limit=500").json()
+        assert 0 < people["total"] < everything["total"]
+        assert {r["actor_type"] for r in people["rows"]} == {"user"}
+        assert {"run.create", "plan.lock"} <= {r["action"] for r in people["rows"]}
+
     def test_paging_walks_the_whole_log(self, pipeline):
         client = pipeline.login("registrar")
         pipeline.draft(client)

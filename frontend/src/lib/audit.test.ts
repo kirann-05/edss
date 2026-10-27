@@ -48,7 +48,7 @@ describe("filters", () => {
   it("round-trips through the address bar, leaving out empty filters", () => {
     const params = new URLSearchParams("run=run-2&action=plan.lock&page=3");
     const filters = filtersFrom(params);
-    expect(filters).toEqual({ run: "run-2", actor: "", action: "plan.lock", since: "", until: "", page: 3 });
+    expect(filters).toEqual({ run: "run-2", actor: "", action: "plan.lock", since: "", until: "", who: "everyone", page: 3 });
     expect(filtersToParams(filters)).toBe("run=run-2&action=plan.lock&page=3");
   });
 
@@ -60,7 +60,7 @@ describe("filters", () => {
 
   it("sends whole local days as exact instants", () => {
     const query = new URLSearchParams(
-      auditQuery({ run: "", actor: "", action: "", since: "2026-10-03", until: "2026-10-03", page: 1 }),
+      auditQuery({ run: "", actor: "", action: "", since: "2026-10-03", until: "2026-10-03", who: "everyone", page: 1 }),
     );
     const since = new Date(query.get("since") as string);
     const until = new Date(query.get("until") as string);
@@ -77,5 +77,15 @@ describe("shortHash", () => {
   it("keeps the ends of a hash so two can be compared by eye", () => {
     expect(shortHash("0123456789abcdef0123")).toBe("012345…ef0123");
     expect(shortHash("short")).toBe("short");
+  });
+});
+
+describe("who did it", () => {
+  it("asks the API for people's actions only, and keeps the choice in the address", () => {
+    const filters = { ...filtersFrom(new URLSearchParams("who=people")), page: 1 };
+    expect(filters.who).toBe("people");
+    expect(new URLSearchParams(auditQuery(filters)).get("actor_type")).toBe("user");
+    expect(filtersToParams(filters)).toBe("who=people");
+    expect(new URLSearchParams(auditQuery(filtersFrom(new URLSearchParams()))).has("actor_type")).toBe(false);
   });
 });

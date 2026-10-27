@@ -1,6 +1,7 @@
 """The audit viewer (FR-12): every step and every decision, with the chain's verification."""
 
 from datetime import UTC, datetime
+from typing import Literal
 
 from fastapi import APIRouter, Depends, Query
 
@@ -29,6 +30,7 @@ def audit_rows(
     action: str | None = None,
     since: datetime | None = None,
     until: datetime | None = None,
+    actor_type: Literal["user", "agent", "system"] | None = None,
     offset: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=500),
     user: AppUser = Auditor,
@@ -37,6 +39,8 @@ def audit_rows(
     # a time without a zone is read as UTC, so it can be compared with the log's own times
     since, until = (t.replace(tzinfo=UTC) if t and t.tzinfo is None else t for t in (since, until))
     rows = state.audit.rows(run_id=run_id, actor_id=actor, action=action, since=since, until=until)
+    if actor_type is not None:  # "user" shows only what people did: sign-ins, decisions, rollbacks
+        rows = [r for r in rows if r.actor_type == actor_type]
     rows.reverse()
     return s.AuditPageOut(
         rows=[row_out(r) for r in rows[offset : offset + limit]],
