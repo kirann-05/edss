@@ -1,4 +1,4 @@
-import { Lock } from "lucide-react";
+import { Archive, CircleCheck, Lock } from "lucide-react";
 
 import { FactStatusBadge, HealthBadge, StatusChip } from "@/components/status/status-badge";
 import type { HealthCell } from "@/lib/api/types";
@@ -24,9 +24,25 @@ export function HealthCellView({ cell }: { cell: HealthCell }) {
       ? `Stale, ${cell.age_days} days`
       : undefined;
 
+  // a healthy cell stays quiet, so the few that are not stand out across the grid
+  const quiet = cell.state === "fresh" || cell.state === "closed";
+  const Provisional = FACT_STATUS.provisional.icon;
+  const Forecast = FACT_STATUS.forecast.icon;
+
   return (
     <div className="flex flex-col items-start gap-1.5">
-      <HealthBadge state={cell.state} label={label} className={WRAP} />
+      {quiet ? (
+        <span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
+          {cell.state === "fresh" ? (
+            <CircleCheck aria-hidden className="size-3.5 text-good-mark" />
+          ) : (
+            <Archive aria-hidden className="size-3.5" />
+          )}
+          {cell.state === "fresh" ? "Fresh" : "Closed year"}
+        </span>
+      ) : (
+        <HealthBadge state={cell.state} label={label} className={WRAP} />
+      )}
       {cell.as_of && (
         <p className="text-sm text-muted-foreground">
           <span className="sr-only">Oldest record </span>
@@ -35,9 +51,17 @@ export function HealthCellView({ cell }: { cell: HealthCell }) {
         </p>
       )}
       {nonFinal.provisional > 0 && (
-        <StatusChip style={FACT_STATUS.provisional} label={`${nonFinal.provisional} provisional`} className={WRAP} />
+        <span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
+          <Provisional aria-hidden className="size-3.5" />
+          {nonFinal.provisional} provisional
+        </span>
       )}
-      {nonFinal.forecast > 0 && <StatusChip style={FACT_STATUS.forecast} label={`${nonFinal.forecast} forecast`} className={WRAP} />}
+      {nonFinal.forecast > 0 && (
+        <span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
+          <Forecast aria-hidden className="size-3.5" />
+          {nonFinal.forecast} forecast
+        </span>
+      )}
       {nonFinal.pending_reconciliation > 0 && (
         <StatusChip
           style={FACT_STATUS.pending_reconciliation}

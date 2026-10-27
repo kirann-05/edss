@@ -89,6 +89,8 @@ function DataHealth() {
         ))}
       </ul>
 
+      <ProblemList data={data} />
+
       <Card className={cn(health.isFetching && "opacity-60 transition-opacity")}>
         <CardContent className="overflow-x-auto p-0">
           <Table>
@@ -172,5 +174,50 @@ function DataHealth() {
         </div>
       </section>
     </>
+  );
+}
+
+/** The cells that need a person's attention, said in words, so nobody has to scan the grid for them. */
+function ProblemList({ data }: { data: NonNullable<ReturnType<typeof useDataHealth>["data"]> }) {
+  const name = new Map(data.departments.map((d) => [d.code, d.name]));
+  const problems = data.cells.flatMap((cell) => {
+    if (cell.restricted || !cell.state) return [];
+    const where = `${cell.dept_code} ${DOMAIN_LABEL[cell.domain].toLowerCase()}`;
+    const found: { key: string; text: string; why: string }[] = [];
+    if (cell.state === "stale")
+      found.push({
+        key: `${where}-stale`,
+        text: `${where}: stale, ${cell.age_days} days old`,
+        why: "Still used in figures, and flagged wherever it is.",
+      });
+    if (cell.state === "missing")
+      found.push({
+        key: `${where}-missing`,
+        text: `${where}: no record`,
+        why: `${name.get(cell.dept_code) ?? cell.dept_code} is left out of these figures, never counted as zero.`,
+      });
+    if (cell.non_final.pending_reconciliation > 0)
+      found.push({
+        key: `${where}-pending`,
+        text: `${where}: ${cell.non_final.pending_reconciliation} figure being reconciled`,
+        why: "Kept out of actuals until the office confirms it.",
+      });
+    return found;
+  });
+  if (problems.length === 0) return null;
+  return (
+    <section aria-labelledby="needs-a-look" className="flex flex-col gap-2 rounded-xl border bg-card p-4">
+      <h2 id="needs-a-look" className="text-lg font-semibold">
+        Needs a look
+      </h2>
+      <ul className="flex flex-col gap-1.5">
+        {problems.map((problem) => (
+          <li key={problem.key} className="text-base">
+            <span className="font-medium">{problem.text}.</span>{" "}
+            <span className="text-muted-foreground">{problem.why}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
