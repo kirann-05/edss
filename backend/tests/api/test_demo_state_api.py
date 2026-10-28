@@ -90,3 +90,28 @@ class TestReset:
     def test_there_is_no_reset_outside_demo_mode(self):
         app = create_app(make_settings(edss_demo_login=False), today=REF)
         assert sign_in(app).post("/api/demo/reset").status_code == 404
+
+
+class TestRealModelDemo:
+    """With a real model configured the ready-made state is still canned (a real model would take
+    minutes at every start and reset); every run after it uses the real model."""
+
+    def real_model_app(self):
+        return demo_app(llm_provider="ollama", llm_model="qwen3.5:4b")
+
+    def test_it_seeds_without_calling_the_model_then_hands_runs_to_it(self):
+        app = self.real_model_app()  # no Ollama here: seeding would fail if it called the model
+        state = app.state.edss
+        assert state.drafter.name == "ollama:qwen3.5:4b"
+        assert state.clarifier.name == "ollama:qwen3.5:4b"
+        client = sign_in(app)
+        assert client.get("/api/reports/current").json()["current"]["version"] == 1
+
+    def test_a_reset_is_canned_again_and_goes_live_again(self):
+        app = self.real_model_app()
+        client = sign_in(app)
+        assert client.post("/api/demo/reset").status_code == 200
+        assert app.state.edss.drafter.name == "ollama:qwen3.5:4b"
+
+    def test_a_canned_demo_has_no_switch(self):
+        assert demo_app().state.edss.switches == []

@@ -38,6 +38,17 @@
         "scripts/demo.sh"
       ],
       "port": 3000
+    },
+    {
+      "name": "demo-live",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "LLM_PROVIDER=ollama",
+        "LLM_MODEL=qwen3.5:4b",
+        "bash",
+        "scripts/demo.sh"
+      ],
+      "port": 3000
     }
   ]
 }

@@ -18,7 +18,7 @@ from app.agents.graph import GraphDeps, build_graph
 from app.agents.llm import LlmSettings, get_chat_model
 from app.agents.runtime import RunEvents, Runtime
 from app.agents.validation.suite import validate
-from app.api.deps import AppState
+from app.api.deps import AppState, demo_login_enabled
 from app.core.config import Settings
 from app.core.throttle import LoginThrottle
 from app.db.archive_store import DbArchive
@@ -36,6 +36,7 @@ from app.mcp_connector.context import RunConnector, mcp_session
 from app.mcp_connector.tokens import RunTokens
 from app.services.archive import Archive, prior_from_version, seed_archive
 from app.services.connector import InMemoryConnector, ScopeRegistry
+from app.services.demo_state import ModelSwitch
 from app.services.refresh import DataSource
 from app.services.runs import RunRecord, RunService, plan_catalogue_from
 from app.services.store import DataStore
@@ -83,6 +84,12 @@ def build_state(
     llm = LlmSettings.from_settings(settings)
     drafter = get_chat_model("drafter", llm, system_config)
     clarifier = get_chat_model("clarifier", llm, system_config)
+    switches: list[ModelSwitch] = []
+    if llm.provider != "fake" and demo_login_enabled(settings) and settings.edss_demo_state:
+        # the seeded starting state is canned; live runs use the real model (main.fresh_state)
+        drafter = ModelSwitch(drafter, FakeLLM("drafter"))
+        clarifier = ModelSwitch(clarifier, FakeLLM("clarifier"))
+        switches = [drafter, clarifier]
 
     archive = _archive(settings, store, engine)
 
@@ -161,6 +168,7 @@ def build_state(
         clock=clock or date.today,
         drafter=drafter,
         clarifier=clarifier,
+        switches=switches,
         throttle=LoginThrottle(
             max_failures=settings.login_max_failures,
             window=timedelta(minutes=settings.login_lockout_minutes),

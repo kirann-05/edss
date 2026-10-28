@@ -34,7 +34,20 @@ About 12 minutes. Read this once before the first rehearsal. Every label in quot
 - [ ] Chrome, one window, one tab, at http://127.0.0.1:3000. Zoom 125 percent (Cmd and +). Mirror the display to the projector. Every screen is checked to fit a 1280 by 720 projector at this zoom.
 - [ ] The sign-in page is showing.
 
-**Model off, and why.** The demo drafts with the canned FakeLLM, so every run takes about a second and says the same thing every time. The local model works (`LLM_PROVIDER=ollama LLM_MODEL=qwen3.5:4b make demo`), but on this MacBook Air a full brief takes about a minute instead of a second, and its wording changes from run to run. If asked, say so plainly and point to the measured results in `docs/evals`: option drafts pass all nine checks, and the planner reads requests with rules first because the model alone asked the right questions only 4 times in 10 (with the rules first, 9 in 10). Production runs the model on the university GPU.
+## Live model (the real language model writes the drafts)
+
+Use this when the room must see a real model answer, not canned text. Measured on 2026-10-28 on this MacBook Air: one area about 21 s, a full "everything" brief 55 s, all nine checks passed on the first attempt, no number written by the model (figures arrive as reference tokens).
+
+1. Start Ollama and keep it running: `OLLAMA_NUM_PARALLEL=4 ollama serve`. The models `qwen3.5:4b` and `nomic-embed-text` are already pulled (`ollama list`).
+2. Warm the model once before the room fills (the first call loads 3.4 GB): `ollama run qwen3.5:4b "hi"`, then `/bye`.
+3. In the repo folder: `LLM_PROVIDER=ollama LLM_MODEL=qwen3.5:4b make demo`. The banner must say "Drafts: ollama". (In the Claude app: the `demo-live` preview.)
+4. The ready-made approved report and waiting draft are canned on purpose, so start and `make demo-reset` stay fast. Every run you start live uses the model.
+5. Run the same steps as below. Steps that call the model: the plan in step 2 and the brief in steps 3 to 7. Expect 20 to 60 s on the run page while the progress shows; fill the time with the Say lines.
+6. The wording changes every run. That is fine: say the numbers are the same because the engine, not the model, writes them.
+7. Do not inject a fault live with the real model. Faults are rehearsed with the canned model, where the catch is guaranteed (94 of 94). If asked, show `make acceptance` instead.
+8. Fallback if the model stalls: Ctrl-C, then `make demo` (canned, 1 second) and carry on from the step you were on.
+
+The canned mode (plain `make demo`) is still the safest for the timed walk. The planner reads requests with rules first and the model second, because the model alone asked the right questions only 4 times in 10 (9 in 10 with rules first, `docs/evals`). Production runs the model on the university GPU.
 
 ## Switching person
 
@@ -169,6 +182,6 @@ Try these in order. Keep talking while you do it: what the step was going to sho
 
 ## Things not to do live
 
-- Do not switch to the real model live. It works, but a brief takes about a minute and the wording is different each time.
+- Do not switch between canned and real model mid-walk; pick one before you start. With the real model, a brief takes up to a minute and the wording is different each time.
 - Do not press "Refresh data" while a run is going: it is refused until the run finishes.
 - Do not open Admin unless asked. It works, it just is not the story.

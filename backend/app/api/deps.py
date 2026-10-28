@@ -52,6 +52,12 @@ class AppState:
     clarifier: object
     # what to close when the app stops: database connection pools, in database mode
     on_shutdown: list[Callable[[], None]] = field(default_factory=list)
+    # models that answer with canned words until the demo state is seeded (ModelSwitch)
+    switches: list = field(default_factory=list)
+
+    def go_live(self) -> None:
+        for switch in self.switches:
+            switch.go_live()
 
     def close(self) -> None:
         for close in self.on_shutdown:

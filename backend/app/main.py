@@ -88,6 +88,7 @@ def create_app(
         # a database that already holds runs keeps them: the ready-made state is seeded once
         if state.demo_login_enabled and settings.edss_demo_state and not state.runs.runs():
             seed_demo_state(state)
+        state.go_live()  # from here a real model, if one is configured, answers
         return state
 
     app.state.edss_factory = fresh_state  # the demo reset builds a new state the same way

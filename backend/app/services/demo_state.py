@@ -22,6 +22,22 @@ class DemoStateError(RuntimeError):
     pass
 
 
+class ModelSwitch:
+    """Stands in for a model. It answers with canned words while the ready-made demo state is
+    seeded (a real model would take minutes at every start and every reset), then `go_live()`
+    hands every later call to the real model. Everything else, such as its name and stats, is
+    the current model's."""
+
+    def __init__(self, live: object, canned: object) -> None:
+        self._live, self._canned, self._current = live, canned, canned
+
+    def go_live(self) -> None:
+        self._current = self._live
+
+    def __getattr__(self, name: str):
+        return getattr(self._current, name)
+
+
 def _finish(state: AppState, record: RunRecord, timeout: float = 60.0) -> RunRecord:
     deadline = time.monotonic() + timeout
     while state.runs.get(record.id).status not in SETTLED:
