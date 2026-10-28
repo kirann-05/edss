@@ -65,6 +65,98 @@ Four agents read university data through a governed connector, a rules engine (n
 - Do not switch between the real and canned model mid-walk.
 - Do not open Admin or press "Refresh data" during a run.
 
+## Terminal commands, in order
+
+Run all of these from the repo folder: `cd ~/Claude/edss`. Each one is what you type, then what to say about it.
+
+**A. Start (before the professor looks)**
+
+```bash
+OLLAMA_NUM_PARALLEL=4 ollama serve
+```
+Tab 1, leave it running. Skip if it already is.
+
+```bash
+ollama list
+```
+Shows `qwen3.5:4b` and `nomic-embed-text`. Say: "The model is local, 3.4 GB, no network."
+
+```bash
+ollama run qwen3.5:4b "hi"
+```
+Wait for a reply, then type `/bye`. This loads the model so the live run is not slow.
+
+```bash
+LLM_PROVIDER=ollama LLM_MODEL=qwen3.5:4b make demo
+```
+Tab 2. Wait for "EDSS is ready" and "Drafts: ollama". Now do the browser walk above (steps 1 to 7).
+
+**B. During the walk, only if asked or if it breaks**
+
+```bash
+make demo-reset
+```
+Tab 3. Back to the starting state in 2 seconds. Sign in again.
+
+```bash
+tail -f .demo/api.log
+```
+Optional, to show the agents reading through the connector while the live run is going. Ctrl-C to stop.
+
+**C. After the walk: "show me it is tested" (pick two, they take time)**
+
+```bash
+make acceptance
+```
+2 seconds. Injects every fault into every plan. Say: "94 of 94 caught and repaired, 0 escaped."
+
+```bash
+make benchmark
+```
+30 seconds. Say: "Four agents in parallel are 4.0 times faster than one at a time."
+
+```bash
+make check
+```
+About 1 minute. Lint, types, 1,136 backend and 238 web tests. Say: "Nothing is committed unless this is green."
+
+```bash
+make rehearse
+```
+About 20 seconds. A browser walks the demo script by itself and checks the steps. Needs `make demo` stopped (it uses other ports, so it also works with the demo running).
+
+Do not run `make coverage`, `make smoke` or `make test-db` live: they take 1.5 minutes or more, and the database ones need Docker running. Show their saved output instead:
+
+```bash
+cat docs/technical/results/2026-10-27/summary.md
+```
+All suites with today's numbers in one table.
+
+**D. After that: "show me the design"**
+
+```bash
+ls docs/technical
+```
+12 numbered documents plus uml and results.
+
+```bash
+open docs/technical/uml/png/02_architecture.png
+open docs/technical/uml/png/06_sequence_brief.png
+open docs/technical/uml/png/11_activity_validate.png
+```
+Architecture, one brief from request to human gate, and the validation and repair loop. Say what each shows in one sentence.
+
+```bash
+open docs/technical/results/2026-10-27/acceptance-report.md
+```
+The fault table, if they want proof of the 94.
+
+**E. Stop**
+
+Ctrl-C in the `make demo` tab (it stops both servers), then Ctrl-C in the `ollama serve` tab.
+
+If any command fails, the answer is the same: Ctrl-C, run `make demo` (canned), and carry on.
+
 ## Numbers to quote if asked
 
 - 1,392 automated tests (1,136 backend, 238 web, 18 browser), all passing. 98 percent backend coverage.
