@@ -3,6 +3,24 @@
 Read this in the car. The full detail is in `docs/DEMO.md`; this is only what to click and say.
 The screens are busy, so each step says what to look at and what to ignore.
 
+## Terminal setup: tabs and folders
+
+Open Terminal (Cmd+Space, type `Terminal`, Enter). You need **4 tabs**. Cmd+T opens a new tab, Cmd+1 to Cmd+4 switches between them.
+
+| Tab | Folder | Purpose | You type | Leave it |
+| --- | --- | --- | --- | --- |
+| 1 | any, no need to change | The language model | `OLLAMA_KEEP_ALIVE=30m OLLAMA_NUM_PARALLEL=4 ollama serve` | Running. Never type in it again. |
+| 2 | any | Warm-up, once | `ollama run qwen3.5:4b "hi"`, wait for a reply, then `/bye` | Free after that, close it or reuse it |
+| 3 | **the project** | The demo itself | `cd ~/Claude/edss` then `LLM_PROVIDER=ollama LLM_MODEL=qwen3.5:4b make demo` | Running. Never type in it again. |
+| 4 | **the project** | Spare, for reset and test commands | `cd ~/Claude/edss` | Free for commands |
+
+Rules:
+- Only tabs 3 and 4 need the folder change. Do `cd ~/Claude/edss` first in each of them. If a `make` command says "No rule to make target", you are in the wrong folder: run `cd ~/Claude/edss`.
+- Tabs 1 and 3 look stuck while running. That is normal. Do not type in them. Ctrl+C in a tab stops what it is running.
+- Skip tab 1 if Ollama is already running (check: `curl -s http://127.0.0.1:11434/api/version` prints a version).
+- Start order: 1, then 2, then 3, then open Chrome. Tab 4 any time.
+- All the later commands in "Terminal commands, in order" (reset, acceptance, benchmark, check, rehearse, open diagrams) go in **tab 4**.
+
 ## Before you walk in (5 minutes)
 
 1. Terminal 1: `OLLAMA_NUM_PARALLEL=4 ollama serve` (skip if it is already running).
