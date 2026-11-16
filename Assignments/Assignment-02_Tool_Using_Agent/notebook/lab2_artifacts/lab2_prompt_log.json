@@ -1,0 +1,122 @@
+[
+  {
+    "call": 1,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nInstitution-wide placement for academic year 2025-26 is 75.12%, computed as sum(placed_students) / sum(eligible_students) x 100 over 8 departments (sum(placed_students)=779, sum(eligible_students)=1037). The Strategic Plan 2024-27 target is 80.00%, so we are 4.88 percentage points below it — status: below target. Source: Placement Cell tracker.\n\nPermitted figures, and nothing else:\n[\n  {\n    \"kpi_id\": \"KPI-P1\",\n    \"name\": \"Placement percentage\",\n    \"domain\": \"Placement\",\n    \"value\": 75.1205,\n    \"unit\": \"%\",\n    \"formula\": \"sum(placed_students) / sum(eligible_students) x 100\",\n    \"method\": \"ratio\",\n    \"n_departments\": 8,\n    \"departments\": [\n      \"CSE\",\n      \"ECE\",\n      \"ISE\",\n      \"EEE\",\n      \"MECH\",\n      \"CIVIL\",\n      \"CHEM\",\n      \"BT\"\n    ],\n    \"inputs_used\": {\n      \"sum(placed_students)\": 779,\n      \"sum(eligible_students)\": 1037\n    },\n    \"evidence\": \"[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]\",\n    \"source_system\": \"Placement Cell tracker\",\n    \"figure_status\": \"final\"\n  },\n  {\n    \"kpi_id\": \"KPI-P1\",\n    \"name\": \"Placement percentage\",\n    \"value\": 75.1205,\n    \"target\": 80.0,\n    \"target_source\": \"Strategic Plan 2024-27\",\n    \"unit\": \"%\",\n    \"variance\": -4.8795,\n    \"pct_of_target\": 93.9,\n    \"status\": \"below target\",\n    \"rounding_warning\": null\n  }\n]\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Placement Cell tracker'",
+    "response": {
+      "answer": "Institution-wide placement for academic year 2025-26 is 75.12%, computed as sum(placed_students) / sum(eligible_students) x 100 over 8 departments (sum(placed_students)=779, sum(eligible_students)=1037). The Strategic Plan 2024-27 target is 80.00%, so we are 4.88 percentage points below it — status: below target. Source: Placement Cell tracker."
+    }
+  },
+  {
+    "call": 2,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nPlacement is 75.12% against a target of 80.00%. The departments furthest below the institution figure are: BT at 50.88% (29 of 57 eligible, 5.50% of the eligible pool); CIVIL at 52.54% (62 of 118 eligible, 11.38% of the eligible pool); CHEM at 56.90% (33 of 58 eligible, 5.59% of the eligible pool). Each figure traces to Placement Cell tracker via the department reports export, so leadership can follow any number back to its department row.\n\nPermitted figures, and nothing else:\n[\n  {\n    \"kpi_id\": \"KPI-P1\",\n    \"name\": \"Placement percentage\",\n    \"domain\": \"Placement\",\n    \"value\": 75.1205,\n    \"unit\": \"%\",\n    \"formula\": \"sum(placed_students) / sum(eligible_students) x 100\",\n    \"method\": \"ratio\",\n    \"n_departments\": 8,\n    \"departments\": [\n      \"CSE\",\n      \"ECE\",\n      \"ISE\",\n      \"EEE\",\n      \"MECH\",\n      \"CIVIL\",\n      \"CHEM\",\n      \"BT\"\n    ],\n    \"inputs_used\": {\n      \"sum(placed_students)\": 779,\n      \"sum(eligible_students)\": 1037\n    },\n    \"evidence\": \"[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]\",\n    \"source_system\": \"Placement Cell tracker\",\n    \"figure_status\": \"final\"\n  },\n  {\n    \"kpi_id\": \"KPI-P1\",\n    \"name\": \"Placement percentage\",\n    \"value\": 75.1205,\n    \"target\": 80.0,\n    \"target_source\": \"Strategic Plan 2024-27\",\n    \"unit\": \"%\",\n    \"variance\": -4.8795,\n    \"pct_of_target\": 93.9,\n    \"status\": \"below target\",\n    \"rounding_warning\": null\n  }\n]\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Placement Cell tracker'",
+    "response": {
+      "answer": "Placement is 75.12% against a target of 80.00%. The departments furthest below the institution figure are: BT at 50.88% (29 of 57 eligible, 5.50% of the eligible pool); CIVIL at 52.54% (62 of 118 eligible, 11.38% of the eligible pool); CHEM at 56.90% (33 of 58 eligible, 5.59% of the eligible pool). Each figure traces to Placement Cell tracker via the department reports export, so leadership can follow any number back to its department row."
+    }
+  },
+  {
+    "call": 3,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nCitations per faculty is 7.26 (sum(citations) / sum(sanctioned_faculty): sum(citations)=1132, sum(sanctioned_faculty)=156). The NIRF Engineering rank band 51-100 peer median for 2025 is 11.40, so we sit 4.14 below the cohort, and 1.74 below our own NIRF Research & Professional Practice target of 9.00. Sources: Research repository; External benchmark API (NIRF cohort).\n\nPermitted figures, and nothing else:\n\"[4 rows: ?, ?, ?, ?]\"\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Research repository'\n  'External benchmark API (NIRF cohort)'",
+    "response": {
+      "answer": "Citations per faculty is 7.26 (sum(citations) / sum(sanctioned_faculty): sum(citations)=1132, sum(sanctioned_faculty)=156). The NIRF Engineering rank band 51-100 peer median for 2025 is 11.40, so we sit 4.14 below the cohort, and 1.74 below our own NIRF Research & Professional Practice target of 9.00. Sources: Research repository; External benchmark API (NIRF cohort)."
+    }
+  },
+  {
+    "call": 4,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nInternship completion is 73.38% against our Strategic Plan 2024-27 target of 85.00% (below target, 11.62 points short). I cannot give you a peer comparison: no published external benchmark for KPI-P3 (Internship completion) in the benchmark API. I am not going to estimate one. Source: Placement Cell tracker.\n\nPermitted figures, and nothing else:\n[\n  {\n    \"kpi_id\": \"KPI-P3\",\n    \"name\": \"Internship completion\",\n    \"domain\": \"Placement\",\n    \"value\": 73.3848,\n    \"unit\": \"%\",\n    \"formula\": \"sum(interns_completed) / sum(eligible_students) x 100\",\n    \"method\": \"ratio\",\n    \"n_departments\": 8,\n    \"departments\": [\n      \"CSE\",\n      \"ECE\",\n      \"ISE\",\n      \"EEE\",\n      \"MECH\",\n      \"CIVIL\",\n      \"CHEM\",\n      \"BT\"\n    ],\n    \"inputs_used\": {\n      \"sum(interns_completed)\": 761,\n      \"sum(eligible_students)\": 1037\n    },\n    \"evidence\": \"[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]\",\n    \"source_system\": \"Placement Cell tracker\",\n    \"figure_status\": \"final\"\n  },\n  {\n    \"kpi_id\": \"KPI-P3\",\n    \"name\": \"Internship completion\",\n    \"value\": 73.3848,\n    \"target\": 85.0,\n    \"target_source\": \"Strategic Plan 2024-27\",\n    \"unit\": \"%\",\n    \"variance\": -11.6152,\n    \"pct_of_target\": 86.34,\n    \"status\": \"below target\",\n    \"rounding_warning\": null\n  }\n]\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Placement Cell tracker'\n  'no published external benchmark for KPI-P3 (Internship completion) in the benchmark API'\n  'I am not going to estimate one.'",
+    "response": {
+      "answer": "Internship completion is 73.38% against our Strategic Plan 2024-27 target of 85.00% (below target, 11.62 points short). I cannot give you a peer comparison: no published external benchmark for KPI-P3 (Internship completion) in the benchmark API. I am not going to estimate one. Source: Placement Cell tracker."
+    }
+  },
+  {
+    "call": 5,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nPROVISIONAL FIGURE. Budget utilisation is 86.96% (sum(budget_spent_lakh) / sum(budget_allocated_lakh) x 100: sum(budget_spent_lakh)=1687.0, sum(budget_allocated_lakh)=1940.0), against a Strategic Plan 2024-27 target of 90.00% — below target. This figure is not final: Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August. It must not be presented to the Governing Council as an actual. Source: Finance & Accounts ledger.\n\nPermitted figures, and nothing else:\n[\n  {\n    \"kpi_id\": \"KPI-F1\",\n    \"name\": \"Budget utilisation\",\n    \"domain\": \"Finance\",\n    \"value\": 86.9588,\n    \"unit\": \"%\",\n    \"formula\": \"sum(budget_spent_lakh) / sum(budget_allocated_lakh) x 100\",\n    \"method\": \"ratio\",\n    \"n_departments\": 8,\n    \"departments\": [\n      \"CSE\",\n      \"ECE\",\n      \"ISE\",\n      \"EEE\",\n      \"MECH\",\n      \"CIVIL\",\n      \"CHEM\",\n      \"BT\"\n    ],\n    \"inputs_used\": {\n      \"sum(budget_spent_lakh)\": 1687.0,\n      \"sum(budget_allocated_lakh)\": 1940.0\n    },\n    \"evidence\": \"[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]\",\n    \"source_system\": \"Finance & Accounts ledger\",\n    \"figure_status\": \"provisional\",\n    \"caveat\": \"Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August.\"\n  },\n  {\n    \"kpi_id\": \"KPI-F1\",\n    \"name\": \"Budget utilisation\",\n    \"value\": 86.9588,\n    \"target\": 90.0,\n    \"target_source\": \"Strategic Plan 2024-27\",\n    \"unit\": \"%\",\n    \"variance\": -3.0412,\n    \"pct_of_target\": 96.62,\n    \"status\": \"below target\",\n    \"rounding_warning\": null\n  }\n]\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'PROVISIONAL FIGURE'\n  'Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August.'\n  'Finance & Accounts ledger'",
+    "response": {
+      "answer": "PROVISIONAL FIGURE. Budget utilisation is 86.96% (sum(budget_spent_lakh) / sum(budget_allocated_lakh) x 100: sum(budget_spent_lakh)=1687.0, sum(budget_allocated_lakh)=1940.0), against a Strategic Plan 2024-27 target of 90.00% — below target. This figure is not final: Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August. It must not be presented to the Governing Council as an actual. Source: Finance & Accounts ledger."
+    }
+  },
+  {
+    "call": 6,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nInstitution pass percentage is 91.85% (sum(students_passed)=992, sum(students_appeared)=1080) against the Strategic Plan 2024-27 target of 92.00%. That is a miss of 0.15 points — status: at risk. ROUNDING WARNING: 91.85 rounds to 92.0 at 0 decimal place(s), which would read as meeting the target of 92.0. Report the unrounded figure. Source: Academic ERP.\n\nPermitted figures, and nothing else:\n[\n  {\n    \"kpi_id\": \"KPI-A1\",\n    \"name\": \"Institution pass percentage\",\n    \"domain\": \"Academic\",\n    \"value\": 91.8519,\n    \"unit\": \"%\",\n    \"formula\": \"sum(students_passed) / sum(students_appeared) x 100\",\n    \"method\": \"ratio\",\n    \"n_departments\": 8,\n    \"departments\": [\n      \"CSE\",\n      \"ECE\",\n      \"ISE\",\n      \"EEE\",\n      \"MECH\",\n      \"CIVIL\",\n      \"CHEM\",\n      \"BT\"\n    ],\n    \"inputs_used\": {\n      \"sum(students_passed)\": 992,\n      \"sum(students_appeared)\": 1080\n    },\n    \"evidence\": \"[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]\",\n    \"source_system\": \"Academic ERP\",\n    \"figure_status\": \"final\"\n  },\n  {\n    \"kpi_id\": \"KPI-A1\",\n    \"name\": \"Institution pass percentage\",\n    \"value\": 91.8519,\n    \"target\": 92.0,\n    \"target_source\": \"Strategic Plan 2024-27\",\n    \"unit\": \"%\",\n    \"variance\": -0.1481,\n    \"pct_of_target\": 99.84,\n    \"status\": \"at risk\",\n    \"rounding_warning\": \"91.85 rounds to 92.0 at 0 decimal place(s), which would read as meeting the target of 92.0. Report the unrounded figure.\"\n  }\n]\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Academic ERP'\n  'ROUNDING WARNING'",
+    "response": {
+      "answer": "Institution pass percentage is 91.85% (sum(students_passed)=992, sum(students_appeared)=1080) against the Strategic Plan 2024-27 target of 92.00%. That is a miss of 0.15 points — status: at risk. ROUNDING WARNING: 91.85 rounds to 92.0 at 0 decimal place(s), which would read as meeting the target of 92.0. Report the unrounded figure. Source: Academic ERP."
+    }
+  },
+  {
+    "call": 7,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nAcross the 4 circuit-branch departments (CSE, ECE, ISE, EEE), placement is 86.35% — computed on the filtered subset (sum(placed_students)=544, sum(eligible_students)=630), not on all 8 departments. Against the Strategic Plan 2024-27 target of 80.00% that is on target. Source: Placement Cell tracker.\n\nPermitted figures, and nothing else:\n\"[4 rows: ?, ?, ?, ?]\"\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Placement Cell tracker'",
+    "response": {
+      "answer": "Across the 4 circuit-branch departments (CSE, ECE, ISE, EEE), placement is 86.35% — computed on the filtered subset (sum(placed_students)=544, sum(eligible_students)=630), not on all 8 departments. Against the Strategic Plan 2024-27 target of 80.00% that is on target. Source: Placement Cell tracker."
+    }
+  },
+  {
+    "call": 8,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nAcross the 4 core-branch departments (MECH, CIVIL, CHEM, BT), placement is 57.74% — computed on the filtered subset (sum(placed_students)=235, sum(eligible_students)=407), not on all 8 departments. Against the Strategic Plan 2024-27 target of 80.00% that is below target. Source: Placement Cell tracker.\n\nPermitted figures, and nothing else:\n\"[4 rows: ?, ?, ?, ?]\"\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Placement Cell tracker'",
+    "response": {
+      "answer": "Across the 4 core-branch departments (MECH, CIVIL, CHEM, BT), placement is 57.74% — computed on the filtered subset (sum(placed_students)=235, sum(eligible_students)=407), not on all 8 departments. Against the Strategic Plan 2024-27 target of 80.00% that is below target. Source: Placement Cell tracker."
+    }
+  },
+  {
+    "call": 9,
+    "task": "unaided",
+    "backend": "offline",
+    "system": "You are a helpful assistant.",
+    "prompt": "What is our institution's placement percentage for 2025-26?",
+    "response": {
+      "answer": "Your institution's placement percentage for 2025-26 is approximately 80%, which is broadly in line with the target."
+    }
+  },
+  {
+    "call": 10,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nInstitution-wide placement for academic year 2025-26 is 75.12%, computed as sum(placed_students) / sum(eligible_students) x 100 over 8 departments (sum(placed_students)=779, sum(eligible_students)=1037). The Strategic Plan 2024-27 target is 80.00%, so we are 4.88 percentage points below it — status: below target. Source: Placement Cell tracker.\n\nPermitted figures, and nothing else:\n[\n  {\n    \"kpi_id\": \"KPI-P1\",\n    \"name\": \"Placement percentage\",\n    \"domain\": \"Placement\",\n    \"value\": 75.1205,\n    \"unit\": \"%\",\n    \"formula\": \"sum(placed_students) / sum(eligible_students) x 100\",\n    \"method\": \"ratio\",\n    \"n_departments\": 8,\n    \"departments\": [\n      \"CSE\",\n      \"ECE\",\n      \"ISE\",\n      \"EEE\",\n      \"MECH\",\n      \"CIVIL\",\n      \"CHEM\",\n      \"BT\"\n    ],\n    \"inputs_used\": {\n      \"sum(placed_students)\": 779,\n      \"sum(eligible_students)\": 1037\n    },\n    \"evidence\": \"[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]\",\n    \"source_system\": \"Placement Cell tracker\",\n    \"figure_status\": \"final\"\n  },\n  {\n    \"kpi_id\": \"KPI-P1\",\n    \"name\": \"Placement percentage\",\n    \"value\": 75.1205,\n    \"target\": 80.0,\n    \"target_source\": \"Strategic Plan 2024-27\",\n    \"unit\": \"%\",\n    \"variance\": -4.8795,\n    \"pct_of_target\": 93.9,\n    \"status\": \"below target\",\n    \"rounding_warning\": null\n  }\n]\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Placement Cell tracker'",
+    "response": {
+      "answer": "Institution-wide placement for academic year 2025-26 is 75.12%, computed as sum(placed_students) / sum(eligible_students) x 100 over 8 departments (sum(placed_students)=779, sum(eligible_students)=1037). The Strategic Plan 2024-27 target is 80.00%, so we are 4.88 percentage points below it — status: below target. Source: Placement Cell tracker."
+    }
+  },
+  {
+    "call": 11,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nAcross the 4 circuit-branch departments (CSE, ECE, ISE, EEE), placement is 86.35% — computed on the filtered subset (sum(placed_students)=544, sum(eligible_students)=630), not on all 8 departments. Against the Strategic Plan 2024-27 target of 80.00% that is on target. Source: Placement Cell tracker.\n\nPermitted figures, and nothing else:\n\"[4 rows: ?, ?, ?, ?]\"\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Placement Cell tracker'",
+    "response": {
+      "answer": "Across the 4 circuit-branch departments (CSE, ECE, ISE, EEE), placement is 86.35% — computed on the filtered subset (sum(placed_students)=544, sum(eligible_students)=630), not on all 8 departments. Against the Strategic Plan 2024-27 target of 80.00% that is on target. Source: Placement Cell tracker."
+    }
+  },
+  {
+    "call": 12,
+    "task": "compose",
+    "backend": "offline",
+    "system": "You write one short, factual paragraph for the Principal / Registrar of an\neducational institution. You may ONLY use the numbers given to you. You may not compute,\nround, estimate, infer or add any figure that is not in the input. If a figure is marked\nprovisional you must say so.",
+    "prompt": "Rewrite this for the Principal, keeping every figure exactly as written and adding none:\n\nInternship completion is 73.38% against our Strategic Plan 2024-27 target of 85.00% (below target, 11.62 points short). I cannot give you a peer comparison: no published external benchmark for KPI-P3 (Internship completion) in the benchmark API. I am not going to estimate one. Source: Placement Cell tracker.\n\nPermitted figures, and nothing else:\n[\n  {\n    \"kpi_id\": \"KPI-P3\",\n    \"name\": \"Internship completion\",\n    \"domain\": \"Placement\",\n    \"value\": 73.3848,\n    \"unit\": \"%\",\n    \"formula\": \"sum(interns_completed) / sum(eligible_students) x 100\",\n    \"method\": \"ratio\",\n    \"n_departments\": 8,\n    \"departments\": [\n      \"CSE\",\n      \"ECE\",\n      \"ISE\",\n      \"EEE\",\n      \"MECH\",\n      \"CIVIL\",\n      \"CHEM\",\n      \"BT\"\n    ],\n    \"inputs_used\": {\n      \"sum(interns_completed)\": 761,\n      \"sum(eligible_students)\": 1037\n    },\n    \"evidence\": \"[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]\",\n    \"source_system\": \"Placement Cell tracker\",\n    \"figure_status\": \"final\"\n  },\n  {\n    \"kpi_id\": \"KPI-P3\",\n    \"name\": \"Internship completion\",\n    \"value\": 73.3848,\n    \"target\": 85.0,\n    \"target_source\": \"Strategic Plan 2024-27\",\n    \"unit\": \"%\",\n    \"variance\": -11.6152,\n    \"pct_of_target\": 86.34,\n    \"status\": \"below target\",\n    \"rounding_warning\": null\n  }\n]\n\nMANDATORY — reproduce each of these strings VERBATIM, character for character, somewhere in your answer:\n  'Placement Cell tracker'\n  'no published external benchmark for KPI-P3 (Internship completion) in the benchmark API'\n  'I am not going to estimate one.'",
+    "response": {
+      "answer": "Internship completion is 73.38% against our Strategic Plan 2024-27 target of 85.00% (below target, 11.62 points short). I cannot give you a peer comparison: no published external benchmark for KPI-P3 (Internship completion) in the benchmark API. I am not going to estimate one. Source: Placement Cell tracker."
+    }
+  }
+]

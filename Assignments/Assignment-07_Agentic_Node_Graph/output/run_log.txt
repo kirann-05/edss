@@ -1,0 +1,13 @@
+=== Lab 7: full node graph, one command -> validated draft ===
+
+Domains aggregated: ['research', 'academic', 'placement', 'finance']
+KPIs synthesized: ['institution_pass_percentage', 'institution_co_po_attainment', 'institution_publications_per_faculty', 'institution_placement_percentage', 'institution_average_package', 'institution_budget_utilization']
+Report sections: ['Institution-Wide KPIs vs Targets', 'Domain Breakdowns', 'Assumptions', 'Drill-Down Evidence (source of every figure)', 'Decision Options & Risks']
+
+Validation: passed=True, failing=[]
+  - every figure cites its source: all domain and KPI figures cite a source_system
+  - assumptions are stated explicitly: 4 assumption(s) stated explicitly
+  - each option lists its risks and trade-offs: every decision option lists risks for each alternative
+  - no action is taken without leadership approval: no publish action has occurred prior to human approval
+
+ACCEPT: one call to build_draft() + validate_with_self_healing() produced a validated decision-brief draft end to end.

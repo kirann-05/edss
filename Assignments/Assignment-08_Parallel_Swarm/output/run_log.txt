@@ -1,0 +1,10 @@
+=== Lab 8: fan-out/fan-in over the 4 domain agents, then merge ===
+
+Sequential wall-clock time: 1.40s
+Parallel wall-clock time:   0.36s
+Speedup: 3.88x
+
+Merge coverage check (alignment_to(plan)): ['academic', 'finance', 'placement', 'research'] == ['academic', 'finance', 'placement', 'research'] -> True
+Same domain results, both paths agree on academic pass%: seq=87.1 par=87.1
+
+ACCEPT: parallel run matched sequential quality at lower wall-clock time.

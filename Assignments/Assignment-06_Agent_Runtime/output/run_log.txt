@@ -1,0 +1,13 @@
+=== Lab 6: governed runtime (budget, gates, checkpoint/resume, audit) ===
+
+Audit log written to: C:\Users\Mudassir-local\Desktop\7th sem\Agentic AI\Practical\edss\Assignments\Assignment-06_Agent_Runtime\output\audit_log.jsonl
+  [2026-11-16T20:22:00.535824] Coordinator :: start run -> locked plan for 'Q1 FY26 (Lab 6 demo)' covering ['academic', 'finance']
+  [2026-11-16T20:22:00.535824] Coordinator :: run academic aggregation -> simulated step: academic aggregation would run here
+  [2026-11-16T20:22:00.536824] Coordinator :: run finance aggregation -> simulated step: finance aggregation would run here
+
+Simulating a crash and resuming from the last checkpoint in a fresh process...
+Resumed run 4ab6e706 at attempt=0, log has 2 entries:
+  - simulated step: academic aggregation would run here
+  - simulated step: finance aggregation would run here
+
+ACCEPT: every action was logged with inputs/outputs, and the resumed run's state matches the pre-crash state exactly.

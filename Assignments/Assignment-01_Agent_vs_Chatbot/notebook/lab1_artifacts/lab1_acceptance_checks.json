@@ -1,0 +1,82 @@
+[
+  {
+    "check": "A1  vague request triggers >= 2 clarifying questions",
+    "passed": true,
+    "evidence": "6 questions asked in round 1"
+  },
+  {
+    "check": "A2  fully-specified request triggers 0 questions (not a questionnaire)",
+    "passed": true,
+    "evidence": "Run B asked 0 questions"
+  },
+  {
+    "check": "A3  no question is ever repeated once answered",
+    "passed": true,
+    "evidence": "round 1 asked 6, round 2 asked 3 (a strict subset)"
+  },
+  {
+    "check": "A4  Act/Observe: tool called, and called before the plan was locked",
+    "passed": true,
+    "evidence": "tool at iteration 7, plan locked at 11"
+  },
+  {
+    "check": "A5  tool contract honoured (error branch exists and is exercised)",
+    "passed": true,
+    "evidence": "read_data_scope_register(['Sustainability']) -> {'error': ...}"
+  },
+  {
+    "check": "A6  plan contains all 11 required sections",
+    "passed": true,
+    "evidence": "missing: none"
+  },
+  {
+    "check": "A7  plan is editable (every step has a unique id)",
+    "passed": true,
+    "evidence": "step ids: ['S1', 'S11', 'S2', 'S3', 'S4', 'S6', 'S7', 'S8', 'S9', 'S10']"
+  },
+  {
+    "check": "A8  two revision rounds applied",
+    "passed": true,
+    "evidence": "plan.revision == 2"
+  },
+  {
+    "check": "A9  both revisions mutated the SAME object (no regeneration)",
+    "passed": true,
+    "evidence": "id at creation 4523566400 == id now 4523566400"
+  },
+  {
+    "check": "A10 each revision is individually auditable",
+    "passed": true,
+    "evidence": "5 recorded operations, each with a 'why'"
+  },
+  {
+    "check": "A11 revision 2 left the objective and KPI formulas untouched",
+    "passed": true,
+    "evidence": "byte-identical before and after round 2"
+  },
+  {
+    "check": "A12 every observed data conflict is carried into the plan",
+    "passed": true,
+    "evidence": "3 conflicts, all present in assumptions"
+  },
+  {
+    "check": "A13 no institutional figure was fabricated (Lab 1 produces a plan only)",
+    "passed": true,
+    "evidence": "numeric percentage claims found: none"
+  },
+  {
+    "check": "A14 iteration log records planned/action/observed/stopped for every step",
+    "passed": true,
+    "evidence": "15 log entries"
+  },
+  {
+    "check": "A15 the loop stopped for its declared stopping condition",
+    "passed": true,
+    "evidence": "goal.plan_locked is now True"
+  },
+  {
+    "check": "A16 refuses to invent missing requirements when the user never supplies them",
+    "passed": true,
+    "evidence": "requirements still incomplete after 4 rounds; the agent refuses to invent the missing slots"
+  }
+]

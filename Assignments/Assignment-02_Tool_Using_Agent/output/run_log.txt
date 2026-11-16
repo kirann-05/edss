@@ -1,0 +1,10 @@
+=== Lab 2: typed tools over real data ===
+
+tool.read('institutional KPIs & dashboards') -> 6 KPI definitions
+tool.read('department reports', domain='placement') -> 4 department records
+
+tool.compute(...) -> placement % = 74.77%  (formula: sum(placed_students) / sum(eligible_students))
+
+tool.compute on a malformed input -> valid=None, valid=False, note='division by zero'
+
+ACCEPT: every figure above came from tool.read/tool.compute, none were hand-asserted.

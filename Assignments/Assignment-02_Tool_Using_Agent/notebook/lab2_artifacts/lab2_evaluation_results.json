@@ -1,0 +1,230 @@
+[
+  {
+    "family": "numeric",
+    "test": "KPI-A1 == 91.8519",
+    "passed": true,
+    "detail": "got 91.8519, validation ok"
+  },
+  {
+    "family": "numeric",
+    "test": "KPI-A2 == 2.4844",
+    "passed": true,
+    "detail": "got 2.4844, validation ok"
+  },
+  {
+    "family": "numeric",
+    "test": "KPI-R1 == 1.1859",
+    "passed": true,
+    "detail": "got 1.1859, validation ok"
+  },
+  {
+    "family": "numeric",
+    "test": "KPI-R2 == 7.2564",
+    "passed": true,
+    "detail": "got 7.2564, validation ok"
+  },
+  {
+    "family": "numeric",
+    "test": "KPI-R3 == 242.5",
+    "passed": true,
+    "detail": "got 242.5, validation ok"
+  },
+  {
+    "family": "numeric",
+    "test": "KPI-P1 == 75.1205",
+    "passed": true,
+    "detail": "got 75.1205, validation ok"
+  },
+  {
+    "family": "numeric",
+    "test": "KPI-P2 == 7.667",
+    "passed": true,
+    "detail": "got 7.667, validation ok"
+  },
+  {
+    "family": "numeric",
+    "test": "KPI-P3 == 73.3848",
+    "passed": true,
+    "detail": "got 73.3848, validation ok"
+  },
+  {
+    "family": "numeric",
+    "test": "KPI-F1 == 86.9588",
+    "passed": true,
+    "detail": "got 86.9588, validation ok"
+  },
+  {
+    "family": "routing",
+    "test": "placement_vs_target  <- What is our placement percentage against the",
+    "passed": true,
+    "detail": "got 'placement_vs_target'"
+  },
+  {
+    "family": "routing",
+    "test": "placement_drilldown  <- Which departments are pulling placement down",
+    "passed": true,
+    "detail": "got 'placement_drilldown'"
+  },
+  {
+    "family": "routing",
+    "test": "research_vs_peers    <- How do our citations per faculty compare wit",
+    "passed": true,
+    "detail": "got 'research_vs_peers'"
+  },
+  {
+    "family": "routing",
+    "test": "internship_vs_peers  <- How does internship completion compare with ",
+    "passed": true,
+    "detail": "got 'internship_vs_peers'"
+  },
+  {
+    "family": "routing",
+    "test": "budget_utilisation   <- What is our budget utilisation?",
+    "passed": true,
+    "detail": "got 'budget_utilisation'"
+  },
+  {
+    "family": "routing",
+    "test": "pass_percentage      <- Are we meeting the pass percentage target?",
+    "passed": true,
+    "detail": "got 'pass_percentage'"
+  },
+  {
+    "family": "routing",
+    "test": "branch_placement     <- Placement percentage for circuit-branch depa",
+    "passed": true,
+    "detail": "got 'branch_placement'"
+  },
+  {
+    "family": "routing",
+    "test": "unrouted             <- Who should we hire next year?",
+    "passed": true,
+    "detail": "got 'unrouted'"
+  },
+  {
+    "family": "sequence",
+    "test": "What is our placement percentage against the strateg",
+    "passed": true,
+    "detail": "4 calls in order"
+  },
+  {
+    "family": "sequence",
+    "test": "Placement percentage for circuit-branch departments ",
+    "passed": true,
+    "detail": "5 calls in order"
+  },
+  {
+    "family": "sequence",
+    "test": "How does internship completion compare with peers?",
+    "passed": true,
+    "detail": "5 calls in order"
+  },
+  {
+    "family": "sequence",
+    "test": "Who should we hire next year?",
+    "passed": true,
+    "detail": "0 calls in order"
+  },
+  {
+    "family": "error-contract",
+    "test": "read_department_reports -> error containing 'no department report export'",
+    "passed": true,
+    "detail": "no department report export for 'academic year 2019-20'; the only loaded period is 'academic year 2025-26'"
+  },
+  {
+    "family": "error-contract",
+    "test": "read_kpi_definitions -> error containing 'unknown KPI id(s)'",
+    "passed": true,
+    "detail": "unknown KPI id(s): ['KPI-Z9']; known: ['KPI-A1', 'KPI-A2', 'KPI-F1', 'KPI-P1', 'KPI-P2', 'KPI-P3', 'KPI-R1', 'KPI-R2', 'KPI-R3']"
+  },
+  {
+    "family": "error-contract",
+    "test": "read_external_benchmark -> error containing 'no published external benchmark'",
+    "passed": true,
+    "detail": "no published external benchmark for KPI-F1 (Budget utilisation) in the benchmark API"
+  },
+  {
+    "family": "error-contract",
+    "test": "compute_kpi -> error containing 'empty row set'",
+    "passed": true,
+    "detail": "cannot compute KPI-P1 over an empty row set"
+  },
+  {
+    "family": "error-contract",
+    "test": "compare_to_target -> error containing 'unknown KPI id'",
+    "passed": true,
+    "detail": "unknown KPI id 'KPI-Z9'"
+  },
+  {
+    "family": "error-contract",
+    "test": "compute_variance -> error containing 'zero reference'",
+    "passed": true,
+    "detail": "cannot compute variance against a zero reference (x)"
+  },
+  {
+    "family": "error-contract",
+    "test": "filter_rows -> error containing 'empty row set'",
+    "passed": true,
+    "detail": "filter_rows received an empty row set"
+  },
+  {
+    "family": "error-contract",
+    "test": "draft_notification -> error containing 'no findings'",
+    "passed": true,
+    "detail": "refusing to draft a notification with no findings"
+  },
+  {
+    "family": "grounding",
+    "test": "placement_vs_target    answer has no ungrounded figure",
+    "passed": true,
+    "detail": "every numeric token traces to a tool output"
+  },
+  {
+    "family": "grounding",
+    "test": "placement_drilldown    answer has no ungrounded figure",
+    "passed": true,
+    "detail": "every numeric token traces to a tool output"
+  },
+  {
+    "family": "grounding",
+    "test": "research_vs_peers      answer has no ungrounded figure",
+    "passed": true,
+    "detail": "every numeric token traces to a tool output"
+  },
+  {
+    "family": "grounding",
+    "test": "internship_vs_peers    answer has no ungrounded figure",
+    "passed": true,
+    "detail": "every numeric token traces to a tool output"
+  },
+  {
+    "family": "grounding",
+    "test": "budget_utilisation     answer has no ungrounded figure",
+    "passed": true,
+    "detail": "every numeric token traces to a tool output"
+  },
+  {
+    "family": "grounding",
+    "test": "pass_percentage        answer has no ungrounded figure",
+    "passed": true,
+    "detail": "every numeric token traces to a tool output"
+  },
+  {
+    "family": "grounding",
+    "test": "unrouted               answer has no ungrounded figure",
+    "passed": true,
+    "detail": "every numeric token traces to a tool output"
+  },
+  {
+    "family": "grounding",
+    "test": "branch_placement       answer has no ungrounded figure",
+    "passed": true,
+    "detail": "every numeric token traces to a tool output"
+  },
+  {
+    "family": "grounding",
+    "test": "branch_placement       answer has no ungrounded figure",
+    "passed": true,
+    "detail": "every numeric token traces to a tool output"
+  }
+]

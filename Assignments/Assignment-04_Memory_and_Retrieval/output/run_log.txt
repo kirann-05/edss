@@ -1,0 +1,8 @@
+=== Lab 4: short-term run state vs long-term store ===
+
+state.draft (short-term, this run only): {'institution_placement_percentage': 76.3, 'status': 'draft'}
+
+retrieve(store, tags=['quarterly']) -> ['2025-Q4', '2025-Q3']
+retrieve(history, embed(candidate), k=2) -> ['2025-Q4', '2025-Q3']
+
+ACCEPT: tag filter and similarity search both returned correctly-matched prior items; state.draft never touched the long-term store.

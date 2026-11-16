@@ -1,0 +1,2195 @@
+[
+  {
+    "step": 1,
+    "tool": "read_department_reports",
+    "reason": "leadership asked how placement stands against target: the per-department metrics live in the reports export",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 2,
+    "tool": "read_kpi_definitions",
+    "reason": "leadership asked how placement stands against target: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-P1"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-P1": {
+          "name": "Placement percentage",
+          "domain": "Placement",
+          "method": "ratio",
+          "numerator": "placed_students",
+          "denominator": "eligible_students",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(placed_students) / sum(eligible_students) x 100",
+          "target": 80.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Placement Cell tracker"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 3,
+    "tool": "compute_kpi",
+    "reason": "leadership asked how placement stands against target: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 75.1205,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 779,
+        "sum(eligible_students)": 1037
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 4,
+    "tool": "compare_to_target",
+    "reason": "leadership asked how placement stands against target: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "value": 75.1205
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "value": 75.1205,
+      "target": 80.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -4.8795,
+      "pct_of_target": 93.9,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 5,
+    "tool": "read_department_reports",
+    "reason": "leadership asked which departments pull placement down: the per-department metrics live in the reports export",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 6,
+    "tool": "read_kpi_definitions",
+    "reason": "leadership asked which departments pull placement down: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-P1"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-P1": {
+          "name": "Placement percentage",
+          "domain": "Placement",
+          "method": "ratio",
+          "numerator": "placed_students",
+          "denominator": "eligible_students",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(placed_students) / sum(eligible_students) x 100",
+          "target": 80.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Placement Cell tracker"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 7,
+    "tool": "compute_kpi",
+    "reason": "leadership asked which departments pull placement down: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 75.1205,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 779,
+        "sum(eligible_students)": 1037
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 8,
+    "tool": "compare_to_target",
+    "reason": "leadership asked which departments pull placement down: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "value": 75.1205
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "value": 75.1205,
+      "target": 80.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -4.8795,
+      "pct_of_target": 93.9,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 9,
+    "tool": "read_department_reports",
+    "reason": "leadership asked how research citations compare to peers: the per-department metrics live in the reports export",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 10,
+    "tool": "read_kpi_definitions",
+    "reason": "leadership asked how research citations compare to peers: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-R2"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-R2": {
+          "name": "Citations per faculty",
+          "domain": "Research",
+          "method": "ratio",
+          "numerator": "citations",
+          "denominator": "sanctioned_faculty",
+          "scale": 1,
+          "unit": "per faculty",
+          "formula": "sum(citations) / sum(sanctioned_faculty)",
+          "target": 9.0,
+          "target_source": "NIRF Research & Professional Practice",
+          "direction": "higher_is_better",
+          "source_system": "Research repository"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 11,
+    "tool": "compute_kpi",
+    "reason": "leadership asked how research citations compare to peers: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-R2",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-R2",
+      "name": "Citations per faculty",
+      "domain": "Research",
+      "value": 7.2564,
+      "unit": "per faculty",
+      "formula": "sum(citations) / sum(sanctioned_faculty)",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(citations)": 1132,
+        "sum(sanctioned_faculty)": 156
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Research repository",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 12,
+    "tool": "compare_to_target",
+    "reason": "leadership asked how research citations compare to peers: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-R2",
+      "value": 7.2564
+    },
+    "output": {
+      "kpi_id": "KPI-R2",
+      "name": "Citations per faculty",
+      "value": 7.2564,
+      "target": 9.0,
+      "target_source": "NIRF Research & Professional Practice",
+      "unit": "per faculty",
+      "variance": -1.7436,
+      "pct_of_target": 80.63,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 13,
+    "tool": "read_external_benchmark",
+    "reason": "a peer comparison needs the published benchmark, which is not in our own data",
+    "input": {
+      "kpi_id": "KPI-R2"
+    },
+    "output": {
+      "kpi_id": "KPI-R2",
+      "peer_median": 11.4,
+      "cohort": "NIRF Engineering rank band 51-100",
+      "year": "2025",
+      "source_system": "External benchmark API (NIRF cohort)"
+    },
+    "ok": true
+  },
+  {
+    "step": 14,
+    "tool": "compute_variance",
+    "reason": "the gap to the peer median is arithmetic, so it goes through a tool",
+    "input": {
+      "value": 7.2564,
+      "reference": 11.4,
+      "label": "citations per faculty vs NIRF cohort median"
+    },
+    "output": {
+      "value": 7.2564,
+      "reference": 11.4,
+      "label": "citations per faculty vs NIRF cohort median",
+      "variance": -4.1436,
+      "abs_variance": 4.1436,
+      "pct_of_reference": 63.65
+    },
+    "ok": true
+  },
+  {
+    "step": 15,
+    "tool": "read_department_reports",
+    "reason": "leadership asked about internship completion vs peers: the per-department metrics live in the reports export",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 16,
+    "tool": "read_kpi_definitions",
+    "reason": "leadership asked about internship completion vs peers: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-P3"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-P3": {
+          "name": "Internship completion",
+          "domain": "Placement",
+          "method": "ratio",
+          "numerator": "interns_completed",
+          "denominator": "eligible_students",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(interns_completed) / sum(eligible_students) x 100",
+          "target": 85.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Placement Cell tracker"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 17,
+    "tool": "compute_kpi",
+    "reason": "leadership asked about internship completion vs peers: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-P3",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P3",
+      "name": "Internship completion",
+      "domain": "Placement",
+      "value": 73.3848,
+      "unit": "%",
+      "formula": "sum(interns_completed) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(interns_completed)": 761,
+        "sum(eligible_students)": 1037
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 18,
+    "tool": "compare_to_target",
+    "reason": "leadership asked about internship completion vs peers: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-P3",
+      "value": 73.3848
+    },
+    "output": {
+      "kpi_id": "KPI-P3",
+      "name": "Internship completion",
+      "value": 73.3848,
+      "target": 85.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -11.6152,
+      "pct_of_target": 86.34,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 19,
+    "tool": "read_external_benchmark",
+    "reason": "checking whether a peer benchmark exists for internship completion",
+    "input": {
+      "kpi_id": "KPI-P3"
+    },
+    "output": {
+      "error": "no published external benchmark for KPI-P3 (Internship completion) in the benchmark API"
+    },
+    "ok": false
+  },
+  {
+    "step": 20,
+    "tool": "read_department_reports",
+    "reason": "leadership asked about budget utilisation: the per-department metrics live in the reports export",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 21,
+    "tool": "read_kpi_definitions",
+    "reason": "leadership asked about budget utilisation: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-F1"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-F1": {
+          "name": "Budget utilisation",
+          "domain": "Finance",
+          "method": "ratio",
+          "numerator": "budget_spent_lakh",
+          "denominator": "budget_allocated_lakh",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(budget_spent_lakh) / sum(budget_allocated_lakh) x 100",
+          "target": 90.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Finance & Accounts ledger",
+          "figure_status": "provisional",
+          "caveat": "Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August."
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 22,
+    "tool": "compute_kpi",
+    "reason": "leadership asked about budget utilisation: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-F1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-F1",
+      "name": "Budget utilisation",
+      "domain": "Finance",
+      "value": 86.9588,
+      "unit": "%",
+      "formula": "sum(budget_spent_lakh) / sum(budget_allocated_lakh) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(budget_spent_lakh)": 1687.0,
+        "sum(budget_allocated_lakh)": 1940.0
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Finance & Accounts ledger",
+      "figure_status": "provisional",
+      "caveat": "Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August."
+    },
+    "ok": true
+  },
+  {
+    "step": 23,
+    "tool": "compare_to_target",
+    "reason": "leadership asked about budget utilisation: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-F1",
+      "value": 86.9588
+    },
+    "output": {
+      "kpi_id": "KPI-F1",
+      "name": "Budget utilisation",
+      "value": 86.9588,
+      "target": 90.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -3.0412,
+      "pct_of_target": 96.62,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 24,
+    "tool": "read_department_reports",
+    "reason": "leadership asked whether the pass-percentage target is met: the per-department metrics live in the reports export",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 25,
+    "tool": "read_kpi_definitions",
+    "reason": "leadership asked whether the pass-percentage target is met: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-A1"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-A1": {
+          "name": "Institution pass percentage",
+          "domain": "Academic",
+          "method": "ratio",
+          "numerator": "students_passed",
+          "denominator": "students_appeared",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(students_passed) / sum(students_appeared) x 100",
+          "target": 92.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Academic ERP"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 26,
+    "tool": "compute_kpi",
+    "reason": "leadership asked whether the pass-percentage target is met: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-A1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-A1",
+      "name": "Institution pass percentage",
+      "domain": "Academic",
+      "value": 91.8519,
+      "unit": "%",
+      "formula": "sum(students_passed) / sum(students_appeared) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(students_passed)": 992,
+        "sum(students_appeared)": 1080
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Academic ERP",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 27,
+    "tool": "compare_to_target",
+    "reason": "leadership asked whether the pass-percentage target is met: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-A1",
+      "value": 91.8519
+    },
+    "output": {
+      "kpi_id": "KPI-A1",
+      "name": "Institution pass percentage",
+      "value": 91.8519,
+      "target": 92.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -0.1481,
+      "pct_of_target": 99.84,
+      "status": "at risk",
+      "rounding_warning": "91.85 rounds to 92.0 at 0 decimal place(s), which would read as meeting the target of 92.0. Report the unrounded figure."
+    },
+    "ok": true
+  },
+  {
+    "step": 28,
+    "tool": "read_department_reports",
+    "reason": "performance watch: one read serves every KPI in the sweep",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 29,
+    "tool": "read_kpi_definitions",
+    "reason": "performance watch on KPI-A1: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-A1"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-A1": {
+          "name": "Institution pass percentage",
+          "domain": "Academic",
+          "method": "ratio",
+          "numerator": "students_passed",
+          "denominator": "students_appeared",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(students_passed) / sum(students_appeared) x 100",
+          "target": 92.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Academic ERP"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 30,
+    "tool": "compute_kpi",
+    "reason": "performance watch on KPI-A1: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-A1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-A1",
+      "name": "Institution pass percentage",
+      "domain": "Academic",
+      "value": 91.8519,
+      "unit": "%",
+      "formula": "sum(students_passed) / sum(students_appeared) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(students_passed)": 992,
+        "sum(students_appeared)": 1080
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Academic ERP",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 31,
+    "tool": "compare_to_target",
+    "reason": "performance watch on KPI-A1: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-A1",
+      "value": 91.8519
+    },
+    "output": {
+      "kpi_id": "KPI-A1",
+      "name": "Institution pass percentage",
+      "value": 91.8519,
+      "target": 92.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -0.1481,
+      "pct_of_target": 99.84,
+      "status": "at risk",
+      "rounding_warning": "91.85 rounds to 92.0 at 0 decimal place(s), which would read as meeting the target of 92.0. Report the unrounded figure."
+    },
+    "ok": true
+  },
+  {
+    "step": 32,
+    "tool": "read_kpi_definitions",
+    "reason": "performance watch on KPI-P1: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-P1"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-P1": {
+          "name": "Placement percentage",
+          "domain": "Placement",
+          "method": "ratio",
+          "numerator": "placed_students",
+          "denominator": "eligible_students",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(placed_students) / sum(eligible_students) x 100",
+          "target": 80.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Placement Cell tracker"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 33,
+    "tool": "compute_kpi",
+    "reason": "performance watch on KPI-P1: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 75.1205,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 779,
+        "sum(eligible_students)": 1037
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 34,
+    "tool": "compare_to_target",
+    "reason": "performance watch on KPI-P1: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "value": 75.1205
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "value": 75.1205,
+      "target": 80.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -4.8795,
+      "pct_of_target": 93.9,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 35,
+    "tool": "read_kpi_definitions",
+    "reason": "performance watch on KPI-P3: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-P3"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-P3": {
+          "name": "Internship completion",
+          "domain": "Placement",
+          "method": "ratio",
+          "numerator": "interns_completed",
+          "denominator": "eligible_students",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(interns_completed) / sum(eligible_students) x 100",
+          "target": 85.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Placement Cell tracker"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 36,
+    "tool": "compute_kpi",
+    "reason": "performance watch on KPI-P3: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-P3",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P3",
+      "name": "Internship completion",
+      "domain": "Placement",
+      "value": 73.3848,
+      "unit": "%",
+      "formula": "sum(interns_completed) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(interns_completed)": 761,
+        "sum(eligible_students)": 1037
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 37,
+    "tool": "compare_to_target",
+    "reason": "performance watch on KPI-P3: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-P3",
+      "value": 73.3848
+    },
+    "output": {
+      "kpi_id": "KPI-P3",
+      "name": "Internship completion",
+      "value": 73.3848,
+      "target": 85.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -11.6152,
+      "pct_of_target": 86.34,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 38,
+    "tool": "read_kpi_definitions",
+    "reason": "performance watch on KPI-R1: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-R1"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-R1": {
+          "name": "Publications per faculty",
+          "domain": "Research",
+          "method": "ratio",
+          "numerator": "publications",
+          "denominator": "sanctioned_faculty",
+          "scale": 1,
+          "unit": "per faculty",
+          "formula": "sum(publications) / sum(sanctioned_faculty)",
+          "target": 1.5,
+          "target_source": "NIRF Research & Professional Practice",
+          "direction": "higher_is_better",
+          "source_system": "Research repository"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 39,
+    "tool": "compute_kpi",
+    "reason": "performance watch on KPI-R1: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-R1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-R1",
+      "name": "Publications per faculty",
+      "domain": "Research",
+      "value": 1.1859,
+      "unit": "per faculty",
+      "formula": "sum(publications) / sum(sanctioned_faculty)",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(publications)": 185,
+        "sum(sanctioned_faculty)": 156
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Research repository",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 40,
+    "tool": "compare_to_target",
+    "reason": "performance watch on KPI-R1: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-R1",
+      "value": 1.1859
+    },
+    "output": {
+      "kpi_id": "KPI-R1",
+      "name": "Publications per faculty",
+      "value": 1.1859,
+      "target": 1.5,
+      "target_source": "NIRF Research & Professional Practice",
+      "unit": "per faculty",
+      "variance": -0.3141,
+      "pct_of_target": 79.06,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 41,
+    "tool": "read_kpi_definitions",
+    "reason": "performance watch on KPI-R2: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-R2"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-R2": {
+          "name": "Citations per faculty",
+          "domain": "Research",
+          "method": "ratio",
+          "numerator": "citations",
+          "denominator": "sanctioned_faculty",
+          "scale": 1,
+          "unit": "per faculty",
+          "formula": "sum(citations) / sum(sanctioned_faculty)",
+          "target": 9.0,
+          "target_source": "NIRF Research & Professional Practice",
+          "direction": "higher_is_better",
+          "source_system": "Research repository"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 42,
+    "tool": "compute_kpi",
+    "reason": "performance watch on KPI-R2: apply the registered formula over all 8 departments",
+    "input": {
+      "kpi_id": "KPI-R2",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-R2",
+      "name": "Citations per faculty",
+      "domain": "Research",
+      "value": 7.2564,
+      "unit": "per faculty",
+      "formula": "sum(citations) / sum(sanctioned_faculty)",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(citations)": 1132,
+        "sum(sanctioned_faculty)": 156
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Research repository",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 43,
+    "tool": "compare_to_target",
+    "reason": "performance watch on KPI-R2: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-R2",
+      "value": 7.2564
+    },
+    "output": {
+      "kpi_id": "KPI-R2",
+      "name": "Citations per faculty",
+      "value": 7.2564,
+      "target": 9.0,
+      "target_source": "NIRF Research & Professional Practice",
+      "unit": "per faculty",
+      "variance": -1.7436,
+      "pct_of_target": 80.63,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 44,
+    "tool": "draft_notification",
+    "reason": "4 KPI(s) missed target by more than the 5.0% escalation threshold, so leadership needs a written heads-up before the Governing Council cycle — drafting only, because circulation requires the Principal's approval",
+    "input": {
+      "audience": "Principal / Registrar",
+      "subject": "4 institution KPIs below target for academic year 2025-26",
+      "findings": "[4 rows: ?, ?, ?, ?]"
+    },
+    "output": {
+      "status": "DRAFT - NOT SENT",
+      "audience": "Principal / Registrar",
+      "subject": "4 institution KPIs below target for academic year 2025-26",
+      "body": "  1. Placement percentage is 75.12% against a target of 80.00% (6.10% short)\n     source: Placement Cell tracker\n  2. Internship completion is 73.38% against...",
+      "findings_cited": 4,
+      "requires_approval_from": "Principal / Registrar (Chapter 15 human gate)",
+      "note": "This tool cannot send. Circulation happens only after human approval."
+    },
+    "ok": true
+  },
+  {
+    "step": 45,
+    "tool": "draft_notification",
+    "reason": "deliberately attempting to draft a notice with an uncited figure",
+    "input": {
+      "audience": "Principal / Registrar",
+      "subject": "Placement update",
+      "findings": [
+        {
+          "statement": "Placement is around 75% this year"
+        }
+      ]
+    },
+    "output": {
+      "error": "1 finding(s) carry no source; every figure in a leadership notification must cite where it came from"
+    },
+    "ok": false
+  },
+  {
+    "step": 46,
+    "tool": "read_department_reports",
+    "reason": "step 1 of 3: read every department row before filtering",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 47,
+    "tool": "filter_rows",
+    "reason": "step 2 of 3: restrict to circuit-branch departments only",
+    "input": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "field": "category",
+      "value": "circuit"
+    },
+    "output": {
+      "rows": "[4 rows: CSE, ECE, ISE, EEE]",
+      "row_count": 4,
+      "filter": "category==circuit",
+      "filtered_from": 8
+    },
+    "ok": true
+  },
+  {
+    "step": 48,
+    "tool": "read_kpi_definitions",
+    "reason": "step 3 of 3: compute placement over the circuit subset: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-P1"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-P1": {
+          "name": "Placement percentage",
+          "domain": "Placement",
+          "method": "ratio",
+          "numerator": "placed_students",
+          "denominator": "eligible_students",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(placed_students) / sum(eligible_students) x 100",
+          "target": 80.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Placement Cell tracker"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 49,
+    "tool": "compute_kpi",
+    "reason": "step 3 of 3: compute placement over the circuit subset: apply the registered formula over circuit departments",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[4 rows: CSE, ECE, ISE, EEE]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 86.3492,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 4,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 544,
+        "sum(eligible_students)": 630
+      },
+      "evidence": "[4 rows: CSE, ECE, ISE, EEE]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 50,
+    "tool": "compare_to_target",
+    "reason": "step 3 of 3: compute placement over the circuit subset: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "value": 86.3492
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "value": 86.3492,
+      "target": 80.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": 6.3492,
+      "pct_of_target": 107.94,
+      "status": "on target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 51,
+    "tool": "read_department_reports",
+    "reason": "step 1 of 3: read every department row before filtering",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 52,
+    "tool": "filter_rows",
+    "reason": "step 2 of 3: restrict to core-branch departments only",
+    "input": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "field": "category",
+      "value": "core"
+    },
+    "output": {
+      "rows": "[4 rows: MECH, CIVIL, CHEM, BT]",
+      "row_count": 4,
+      "filter": "category==core",
+      "filtered_from": 8
+    },
+    "ok": true
+  },
+  {
+    "step": 53,
+    "tool": "read_kpi_definitions",
+    "reason": "step 3 of 3: compute placement over the core subset: the approved formula and target must come from the register, not from the prompt",
+    "input": {
+      "kpi_ids": [
+        "KPI-P1"
+      ]
+    },
+    "output": {
+      "definitions": {
+        "KPI-P1": {
+          "name": "Placement percentage",
+          "domain": "Placement",
+          "method": "ratio",
+          "numerator": "placed_students",
+          "denominator": "eligible_students",
+          "scale": 100,
+          "unit": "%",
+          "formula": "sum(placed_students) / sum(eligible_students) x 100",
+          "target": 80.0,
+          "target_source": "Strategic Plan 2024-27",
+          "direction": "higher_is_better",
+          "source_system": "Placement Cell tracker"
+        }
+      },
+      "count": 1,
+      "source_system": "Institutional KPI register (approved definitions)"
+    },
+    "ok": true
+  },
+  {
+    "step": 54,
+    "tool": "compute_kpi",
+    "reason": "step 3 of 3: compute placement over the core subset: apply the registered formula over core departments",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[4 rows: MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 57.7396,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 4,
+      "departments": [
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 235,
+        "sum(eligible_students)": 407
+      },
+      "evidence": "[4 rows: MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 55,
+    "tool": "compare_to_target",
+    "reason": "step 3 of 3: compute placement over the core subset: variance against the approved target is what leadership acts on",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "value": 57.7396
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "value": 57.7396,
+      "target": 80.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -22.2604,
+      "pct_of_target": 72.17,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 56,
+    "tool": "read_department_reports",
+    "reason": "fetch rows so the empty-filter case can be demonstrated",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 57,
+    "tool": "filter_rows",
+    "reason": "deliberately filtering on a category that does not exist",
+    "input": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "field": "category",
+      "value": "aerospace"
+    },
+    "output": {
+      "error": "filter category='aerospace' matched 0 of 8 rows — refusing to return an empty subset"
+    },
+    "ok": false
+  },
+  {
+    "step": 58,
+    "tool": "compute_kpi",
+    "reason": "reconciliation: circuit subset",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[4 rows: CSE, ECE, ISE, EEE]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 86.3492,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 4,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 544,
+        "sum(eligible_students)": 630
+      },
+      "evidence": "[4 rows: CSE, ECE, ISE, EEE]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 59,
+    "tool": "compute_kpi",
+    "reason": "reconciliation: core subset",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[4 rows: MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 57.7396,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 4,
+      "departments": [
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 235,
+        "sum(eligible_students)": 407
+      },
+      "evidence": "[4 rows: MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 60,
+    "tool": "compute_kpi",
+    "reason": "reconciliation: all departments",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 75.1205,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 779,
+        "sum(eligible_students)": 1037
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 61,
+    "tool": "read_department_reports",
+    "reason": "comparison of three ways to answer one question",
+    "input": {
+      "period": "academic year 2025-26"
+    },
+    "output": {
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "row_count": 8,
+      "period": "academic year 2025-26",
+      "source_system": "Department reports export (Registrar-authorised read)"
+    },
+    "ok": true
+  },
+  {
+    "step": 62,
+    "tool": "compute_kpi",
+    "reason": "the approved formula aggregates counts, not percentages",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 75.1205,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 779,
+        "sum(eligible_students)": 1037
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 63,
+    "tool": "compute_kpi",
+    "reason": "pass percentage, unrounded",
+    "input": {
+      "kpi_id": "KPI-A1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-A1",
+      "name": "Institution pass percentage",
+      "domain": "Academic",
+      "value": 91.8519,
+      "unit": "%",
+      "formula": "sum(students_passed) / sum(students_appeared) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(students_passed)": 992,
+        "sum(students_appeared)": 1080
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Academic ERP",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 64,
+    "tool": "compare_to_target",
+    "reason": "target check on the raw value",
+    "input": {
+      "kpi_id": "KPI-A1",
+      "value": 91.8519
+    },
+    "output": {
+      "kpi_id": "KPI-A1",
+      "name": "Institution pass percentage",
+      "value": 91.8519,
+      "target": 92.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -0.1481,
+      "pct_of_target": 99.84,
+      "status": "at risk",
+      "rounding_warning": "91.85 rounds to 92.0 at 0 decimal place(s), which would read as meeting the target of 92.0. Report the unrounded figure."
+    },
+    "ok": true
+  },
+  {
+    "step": 65,
+    "tool": "compute_kpi",
+    "reason": "executive scorecard: compute KPI-A1",
+    "input": {
+      "kpi_id": "KPI-A1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-A1",
+      "name": "Institution pass percentage",
+      "domain": "Academic",
+      "value": 91.8519,
+      "unit": "%",
+      "formula": "sum(students_passed) / sum(students_appeared) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(students_passed)": 992,
+        "sum(students_appeared)": 1080
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Academic ERP",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 66,
+    "tool": "compare_to_target",
+    "reason": "executive scorecard: KPI-A1 against its approved target",
+    "input": {
+      "kpi_id": "KPI-A1",
+      "value": 91.8519
+    },
+    "output": {
+      "kpi_id": "KPI-A1",
+      "name": "Institution pass percentage",
+      "value": 91.8519,
+      "target": 92.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -0.1481,
+      "pct_of_target": 99.84,
+      "status": "at risk",
+      "rounding_warning": "91.85 rounds to 92.0 at 0 decimal place(s), which would read as meeting the target of 92.0. Report the unrounded figure."
+    },
+    "ok": true
+  },
+  {
+    "step": 67,
+    "tool": "compute_kpi",
+    "reason": "executive scorecard: compute KPI-A2",
+    "input": {
+      "kpi_id": "KPI-A2",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-A2",
+      "name": "CO/PO attainment index",
+      "domain": "Academic",
+      "value": 2.4844,
+      "unit": "index 0-3",
+      "formula": "sum(co_po_attainment x students_appeared) / sum(students_appeared)",
+      "method": "weighted_mean",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(co_po_attainment x students_appeared)": 2683.2,
+        "sum(students_appeared)": 1080
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Academic ERP (OBE module)",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 68,
+    "tool": "compare_to_target",
+    "reason": "executive scorecard: KPI-A2 against its approved target",
+    "input": {
+      "kpi_id": "KPI-A2",
+      "value": 2.4844
+    },
+    "output": {
+      "kpi_id": "KPI-A2",
+      "name": "CO/PO attainment index",
+      "value": 2.4844,
+      "target": 2.5,
+      "target_source": "NAAC criterion 2",
+      "unit": "index 0-3",
+      "variance": -0.0156,
+      "pct_of_target": 99.38,
+      "status": "at risk",
+      "rounding_warning": "2.484 rounds to 2.5 at 1 decimal place(s), which would read as meeting the target of 2.5. Report the unrounded figure."
+    },
+    "ok": true
+  },
+  {
+    "step": 69,
+    "tool": "compute_kpi",
+    "reason": "executive scorecard: compute KPI-R1",
+    "input": {
+      "kpi_id": "KPI-R1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-R1",
+      "name": "Publications per faculty",
+      "domain": "Research",
+      "value": 1.1859,
+      "unit": "per faculty",
+      "formula": "sum(publications) / sum(sanctioned_faculty)",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(publications)": 185,
+        "sum(sanctioned_faculty)": 156
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Research repository",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 70,
+    "tool": "compare_to_target",
+    "reason": "executive scorecard: KPI-R1 against its approved target",
+    "input": {
+      "kpi_id": "KPI-R1",
+      "value": 1.1859
+    },
+    "output": {
+      "kpi_id": "KPI-R1",
+      "name": "Publications per faculty",
+      "value": 1.1859,
+      "target": 1.5,
+      "target_source": "NIRF Research & Professional Practice",
+      "unit": "per faculty",
+      "variance": -0.3141,
+      "pct_of_target": 79.06,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 71,
+    "tool": "compute_kpi",
+    "reason": "executive scorecard: compute KPI-R2",
+    "input": {
+      "kpi_id": "KPI-R2",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-R2",
+      "name": "Citations per faculty",
+      "domain": "Research",
+      "value": 7.2564,
+      "unit": "per faculty",
+      "formula": "sum(citations) / sum(sanctioned_faculty)",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(citations)": 1132,
+        "sum(sanctioned_faculty)": 156
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Research repository",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 72,
+    "tool": "compare_to_target",
+    "reason": "executive scorecard: KPI-R2 against its approved target",
+    "input": {
+      "kpi_id": "KPI-R2",
+      "value": 7.2564
+    },
+    "output": {
+      "kpi_id": "KPI-R2",
+      "name": "Citations per faculty",
+      "value": 7.2564,
+      "target": 9.0,
+      "target_source": "NIRF Research & Professional Practice",
+      "unit": "per faculty",
+      "variance": -1.7436,
+      "pct_of_target": 80.63,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 73,
+    "tool": "compute_kpi",
+    "reason": "executive scorecard: compute KPI-R3",
+    "input": {
+      "kpi_id": "KPI-R3",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-R3",
+      "name": "Grants sanctioned",
+      "domain": "Research",
+      "value": 242.5,
+      "unit": "INR lakh",
+      "formula": "sum(grants_lakh)",
+      "method": "sum",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(grants_lakh)": 242.5
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Research repository",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 74,
+    "tool": "compare_to_target",
+    "reason": "executive scorecard: KPI-R3 against its approved target",
+    "input": {
+      "kpi_id": "KPI-R3",
+      "value": 242.5
+    },
+    "output": {
+      "kpi_id": "KPI-R3",
+      "name": "Grants sanctioned",
+      "value": 242.5,
+      "target": 300.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "INR lakh",
+      "variance": -57.5,
+      "pct_of_target": 80.83,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 75,
+    "tool": "compute_kpi",
+    "reason": "executive scorecard: compute KPI-P1",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "domain": "Placement",
+      "value": 75.1205,
+      "unit": "%",
+      "formula": "sum(placed_students) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(placed_students)": 779,
+        "sum(eligible_students)": 1037
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 76,
+    "tool": "compare_to_target",
+    "reason": "executive scorecard: KPI-P1 against its approved target",
+    "input": {
+      "kpi_id": "KPI-P1",
+      "value": 75.1205
+    },
+    "output": {
+      "kpi_id": "KPI-P1",
+      "name": "Placement percentage",
+      "value": 75.1205,
+      "target": 80.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -4.8795,
+      "pct_of_target": 93.9,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 77,
+    "tool": "compute_kpi",
+    "reason": "executive scorecard: compute KPI-P2",
+    "input": {
+      "kpi_id": "KPI-P2",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P2",
+      "name": "Average package",
+      "domain": "Placement",
+      "value": 7.667,
+      "unit": "LPA",
+      "formula": "sum(total_package_lpa) / sum(placed_students)",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(total_package_lpa)": 5972.6,
+        "sum(placed_students)": 779
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 78,
+    "tool": "compare_to_target",
+    "reason": "executive scorecard: KPI-P2 against its approved target",
+    "input": {
+      "kpi_id": "KPI-P2",
+      "value": 7.667
+    },
+    "output": {
+      "kpi_id": "KPI-P2",
+      "name": "Average package",
+      "value": 7.667,
+      "target": 8.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "LPA",
+      "variance": -0.333,
+      "pct_of_target": 95.84,
+      "status": "below target",
+      "rounding_warning": "7.667 rounds to 8.0 at 0 decimal place(s), which would read as meeting the target of 8.0. Report the unrounded figure."
+    },
+    "ok": true
+  },
+  {
+    "step": 79,
+    "tool": "compute_kpi",
+    "reason": "executive scorecard: compute KPI-P3",
+    "input": {
+      "kpi_id": "KPI-P3",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-P3",
+      "name": "Internship completion",
+      "domain": "Placement",
+      "value": 73.3848,
+      "unit": "%",
+      "formula": "sum(interns_completed) / sum(eligible_students) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(interns_completed)": 761,
+        "sum(eligible_students)": 1037
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Placement Cell tracker",
+      "figure_status": "final"
+    },
+    "ok": true
+  },
+  {
+    "step": 80,
+    "tool": "compare_to_target",
+    "reason": "executive scorecard: KPI-P3 against its approved target",
+    "input": {
+      "kpi_id": "KPI-P3",
+      "value": 73.3848
+    },
+    "output": {
+      "kpi_id": "KPI-P3",
+      "name": "Internship completion",
+      "value": 73.3848,
+      "target": 85.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -11.6152,
+      "pct_of_target": 86.34,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  },
+  {
+    "step": 81,
+    "tool": "compute_kpi",
+    "reason": "executive scorecard: compute KPI-F1",
+    "input": {
+      "kpi_id": "KPI-F1",
+      "rows": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]"
+    },
+    "output": {
+      "kpi_id": "KPI-F1",
+      "name": "Budget utilisation",
+      "domain": "Finance",
+      "value": 86.9588,
+      "unit": "%",
+      "formula": "sum(budget_spent_lakh) / sum(budget_allocated_lakh) x 100",
+      "method": "ratio",
+      "n_departments": 8,
+      "departments": [
+        "CSE",
+        "ECE",
+        "ISE",
+        "EEE",
+        "MECH",
+        "CIVIL",
+        "CHEM",
+        "BT"
+      ],
+      "inputs_used": {
+        "sum(budget_spent_lakh)": 1687.0,
+        "sum(budget_allocated_lakh)": 1940.0
+      },
+      "evidence": "[8 rows: CSE, ECE, ISE, EEE, MECH, CIVIL, CHEM, BT]",
+      "source_system": "Finance & Accounts ledger",
+      "figure_status": "provisional",
+      "caveat": "Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August."
+    },
+    "ok": true
+  },
+  {
+    "step": 82,
+    "tool": "compare_to_target",
+    "reason": "executive scorecard: KPI-F1 against its approved target",
+    "input": {
+      "kpi_id": "KPI-F1",
+      "value": 86.9588
+    },
+    "output": {
+      "kpi_id": "KPI-F1",
+      "name": "Budget utilisation",
+      "value": 86.9588,
+      "target": 90.0,
+      "target_source": "Strategic Plan 2024-27",
+      "unit": "%",
+      "variance": -3.0412,
+      "pct_of_target": 96.62,
+      "status": "below target",
+      "rounding_warning": null
+    },
+    "ok": true
+  }
+]

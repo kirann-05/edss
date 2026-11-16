@@ -1,0 +1,33 @@
+=== Lab 3: case-agnostic plan & format skills ===
+
+Case 1 locked plan:
+  review_cycle: Q1 FY26 Governing Council review
+  domains: ['academic', 'research', 'placement', 'finance']
+  kpis: ['institution_pass_percentage', 'institution_co_po_attainment', 'institution_publications_per_faculty', 'institution_placement_percentage', 'institution_average_package', 'institution_budget_utilization']
+  requested_by: Registrar
+  constraints: ['human approval required before circulation', 'no forecast or unreconciled figure presented as final', 'every KPI must cite its formula and source', 'drill-down evidence traceable to source department']
+  created_at: 2026-11-16T20:22:00.279316
+
+Case 2 locked plan (same skill, different inputs):
+  review_cycle: NAAC re-accreditation snapshot
+  domains: ['academic', 'research']
+  kpis: ['institution_pass_percentage', 'institution_co_po_attainment', 'institution_publications_per_faculty', 'institution_placement_percentage', 'institution_average_package', 'institution_budget_utilization']
+  requested_by: Principal
+  constraints: ['human approval required before circulation', 'no forecast or unreconciled figure presented as final', 'every KPI must cite its formula and source', 'drill-down evidence traceable to source department']
+  created_at: 2026-11-16T20:22:00.279316
+
+Attempted mutation correctly rejected: FrozenInstanceError: cannot assign to field 'review_cycle'
+
+--- Case 1 formatted shell ---
+# Executive Decision Brief — Q1 FY26
+
+## Summary
+placeholder summary for case 1
+
+--- Case 2 formatted shell ---
+# Executive Decision Brief — NAAC Snapshot
+
+## Summary
+placeholder summary for case 2
+
+ACCEPT: plan_skill() and format_decision_skill() ran unchanged over two different cases.

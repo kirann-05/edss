@@ -1,0 +1,25 @@
+=== Lab 1: planner loop (clarify -> plan -> revise) ===
+
+Incoming request: {}
+
+Clarifying questions asked (2):
+  - Which review cycle is this for (e.g. Q1 FY26, NAAC snapshot)?
+  - Which domains should be included (academic / research / placement / finance, or all)?
+
+Proposed plan:
+  review_cycle: Q1 FY26 Governing Council review
+  domains: ['academic', 'research', 'placement', 'finance']
+  kpis: ['institution_pass_percentage', 'institution_co_po_attainment', 'institution_publications_per_faculty', 'institution_placement_percentage', 'institution_average_package', 'institution_budget_utilization']
+  requested_by: unspecified requester
+  constraints: ['human approval required before circulation', 'no forecast or unreconciled figure presented as final', 'every KPI must cite its formula and source', 'drill-down evidence traceable to source department']
+  created_at: 2026-11-16T20:22:00.111617
+
+Revised plan (leadership narrowed scope to academic + finance):
+  review_cycle: Q1 FY26 Governing Council review
+  domains: ['academic', 'finance']
+  kpis: ['institution_pass_percentage', 'institution_co_po_attainment', 'institution_publications_per_faculty', 'institution_placement_percentage', 'institution_average_package', 'institution_budget_utilization']
+  requested_by: unspecified requester
+  constraints: ['human approval required before circulation', 'no forecast or unreconciled figure presented as final', 'every KPI must cite its formula and source', 'drill-down evidence traceable to source department']
+  created_at: 2026-11-16T20:22:00.111617
+
+ACCEPT: >=2 clarifying questions asked, and a coherent, editable plan was produced.

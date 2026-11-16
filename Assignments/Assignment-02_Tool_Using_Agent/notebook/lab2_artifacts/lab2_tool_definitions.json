@@ -1,0 +1,181 @@
+{
+  "read_department_reports": {
+    "description": "Read per-department metric rows from the department reports export for one reporting period. Optionally restrict to named departments or to a category (circuit / core).",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "period": {
+          "type": "string",
+          "description": "e.g. 'academic year 2025-26'"
+        },
+        "departments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "dept_code list, e.g. ['CSE','ECE']"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "circuit",
+            "core"
+          ]
+        }
+      },
+      "required": [
+        "period"
+      ]
+    },
+    "returns": "{rows: [ {dept_code, ...typed metrics} ], row_count, source_system} | {error}"
+  },
+  "read_kpi_definitions": {
+    "description": "Read approved institution-wide KPI definitions: formula, unit, target value and the authority the target comes from.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "kpi_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "e.g. ['KPI-P1']; omit for all"
+        }
+      },
+      "required": []
+    },
+    "returns": "{definitions: {kpi_id: {...}}, count} | {error}"
+  },
+  "read_external_benchmark": {
+    "description": "Call the external benchmark API for a KPI's published peer median. Coverage is partial; many KPIs have no benchmark.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "kpi_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kpi_id"
+      ]
+    },
+    "returns": "{kpi_id, peer_median, cohort, year} | {error}"
+  },
+  "filter_rows": {
+    "description": "Filter previously-read department rows by an exact field value. Errors if the filter matches nothing, so an empty subset can never be silently averaged.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "field": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "rows",
+        "field",
+        "value"
+      ]
+    },
+    "returns": "{rows, row_count, filter} | {error}"
+  },
+  "compute_kpi": {
+    "description": "Compute one approved KPI over a set of department rows, using the KPI's registered formula. Returns the value plus per-department drill-down evidence.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "kpi_id": {
+          "type": "string"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "kpi_id",
+        "rows"
+      ]
+    },
+    "returns": "{kpi_id, name, value, unit, formula, n_departments, inputs_used, evidence: [...], source_system, figure_status} | {error}"
+  },
+  "compare_to_target": {
+    "description": "Compare a computed KPI value against its approved target and return the variance, the status band, and a rounding warning if a rounded figure would hide a miss.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "kpi_id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "kpi_id",
+        "value"
+      ]
+    },
+    "returns": "{kpi_id, value, target, target_source, variance, pct_of_target, status, rounding_warning} | {error}"
+  },
+  "compute_variance": {
+    "description": "Compute the difference between a computed KPI value and any reference figure (a peer benchmark, a prior year). Exists so that no arithmetic is ever done in prose.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "reference": {
+          "type": "number"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "reference",
+        "label"
+      ]
+    },
+    "returns": "{value, reference, label, variance, abs_variance, pct_of_reference} | {error}"
+  },
+  "draft_notification": {
+    "description": "DRAFT a notification for leadership. It is never sent: the return value is a draft pending human approval. Every finding must carry its source or the call is rejected.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "audience": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "each: {statement, source}"
+        }
+      },
+      "required": [
+        "audience",
+        "subject",
+        "findings"
+      ]
+    },
+    "returns": "{status: 'DRAFT - NOT SENT', audience, subject, body, requires_approval_from} | {error}"
+  }
+}

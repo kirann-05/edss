@@ -1,0 +1,495 @@
+<!doctype html>
+<title>Executive Decision Brief</title>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #F5F4F0;
+    --surface: #FFFFFF;
+    --surface-raised: #FFFFFF;
+    --border: #E2E0D8;
+    --border-strong: #CBC8BC;
+    --ink: #1B1E22;
+    --ink-muted: #5C6470;
+    --ink-faint: #8A8F97;
+    --accent: #1F3A5F;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #E9EEF5;
+    --accent-soft-ink: #1F3A5F;
+    --good: #1E7B4D;
+    --good-soft: #E6F3EB;
+    --warn: #92600C;
+    --warn-soft: #FBF0DC;
+    --bad: #A3372B;
+    --bad-soft: #FBEAE7;
+    --shadow: 0 1px 2px rgba(27,30,34,.04), 0 8px 24px -12px rgba(27,30,34,.14);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171C;
+      --surface: #1B1F26;
+      --surface-raised: #20242C;
+      --border: #2C3138;
+      --border-strong: #3A4048;
+      --ink: #ECEEF1;
+      --ink-muted: #9DA5B0;
+      --ink-faint: #6C7480;
+      --accent: #7FA3D6;
+      --accent-ink: #101820;
+      --accent-soft: #24344A;
+      --accent-soft-ink: #AEC7EA;
+      --good: #5FBE8B;
+      --good-soft: #163227;
+      --warn: #E0AA4E;
+      --warn-soft: #392A10;
+      --bad: #E28579;
+      --bad-soft: #3A211E;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171C;
+    --surface: #1B1F26;
+    --surface-raised: #20242C;
+    --border: #2C3138;
+    --border-strong: #3A4048;
+    --ink: #ECEEF1;
+    --ink-muted: #9DA5B0;
+    --ink-faint: #6C7480;
+    --accent: #7FA3D6;
+    --accent-ink: #101820;
+    --accent-soft: #24344A;
+    --accent-soft-ink: #AEC7EA;
+    --good: #5FBE8B;
+    --good-soft: #163227;
+    --warn: #E0AA4E;
+    --warn-soft: #392A10;
+    --bad: #E28579;
+    --bad-soft: #3A211E;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; text-wrap: balance; margin: 0; }
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ---------- header ---------- */
+  header.top {
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .top-inner {
+    max-width: 1180px; margin: 0 auto; padding: 28px 24px 24px;
+    display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; justify-content: space-between;
+  }
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 8px;
+  }
+  .top-title { font-size: 30px; font-weight: 600; color: var(--ink); }
+  .top-meta { margin-top: 8px; color: var(--ink-muted); font-size: 14px; }
+  .top-meta b { color: var(--ink); font-weight: 600; }
+
+  .status-block { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+    letter-spacing: .01em; white-space: nowrap;
+  }
+  .pill.approved { background: var(--good-soft); color: var(--good); }
+  .pill.dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .approver-line { font-size: 13px; color: var(--ink-muted); text-align: right; }
+  .approver-line b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- section shell ---------- */
+  section { margin-top: 40px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+  .section-head h2 { font-size: 20px; font-weight: 600; }
+  .section-sub { font-size: 13px; color: var(--ink-faint); }
+
+  /* ---------- KPI grid ---------- */
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px;
+  }
+  .kpi-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; box-shadow: var(--shadow);
+    border-left: 3px solid var(--border-strong);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .kpi-card[data-status="below_target"] { border-left-color: var(--bad); }
+  .kpi-card[data-status="meets_or_exceeds_target"] { border-left-color: var(--good); }
+  .kpi-name { font-size: 12.5px; font-weight: 600; color: var(--ink-muted); line-height: 1.35; min-height: 32px; }
+  .kpi-figures { display: flex; align-items: baseline; gap: 8px; }
+  .kpi-actual { font-size: 26px; font-weight: 700; letter-spacing: -.01em; }
+  .kpi-target { font-size: 13px; color: var(--ink-faint); }
+  .kpi-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .kpi-variance { font-size: 12.5px; font-weight: 600; }
+  .kpi-variance.bad { color: var(--bad); }
+  .kpi-variance.good { color: var(--good); }
+  .kpi-framework {
+    font-size: 10.5px; color: var(--ink-faint); background: var(--accent-soft);
+    color: var(--accent-soft-ink); padding: 2px 7px; border-radius: 5px; font-weight: 600;
+    letter-spacing: .02em;
+  }
+  .kpi-formula {
+    font-size: 11.5px; color: var(--ink-faint); border-top: 1px dashed var(--border); padding-top: 8px;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; line-height: 1.5;
+  }
+
+  /* ---------- domain grid ---------- */
+  .domain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .domain-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; box-shadow: var(--shadow);
+  }
+  .domain-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .domain-head h3 { font-size: 15px; font-weight: 600; }
+  .domain-source { font-size: 11px; color: var(--ink-faint); }
+  .metric-row {
+    display: flex; justify-content: space-between; gap: 12px; padding: 5px 0;
+    border-top: 1px solid var(--border); font-size: 13px;
+  }
+  .metric-row:first-of-type { border-top: none; }
+  .metric-row .k { color: var(--ink-muted); }
+  .metric-row .v { font-weight: 600; }
+  .flag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .flag {
+    font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 5px;
+    background: var(--warn-soft); color: var(--warn);
+  }
+  .flag.bad { background: var(--bad-soft); color: var(--bad); }
+
+  /* ---------- decision options ---------- */
+  .option-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    box-shadow: var(--shadow); margin-bottom: 12px; overflow: hidden;
+  }
+  .option-issue {
+    padding: 13px 18px; font-size: 13.5px; font-weight: 600; background: var(--accent-soft);
+    color: var(--accent-soft-ink); border-bottom: 1px solid var(--border);
+  }
+  .option-pair { display: grid; grid-template-columns: 1fr 1fr; }
+  .option-col { padding: 14px 18px; font-size: 13px; line-height: 1.55; }
+  .option-col + .option-col { border-left: 1px solid var(--border); }
+  .option-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 6px;
+  }
+  .option-action { color: var(--ink); margin-bottom: 8px; }
+  .risk-list { margin: 0; padding-left: 16px; color: var(--ink-muted); }
+  .risk-list li { margin-bottom: 3px; }
+  @media (max-width: 640px) {
+    .option-pair { grid-template-columns: 1fr; }
+    .option-col + .option-col { border-left: none; border-top: 1px solid var(--border); }
+  }
+
+  /* ---------- drill-down ---------- */
+  .drill-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .drill-table th {
+    text-align: left; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 700; padding: 0 12px 8px;
+  }
+  .drill-table td {
+    background: var(--surface); border-top: 1px solid var(--border); padding: 12px;
+    vertical-align: top;
+  }
+  .drill-table tr td:first-child { border-left: 1px solid var(--border); border-radius: 8px 0 0 8px; }
+  .drill-table tr td:last-child { border-right: 1px solid var(--border); border-radius: 0 8px 8px 0; }
+  .drill-domain { font-weight: 700; text-transform: capitalize; }
+  .drill-source { color: var(--ink-muted); }
+  .drill-detail { color: var(--ink-muted); font-size: 12px; line-height: 1.6; }
+  .drill-detail code {
+    background: var(--accent-soft); color: var(--accent-soft-ink); padding: 1px 5px;
+    border-radius: 4px; font-size: 11.5px;
+  }
+  .table-scroll { overflow-x: auto; }
+
+  /* ---------- assumptions ---------- */
+  .assumption-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .assumption-list li {
+    display: flex; gap: 10px; font-size: 13.5px; color: var(--ink-muted); line-height: 1.5;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px;
+  }
+  .assumption-list li::before { content: "—"; color: var(--ink-faint); flex-shrink: 0; }
+
+  /* ---------- audit trail ---------- */
+  .audit-list { list-style: none; margin: 0; padding: 0; }
+  .audit-item {
+    display: grid; grid-template-columns: 84px 20px 1fr; gap: 12px; padding: 10px 0;
+    font-size: 13px;
+  }
+  .audit-time { color: var(--ink-faint); font-size: 11.5px; padding-top: 2px; font-family: ui-monospace, monospace; }
+  .audit-rail { display: flex; flex-direction: column; align-items: center; }
+  .audit-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 4px; flex-shrink: 0; }
+  .audit-line { width: 1px; flex: 1; background: var(--border); margin-top: 4px; }
+  .audit-item:last-child .audit-line { display: none; }
+  .audit-actor { font-weight: 600; }
+  .audit-summary { color: var(--ink-muted); margin-top: 1px; }
+
+  /* ---------- footer ---------- */
+  footer {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center;
+  }
+  .footer-note { font-size: 12.5px; color: var(--ink-faint); max-width: 640px; line-height: 1.6; }
+  .version-chip {
+    font-size: 11.5px; color: var(--ink-muted); background: var(--surface); border: 1px solid var(--border);
+    padding: 4px 10px; border-radius: 999px;
+  }
+
+  a { color: inherit; }
+</style>
+
+<script type="application/json" id="dashboard-payload">
+{"run_id": "ad17c30e", "review_cycle": "Q1 FY26 Governing Council Review", "plan": {"review_cycle": "Q1 FY26 Governing Council Review", "domains": ["academic", "research", "placement", "finance"], "kpis": ["institution_pass_percentage", "institution_co_po_attainment", "institution_publications_per_faculty", "institution_placement_percentage", "institution_average_package", "institution_budget_utilization"], "requested_by": "Registrar", "constraints": ["human approval required before circulation", "no forecast or unreconciled figure presented as final", "every KPI must cite its formula and source", "drill-down evidence traceable to source department"], "created_at": "2026-09-08T06:17:44.044032"}, "panels": {"institution_kpis": {"institution_pass_percentage": {"actual": 87.1, "target": 92.0, "variance": -4.9, "status": "below_target", "formula": "mean(department.pass_percentage, weighted by eligible cohort)", "framework": "NAAC Criterion 2", "source_domain": "academic"}, "institution_co_po_attainment": {"actual": 0.73, "target": 0.8, "variance": -0.07, "status": "below_target", "formula": "mean(department.co_po_attainment)", "framework": "NAAC Criterion 2", "source_domain": "academic"}, "institution_publications_per_faculty": {"actual": 1.0625, "target": 1.2, "variance": -0.137, "status": "below_target", "formula": "sum(department.publications, de-duplicated by collaboration_id) / total_faculty_count", "framework": "NIRF Research & Professional Practice (RP)", "source_domain": "research"}, "institution_placement_percentage": {"actual": 74.77, "target": 85.0, "variance": -10.23, "status": "below_target", "formula": "sum(placed_students, confirmed only) / sum(eligible_students)", "framework": "NIRF Graduation Outcomes (GO)", "source_domain": "placement"}, "institution_average_package": {"actual": 6.66, "target": 6.5, "variance": 0.16, "status": "meets_or_exceeds_target", "formula": "weighted_mean(average_package_lakhs, weighted by placed_students)", "framework": "NIRF Graduation Outcomes (GO)", "source_domain": "placement"}, "institution_budget_utilization": {"actual": 0.7892, "target": 0.9, "variance": -0.111, "status": "below_target", "formula": "budget_utilized_lakhs / budget_allocated_lakhs", "framework": "Strategic Plan FY26", "source_domain": "finance"}}, "domain_metrics": {"research": {"institution_publications_total": 102, "institution_publications_per_faculty": 1.0625, "institution_citations_avg": 159.75, "institution_grants_secured_lakhs": 159.5, "formulas": {"institution_publications_per_faculty": "sum(publications, de-duplicated) / total_faculty_count", "institution_publications_total": "sum(department.publications)  [cross-dept collaborations noted, not double-added]"}}, "placement": {"institution_placement_percentage": 74.77, "institution_average_package_lakhs": 6.66, "institution_internship_completion_pct": 85.0, "provisional_offers_excluded_from_placed": 15, "unverified_departments": ["Civil Engineering"], "formulas": {"institution_placement_percentage": "sum(placed_students, confirmed only) / sum(eligible_students)", "institution_average_package_lakhs": "sum(value_i * weight_i) / sum(weight_i)"}}, "academic": {"institution_pass_percentage": 87.1, "institution_co_po_attainment": 0.73, "institution_curriculum_compliance": 0.917, "spread": {"Computer Science": 91.2, "Electronics & Communication": 88.4, "Mechanical Engineering": 85.7, "Civil Engineering": 83.1}, "stale_or_missing_departments": ["Civil Engineering"], "formulas": {"institution_pass_percentage": "sum(value_i * weight_i) / sum(weight_i)", "institution_co_po_attainment": "sum(values) / count(values)"}}, "finance": {"institution_budget_utilization": 0.7892, "institution_revenue_lakhs": 1510.0, "institution_grant_funds_received_lakhs": 159.5, "institution_grant_funds_spent_lakhs": 121.0, "pending_reconciliation_lakhs": 18.0, "fully_reconciled": false, "formulas": {"institution_budget_utilization": "budget_utilized_lakhs / budget_allocated_lakhs"}}}, "drill_down_evidence": [{"domain": "research", "source_system": "Research Office Registry", "scope": "all departments reporting in this cycle", "detail": {"per_department_publications": {"Computer Science": 42, "Electronics & Communication": 27, "Mechanical Engineering": 19, "Civil Engineering": 14}, "shared_collaborations": ["CS-ECE-2026-01"], "dedup_note": "1 collaboration(s) span multiple departments: ['CS-ECE-2026-01']"}}, {"domain": "placement", "source_system": "Placement Cell CRM (verified records only)", "scope": "all departments reporting in this cycle", "detail": {"per_department_placed": {"Computer Science": 162, "Electronics & Communication": 109, "Mechanical Engineering": 78, "Civil Engineering": 51}, "provisional_offers_excluded": 15, "unverified_departments": ["Civil Engineering"]}}, {"domain": "academic", "source_system": "Academic ERP (per-department)", "scope": "all departments reporting in this cycle", "detail": {"per_department_pass_percentage": {"Computer Science": 91.2, "Electronics & Communication": 88.4, "Mechanical Engineering": 85.7, "Civil Engineering": 83.1}, "stale_departments": ["Civil Engineering"]}}, {"domain": "finance", "source_system": "Finance ERP (Audited Ledger)", "scope": "institution-level, audited ledger", "detail": {"reconciled": true, "pending_reconciliation_lakhs": 18.0, "as_of": "2026-09-08"}}], "executive_report": {"title": "Executive Decision Brief — Q1 FY26 Governing Council Review", "assumptions": ["Review cycle: Q1 FY26 Governing Council Review", "Domains in scope: academic, research, placement, finance", "Departmental weighting for pass percentage: equal-weighted across departments (not enrolment-weighted) -- state explicitly per the acceptance checklist.", "Provisional placement offers are excluded from the confirmed placement percentage."], "decision_options": [{"issue": "institution_pass_percentage is below target (87.1 vs target 92.0, variance -4.9)", "option_a": {"action": "Escalate academic domain to the relevant Dean for a root-cause review before next cycle.", "risks": ["Delays the corrective action by one review cycle", "Requires Dean bandwidth during an already busy period"]}, "option_b": {"action": "Approve report for circulation with institution_pass_percentage flagged as an open watch-item and a committed remediation date.", "risks": ["Governing Council sees a known miss rather than a fix", "Remediation date must be tracked and could slip"]}}, {"issue": "institution_co_po_attainment is below target (0.73 vs target 0.8, variance -0.07)", "option_a": {"action": "Escalate academic domain to the relevant Dean for a root-cause review before next cycle.", "risks": ["Delays the corrective action by one review cycle", "Requires Dean bandwidth during an already busy period"]}, "option_b": {"action": "Approve report for circulation with institution_co_po_attainment flagged as an open watch-item and a committed remediation date.", "risks": ["Governing Council sees a known miss rather than a fix", "Remediation date must be tracked and could slip"]}}, {"issue": "institution_publications_per_faculty is below target (1.0625 vs target 1.2, variance -0.137)", "option_a": {"action": "Escalate research domain to the relevant Dean for a root-cause review before next cycle.", "risks": ["Delays the corrective action by one review cycle", "Requires Dean bandwidth during an already busy period"]}, "option_b": {"action": "Approve report for circulation with institution_publications_per_faculty flagged as an open watch-item and a committed remediation date.", "risks": ["Governing Council sees a known miss rather than a fix", "Remediation date must be tracked and could slip"]}}, {"issue": "institution_placement_percentage is below target (74.77 vs target 85.0, variance -10.23)", "option_a": {"action": "Escalate placement domain to the relevant Dean for a root-cause review before next cycle.", "risks": ["Delays the corrective action by one review cycle", "Requires Dean bandwidth during an already busy period"]}, "option_b": {"action": "Approve report for circulation with institution_placement_percentage flagged as an open watch-item and a committed remediation date.", "risks": ["Governing Council sees a known miss rather than a fix", "Remediation date must be tracked and could slip"]}}, {"issue": "institution_budget_utilization is below target (0.7892 vs target 0.9, variance -0.111)", "option_a": {"action": "Escalate finance domain to the relevant Dean for a root-cause review before next cycle.", "risks": ["Delays the corrective action by one review cycle", "Requires Dean bandwidth during an already busy period"]}, "option_b": {"action": "Approve report for circulation with institution_budget_utilization flagged as an open watch-item and a committed remediation date.", "risks": ["Governing Council sees a known miss rather than a fix", "Remediation date must be tracked and could slip"]}}, {"issue": "Stale academic data from: ['Civil Engineering']", "option_a": {"action": "Publish with those departments' figures marked as last-known-good, dated.", "risks": ["Institution-wide pass percentage may shift once refreshed"]}, "option_b": {"action": "Hold those departments out of this cycle's institution-wide average.", "risks": ["Understates coverage; Council sees a partial figure"]}}, {"issue": "Unverified placement reporting from: ['Civil Engineering']", "option_a": {"action": "Exclude unverified departments from the institution-wide placement % until Placement Cell verification completes.", "risks": ["Institution-wide figure may look lower than the true value"]}, "option_b": {"action": "Include with a clear 'unverified' watermark on affected rows.", "risks": ["Risk of an unverified figure being quoted externally as final"]}}, {"issue": "₹18.0 lakhs pending finance-office reconciliation.", "option_a": {"action": "Hold budget-utilization KPI as provisional until reconciliation closes.", "risks": ["Council sees a 'provisional' tag on a headline finance KPI"]}, "option_b": {"action": "Publish current utilization figure with the pending amount disclosed as a footnote.", "risks": ["A materially different reconciled figure could require a correction later"]}}], "status": "approved", "approved_by": "Dr. A. Sharma", "approver_role": "Registrar", "version": 1, "published_at": "2026-09-08T06:17:44.050632"}}, "validation": {"passed": true, "failing": [], "diagnosis": {"every figure cites its source": "all domain and KPI figures cite a source_system", "assumptions are stated explicitly": "4 assumption(s) stated explicitly", "each option lists its risks and trade-offs": "every decision option lists risks for each alternative", "no action is taken without leadership approval": "no publish action has occurred prior to human approval"}}, "attempts": 0, "audit_trail": [{"ts": "2026-09-08T06:17:44.044082", "run_id": "ad17c30e", "actor": "Coordinator", "intent": "start run", "action": "new_run", "result_summary": "locked plan for 'Q1 FY26 Governing Council Review' covering ['academic', 'research', 'placement', 'finance']"}, {"ts": "2026-09-08T06:17:44.045989", "run_id": "ad17c30e", "actor": "Academic Agent", "intent": "aggregate domain", "action": "read department reports for domain=academic", "result_summary": "Academic Agent: aggregated 4 departments (1 flagged stale)"}, {"ts": "2026-09-08T06:17:44.046474", "run_id": "ad17c30e", "actor": "Research Agent", "intent": "aggregate domain", "action": "read department reports for domain=research", "result_summary": "Research Agent: aggregated 4 departments; 1 collaboration(s) span multiple departments: ['CS-ECE-2026-01']"}, {"ts": "2026-09-08T06:17:44.046937", "run_id": "ad17c30e", "actor": "Placement Agent", "intent": "aggregate domain", "action": "read department reports for domain=placement", "result_summary": "Placement Agent: 400/535 confirmed placed (15 provisional offers excluded); 1 dept(s) unverified"}, {"ts": "2026-09-08T06:17:44.047517", "run_id": "ad17c30e", "actor": "Finance Agent", "intent": "aggregate domain", "action": "read department reports for domain=finance", "result_summary": "Finance Agent: utilization=78.9% (pending reconciliation: 18.0 lakhs)"}, {"ts": "2026-09-08T06:17:44.047878", "run_id": "ad17c30e", "actor": "Coordinator", "intent": "merge", "action": "parallel domain aggregation complete", "result_summary": "domains: ['research', 'placement', 'academic', 'finance']"}, {"ts": "2026-09-08T06:17:44.048057", "run_id": "ad17c30e", "actor": "KPI Agent", "intent": "synthesize KPIs", "action": "combined all domain outputs", "result_summary": "KPI Agent: synthesized 6 KPIs (5 below target)"}, {"ts": "2026-09-08T06:17:44.048169", "run_id": "ad17c30e", "actor": "Report Generation Agent", "intent": "compile report", "action": "assembled decision brief", "result_summary": "Report Generation Agent: compiled report with 6 KPIs, 4 drill-down links, 8 decision option(s)"}, {"ts": "2026-09-08T06:17:44.051447", "run_id": "ad17c30e", "actor": "Dr. A. Sharma", "intent": "publish", "action": "governed publish v1", "result_summary": "approved by Dr. A. Sharma (Registrar)"}], "version_history": [{"version": 1, "published_at": "2026-09-08T06:17:44.050632", "approved_by": "Dr. A. Sharma", "role": "Registrar", "run_id": "ad17c30e"}], "metrics": [{"metric": "validation_attempts", "value": 0, "run_id": "ad17c30e", "ts": "2026-09-08T06:17:44.051495"}, {"metric": "kpis_below_target", "value": 5, "run_id": "ad17c30e", "ts": "2026-09-08T06:17:44.051500"}]}
+</script>
+
+<div class="wrap">
+  <header class="top">
+    <div class="top-inner">
+      <div>
+        <p class="eyebrow">Executive Decision Support System</p>
+        <h1 class="top-title" id="report-title">—</h1>
+        <p class="top-meta">
+          Review cycle <b id="meta-cycle">—</b> · Run <b id="meta-run" class="tabular">—</b> ·
+          Domains in scope <b id="meta-domains">—</b>
+        </p>
+      </div>
+      <div class="status-block">
+        <span class="pill approved dot" id="status-pill">—</span>
+        <div class="approver-line" id="approver-line">—</div>
+      </div>
+    </div>
+  </header>
+
+  <section id="kpi-section">
+    <div class="section-head">
+      <h2>Institution-wide KPIs</h2>
+      <span class="section-sub">vs. NIRF / NAAC &amp; strategic-plan targets, drill-down below</span>
+    </div>
+    <div class="kpi-grid" id="kpi-grid"></div>
+  </section>
+
+  <section id="domain-section">
+    <div class="section-head">
+      <h2>Domain breakdown</h2>
+      <span class="section-sub">Academic · Research · Placement · Finance — aggregated in parallel</span>
+    </div>
+    <div class="domain-grid" id="domain-grid"></div>
+  </section>
+
+  <section id="assumptions-section">
+    <div class="section-head">
+      <h2>Assumptions</h2>
+      <span class="section-sub">stated explicitly, per the acceptance checklist</span>
+    </div>
+    <ul class="assumption-list" id="assumption-list"></ul>
+  </section>
+
+  <section id="options-section">
+    <div class="section-head">
+      <h2>Decision options &amp; risks</h2>
+      <span class="section-sub">for every KPI off target or data-quality flag raised</span>
+    </div>
+    <div id="options-list"></div>
+  </section>
+
+  <section id="drill-section">
+    <div class="section-head">
+      <h2>Drill-down evidence</h2>
+      <span class="section-sub">every figure above traces back to one of these</span>
+    </div>
+    <div class="table-scroll">
+      <table class="drill-table">
+        <thead>
+          <tr><th style="width:110px">Domain</th><th style="width:220px">Source system</th><th>Detail</th></tr>
+        </thead>
+        <tbody id="drill-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="audit-section">
+    <div class="section-head">
+      <h2>Audit trail</h2>
+      <span class="section-sub" id="audit-count">—</span>
+    </div>
+    <ol class="audit-list" id="audit-list"></ol>
+  </section>
+
+  <footer>
+    <p class="footer-note">
+      Agents draft and flag; a named human approves. No KPI or executive report in this system
+      circulates without Principal / Registrar / Governing Council approval — this run was
+      approved by <span id="footer-approver">—</span>.
+    </p>
+    <span class="version-chip" id="version-chip">—</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  const data = JSON.parse(document.getElementById('dashboard-payload').textContent);
+  const panels = data.panels;
+  const report = panels.executive_report;
+
+  const humanize = (key) => key.replace(/^institution_/, '').replace(/_/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+  const fmtNum = (n) => (typeof n !== 'number') ? n
+    : (Math.abs(n) < 5 && n % 1 !== 0 ? n.toFixed(2) : (n % 1 !== 0 ? n.toFixed(1) : n));
+  const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  // ---- header ----
+  document.getElementById('report-title').textContent = report.title;
+  document.getElementById('meta-cycle').textContent = data.review_cycle;
+  document.getElementById('meta-run').textContent = data.run_id;
+  document.getElementById('meta-domains').textContent = data.plan.domains.map(capitalize).join(', ');
+
+  const statusPill = document.getElementById('status-pill');
+  statusPill.textContent = report.status === 'approved'
+    ? `Approved · v${report.version}` : capitalize(report.status);
+  document.getElementById('approver-line').innerHTML =
+    `Approved by <b>${report.approved_by}</b> (${report.approver_role})<br>${new Date(report.published_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
+  document.getElementById('footer-approver').textContent = `${report.approved_by} (${report.approver_role})`;
+  document.getElementById('version-chip').textContent =
+    `${data.version_history.length} version${data.version_history.length === 1 ? '' : 's'} published`;
+
+  // ---- KPI grid ----
+  const kpiGrid = document.getElementById('kpi-grid');
+  Object.entries(panels.institution_kpis).forEach(([key, kpi]) => {
+    const card = document.createElement('div');
+    card.className = 'kpi-card';
+    card.dataset.status = kpi.status;
+    const varClass = kpi.variance >= 0 ? 'good' : 'bad';
+    const varSign = kpi.variance >= 0 ? '+' : '';
+    card.innerHTML = `
+      <div class="kpi-name">${humanize(key)}</div>
+      <div class="kpi-figures">
+        <span class="kpi-actual tabular">${fmtNum(kpi.actual)}</span>
+        <span class="kpi-target tabular">/ target ${fmtNum(kpi.target)}</span>
+      </div>
+      <div class="kpi-foot">
+        <span class="kpi-variance tabular ${varClass}">${varSign}${fmtNum(kpi.variance)} vs target</span>
+        <span class="kpi-framework">${kpi.framework}</span>
+      </div>
+      <div class="kpi-formula">${kpi.formula}</div>
+    `;
+    kpiGrid.appendChild(card);
+  });
+
+  // ---- domain grid ----
+  const domainGrid = document.getElementById('domain-grid');
+  const domainLabels = { academic: 'Academic', research: 'Research', placement: 'Placement', finance: 'Finance' };
+  const domainSources = {
+    academic: 'Academic ERP', research: 'Research Office Registry',
+    placement: 'Placement Cell CRM', finance: 'Finance ERP',
+  };
+  Object.entries(panels.domain_metrics).forEach(([domain, metrics]) => {
+    const card = document.createElement('div');
+    card.className = 'domain-card';
+    let rows = '';
+    Object.entries(metrics).forEach(([k, v]) => {
+      if (k === 'formulas' || k === 'spread' || typeof v === 'object') return;
+      rows += `<div class="metric-row"><span class="k">${humanize(k.replace('institution_', ''))}</span><span class="v tabular">${fmtNum(v)}</span></div>`;
+    });
+    let flags = '';
+    if (metrics.stale_or_missing_departments && metrics.stale_or_missing_departments.length)
+      flags += `<span class="flag">Stale: ${metrics.stale_or_missing_departments.join(', ')}</span>`;
+    if (metrics.unverified_departments && metrics.unverified_departments.length)
+      flags += `<span class="flag bad">Unverified: ${metrics.unverified_departments.join(', ')}</span>`;
+    if (metrics.pending_reconciliation_lakhs)
+      flags += `<span class="flag bad">₹${metrics.pending_reconciliation_lakhs}L pending reconciliation</span>`;
+    card.innerHTML = `
+      <div class="domain-head">
+        <h3>${domainLabels[domain] || capitalize(domain)}</h3>
+        <span class="domain-source">${domainSources[domain] || ''}</span>
+      </div>
+      ${rows}
+      ${flags ? `<div class="flag-row">${flags}</div>` : ''}
+    `;
+    domainGrid.appendChild(card);
+  });
+
+  // ---- assumptions ----
+  const assumptionList = document.getElementById('assumption-list');
+  report.assumptions.forEach(a => {
+    const li = document.createElement('li');
+    li.textContent = a;
+    assumptionList.appendChild(li);
+  });
+
+  // ---- decision options ----
+  const optionsList = document.getElementById('options-list');
+  report.decision_options.forEach(opt => {
+    const card = document.createElement('div');
+    card.className = 'option-card';
+    const renderCol = (label, col) => `
+      <div class="option-col">
+        <div class="option-label">${label}</div>
+        <div class="option-action">${col.action}</div>
+        <ul class="risk-list">${col.risks.map(r => `<li>${r}</li>`).join('')}</ul>
+      </div>
+    `;
+    card.innerHTML = `
+      <div class="option-issue">${opt.issue}</div>
+      <div class="option-pair">
+        ${renderCol('Option A', opt.option_a)}
+        ${renderCol('Option B', opt.option_b)}
+      </div>
+    `;
+    optionsList.appendChild(card);
+  });
+
+  // ---- drill-down evidence ----
+  const drillBody = document.getElementById('drill-body');
+  panels.drill_down_evidence.forEach(link => {
+    const tr = document.createElement('tr');
+    const detailParts = [];
+    Object.entries(link.detail).forEach(([k, v]) => {
+      if (Array.isArray(v)) {
+        detailParts.push(`<code>${humanize(k)}</code>: ${v.join(', ') || 'none'}`);
+      } else if (typeof v === 'object' && v !== null) {
+        detailParts.push(`<code>${humanize(k)}</code>: ${Object.entries(v).map(([kk, vv]) => `${kk} ${vv}`).join(' · ')}`);
+      } else {
+        detailParts.push(`<code>${humanize(k)}</code>: ${v}`);
+      }
+    });
+    tr.innerHTML = `
+      <td><span class="drill-domain">${link.domain}</span></td>
+      <td><span class="drill-source">${link.source_system}<br><span style="color:var(--ink-faint);font-size:11px">${link.scope}</span></span></td>
+      <td><div class="drill-detail">${detailParts.join('<br>')}</div></td>
+    `;
+    drillBody.appendChild(tr);
+  });
+
+  // ---- audit trail ----
+  const auditList = document.getElementById('audit-list');
+  document.getElementById('audit-count').textContent = `${data.audit_trail.length} logged actions, this run`;
+  data.audit_trail.forEach((entry, i) => {
+    const li = document.createElement('li');
+    li.className = 'audit-item';
+    const time = new Date(entry.ts).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    li.innerHTML = `
+      <span class="audit-time">${time}</span>
+      <span class="audit-rail"><span class="audit-dot"></span><span class="audit-line"></span></span>
+      <span>
+        <span class="audit-actor">${entry.actor}</span> — ${entry.intent}
+        <div class="audit-summary">${entry.result_summary}</div>
+      </span>
+    `;
+    auditList.appendChild(li);
+  });
+})();
+</script>

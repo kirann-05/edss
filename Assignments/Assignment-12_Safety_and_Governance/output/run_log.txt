@@ -1,0 +1,13 @@
+=== Lab 12: governed release -- approval, versioning, rollback ===
+
+Correctly rejected unauthorized approver: 'Clerk' is not an authorized approver for an executive report. Authorized roles: ['Director', 'Governing Council', 'Principal', 'Registrar']
+Correctly rejected publish-without-approval: Cannot publish: decision was 'reject', not an approval.
+
+Published version 1 by Dr. A. Sharma (Registrar)
+Published version 2 (edited) by Principal Rao
+
+Version history: [{'version': 1, 'published_at': '2026-11-16T20:22:03.015168', 'approved_by': 'Dr. A. Sharma', 'role': 'Registrar', 'run_id': '5713abe0'}, {'version': 2, 'published_at': '2026-11-16T20:22:03.015713', 'approved_by': 'Principal Rao', 'role': 'Principal', 'run_id': '5713abe0'}]
+
+Rolled back to content of v1, recorded as new v3 (restored_from_version=1)
+
+ACCEPT: only approved results published; unauthorized/unapproved attempts were rejected; rollback restored a prior version cleanly.

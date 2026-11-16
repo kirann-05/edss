@@ -1,0 +1,9 @@
+=== Lab 11: 'build' command -- plan in, tested decision brief out ===
+
+Acceptance suite result: all_pass=True
+  [PASS] every figure cites its source: all domain and KPI figures cite a source_system
+  [PASS] assumptions are stated explicitly: 4 assumption(s) stated explicitly
+  [PASS] each option lists its risks and trade-offs: every decision option lists risks for each alternative
+  [PASS] no action is taken without leadership approval: no publish action has occurred prior to human approval
+
+ACCEPT: build() produced a decision-brief artifact with a fully passing acceptance report (4/4 checks green) -- only now is it eligible for the Executive/Leadership gate.

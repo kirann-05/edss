@@ -1,0 +1,107 @@
+[
+  {
+    "check": "B1  every tool declares a typed input schema",
+    "passed": true,
+    "evidence": "8 tools, 8 schemas"
+  },
+  {
+    "check": "B2  every logged call names a tool that has a schema",
+    "passed": true,
+    "evidence": "64 calls, all schema-backed"
+  },
+  {
+    "check": "B3  malformed arguments are rejected by the schema guard",
+    "passed": true,
+    "evidence": "3/3 rejected (missing arg, wrong type, wrong type)"
+  },
+  {
+    "check": "B4  every tool has an exercised error path",
+    "passed": true,
+    "evidence": "all 8 tools returned an explicit {'error': ...} in the evaluation suite"
+  },
+  {
+    "check": "B5  every tool call is logged with tool, reason, input and output",
+    "passed": true,
+    "evidence": "64 logged calls, every one carrying a stated reason"
+  },
+  {
+    "check": "B6  tool chaining: at least one question needs a 4+ tool chain",
+    "passed": true,
+    "evidence": "longest chain: 6 calls"
+  },
+  {
+    "check": "B7  Assignment 2: read -> filter -> compute chain exists",
+    "passed": true,
+    "evidence": "read_department_reports -> filter_rows -> read_kpi_definitions -> compute_kpi -> compare_to_target"
+  },
+  {
+    "check": "B8  the filter step refuses to return an empty subset",
+    "passed": true,
+    "evidence": "filter category='aerospace' matched 0 of 8 rows — refusing to return an empty subset"
+  },
+  {
+    "check": "B9  tools are used only when needed",
+    "passed": true,
+    "evidence": "the unroutable question triggered zero tool calls"
+  },
+  {
+    "check": "B10 every computed KPI passed the validation gate (assert v.valid)",
+    "passed": true,
+    "evidence": "13 validations, 13 valid"
+  },
+  {
+    "check": "B11 every answer that reports a figure names its source system",
+    "passed": true,
+    "evidence": "8 figure-bearing answers checked"
+  },
+  {
+    "check": "B12 no answer contains a number that a tool did not produce",
+    "passed": true,
+    "evidence": "ungrounded tokens: none"
+  },
+  {
+    "check": "B13 the tool result differs from prompt-style arithmetic (so the tool matters)",
+    "passed": true,
+    "evidence": "prompt-style mean 70.59% vs tool-computed 75.12%"
+  },
+  {
+    "check": "B14 a missing record is reported honestly, not fabricated",
+    "passed": true,
+    "evidence": "the assistant states the benchmark does not exist rather than estimating one"
+  },
+  {
+    "check": "B15 provisional figures are labelled, never presented as actuals",
+    "passed": true,
+    "evidence": "Finance figure carries its caveat inline"
+  },
+  {
+    "check": "B16 a rounding that would hide a missed target is flagged",
+    "passed": true,
+    "evidence": "91.85% vs a 92.00% target — the tool raises the warning, not the author"
+  },
+  {
+    "check": "B17 the notification tool drafts and cannot send",
+    "passed": true,
+    "evidence": "no send path exists in the tool registry"
+  },
+  {
+    "check": "B18 a notification with an uncited figure is refused",
+    "passed": true,
+    "evidence": "1 finding(s) carry no source; every figure in a leadership notification must cite where it came from"
+  },
+  {
+    "check": "B19 all three sources are reachable through one connector",
+    "passed": true,
+    "evidence": "['department reports', 'external benchmarks', 'institutional KPIs & dashboards']"
+  },
+  {
+    "check": "B20 the connector rejects a resource it does not expose",
+    "passed": true,
+    "evidence": "read('student attendance') -> ToolContractError"
+  },
+  {
+    "check": "B21 the evaluation suite passes end to end",
+    "passed": true,
+    "evidence": "38/38 evaluation cases"
+  }
+]

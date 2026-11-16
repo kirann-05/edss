@@ -1,0 +1,9 @@
+{
+  "status": "DRAFT - NOT SENT",
+  "audience": "Principal / Registrar",
+  "subject": "4 institution KPIs below target for academic year 2025-26",
+  "body": "  1. Placement percentage is 75.12% against a target of 80.00% (6.10% short)\n     source: Placement Cell tracker\n  2. Internship completion is 73.38% against a target of 85.00% (13.66% short)\n     source: Placement Cell tracker\n  3. Publications per faculty is 1.186 per faculty against a target of 1.500 per faculty (20.94% short)\n     source: Research repository\n  4. Citations per faculty is 7.256 per faculty against a target of 9.000 per faculty (19.37% short)\n     source: Research repository",
+  "findings_cited": 4,
+  "requires_approval_from": "Principal / Registrar (Chapter 15 human gate)",
+  "note": "This tool cannot send. Circulation happens only after human approval."
+}

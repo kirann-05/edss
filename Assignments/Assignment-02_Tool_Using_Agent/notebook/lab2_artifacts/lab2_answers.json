@@ -1,0 +1,101 @@
+[
+  {
+    "question": "What is our institution-wide placement percentage for 2025-26, and how does it compare to the strategic-plan target?",
+    "answer": "Institution-wide placement for academic year 2025-26 is 75.12%, computed as sum(placed_students) / sum(eligible_students) x 100 over 8 departments (sum(placed_students)=779, sum(eligible_students)=1037). The Strategic Plan 2024-27 target is 80.00%, so we are 4.88 percentage points below it — status: below target. Source: Placement Cell tracker.",
+    "route": "placement_vs_target",
+    "tools_used": [
+      "read_department_reports",
+      "read_kpi_definitions",
+      "compute_kpi",
+      "compare_to_target"
+    ]
+  },
+  {
+    "question": "Which departments are dragging the placement percentage below target?",
+    "answer": "Placement is 75.12% against a target of 80.00%. The departments furthest below the institution figure are: BT at 50.88% (29 of 57 eligible, 5.50% of the eligible pool); CIVIL at 52.54% (62 of 118 eligible, 11.38% of the eligible pool); CHEM at 56.90% (33 of 58 eligible, 5.59% of the eligible pool). Each figure traces to Placement Cell tracker via the department reports export, so leadership can follow any number back to its department row.",
+    "route": "placement_drilldown",
+    "tools_used": [
+      "read_department_reports",
+      "read_kpi_definitions",
+      "compute_kpi",
+      "compare_to_target"
+    ]
+  },
+  {
+    "question": "How do our research citations per faculty compare with peer institutions?",
+    "answer": "Citations per faculty is 7.26 (sum(citations) / sum(sanctioned_faculty): sum(citations)=1132, sum(sanctioned_faculty)=156). The NIRF Engineering rank band 51-100 peer median for 2025 is 11.40, so we sit 4.14 below the cohort, and 1.74 below our own NIRF Research & Professional Practice target of 9.00. Sources: Research repository; External benchmark API (NIRF cohort).",
+    "route": "research_vs_peers",
+    "tools_used": [
+      "read_department_reports",
+      "read_kpi_definitions",
+      "compute_kpi",
+      "compare_to_target",
+      "read_external_benchmark",
+      "compute_variance"
+    ]
+  },
+  {
+    "question": "How does our internship completion compare with peer institutions?",
+    "answer": "Internship completion is 73.38% against our Strategic Plan 2024-27 target of 85.00% (below target, 11.62 points short). I cannot give you a peer comparison: no published external benchmark for KPI-P3 (Internship completion) in the benchmark API. I am not going to estimate one. Source: Placement Cell tracker.",
+    "route": "internship_vs_peers",
+    "tools_used": [
+      "read_department_reports",
+      "read_kpi_definitions",
+      "compute_kpi",
+      "compare_to_target",
+      "read_external_benchmark"
+    ]
+  },
+  {
+    "question": "What is our budget utilisation this year?",
+    "answer": "PROVISIONAL FIGURE. Budget utilisation is 86.96% (sum(budget_spent_lakh) / sum(budget_allocated_lakh) x 100: sum(budget_spent_lakh)=1687.0, sum(budget_allocated_lakh)=1940.0), against a Strategic Plan 2024-27 target of 90.00% — below target. This figure is not final: Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August. It must not be presented to the Governing Council as an actual. Source: Finance & Accounts ledger.",
+    "route": "budget_utilisation",
+    "tools_used": [
+      "read_department_reports",
+      "read_kpi_definitions",
+      "compute_kpi",
+      "compare_to_target"
+    ]
+  },
+  {
+    "question": "Are we meeting the pass percentage target?",
+    "answer": "Institution pass percentage is 91.85% (sum(students_passed)=992, sum(students_appeared)=1080) against the Strategic Plan 2024-27 target of 92.00%. That is a miss of 0.15 points — status: at risk. ROUNDING WARNING: 91.85 rounds to 92.0 at 0 decimal place(s), which would read as meeting the target of 92.0. Report the unrounded figure. Source: Academic ERP.",
+    "route": "pass_percentage",
+    "tools_used": [
+      "read_department_reports",
+      "read_kpi_definitions",
+      "compute_kpi",
+      "compare_to_target"
+    ]
+  },
+  {
+    "question": "Who should we recruit as Dean of Research next year?",
+    "answer": "I have no tool path for that question. The tools available to me read department reports, approved KPI definitions and external benchmarks, and compute or compare KPIs over them. I am not going to answer it from memory.",
+    "route": "unrouted",
+    "tools_used": []
+  },
+  {
+    "question": "What is the placement percentage for circuit-branch departments only?",
+    "answer": "Across the 4 circuit-branch departments (CSE, ECE, ISE, EEE), placement is 86.35% — computed on the filtered subset (sum(placed_students)=544, sum(eligible_students)=630), not on all 8 departments. Against the Strategic Plan 2024-27 target of 80.00% that is on target. Source: Placement Cell tracker.",
+    "route": "branch_placement",
+    "tools_used": [
+      "read_department_reports",
+      "filter_rows",
+      "read_kpi_definitions",
+      "compute_kpi",
+      "compare_to_target"
+    ]
+  },
+  {
+    "question": "What is the placement percentage for core-branch departments only?",
+    "answer": "Across the 4 core-branch departments (MECH, CIVIL, CHEM, BT), placement is 57.74% — computed on the filtered subset (sum(placed_students)=235, sum(eligible_students)=407), not on all 8 departments. Against the Strategic Plan 2024-27 target of 80.00% that is below target. Source: Placement Cell tracker.",
+    "route": "branch_placement",
+    "tools_used": [
+      "read_department_reports",
+      "filter_rows",
+      "read_kpi_definitions",
+      "compute_kpi",
+      "compare_to_target"
+    ]
+  }
+]

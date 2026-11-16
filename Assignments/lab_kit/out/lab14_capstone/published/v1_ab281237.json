@@ -1,0 +1,542 @@
+{
+  "title": "Executive Decision Brief \u2014 Q1 FY26 Governing Council Review",
+  "sections": [
+    {
+      "heading": "Institution-Wide KPIs vs Targets",
+      "body": {
+        "institution_pass_percentage": "actual=87.1 | target=92.0 | variance=-4.9 | below_target | formula: mean(department.pass_percentage, weighted by eligible cohort) | framework: NAAC Criterion 2",
+        "institution_co_po_attainment": "actual=0.73 | target=0.8 | variance=-0.07 | below_target | formula: mean(department.co_po_attainment) | framework: NAAC Criterion 2",
+        "institution_publications_per_faculty": "actual=1.0625 | target=1.2 | variance=-0.137 | below_target | formula: sum(department.publications, de-duplicated by collaboration_id) / total_faculty_count | framework: NIRF Research & Professional Practice (RP)",
+        "institution_placement_percentage": "actual=74.77 | target=85.0 | variance=-10.23 | below_target | formula: sum(placed_students, confirmed only) / sum(eligible_students) | framework: NIRF Graduation Outcomes (GO)",
+        "institution_average_package": "actual=6.66 | target=6.5 | variance=0.16 | meets_or_exceeds_target | formula: weighted_mean(average_package_lakhs, weighted by placed_students) | framework: NIRF Graduation Outcomes (GO)",
+        "institution_budget_utilization": "actual=0.7892 | target=0.9 | variance=-0.111 | below_target | formula: budget_utilized_lakhs / budget_allocated_lakhs | framework: Strategic Plan FY26"
+      }
+    },
+    {
+      "heading": "Domain Breakdowns",
+      "body": {
+        "academic": {
+          "institution_pass_percentage": 87.1,
+          "institution_co_po_attainment": 0.73,
+          "institution_curriculum_compliance": 0.917,
+          "spread": {
+            "Computer Science": 91.2,
+            "Electronics & Communication": 88.4,
+            "Mechanical Engineering": 85.7,
+            "Civil Engineering": 83.1
+          },
+          "stale_or_missing_departments": [
+            "Civil Engineering"
+          ],
+          "formulas": {
+            "institution_pass_percentage": "sum(value_i * weight_i) / sum(weight_i)",
+            "institution_co_po_attainment": "sum(values) / count(values)"
+          }
+        },
+        "research": {
+          "institution_publications_total": 102,
+          "institution_publications_per_faculty": 1.0625,
+          "institution_citations_avg": 159.75,
+          "institution_grants_secured_lakhs": 159.5,
+          "formulas": {
+            "institution_publications_per_faculty": "sum(publications, de-duplicated) / total_faculty_count",
+            "institution_publications_total": "sum(department.publications)  [cross-dept collaborations noted, not double-added]"
+          }
+        },
+        "placement": {
+          "institution_placement_percentage": 74.77,
+          "institution_average_package_lakhs": 6.66,
+          "institution_internship_completion_pct": 85.0,
+          "provisional_offers_excluded_from_placed": 15,
+          "unverified_departments": [
+            "Civil Engineering"
+          ],
+          "formulas": {
+            "institution_placement_percentage": "sum(placed_students, confirmed only) / sum(eligible_students)",
+            "institution_average_package_lakhs": "sum(value_i * weight_i) / sum(weight_i)"
+          }
+        },
+        "finance": {
+          "institution_budget_utilization": 0.7892,
+          "institution_revenue_lakhs": 1510.0,
+          "institution_grant_funds_received_lakhs": 159.5,
+          "institution_grant_funds_spent_lakhs": 121.0,
+          "pending_reconciliation_lakhs": 18.0,
+          "fully_reconciled": false,
+          "formulas": {
+            "institution_budget_utilization": "budget_utilized_lakhs / budget_allocated_lakhs"
+          }
+        }
+      }
+    },
+    {
+      "heading": "Assumptions",
+      "body": [
+        "Review cycle: Q1 FY26 Governing Council Review",
+        "Domains in scope: academic, research, placement, finance",
+        "Departmental weighting for pass percentage: equal-weighted across departments (not enrolment-weighted) -- state explicitly per the acceptance checklist.",
+        "Provisional placement offers are excluded from the confirmed placement percentage."
+      ]
+    },
+    {
+      "heading": "Drill-Down Evidence (source of every figure)",
+      "body": [
+        {
+          "domain": "academic",
+          "source_system": "Academic ERP (per-department)",
+          "scope": "all departments reporting in this cycle",
+          "detail": {
+            "per_department_pass_percentage": {
+              "Computer Science": 91.2,
+              "Electronics & Communication": 88.4,
+              "Mechanical Engineering": 85.7,
+              "Civil Engineering": 83.1
+            },
+            "stale_departments": [
+              "Civil Engineering"
+            ]
+          }
+        },
+        {
+          "domain": "research",
+          "source_system": "Research Office Registry",
+          "scope": "all departments reporting in this cycle",
+          "detail": {
+            "per_department_publications": {
+              "Computer Science": 42,
+              "Electronics & Communication": 27,
+              "Mechanical Engineering": 19,
+              "Civil Engineering": 14
+            },
+            "shared_collaborations": [
+              "CS-ECE-2026-01"
+            ],
+            "dedup_note": "1 collaboration(s) span multiple departments: ['CS-ECE-2026-01']"
+          }
+        },
+        {
+          "domain": "placement",
+          "source_system": "Placement Cell CRM (verified records only)",
+          "scope": "all departments reporting in this cycle",
+          "detail": {
+            "per_department_placed": {
+              "Computer Science": 162,
+              "Electronics & Communication": 109,
+              "Mechanical Engineering": 78,
+              "Civil Engineering": 51
+            },
+            "provisional_offers_excluded": 15,
+            "unverified_departments": [
+              "Civil Engineering"
+            ]
+          }
+        },
+        {
+          "domain": "finance",
+          "source_system": "Finance ERP (Audited Ledger)",
+          "scope": "institution-level, audited ledger",
+          "detail": {
+            "reconciled": true,
+            "pending_reconciliation_lakhs": 18.0,
+            "as_of": "2026-11-17"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "Decision Options & Risks",
+      "body": [
+        {
+          "issue": "institution_pass_percentage is below target (87.1 vs target 92.0, variance -4.9)",
+          "option_a": {
+            "action": "Escalate academic domain to the relevant Dean for a root-cause review before next cycle.",
+            "risks": [
+              "Delays the corrective action by one review cycle",
+              "Requires Dean bandwidth during an already busy period"
+            ]
+          },
+          "option_b": {
+            "action": "Approve report for circulation with institution_pass_percentage flagged as an open watch-item and a committed remediation date.",
+            "risks": [
+              "Governing Council sees a known miss rather than a fix",
+              "Remediation date must be tracked and could slip"
+            ]
+          }
+        },
+        {
+          "issue": "institution_co_po_attainment is below target (0.73 vs target 0.8, variance -0.07)",
+          "option_a": {
+            "action": "Escalate academic domain to the relevant Dean for a root-cause review before next cycle.",
+            "risks": [
+              "Delays the corrective action by one review cycle",
+              "Requires Dean bandwidth during an already busy period"
+            ]
+          },
+          "option_b": {
+            "action": "Approve report for circulation with institution_co_po_attainment flagged as an open watch-item and a committed remediation date.",
+            "risks": [
+              "Governing Council sees a known miss rather than a fix",
+              "Remediation date must be tracked and could slip"
+            ]
+          }
+        },
+        {
+          "issue": "institution_publications_per_faculty is below target (1.0625 vs target 1.2, variance -0.137)",
+          "option_a": {
+            "action": "Escalate research domain to the relevant Dean for a root-cause review before next cycle.",
+            "risks": [
+              "Delays the corrective action by one review cycle",
+              "Requires Dean bandwidth during an already busy period"
+            ]
+          },
+          "option_b": {
+            "action": "Approve report for circulation with institution_publications_per_faculty flagged as an open watch-item and a committed remediation date.",
+            "risks": [
+              "Governing Council sees a known miss rather than a fix",
+              "Remediation date must be tracked and could slip"
+            ]
+          }
+        },
+        {
+          "issue": "institution_placement_percentage is below target (74.77 vs target 85.0, variance -10.23)",
+          "option_a": {
+            "action": "Escalate placement domain to the relevant Dean for a root-cause review before next cycle.",
+            "risks": [
+              "Delays the corrective action by one review cycle",
+              "Requires Dean bandwidth during an already busy period"
+            ]
+          },
+          "option_b": {
+            "action": "Approve report for circulation with institution_placement_percentage flagged as an open watch-item and a committed remediation date.",
+            "risks": [
+              "Governing Council sees a known miss rather than a fix",
+              "Remediation date must be tracked and could slip"
+            ]
+          }
+        },
+        {
+          "issue": "institution_budget_utilization is below target (0.7892 vs target 0.9, variance -0.111)",
+          "option_a": {
+            "action": "Escalate finance domain to the relevant Dean for a root-cause review before next cycle.",
+            "risks": [
+              "Delays the corrective action by one review cycle",
+              "Requires Dean bandwidth during an already busy period"
+            ]
+          },
+          "option_b": {
+            "action": "Approve report for circulation with institution_budget_utilization flagged as an open watch-item and a committed remediation date.",
+            "risks": [
+              "Governing Council sees a known miss rather than a fix",
+              "Remediation date must be tracked and could slip"
+            ]
+          }
+        },
+        {
+          "issue": "Stale academic data from: ['Civil Engineering']",
+          "option_a": {
+            "action": "Publish with those departments' figures marked as last-known-good, dated.",
+            "risks": [
+              "Institution-wide pass percentage may shift once refreshed"
+            ]
+          },
+          "option_b": {
+            "action": "Hold those departments out of this cycle's institution-wide average.",
+            "risks": [
+              "Understates coverage; Council sees a partial figure"
+            ]
+          }
+        },
+        {
+          "issue": "Unverified placement reporting from: ['Civil Engineering']",
+          "option_a": {
+            "action": "Exclude unverified departments from the institution-wide placement % until Placement Cell verification completes.",
+            "risks": [
+              "Institution-wide figure may look lower than the true value"
+            ]
+          },
+          "option_b": {
+            "action": "Include with a clear 'unverified' watermark on affected rows.",
+            "risks": [
+              "Risk of an unverified figure being quoted externally as final"
+            ]
+          }
+        },
+        {
+          "issue": "\u20b918.0 lakhs pending finance-office reconciliation.",
+          "option_a": {
+            "action": "Hold budget-utilization KPI as provisional until reconciliation closes.",
+            "risks": [
+              "Council sees a 'provisional' tag on a headline finance KPI"
+            ]
+          },
+          "option_b": {
+            "action": "Publish current utilization figure with the pending amount disclosed as a footnote.",
+            "risks": [
+              "A materially different reconciled figure could require a correction later"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "kpis": {
+    "institution_pass_percentage": {
+      "actual": 87.1,
+      "target": 92.0,
+      "variance": -4.9,
+      "status": "below_target",
+      "formula": "mean(department.pass_percentage, weighted by eligible cohort)",
+      "framework": "NAAC Criterion 2",
+      "source_domain": "academic"
+    },
+    "institution_co_po_attainment": {
+      "actual": 0.73,
+      "target": 0.8,
+      "variance": -0.07,
+      "status": "below_target",
+      "formula": "mean(department.co_po_attainment)",
+      "framework": "NAAC Criterion 2",
+      "source_domain": "academic"
+    },
+    "institution_publications_per_faculty": {
+      "actual": 1.0625,
+      "target": 1.2,
+      "variance": -0.137,
+      "status": "below_target",
+      "formula": "sum(department.publications, de-duplicated by collaboration_id) / total_faculty_count",
+      "framework": "NIRF Research & Professional Practice (RP)",
+      "source_domain": "research"
+    },
+    "institution_placement_percentage": {
+      "actual": 74.77,
+      "target": 85.0,
+      "variance": -10.23,
+      "status": "below_target",
+      "formula": "sum(placed_students, confirmed only) / sum(eligible_students)",
+      "framework": "NIRF Graduation Outcomes (GO)",
+      "source_domain": "placement"
+    },
+    "institution_average_package": {
+      "actual": 6.66,
+      "target": 6.5,
+      "variance": 0.16,
+      "status": "meets_or_exceeds_target",
+      "formula": "weighted_mean(average_package_lakhs, weighted by placed_students)",
+      "framework": "NIRF Graduation Outcomes (GO)",
+      "source_domain": "placement"
+    },
+    "institution_budget_utilization": {
+      "actual": 0.7892,
+      "target": 0.9,
+      "variance": -0.111,
+      "status": "below_target",
+      "formula": "budget_utilized_lakhs / budget_allocated_lakhs",
+      "framework": "Strategic Plan FY26",
+      "source_domain": "finance"
+    }
+  },
+  "drill_down": [
+    {
+      "domain": "academic",
+      "source_system": "Academic ERP (per-department)",
+      "scope": "all departments reporting in this cycle",
+      "detail": {
+        "per_department_pass_percentage": {
+          "Computer Science": 91.2,
+          "Electronics & Communication": 88.4,
+          "Mechanical Engineering": 85.7,
+          "Civil Engineering": 83.1
+        },
+        "stale_departments": [
+          "Civil Engineering"
+        ]
+      }
+    },
+    {
+      "domain": "research",
+      "source_system": "Research Office Registry",
+      "scope": "all departments reporting in this cycle",
+      "detail": {
+        "per_department_publications": {
+          "Computer Science": 42,
+          "Electronics & Communication": 27,
+          "Mechanical Engineering": 19,
+          "Civil Engineering": 14
+        },
+        "shared_collaborations": [
+          "CS-ECE-2026-01"
+        ],
+        "dedup_note": "1 collaboration(s) span multiple departments: ['CS-ECE-2026-01']"
+      }
+    },
+    {
+      "domain": "placement",
+      "source_system": "Placement Cell CRM (verified records only)",
+      "scope": "all departments reporting in this cycle",
+      "detail": {
+        "per_department_placed": {
+          "Computer Science": 162,
+          "Electronics & Communication": 109,
+          "Mechanical Engineering": 78,
+          "Civil Engineering": 51
+        },
+        "provisional_offers_excluded": 15,
+        "unverified_departments": [
+          "Civil Engineering"
+        ]
+      }
+    },
+    {
+      "domain": "finance",
+      "source_system": "Finance ERP (Audited Ledger)",
+      "scope": "institution-level, audited ledger",
+      "detail": {
+        "reconciled": true,
+        "pending_reconciliation_lakhs": 18.0,
+        "as_of": "2026-11-17"
+      }
+    }
+  ],
+  "assumptions": [
+    "Review cycle: Q1 FY26 Governing Council Review",
+    "Domains in scope: academic, research, placement, finance",
+    "Departmental weighting for pass percentage: equal-weighted across departments (not enrolment-weighted) -- state explicitly per the acceptance checklist.",
+    "Provisional placement offers are excluded from the confirmed placement percentage."
+  ],
+  "options": [
+    {
+      "issue": "institution_pass_percentage is below target (87.1 vs target 92.0, variance -4.9)",
+      "option_a": {
+        "action": "Escalate academic domain to the relevant Dean for a root-cause review before next cycle.",
+        "risks": [
+          "Delays the corrective action by one review cycle",
+          "Requires Dean bandwidth during an already busy period"
+        ]
+      },
+      "option_b": {
+        "action": "Approve report for circulation with institution_pass_percentage flagged as an open watch-item and a committed remediation date.",
+        "risks": [
+          "Governing Council sees a known miss rather than a fix",
+          "Remediation date must be tracked and could slip"
+        ]
+      }
+    },
+    {
+      "issue": "institution_co_po_attainment is below target (0.73 vs target 0.8, variance -0.07)",
+      "option_a": {
+        "action": "Escalate academic domain to the relevant Dean for a root-cause review before next cycle.",
+        "risks": [
+          "Delays the corrective action by one review cycle",
+          "Requires Dean bandwidth during an already busy period"
+        ]
+      },
+      "option_b": {
+        "action": "Approve report for circulation with institution_co_po_attainment flagged as an open watch-item and a committed remediation date.",
+        "risks": [
+          "Governing Council sees a known miss rather than a fix",
+          "Remediation date must be tracked and could slip"
+        ]
+      }
+    },
+    {
+      "issue": "institution_publications_per_faculty is below target (1.0625 vs target 1.2, variance -0.137)",
+      "option_a": {
+        "action": "Escalate research domain to the relevant Dean for a root-cause review before next cycle.",
+        "risks": [
+          "Delays the corrective action by one review cycle",
+          "Requires Dean bandwidth during an already busy period"
+        ]
+      },
+      "option_b": {
+        "action": "Approve report for circulation with institution_publications_per_faculty flagged as an open watch-item and a committed remediation date.",
+        "risks": [
+          "Governing Council sees a known miss rather than a fix",
+          "Remediation date must be tracked and could slip"
+        ]
+      }
+    },
+    {
+      "issue": "institution_placement_percentage is below target (74.77 vs target 85.0, variance -10.23)",
+      "option_a": {
+        "action": "Escalate placement domain to the relevant Dean for a root-cause review before next cycle.",
+        "risks": [
+          "Delays the corrective action by one review cycle",
+          "Requires Dean bandwidth during an already busy period"
+        ]
+      },
+      "option_b": {
+        "action": "Approve report for circulation with institution_placement_percentage flagged as an open watch-item and a committed remediation date.",
+        "risks": [
+          "Governing Council sees a known miss rather than a fix",
+          "Remediation date must be tracked and could slip"
+        ]
+      }
+    },
+    {
+      "issue": "institution_budget_utilization is below target (0.7892 vs target 0.9, variance -0.111)",
+      "option_a": {
+        "action": "Escalate finance domain to the relevant Dean for a root-cause review before next cycle.",
+        "risks": [
+          "Delays the corrective action by one review cycle",
+          "Requires Dean bandwidth during an already busy period"
+        ]
+      },
+      "option_b": {
+        "action": "Approve report for circulation with institution_budget_utilization flagged as an open watch-item and a committed remediation date.",
+        "risks": [
+          "Governing Council sees a known miss rather than a fix",
+          "Remediation date must be tracked and could slip"
+        ]
+      }
+    },
+    {
+      "issue": "Stale academic data from: ['Civil Engineering']",
+      "option_a": {
+        "action": "Publish with those departments' figures marked as last-known-good, dated.",
+        "risks": [
+          "Institution-wide pass percentage may shift once refreshed"
+        ]
+      },
+      "option_b": {
+        "action": "Hold those departments out of this cycle's institution-wide average.",
+        "risks": [
+          "Understates coverage; Council sees a partial figure"
+        ]
+      }
+    },
+    {
+      "issue": "Unverified placement reporting from: ['Civil Engineering']",
+      "option_a": {
+        "action": "Exclude unverified departments from the institution-wide placement % until Placement Cell verification completes.",
+        "risks": [
+          "Institution-wide figure may look lower than the true value"
+        ]
+      },
+      "option_b": {
+        "action": "Include with a clear 'unverified' watermark on affected rows.",
+        "risks": [
+          "Risk of an unverified figure being quoted externally as final"
+        ]
+      }
+    },
+    {
+      "issue": "\u20b918.0 lakhs pending finance-office reconciliation.",
+      "option_a": {
+        "action": "Hold budget-utilization KPI as provisional until reconciliation closes.",
+        "risks": [
+          "Council sees a 'provisional' tag on a headline finance KPI"
+        ]
+      },
+      "option_b": {
+        "action": "Publish current utilization figure with the pending amount disclosed as a footnote.",
+        "risks": [
+          "A materially different reconciled figure could require a correction later"
+        ]
+      }
+    }
+  ],
+  "status": "approved",
+  "approved_by": "Dr. A. Sharma",
+  "approver_role": "Registrar",
+  "approval_comment": "Reviewed 6 KPIs (5 flagged below target) and 8 decision option(s). Approved for circulation to the Governing Council."
+}

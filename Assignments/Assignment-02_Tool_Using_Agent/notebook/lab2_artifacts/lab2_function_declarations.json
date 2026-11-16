@@ -1,0 +1,60 @@
+{
+  "list_kpis": {
+    "description": "List the approved institution KPI ids, names and domains.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  "get_kpi_value": {
+    "description": "Compute one approved KPI for the current reporting period. Optionally restrict to a department category ('circuit' or 'core').",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "kpi_id": {
+          "type": "string",
+          "description": "e.g. 'KPI-P1'"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "circuit",
+            "core"
+          ]
+        }
+      },
+      "required": [
+        "kpi_id"
+      ]
+    }
+  },
+  "get_kpi_target": {
+    "description": "Get the approved target for a KPI and the authority that set it.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "kpi_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kpi_id"
+      ]
+    }
+  },
+  "get_external_benchmark": {
+    "description": "Get the published peer benchmark for a KPI. Many KPIs have none; the call then returns an error and you must say so.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "kpi_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kpi_id"
+      ]
+    }
+  }
+}

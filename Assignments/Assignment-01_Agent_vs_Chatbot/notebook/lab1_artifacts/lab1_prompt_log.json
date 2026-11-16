@@ -1,0 +1,718 @@
+[
+  {
+    "call": 1,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nAnalyze our college performance.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n  (none yet)\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - domains\n  - period\n  - kpis\n  - targets\n  - drilldown\n  - output\n\nFor each empty slot, the canonical question is:\n  - domains: Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?\n  - period: Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n  - output: What should leadership receive — a decision brief with options and risks, a dashboard, or both?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "NEEDS_INFO",
+      "extracted": {},
+      "questions": [
+        "Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?",
+        "Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?",
+        "Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?",
+        "Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?",
+        "Is department-level drill-down required for every KPI, or only for KPIs that miss their target?",
+        "What should leadership receive — a decision brief with options and risks, a dashboard, or both?"
+      ],
+      "rationale": "Extracted nothing from the request; 6 requirement(s) still unspecified.",
+      "asked_about": [
+        "domains",
+        "period",
+        "kpis",
+        "targets",
+        "drilldown",
+        "output"
+      ]
+    }
+  },
+  {
+    "call": 2,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nAnalyze our college performance.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n  (none yet)\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - domains\n  - period\n  - kpis\n  - targets\n  - drilldown\n  - output\n\nFor each empty slot, the canonical question is:\n  - domains: Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?\n  - period: Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n  - output: What should leadership receive — a decision brief with options and risks, a dashboard, or both?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "NEEDS_INFO",
+      "extracted": {},
+      "questions": [
+        "Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?",
+        "Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?",
+        "Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?",
+        "Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?",
+        "Is department-level drill-down required for every KPI, or only for KPIs that miss their target?",
+        "What should leadership receive — a decision brief with options and risks, a dashboard, or both?"
+      ],
+      "rationale": "Extracted nothing from the request; 6 requirement(s) still unspecified.",
+      "asked_about": [
+        "domains",
+        "period",
+        "kpis",
+        "targets",
+        "drilldown",
+        "output"
+      ]
+    }
+  },
+  {
+    "call": 3,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nAnalyze our college performance.\n\nUSER REPLY:\nCover all four domains - Academic, Research, Placement and Finance - for\n       academic year 2025-26. Leadership wants a decision brief with options and risks.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n  (none yet)\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - domains\n  - period\n  - kpis\n  - targets\n  - drilldown\n  - output\n\nFor each empty slot, the canonical question is:\n  - domains: Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?\n  - period: Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n  - output: What should leadership receive — a decision brief with options and risks, a dashboard, or both?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "NEEDS_INFO",
+      "extracted": {
+        "domains": [
+          "Academic",
+          "Research",
+          "Placement"
+        ],
+        "period": "academic year 2025-26",
+        "output": "decision brief with options and risks"
+      },
+      "questions": [
+        "Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?",
+        "Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?",
+        "Is department-level drill-down required for every KPI, or only for KPIs that miss their target?"
+      ],
+      "rationale": "Extracted ['domains', 'output', 'period'] from the request; 3 requirement(s) still unspecified.",
+      "asked_about": [
+        "kpis",
+        "targets",
+        "drilldown"
+      ]
+    }
+  },
+  {
+    "call": 4,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nAnalyze our college performance.\n\nUSER REPLY:\nCover all four domains - Academic, Research, Placement and Finance - for\n       academic year 2025-26. Leadership wants a decision brief with options and risks.\n\nUSER REPLY:\nUse the approved institution-wide KPI set. Compare against NIRF, NAAC and the\n       strategic plan. Department-level drill-down only for KPIs that miss their target.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n{\n  \"domains\": [\n    \"Academic\",\n    \"Research\",\n    \"Placement\",\n    \"Finance\"\n  ],\n  \"period\": \"academic year 2025-26\",\n  \"output\": \"decision brief with options and risks\"\n}\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - kpis\n  - targets\n  - drilldown\n\nFor each empty slot, the canonical question is:\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "REQUIREMENTS_COMPLETE",
+      "extracted": {
+        "kpis": [
+          "approved institution-wide KPI set"
+        ],
+        "targets": [
+          "NIRF",
+          "NAAC",
+          "strategic plan"
+        ],
+        "drilldown": "only for KPIs that miss their target"
+      },
+      "questions": [],
+      "rationale": "Extracted ['drilldown', 'kpis', 'targets'] from the request; 0 requirement(s) still unspecified.",
+      "asked_about": []
+    }
+  },
+  {
+    "call": 5,
+    "task": "propose_plan",
+    "backend": "offline",
+    "system": "You are the planning component of Worklet 15, an Executive Decision\nSupport System. You produce execution PLANS only. You never compute a KPI, never\nstate an institutional figure, and never write the decision brief itself.",
+    "prompt": "Produce an execution plan from the locked requirements below, and from\nnothing else.\n\nREQUIREMENTS (all six slots confirmed with the user):\n{\n  \"domains\": [\n    \"Academic\",\n    \"Research\",\n    \"Placement\",\n    \"Finance\"\n  ],\n  \"period\": \"academic year 2025-26\",\n  \"kpis\": [\n    \"approved institution-wide KPI set\"\n  ],\n  \"targets\": [\n    \"NIRF\",\n    \"NAAC\",\n    \"strategic plan\"\n  ],\n  \"drilldown\": \"only for KPIs that miss their target\",\n  \"output\": \"decision brief with options and risks\"\n}\n\nOBSERVED DATA SCOPE (returned by the data-scope register tool — this is real,\nuse it):\n{\n  \"Academic\": {\n    \"source_system\": \"Academic ERP \\u2014 examination & OBE records\",\n    \"read_access\": \"granted by Registrar on 2026-06-01\",\n    \"periods\": [\n      \"2023-24\",\n      \"2024-25\",\n      \"2025-26\"\n    ],\n    \"figure_status\": \"final\",\n    \"metrics\": [\n      \"pass percentage\",\n      \"CO/PO attainment\",\n      \"curriculum compliance\"\n    ]\n  },\n  \"Research\": {\n    \"source_system\": \"Research & Publications repository (Scopus-synced)\",\n    \"read_access\": \"granted by Registrar on 2026-06-01\",\n    \"periods\": [\n      \"2023-24\",\n      \"2024-25\",\n      \"2025-26\"\n    ],\n    \"figure_status\": \"final\",\n    \"metrics\": [\n      \"publications\",\n      \"citations\",\n      \"grants sanctioned\"\n    ]\n  },\n  \"Placement\": {\n    \"source_system\": \"Placement Cell tracker\",\n    \"read_access\": \"granted by Registrar on 2026-06-04\",\n    \"periods\": [\n      \"2023-24\",\n      \"2024-25\",\n      \"2025-26\"\n    ],\n    \"figure_status\": \"final\",\n    \"metrics\": [\n      \"placement percentage\",\n      \"average package\",\n      \"internship completion\"\n    ],\n    \"caveat\": \"3 provisional offers are excluded until the Placement Cell verifies them.\"\n  },\n  \"Finance\": {\n    \"source_system\": \"Finance & Accounts ledger\",\n    \"read_access\": \"granted by Registrar on 2026-06-07\",\n    \"periods\": [\n      \"2023-24\",\n      \"2024-25\"\n    ],\n    \"figure_status\": \"provisional\",\n    \"metrics\": [\n      \"budget utilisation\",\n      \"revenue\",\n      \"grant funds\"\n    ],\n    \"caveat\": \"Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August.\"\n  }\n}\n\nDATA CONFLICTS the tool call surfaced (each one MUST be reflected in the plan,\neither as an assumption or as an explicit scope exclusion):\n[\n  {\n    \"type\": \"SCOPE_CAVEAT\",\n    \"domain\": \"Placement\",\n    \"detail\": \"3 provisional offers are excluded until the Placement Cell verifies them.\",\n    \"required_action\": \"Record the caveat in the brief's assumptions section.\"\n  },\n  {\n    \"type\": \"PERIOD_NOT_COVERED\",\n    \"domain\": \"Finance\",\n    \"detail\": \"Finance source covers ['2023-24', '2024-25'], but the request asks for 2025-26.\",\n    \"required_action\": \"Either exclude Finance from this run, or report it against the last closed period with an explicit label.\"\n  },\n  {\n    \"type\": \"FIGURES_NOT_FINAL\",\n    \"domain\": \"Finance\",\n    \"detail\": \"Finance figures are 'provisional'. Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August.\",\n    \"required_action\": \"Label every figure from this domain as provisional in the brief, or drop the domain until reconciliation completes.\"\n  }\n]\n\nRules:\n- Do not invent institutional data. Do not compute results. Do not write the brief.\n- Write NO numeric figure anywhere: no percentages, no counts, no amounts, no target\n  values. Lab 1 produces a plan, not results. Naming a metric is fine (\"pass\n  percentage\"); stating a value for it (\"92%\") is not.\n- Every analysis step gets a short stable id: S1, S2, S3, ...\n- Every KPI calculation names its formula and its source system.\n- validation_checks must include the four Chapter 15 acceptance checks:\n  every figure cites its source; assumptions are stated explicitly; each option\n  lists its risks and trade-offs; no action is taken without leadership approval.\n- brief_structure is the section list of the final decision brief.\nThe plan must be precise enough for another agent to execute without asking anything.",
+    "response": {
+      "objective": "Produce a leadership decision brief comparing Academic, Research, Placement, Finance performance for academic year 2025-26 against NIRF, NAAC, strategic plan, identifying below-target areas with options and risks.",
+      "scope": {
+        "domains": [
+          "Academic",
+          "Research",
+          "Placement"
+        ],
+        "period": "academic year 2025-26",
+        "unit_of_analysis": "institution level, with department-level drill-down"
+      },
+      "data_required": [
+        {
+          "domain": "Academic",
+          "source_system": "Academic ERP — examination & OBE records",
+          "fields": [
+            "pass percentage",
+            "CO/PO attainment",
+            "curriculum compliance"
+          ],
+          "access": "granted by Registrar on 2026-06-01"
+        },
+        {
+          "domain": "Research",
+          "source_system": "Research & Publications repository (Scopus-synced)",
+          "fields": [
+            "publications",
+            "citations",
+            "grants sanctioned"
+          ],
+          "access": "granted by Registrar on 2026-06-01"
+        },
+        {
+          "domain": "Placement",
+          "source_system": "Placement Cell tracker",
+          "fields": [
+            "placement percentage",
+            "average package",
+            "internship completion"
+          ],
+          "access": "granted by Registrar on 2026-06-04"
+        }
+      ],
+      "analysis_steps": [
+        {
+          "id": "S1",
+          "title": "Confirm read access and freeze the data cut",
+          "detail": "Re-read the data-scope register for Academic, Research, Placement, Finance and record the cut timestamp so every figure in the brief is reproducible.",
+          "owner_agent": "Coordinator"
+        },
+        {
+          "id": "S11",
+          "title": "Pull the prior-year baseline for trend context",
+          "detail": "Retrieve the same KPI set for the preceding closed year so every KPI is reported with its year-on-year movement, clearly labelled as trend context rather than as the reporting-period figure.",
+          "owner_agent": "Coordinator"
+        },
+        {
+          "id": "S2",
+          "title": "Aggregate academic metrics across departments",
+          "detail": "Academic Agent pulls pass percentage, CO/PO attainment, curriculum compliance per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.",
+          "owner_agent": "Academic Agent"
+        },
+        {
+          "id": "S3",
+          "title": "Aggregate research metrics across departments",
+          "detail": "Research Agent pulls publications, citations, grants sanctioned per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.",
+          "owner_agent": "Research Agent"
+        },
+        {
+          "id": "S4",
+          "title": "Aggregate placement metrics across departments",
+          "detail": "Placement Agent pulls placement percentage, average package, internship completion per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.",
+          "owner_agent": "Placement Agent"
+        },
+        {
+          "id": "S6",
+          "title": "Synthesise institution-wide KPIs",
+          "detail": "KPI Agent applies only the approved KPI definitions to the domain aggregates, showing formula and source for each; enrolment-weighted, never a plain mean of department percentages.",
+          "owner_agent": "KPI Agent"
+        },
+        {
+          "id": "S7",
+          "title": "Compare each KPI to its approved target",
+          "detail": "Compute variance against NIRF, NAAC, strategic plan; classify each KPI as on-target / at-risk / below-target using the approved thresholds.",
+          "owner_agent": "KPI Agent"
+        },
+        {
+          "id": "S8",
+          "title": "Attach department-level drill-down evidence",
+          "detail": "For each KPI, record the traceable path KPI -> contributing department -> source metric -> source system, so leadership can trace any number back.",
+          "owner_agent": "Report Generation Agent"
+        },
+        {
+          "id": "S9",
+          "title": "Draft options and risks for every below-target KPI",
+          "detail": "For each KPI missing target, draft 2-3 options with cost, owner, timeline and the risks/trade-offs of each. Options only — no action is taken.",
+          "owner_agent": "Report Generation Agent"
+        },
+        {
+          "id": "S10",
+          "title": "Run validation, then route to the human gate",
+          "detail": "Validation is a hard gate; on failure only the failing KPI is regenerated. The Principal/Registrar then approves, edits or overrides before circulation.",
+          "owner_agent": "Coordinator + Executive gate"
+        }
+      ],
+      "kpi_calculations": [
+        {
+          "kpi": "Pass percentage",
+          "formula": "passed_students / appeared_students x 100",
+          "unit": "%",
+          "source": "Academic ERP — examination & OBE records"
+        },
+        {
+          "kpi": "CO/PO attainment",
+          "formula": "mean(attainment_level) over mapped COs",
+          "unit": "index 0-3",
+          "source": "Academic ERP — examination & OBE records"
+        },
+        {
+          "kpi": "Publications per faculty",
+          "formula": "publications / sanctioned_faculty",
+          "unit": "count",
+          "source": "Research & Publications repository (Scopus-synced)"
+        },
+        {
+          "kpi": "Citations per faculty",
+          "formula": "citations / sanctioned_faculty",
+          "unit": "count",
+          "source": "Research & Publications repository (Scopus-synced)"
+        },
+        {
+          "kpi": "Grants sanctioned",
+          "formula": "sum(grant_amount)",
+          "unit": "INR lakh",
+          "source": "Research & Publications repository (Scopus-synced)"
+        },
+        {
+          "kpi": "Placement percentage",
+          "formula": "placed_students / eligible_students x 100",
+          "unit": "%",
+          "source": "Placement Cell tracker"
+        },
+        {
+          "kpi": "Average package",
+          "formula": "sum(package) / placed_students",
+          "unit": "LPA",
+          "source": "Placement Cell tracker"
+        },
+        {
+          "kpi": "Internship completion",
+          "formula": "interns_completed / eligible_students x 100",
+          "unit": "%",
+          "source": "Placement Cell tracker"
+        }
+      ],
+      "target_comparison": {
+        "target_sets": [
+          "NIRF",
+          "NAAC",
+          "strategic plan"
+        ],
+        "method": "variance = actual - target, reported in the KPI's own unit alongside % of target achieved; no rounding may hide a miss"
+      },
+      "drilldown_policy": "mandatory for every KPI — each KPI must carry its full department-level trace, not only the KPIs that miss target",
+      "evidence_requirements": [
+        "Every figure carries source system, extraction timestamp and department scope.",
+        "Every KPI carries its formula and the approved target it is measured against.",
+        "Provisional or unreconciled figures are labelled inline, never presented as final.",
+        "Every option carries its risks, trade-offs and named owner.",
+        "Every option names an accountable owner and the risk that owner is accepting."
+      ],
+      "brief_structure": [
+        "1. Executive summary (3 bullets, decision-ready)",
+        "2. KPI scorecard vs targets, with variance",
+        "3. Below-target KPIs with department-level drill-down",
+        "4. Options with cost, owner, timeline",
+        "5. Risks and trade-offs per option",
+        "6. Assumptions and data caveats",
+        "7. Evidence appendix (source trace per figure)"
+      ],
+      "validation_checks": [
+        "every figure cites its source",
+        "assumptions are stated explicitly",
+        "each option lists its risks and trade-offs",
+        "no action is taken without leadership approval"
+      ],
+      "assumptions": [
+        "Analysis is limited to academic year 2025-26; prior years appear only as trend context.",
+        "Only Registrar-authorised, institution-level read access is used; no department is queried directly.",
+        "KPI definitions and target values are the approved set — this plan does not redefine them.",
+        "SCOPE_CAVEAT: 3 provisional offers are excluded until the Placement Cell verifies them. -> Record the caveat in the brief's assumptions section.",
+        "[retired at r1: Finance removed from scope] PERIOD_NOT_COVERED: Finance source covers ['2023-24', '2024-25'], but the request asks for 2025-26. -> Either exclude Finance from this run, or report it against the last closed period with an explicit label.",
+        "[retired at r1: Finance removed from scope] FIGURES_NOT_FINAL: Finance figures are 'provisional'. Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August. -> Label every figure from this domain as provisional in the brief, or drop the domain until reconciliation completes."
+      ],
+      "_unchanged_note": "Objective, data sources, KPI formulas, target-comparison method and validation checks were left untouched.",
+      "brief_length_limit": "maximum two pages for the main brief; the evidence appendix ships as a separate annexure"
+    }
+  },
+  {
+    "call": 6,
+    "task": "revise",
+    "backend": "offline",
+    "system": "You revise execution plans for Worklet 15 by emitting PATCH OPERATIONS\nonly. You never restate or rewrite the plan. Anything the feedback does not mention must\nbe left completely untouched.",
+    "prompt": "CURRENT PLAN (revision 0):\n{\n  \"objective\": \"Produce a leadership decision brief comparing Academic, Research, Placement, Finance performance for academic year 2025-26 against NIRF, NAAC, strategic plan, identifying below-target areas with options and risks.\",\n  \"scope\": {\n    \"domains\": [\n      \"Academic\",\n      \"Research\",\n      \"Placement\",\n      \"Finance\"\n    ],\n    \"period\": \"academic year 2025-26\",\n    \"unit_of_analysis\": \"institution level, with department-level drill-down\"\n  },\n  \"data_required\": [\n    {\n      \"domain\": \"Academic\",\n      \"source_system\": \"Academic ERP \\u2014 examination & OBE records\",\n      \"fields\": [\n        \"pass percentage\",\n        \"CO/PO attainment\",\n        \"curriculum compliance\"\n      ],\n      \"access\": \"granted by Registrar on 2026-06-01\"\n    },\n    {\n      \"domain\": \"Research\",\n      \"source_system\": \"Research & Publications repository (Scopus-synced)\",\n      \"fields\": [\n        \"publications\",\n        \"citations\",\n        \"grants sanctioned\"\n      ],\n      \"access\": \"granted by Registrar on 2026-06-01\"\n    },\n    {\n      \"domain\": \"Placement\",\n      \"source_system\": \"Placement Cell tracker\",\n      \"fields\": [\n        \"placement percentage\",\n        \"average package\",\n        \"internship completion\"\n      ],\n      \"access\": \"granted by Registrar on 2026-06-04\"\n    },\n    {\n      \"domain\": \"Finance\",\n      \"source_system\": \"Finance & Accounts ledger\",\n      \"fields\": [\n        \"budget utilisation\",\n        \"revenue\",\n        \"grant funds\"\n      ],\n      \"access\": \"granted by Registrar on 2026-06-07\"\n    }\n  ],\n  \"analysis_steps\": [\n    {\n      \"id\": \"S1\",\n      \"title\": \"Confirm read access and freeze the data cut\",\n      \"detail\": \"Re-read the data-scope register for Academic, Research, Placement, Finance and record the cut timestamp so every figure in the brief is reproducible.\",\n      \"owner_agent\": \"Coordinator\"\n    },\n    {\n      \"id\": \"S2\",\n      \"title\": \"Aggregate academic metrics across departments\",\n      \"detail\": \"Academic Agent pulls pass percentage, CO/PO attainment, curriculum compliance per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.\",\n      \"owner_agent\": \"Academic Agent\"\n    },\n    {\n      \"id\": \"S3\",\n      \"title\": \"Aggregate research metrics across departments\",\n      \"detail\": \"Research Agent pulls publications, citations, grants sanctioned per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.\",\n      \"owner_agent\": \"Research Agent\"\n    },\n    {\n      \"id\": \"S4\",\n      \"title\": \"Aggregate placement metrics across departments\",\n      \"detail\": \"Placement Agent pulls placement percentage, average package, internship completion per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.\",\n      \"owner_agent\": \"Placement Agent\"\n    },\n    {\n      \"id\": \"S5\",\n      \"title\": \"Aggregate finance metrics across departments\",\n      \"detail\": \"Finance Agent pulls budget utilisation, revenue, grant funds per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.\",\n      \"owner_agent\": \"Finance Agent\"\n    },\n    {\n      \"id\": \"S6\",\n      \"title\": \"Synthesise institution-wide KPIs\",\n      \"detail\": \"KPI Agent applies only the approved KPI definitions to the domain aggregates, showing formula and source for each; enrolment-weighted, never a plain mean of department percentages.\",\n      \"owner_agent\": \"KPI Agent\"\n    },\n    {\n      \"id\": \"S7\",\n      \"title\": \"Compare each KPI to its approved target\",\n      \"detail\": \"Compute variance against NIRF, NAAC, strategic plan; classify each KPI as on-target / at-risk / below-target using the approved thresholds.\",\n      \"owner_agent\": \"KPI Agent\"\n    },\n    {\n      \"id\": \"S8\",\n      \"title\": \"Attach department-level drill-down evidence\",\n      \"detail\": \"For each KPI, record the traceable path KPI -> contributing department -> source metric -> source system, so leadership can trace any number back.\",\n      \"owner_agent\": \"Report Generation Agent\"\n    },\n    {\n      \"id\": \"S9\",\n      \"title\": \"Draft options and risks for every below-target KPI\",\n      \"detail\": \"For each KPI missing target, draft 2-3 options with cost, owner, timeline and the risks/trade-offs of each. Options only \\u2014 no action is taken.\",\n      \"owner_agent\": \"Report Generation Agent\"\n    },\n    {\n      \"id\": \"S10\",\n      \"title\": \"Run validation, then route to the human gate\",\n      \"detail\": \"Validation is a hard gate; on failure only the failing KPI is regenerated. The Principal/Registrar then approves, edits or overrides before circulation.\",\n      \"owner_agent\": \"Coordinator + Executive gate\"\n    }\n  ],\n  \"kpi_calculations\": [\n    {\n      \"kpi\": \"Pass percentage\",\n      \"formula\": \"passed_students / appeared_students x 100\",\n      \"unit\": \"%\",\n      \"source\": \"Academic ERP \\u2014 examination & OBE records\"\n    },\n    {\n      \"kpi\": \"CO/PO attainment\",\n      \"formula\": \"mean(attainment_level) over mapped COs\",\n      \"unit\": \"index 0-3\",\n      \"source\": \"Academic ERP \\u2014 examination & OBE records\"\n    },\n    {\n      \"kpi\": \"Publications per faculty\",\n      \"formula\": \"publications / sanctioned_faculty\",\n      \"unit\": \"count\",\n      \"source\": \"Research & Publications repository (Scopus-synced)\"\n    },\n    {\n      \"kpi\": \"Citations per faculty\",\n      \"formula\": \"citations / sanctioned_faculty\",\n      \"unit\": \"count\",\n      \"source\": \"Research & Publications repository (Scopus-synced)\"\n    },\n    {\n      \"kpi\": \"Grants sanctioned\",\n      \"formula\": \"sum(grant_amount)\",\n      \"unit\": \"INR lakh\",\n      \"source\": \"Research & Publications repository (Scopus-synced)\"\n    },\n    {\n      \"kpi\": \"Placement percentage\",\n      \"formula\": \"placed_students / eligible_students x 100\",\n      \"unit\": \"%\",\n      \"source\": \"Placement Cell tracker\"\n    },\n    {\n      \"kpi\": \"Average package\",\n      \"formula\": \"sum(package) / placed_students\",\n      \"unit\": \"LPA\",\n      \"source\": \"Placement Cell tracker\"\n    },\n    {\n      \"kpi\": \"Internship completion\",\n      \"formula\": \"interns_completed / eligible_students x 100\",\n      \"unit\": \"%\",\n      \"source\": \"Placement Cell tracker\"\n    },\n    {\n      \"kpi\": \"Budget utilisation\",\n      \"formula\": \"spent / allocated x 100\",\n      \"unit\": \"%\",\n      \"source\": \"Finance & Accounts ledger\"\n    },\n    {\n      \"kpi\": \"Grant funds received\",\n      \"formula\": \"sum(grant_credits)\",\n      \"unit\": \"INR lakh\",\n      \"source\": \"Finance & Accounts ledger\"\n    }\n  ],\n  \"target_comparison\": {\n    \"target_sets\": [\n      \"NIRF\",\n      \"NAAC\",\n      \"strategic plan\"\n    ],\n    \"method\": \"variance = actual - target, reported in the KPI's own unit alongside % of target achieved; no rounding may hide a miss\"\n  },\n  \"drilldown_policy\": \"only for KPIs that miss their target\",\n  \"evidence_requirements\": [\n    \"Every figure carries source system, extraction timestamp and department scope.\",\n    \"Every KPI carries its formula and the approved target it is measured against.\",\n    \"Provisional or unreconciled figures are labelled inline, never presented as final.\",\n    \"Every option carries its risks, trade-offs and named owner.\"\n  ],\n  \"brief_structure\": [\n    \"1. Executive summary (3 bullets, decision-ready)\",\n    \"2. KPI scorecard vs targets, with variance\",\n    \"3. Below-target KPIs with department-level drill-down\",\n    \"4. Options with cost, owner, timeline\",\n    \"5. Risks and trade-offs per option\",\n    \"6. Assumptions and data caveats\",\n    \"7. Evidence appendix (source trace per figure)\"\n  ],\n  \"validation_checks\": [\n    \"every figure cites its source\",\n    \"assumptions are stated explicitly\",\n    \"each option lists its risks and trade-offs\",\n    \"no action is taken without leadership approval\"\n  ],\n  \"assumptions\": [\n    \"Analysis is limited to academic year 2025-26; prior years appear only as trend context.\",\n    \"Only Registrar-authorised, institution-level read access is used; no department is queried directly.\",\n    \"KPI definitions and target values are the approved set \\u2014 this plan does not redefine them.\",\n    \"SCOPE_CAVEAT: 3 provisional offers are excluded until the Placement Cell verifies them. -> Record the caveat in the brief's assumptions section.\",\n    \"PERIOD_NOT_COVERED: Finance source covers ['2023-24', '2024-25'], but the request asks for 2025-26. -> Either exclude Finance from this run, or report it against the last closed period with an explicit label.\",\n    \"FIGURES_NOT_FINAL: Finance figures are 'provisional'. Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August. -> Label every figure from this domain as provisional in the brief, or drop the domain until reconciliation completes.\"\n  ]\n}\n\nUSER FEEDBACK:\nRemove the Finance domain from the analysis.\nMake department-level drill-down mandatory for every KPI.\n\nEmit the minimal list of operations that applies this feedback, and nothing more.\n\nAvailable operations:\n  remove_domain  value=<Academic|Research|Placement|Finance>\n  add_domain     value=<domain>\n  set_field      path=<dotted path, e.g. drilldown_policy or scope.period>  value=<new value>\n  add_item       path=<list field, e.g. evidence_requirements>              value=<new entry>\n  remove_item    path=<list field>  value=<substring identifying the entry>\n  modify_step    step_id=<S3>  value=<replacement detail>\n  add_step       after=<S3>  title=<...>  value=<detail>  owner_agent=<...>\n  remove_step    step_id=<S5>\n\nEvery operation carries \"why\" — one short sentence quoting the part of the feedback it\nserves. Do not add operations the user did not ask for. Do not reword the objective\nunless the feedback asks you to. \"unchanged_note\" states what you deliberately left alone.",
+    "response": {
+      "ops": [
+        {
+          "op": "remove_domain",
+          "value": "Finance",
+          "why": "feedback asks to remove the Finance domain"
+        },
+        {
+          "op": "set_field",
+          "path": "drilldown_policy",
+          "value": "mandatory for every KPI — each KPI must carry its full department-level trace, not only the KPIs that miss target",
+          "why": "feedback makes department-level drill-down mandatory for every KPI"
+        }
+      ],
+      "unchanged_note": "Objective, data sources, KPI formulas, target-comparison method and validation checks were left untouched."
+    }
+  },
+  {
+    "call": 7,
+    "task": "revise",
+    "backend": "offline",
+    "system": "You revise execution plans for Worklet 15 by emitting PATCH OPERATIONS\nonly. You never restate or rewrite the plan. Anything the feedback does not mention must\nbe left completely untouched.",
+    "prompt": "CURRENT PLAN (revision 1):\n{\n  \"objective\": \"Produce a leadership decision brief comparing Academic, Research, Placement, Finance performance for academic year 2025-26 against NIRF, NAAC, strategic plan, identifying below-target areas with options and risks.\",\n  \"scope\": {\n    \"domains\": [\n      \"Academic\",\n      \"Research\",\n      \"Placement\"\n    ],\n    \"period\": \"academic year 2025-26\",\n    \"unit_of_analysis\": \"institution level, with department-level drill-down\"\n  },\n  \"data_required\": [\n    {\n      \"domain\": \"Academic\",\n      \"source_system\": \"Academic ERP \\u2014 examination & OBE records\",\n      \"fields\": [\n        \"pass percentage\",\n        \"CO/PO attainment\",\n        \"curriculum compliance\"\n      ],\n      \"access\": \"granted by Registrar on 2026-06-01\"\n    },\n    {\n      \"domain\": \"Research\",\n      \"source_system\": \"Research & Publications repository (Scopus-synced)\",\n      \"fields\": [\n        \"publications\",\n        \"citations\",\n        \"grants sanctioned\"\n      ],\n      \"access\": \"granted by Registrar on 2026-06-01\"\n    },\n    {\n      \"domain\": \"Placement\",\n      \"source_system\": \"Placement Cell tracker\",\n      \"fields\": [\n        \"placement percentage\",\n        \"average package\",\n        \"internship completion\"\n      ],\n      \"access\": \"granted by Registrar on 2026-06-04\"\n    }\n  ],\n  \"analysis_steps\": [\n    {\n      \"id\": \"S1\",\n      \"title\": \"Confirm read access and freeze the data cut\",\n      \"detail\": \"Re-read the data-scope register for Academic, Research, Placement, Finance and record the cut timestamp so every figure in the brief is reproducible.\",\n      \"owner_agent\": \"Coordinator\"\n    },\n    {\n      \"id\": \"S2\",\n      \"title\": \"Aggregate academic metrics across departments\",\n      \"detail\": \"Academic Agent pulls pass percentage, CO/PO attainment, curriculum compliance per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.\",\n      \"owner_agent\": \"Academic Agent\"\n    },\n    {\n      \"id\": \"S3\",\n      \"title\": \"Aggregate research metrics across departments\",\n      \"detail\": \"Research Agent pulls publications, citations, grants sanctioned per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.\",\n      \"owner_agent\": \"Research Agent\"\n    },\n    {\n      \"id\": \"S4\",\n      \"title\": \"Aggregate placement metrics across departments\",\n      \"detail\": \"Placement Agent pulls placement percentage, average package, internship completion per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.\",\n      \"owner_agent\": \"Placement Agent\"\n    },\n    {\n      \"id\": \"S6\",\n      \"title\": \"Synthesise institution-wide KPIs\",\n      \"detail\": \"KPI Agent applies only the approved KPI definitions to the domain aggregates, showing formula and source for each; enrolment-weighted, never a plain mean of department percentages.\",\n      \"owner_agent\": \"KPI Agent\"\n    },\n    {\n      \"id\": \"S7\",\n      \"title\": \"Compare each KPI to its approved target\",\n      \"detail\": \"Compute variance against NIRF, NAAC, strategic plan; classify each KPI as on-target / at-risk / below-target using the approved thresholds.\",\n      \"owner_agent\": \"KPI Agent\"\n    },\n    {\n      \"id\": \"S8\",\n      \"title\": \"Attach department-level drill-down evidence\",\n      \"detail\": \"For each KPI, record the traceable path KPI -> contributing department -> source metric -> source system, so leadership can trace any number back.\",\n      \"owner_agent\": \"Report Generation Agent\"\n    },\n    {\n      \"id\": \"S9\",\n      \"title\": \"Draft options and risks for every below-target KPI\",\n      \"detail\": \"For each KPI missing target, draft 2-3 options with cost, owner, timeline and the risks/trade-offs of each. Options only \\u2014 no action is taken.\",\n      \"owner_agent\": \"Report Generation Agent\"\n    },\n    {\n      \"id\": \"S10\",\n      \"title\": \"Run validation, then route to the human gate\",\n      \"detail\": \"Validation is a hard gate; on failure only the failing KPI is regenerated. The Principal/Registrar then approves, edits or overrides before circulation.\",\n      \"owner_agent\": \"Coordinator + Executive gate\"\n    }\n  ],\n  \"kpi_calculations\": [\n    {\n      \"kpi\": \"Pass percentage\",\n      \"formula\": \"passed_students / appeared_students x 100\",\n      \"unit\": \"%\",\n      \"source\": \"Academic ERP \\u2014 examination & OBE records\"\n    },\n    {\n      \"kpi\": \"CO/PO attainment\",\n      \"formula\": \"mean(attainment_level) over mapped COs\",\n      \"unit\": \"index 0-3\",\n      \"source\": \"Academic ERP \\u2014 examination & OBE records\"\n    },\n    {\n      \"kpi\": \"Publications per faculty\",\n      \"formula\": \"publications / sanctioned_faculty\",\n      \"unit\": \"count\",\n      \"source\": \"Research & Publications repository (Scopus-synced)\"\n    },\n    {\n      \"kpi\": \"Citations per faculty\",\n      \"formula\": \"citations / sanctioned_faculty\",\n      \"unit\": \"count\",\n      \"source\": \"Research & Publications repository (Scopus-synced)\"\n    },\n    {\n      \"kpi\": \"Grants sanctioned\",\n      \"formula\": \"sum(grant_amount)\",\n      \"unit\": \"INR lakh\",\n      \"source\": \"Research & Publications repository (Scopus-synced)\"\n    },\n    {\n      \"kpi\": \"Placement percentage\",\n      \"formula\": \"placed_students / eligible_students x 100\",\n      \"unit\": \"%\",\n      \"source\": \"Placement Cell tracker\"\n    },\n    {\n      \"kpi\": \"Average package\",\n      \"formula\": \"sum(package) / placed_students\",\n      \"unit\": \"LPA\",\n      \"source\": \"Placement Cell tracker\"\n    },\n    {\n      \"kpi\": \"Internship completion\",\n      \"formula\": \"interns_completed / eligible_students x 100\",\n      \"unit\": \"%\",\n      \"source\": \"Placement Cell tracker\"\n    }\n  ],\n  \"target_comparison\": {\n    \"target_sets\": [\n      \"NIRF\",\n      \"NAAC\",\n      \"strategic plan\"\n    ],\n    \"method\": \"variance = actual - target, reported in the KPI's own unit alongside % of target achieved; no rounding may hide a miss\"\n  },\n  \"drilldown_policy\": \"mandatory for every KPI \\u2014 each KPI must carry its full department-level trace, not only the KPIs that miss target\",\n  \"evidence_requirements\": [\n    \"Every figure carries source system, extraction timestamp and department scope.\",\n    \"Every KPI carries its formula and the approved target it is measured against.\",\n    \"Provisional or unreconciled figures are labelled inline, never presented as final.\",\n    \"Every option carries its risks, trade-offs and named owner.\"\n  ],\n  \"brief_structure\": [\n    \"1. Executive summary (3 bullets, decision-ready)\",\n    \"2. KPI scorecard vs targets, with variance\",\n    \"3. Below-target KPIs with department-level drill-down\",\n    \"4. Options with cost, owner, timeline\",\n    \"5. Risks and trade-offs per option\",\n    \"6. Assumptions and data caveats\",\n    \"7. Evidence appendix (source trace per figure)\"\n  ],\n  \"validation_checks\": [\n    \"every figure cites its source\",\n    \"assumptions are stated explicitly\",\n    \"each option lists its risks and trade-offs\",\n    \"no action is taken without leadership approval\"\n  ],\n  \"assumptions\": [\n    \"Analysis is limited to academic year 2025-26; prior years appear only as trend context.\",\n    \"Only Registrar-authorised, institution-level read access is used; no department is queried directly.\",\n    \"KPI definitions and target values are the approved set \\u2014 this plan does not redefine them.\",\n    \"SCOPE_CAVEAT: 3 provisional offers are excluded until the Placement Cell verifies them. -> Record the caveat in the brief's assumptions section.\",\n    \"[retired at r1: Finance removed from scope] PERIOD_NOT_COVERED: Finance source covers ['2023-24', '2024-25'], but the request asks for 2025-26. -> Either exclude Finance from this run, or report it against the last closed period with an explicit label.\",\n    \"[retired at r1: Finance removed from scope] FIGURES_NOT_FINAL: Finance figures are 'provisional'. Q3-Q4 of 2025-26 are unreconciled; the Finance Office closes books in August. -> Label every figure from this domain as provisional in the brief, or drop the domain until reconciliation completes.\"\n  ],\n  \"_unchanged_note\": \"Objective, data sources, KPI formulas, target-comparison method and validation checks were left untouched.\"\n}\n\nUSER FEEDBACK:\nKeep the main brief to two pages.\nEvery option must name an accountable risk owner.\nAlso add year-on-year trend context so we can see the direction of travel.\n\nEmit the minimal list of operations that applies this feedback, and nothing more.\n\nAvailable operations:\n  remove_domain  value=<Academic|Research|Placement|Finance>\n  add_domain     value=<domain>\n  set_field      path=<dotted path, e.g. drilldown_policy or scope.period>  value=<new value>\n  add_item       path=<list field, e.g. evidence_requirements>              value=<new entry>\n  remove_item    path=<list field>  value=<substring identifying the entry>\n  modify_step    step_id=<S3>  value=<replacement detail>\n  add_step       after=<S3>  title=<...>  value=<detail>  owner_agent=<...>\n  remove_step    step_id=<S5>\n\nEvery operation carries \"why\" — one short sentence quoting the part of the feedback it\nserves. Do not add operations the user did not ask for. Do not reword the objective\nunless the feedback asks you to. \"unchanged_note\" states what you deliberately left alone.",
+    "response": {
+      "ops": [
+        {
+          "op": "set_field",
+          "path": "brief_length_limit",
+          "value": "maximum two pages for the main brief; the evidence appendix ships as a separate annexure",
+          "why": "feedback caps the length of the main brief"
+        },
+        {
+          "op": "add_item",
+          "path": "evidence_requirements",
+          "value": "Every option names an accountable owner and the risk that owner is accepting.",
+          "why": "feedback requires an accountable owner against every option"
+        },
+        {
+          "op": "add_step",
+          "after": "S1",
+          "title": "Pull the prior-year baseline for trend context",
+          "value": "Retrieve the same KPI set for the preceding closed year so every KPI is reported with its year-on-year movement, clearly labelled as trend context rather than as the reporting-period figure.",
+          "owner_agent": "Coordinator",
+          "why": "feedback asks for year-on-year trend context"
+        }
+      ],
+      "unchanged_note": "Objective, data sources, KPI formulas, target-comparison method and validation checks were left untouched."
+    }
+  },
+  {
+    "call": 8,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nPrepare a two-page decision brief on Placement and Research performance for\nacademic year 2025-26, benchmarked against NIRF and our strategic plan. Report placement\npercentage, average package, publications, citations and carbon footprint, with\ndepartment-level drill-down for every KPI.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n  (none yet)\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - domains\n  - period\n  - kpis\n  - targets\n  - drilldown\n  - output\n\nFor each empty slot, the canonical question is:\n  - domains: Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?\n  - period: Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n  - output: What should leadership receive — a decision brief with options and risks, a dashboard, or both?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "REQUIREMENTS_COMPLETE",
+      "extracted": {
+        "domains": [
+          "Research",
+          "Placement"
+        ],
+        "period": "academic year 2025-26",
+        "kpis": [
+          "publications",
+          "citations",
+          "placement percentage",
+          "average package",
+          "carbon footprint"
+        ],
+        "targets": [
+          "NIRF",
+          "strategic plan"
+        ],
+        "drilldown": "mandatory for every KPI",
+        "output": "decision brief with options and risks"
+      },
+      "questions": [],
+      "rationale": "Extracted ['domains', 'drilldown', 'kpis', 'output', 'period', 'targets'] from the request; 0 requirement(s) still unspecified.",
+      "asked_about": []
+    }
+  },
+  {
+    "call": 9,
+    "task": "propose_plan",
+    "backend": "offline",
+    "system": "You are the planning component of Worklet 15, an Executive Decision\nSupport System. You produce execution PLANS only. You never compute a KPI, never\nstate an institutional figure, and never write the decision brief itself.",
+    "prompt": "Produce an execution plan from the locked requirements below, and from\nnothing else.\n\nREQUIREMENTS (all six slots confirmed with the user):\n{\n  \"domains\": [\n    \"Research\",\n    \"Placement\"\n  ],\n  \"period\": \"academic year 2025-26\",\n  \"kpis\": [\n    \"publications\",\n    \"citations\",\n    \"placement percentage\",\n    \"average package\",\n    \"carbon footprint\"\n  ],\n  \"targets\": [\n    \"NIRF\",\n    \"strategic plan\"\n  ],\n  \"drilldown\": \"mandatory for every KPI\",\n  \"output\": \"decision brief with options and risks\"\n}\n\nOBSERVED DATA SCOPE (returned by the data-scope register tool — this is real,\nuse it):\n{\n  \"Research\": {\n    \"source_system\": \"Research & Publications repository (Scopus-synced)\",\n    \"read_access\": \"granted by Registrar on 2026-06-01\",\n    \"periods\": [\n      \"2023-24\",\n      \"2024-25\",\n      \"2025-26\"\n    ],\n    \"figure_status\": \"final\",\n    \"metrics\": [\n      \"publications\",\n      \"citations\",\n      \"grants sanctioned\"\n    ]\n  },\n  \"Placement\": {\n    \"source_system\": \"Placement Cell tracker\",\n    \"read_access\": \"granted by Registrar on 2026-06-04\",\n    \"periods\": [\n      \"2023-24\",\n      \"2024-25\",\n      \"2025-26\"\n    ],\n    \"figure_status\": \"final\",\n    \"metrics\": [\n      \"placement percentage\",\n      \"average package\",\n      \"internship completion\"\n    ],\n    \"caveat\": \"3 provisional offers are excluded until the Placement Cell verifies them.\"\n  }\n}\n\nDATA CONFLICTS the tool call surfaced (each one MUST be reflected in the plan,\neither as an assumption or as an explicit scope exclusion):\n[\n  {\n    \"type\": \"SCOPE_CAVEAT\",\n    \"domain\": \"Placement\",\n    \"detail\": \"3 provisional offers are excluded until the Placement Cell verifies them.\",\n    \"required_action\": \"Record the caveat in the brief's assumptions section.\"\n  },\n  {\n    \"type\": \"KPI_NOT_SOURCED\",\n    \"domain\": \"-\",\n    \"detail\": \"No linked source system reports 'carbon footprint'.\",\n    \"required_action\": \"Drop 'carbon footprint' from scope or authorise a new source system.\"\n  }\n]\n\nRules:\n- Do not invent institutional data. Do not compute results. Do not write the brief.\n- Write NO numeric figure anywhere: no percentages, no counts, no amounts, no target\n  values. Lab 1 produces a plan, not results. Naming a metric is fine (\"pass\n  percentage\"); stating a value for it (\"92%\") is not.\n- Every analysis step gets a short stable id: S1, S2, S3, ...\n- Every KPI calculation names its formula and its source system.\n- validation_checks must include the four Chapter 15 acceptance checks:\n  every figure cites its source; assumptions are stated explicitly; each option\n  lists its risks and trade-offs; no action is taken without leadership approval.\n- brief_structure is the section list of the final decision brief.\nThe plan must be precise enough for another agent to execute without asking anything.",
+    "response": {
+      "objective": "Produce a leadership decision brief comparing Research, Placement performance for academic year 2025-26 against NIRF, strategic plan, identifying below-target areas with options and risks.",
+      "scope": {
+        "domains": [
+          "Research",
+          "Placement"
+        ],
+        "period": "academic year 2025-26",
+        "unit_of_analysis": "institution level, with department-level drill-down"
+      },
+      "data_required": [
+        {
+          "domain": "Research",
+          "source_system": "Research & Publications repository (Scopus-synced)",
+          "fields": [
+            "publications",
+            "citations",
+            "grants sanctioned"
+          ],
+          "access": "granted by Registrar on 2026-06-01"
+        },
+        {
+          "domain": "Placement",
+          "source_system": "Placement Cell tracker",
+          "fields": [
+            "placement percentage",
+            "average package",
+            "internship completion"
+          ],
+          "access": "granted by Registrar on 2026-06-04"
+        }
+      ],
+      "analysis_steps": [
+        {
+          "id": "S1",
+          "title": "Confirm read access and freeze the data cut",
+          "detail": "Re-read the data-scope register for Research, Placement and record the cut timestamp so every figure in the brief is reproducible.",
+          "owner_agent": "Coordinator"
+        },
+        {
+          "id": "S2",
+          "title": "Aggregate research metrics across departments",
+          "detail": "Research Agent pulls publications, citations, grants sanctioned per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.",
+          "owner_agent": "Research Agent"
+        },
+        {
+          "id": "S3",
+          "title": "Aggregate placement metrics across departments",
+          "detail": "Placement Agent pulls placement percentage, average package, internship completion per department for academic year 2025-26, keeps the per-department spread, and flags any department with stale or missing data.",
+          "owner_agent": "Placement Agent"
+        },
+        {
+          "id": "S4",
+          "title": "Synthesise institution-wide KPIs",
+          "detail": "KPI Agent applies only the approved KPI definitions to the domain aggregates, showing formula and source for each; enrolment-weighted, never a plain mean of department percentages.",
+          "owner_agent": "KPI Agent"
+        },
+        {
+          "id": "S5",
+          "title": "Compare each KPI to its approved target",
+          "detail": "Compute variance against NIRF, strategic plan; classify each KPI as on-target / at-risk / below-target using the approved thresholds.",
+          "owner_agent": "KPI Agent"
+        },
+        {
+          "id": "S6",
+          "title": "Attach department-level drill-down evidence",
+          "detail": "For each KPI, record the traceable path KPI -> contributing department -> source metric -> source system, so leadership can trace any number back.",
+          "owner_agent": "Report Generation Agent"
+        },
+        {
+          "id": "S7",
+          "title": "Draft options and risks for every below-target KPI",
+          "detail": "For each KPI missing target, draft 2-3 options with cost, owner, timeline and the risks/trade-offs of each. Options only — no action is taken.",
+          "owner_agent": "Report Generation Agent"
+        },
+        {
+          "id": "S8",
+          "title": "Run validation, then route to the human gate",
+          "detail": "Validation is a hard gate; on failure only the failing KPI is regenerated. The Principal/Registrar then approves, edits or overrides before circulation.",
+          "owner_agent": "Coordinator + Executive gate"
+        }
+      ],
+      "kpi_calculations": [
+        {
+          "kpi": "Publications per faculty",
+          "formula": "publications / sanctioned_faculty",
+          "unit": "count",
+          "source": "Research & Publications repository (Scopus-synced)"
+        },
+        {
+          "kpi": "Citations per faculty",
+          "formula": "citations / sanctioned_faculty",
+          "unit": "count",
+          "source": "Research & Publications repository (Scopus-synced)"
+        },
+        {
+          "kpi": "Grants sanctioned",
+          "formula": "sum(grant_amount)",
+          "unit": "INR lakh",
+          "source": "Research & Publications repository (Scopus-synced)"
+        },
+        {
+          "kpi": "Placement percentage",
+          "formula": "placed_students / eligible_students x 100",
+          "unit": "%",
+          "source": "Placement Cell tracker"
+        },
+        {
+          "kpi": "Average package",
+          "formula": "sum(package) / placed_students",
+          "unit": "LPA",
+          "source": "Placement Cell tracker"
+        },
+        {
+          "kpi": "Internship completion",
+          "formula": "interns_completed / eligible_students x 100",
+          "unit": "%",
+          "source": "Placement Cell tracker"
+        }
+      ],
+      "target_comparison": {
+        "target_sets": [
+          "NIRF",
+          "strategic plan"
+        ],
+        "method": "variance = actual - target, reported in the KPI's own unit alongside % of target achieved; no rounding may hide a miss"
+      },
+      "drilldown_policy": "mandatory for every KPI",
+      "evidence_requirements": [
+        "Every figure carries source system, extraction timestamp and department scope.",
+        "Every KPI carries its formula and the approved target it is measured against.",
+        "Provisional or unreconciled figures are labelled inline, never presented as final.",
+        "Every option carries its risks, trade-offs and named owner."
+      ],
+      "brief_structure": [
+        "1. Executive summary (3 bullets, decision-ready)",
+        "2. KPI scorecard vs targets, with variance",
+        "3. Below-target KPIs with department-level drill-down",
+        "4. Options with cost, owner, timeline",
+        "5. Risks and trade-offs per option",
+        "6. Assumptions and data caveats",
+        "7. Evidence appendix (source trace per figure)"
+      ],
+      "validation_checks": [
+        "every figure cites its source",
+        "assumptions are stated explicitly",
+        "each option lists its risks and trade-offs",
+        "no action is taken without leadership approval"
+      ],
+      "assumptions": [
+        "Analysis is limited to academic year 2025-26; prior years appear only as trend context.",
+        "Only Registrar-authorised, institution-level read access is used; no department is queried directly.",
+        "KPI definitions and target values are the approved set — this plan does not redefine them.",
+        "SCOPE_CAVEAT: 3 provisional offers are excluded until the Placement Cell verifies them. -> Record the caveat in the brief's assumptions section.",
+        "KPI_NOT_SOURCED: No linked source system reports 'carbon footprint'. -> Drop 'carbon footprint' from scope or authorise a new source system."
+      ]
+    }
+  },
+  {
+    "call": 10,
+    "task": "chatbot",
+    "backend": "offline",
+    "system": "You are a helpful assistant.",
+    "prompt": "Answer this request directly:\nAnalyze our college performance.",
+    "response": {
+      "answer": "Here is an analysis of your college performance for the current year. Academic performance is strong, research output is growing steadily, placements are healthy and the budget is well utilised. I recommend focusing on research output and improving placement outcomes in the weaker departments."
+    }
+  },
+  {
+    "call": 11,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nGive me a performance report.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n  (none yet)\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - domains\n  - period\n  - kpis\n  - targets\n  - drilldown\n  - output\n\nFor each empty slot, the canonical question is:\n  - domains: Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?\n  - period: Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n  - output: What should leadership receive — a decision brief with options and risks, a dashboard, or both?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "NEEDS_INFO",
+      "extracted": {},
+      "questions": [
+        "Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?",
+        "Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?",
+        "Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?",
+        "Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?",
+        "Is department-level drill-down required for every KPI, or only for KPIs that miss their target?",
+        "What should leadership receive — a decision brief with options and risks, a dashboard, or both?"
+      ],
+      "rationale": "Extracted nothing from the request; 6 requirement(s) still unspecified.",
+      "asked_about": [
+        "domains",
+        "period",
+        "kpis",
+        "targets",
+        "drilldown",
+        "output"
+      ]
+    }
+  },
+  {
+    "call": 12,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nGive me a performance report.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n  (none yet)\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - domains\n  - period\n  - kpis\n  - targets\n  - drilldown\n  - output\n\nFor each empty slot, the canonical question is:\n  - domains: Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?\n  - period: Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n  - output: What should leadership receive — a decision brief with options and risks, a dashboard, or both?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "NEEDS_INFO",
+      "extracted": {},
+      "questions": [
+        "Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?",
+        "Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?",
+        "Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?",
+        "Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?",
+        "Is department-level drill-down required for every KPI, or only for KPIs that miss their target?",
+        "What should leadership receive — a decision brief with options and risks, a dashboard, or both?"
+      ],
+      "rationale": "Extracted nothing from the request; 6 requirement(s) still unspecified.",
+      "asked_about": [
+        "domains",
+        "period",
+        "kpis",
+        "targets",
+        "drilldown",
+        "output"
+      ]
+    }
+  },
+  {
+    "call": 13,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nGive me a performance report.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n  (none yet)\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - domains\n  - period\n  - kpis\n  - targets\n  - drilldown\n  - output\n\nFor each empty slot, the canonical question is:\n  - domains: Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?\n  - period: Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n  - output: What should leadership receive — a decision brief with options and risks, a dashboard, or both?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "NEEDS_INFO",
+      "extracted": {},
+      "questions": [
+        "Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?",
+        "Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?",
+        "Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?",
+        "Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?",
+        "Is department-level drill-down required for every KPI, or only for KPIs that miss their target?",
+        "What should leadership receive — a decision brief with options and risks, a dashboard, or both?"
+      ],
+      "rationale": "Extracted nothing from the request; 6 requirement(s) still unspecified.",
+      "asked_about": [
+        "domains",
+        "period",
+        "kpis",
+        "targets",
+        "drilldown",
+        "output"
+      ]
+    }
+  },
+  {
+    "call": 14,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nGive me a performance report.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n  (none yet)\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - domains\n  - period\n  - kpis\n  - targets\n  - drilldown\n  - output\n\nFor each empty slot, the canonical question is:\n  - domains: Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?\n  - period: Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n  - output: What should leadership receive — a decision brief with options and risks, a dashboard, or both?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "NEEDS_INFO",
+      "extracted": {},
+      "questions": [
+        "Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?",
+        "Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?",
+        "Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?",
+        "Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?",
+        "Is department-level drill-down required for every KPI, or only for KPIs that miss their target?",
+        "What should leadership receive — a decision brief with options and risks, a dashboard, or both?"
+      ],
+      "rationale": "Extracted nothing from the request; 6 requirement(s) still unspecified.",
+      "asked_about": [
+        "domains",
+        "period",
+        "kpis",
+        "targets",
+        "drilldown",
+        "output"
+      ]
+    }
+  },
+  {
+    "call": 15,
+    "task": "clarify",
+    "backend": "offline",
+    "system": "You are the apniLeap AURA Coordinator for Worklet 15, an Executive\nDecision Support System serving the Principal / Registrar / Governing Council of an\neducational institution. You are at Lab 1: you clarify, plan and revise. You never\nproduce the decision brief itself and you never state an institutional figure.",
+    "prompt": "A request has arrived from leadership.\n\nREQUEST:\nGive me a performance report.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nUSER REPLY:\nI'm not sure, just do whatever is standard.\n\nSLOTS ALREADY FILLED (do not ask about these again):\n  (none yet)\n\nSLOTS STILL EMPTY — ask about exactly these, and nothing else:\n  - domains\n  - period\n  - kpis\n  - targets\n  - drilldown\n  - output\n\nFor each empty slot, the canonical question is:\n  - domains: Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?\n  - period: Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?\n  - kpis: Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?\n  - targets: Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?\n  - drilldown: Is department-level drill-down required for every KPI, or only for KPIs that miss their target?\n  - output: What should leadership receive — a decision brief with options and risks, a dashboard, or both?\n\nDo two things and return them as JSON:\n\n1. \"extracted\": for every EMPTY slot, if the request text genuinely supplies the\n   answer, put the value there. Domains must be drawn only from\n   [Academic, Research, Placement, Finance]. Leave a slot out entirely if the\n   request does not state it — never guess, never fill it with a default.\n2. \"questions\": one clear question for every slot that is still empty after\n   step 1. Ask nothing about slots you just extracted or that are already filled.\n\nSet \"status\" to REQUIREMENTS_COMPLETE only when questions is empty.\n\"rationale\" is one sentence on what you extracted and what is still missing.\nDo not answer the request. Do not produce a plan. Do not invent institutional data.",
+    "response": {
+      "status": "NEEDS_INFO",
+      "extracted": {},
+      "questions": [
+        "Which performance domains must the brief cover — Academic, Research, Placement, Finance, or a subset?",
+        "Which reporting period does this cover (e.g. academic year 2025-26, or a specific quarter)?",
+        "Which KPIs should be reported, or should the approved institution-wide KPI set be used in full?",
+        "Which target set should performance be compared against — NIRF, NAAC, the internal strategic plan, or all three?",
+        "Is department-level drill-down required for every KPI, or only for KPIs that miss their target?",
+        "What should leadership receive — a decision brief with options and risks, a dashboard, or both?"
+      ],
+      "rationale": "Extracted nothing from the request; 6 requirement(s) still unspecified.",
+      "asked_about": [
+        "domains",
+        "period",
+        "kpis",
+        "targets",
+        "drilldown",
+        "output"
+      ]
+    }
+  }
+]

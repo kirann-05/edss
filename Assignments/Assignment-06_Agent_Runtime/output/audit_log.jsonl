@@ -1,0 +1,3 @@
+{"ts": "2026-11-16T20:22:00.535824", "run_id": "4ab6e706", "actor": "Coordinator", "intent": "start run", "action": "new_run", "result_summary": "locked plan for 'Q1 FY26 (Lab 6 demo)' covering ['academic', 'finance']"}
+{"ts": "2026-11-16T20:22:00.535824", "run_id": "4ab6e706", "actor": "Coordinator", "intent": "run academic aggregation", "action": "simulated agent step", "result_summary": "simulated step: academic aggregation would run here"}
+{"ts": "2026-11-16T20:22:00.536824", "run_id": "4ab6e706", "actor": "Coordinator", "intent": "run finance aggregation", "action": "simulated agent step", "result_summary": "simulated step: finance aggregation would run here"}

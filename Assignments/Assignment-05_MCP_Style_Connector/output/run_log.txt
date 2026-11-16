@@ -1,0 +1,14 @@
+=== Lab 5: one governed connector for every source ===
+
+Correctly denied pre-grant access: No institution-level read access granted for domain='academic'. Call request_access() first (Gate 1: access intake).
+
+Gate 1: access granted -> AccessGrant(domain='academic', granted_by='Registrar (demo)', granted_at='2026-11-16T20:22:00.438502', scope='institution-wide read-only')
+
+connector.expose:
+  read('institutional KPIs & dashboards') -> 6 definitions
+  read('department reports', domain='academic') -> 4 records
+  read('external benchmarks') -> ['nirf_band_placement_pct_median', 'nirf_band_publications_per_faculty_median', 'note']
+
+To go live: implement the same Connector interface (see eds/connector.py) against a real ERP/DB/API and hand THAT instance to the Coordinator/Runtime -- no agent in eds/agents/ needs to change.
+
+ACCEPT: every read above went through `connector.read(...)`; no module imported data/stub_data.py directly.
