@@ -1,16 +1,17 @@
-# Executive Decision Support System (EDSS)
+# Team B1 (VII Sem) EDSS: Executive Decision Support System
 
 Agentic AI course project, KLE Technological University. Worklet 15: a multi-agent system that turns department data into a validated, human-approved decision brief for university leadership.
 
 ## Team
 
-Team 15
+Team B1 (VII Sem), Agentic AI, Worklet 15.
 
-| Name | USN | Division |
-| --- | --- | --- |
-| @@TEAM_MEMBER_1@@ | @@USN@@ | @@DIV@@ |
-| @@TEAM_MEMBER_2@@ | @@USN@@ | @@DIV@@ |
-| @@TEAM_MEMBER_3@@ | @@USN@@ | @@DIV@@ |
+| Name | USN | Roll no. | Division |
+| --- | --- | --- | --- |
+| Kiran Patil | 01FE24BCI407 | 256 | B |
+| Mohammed Mudassir | 01FE23BCI089 | 263 | B |
+| Sakshi Manvi | 01FE23BCI013 | 162 | B |
+| Nazreen Syed | 01FE23BCI026 | 209 | B |
 
 ## Where things are
 
@@ -20,7 +21,7 @@ Team 15
 | Project code | [Course-Project/](Course-Project/) |
 | Problem statement (Chapter 15 of the course build book) | [Course-Project/docs/source/chapter15.md](Course-Project/docs/source/chapter15.md), original [PDF](Course-Project/docs/source/Chapter15_EDSS.pdf) |
 | Project documentation (requirements, design, UML, API, testing) | [Course-Project/docs/technical/](Course-Project/docs/technical/README.md) |
-| Final report | @@FINAL_REPORT_LINK@@ |
+| Final report | [Course-Project/docs/report/EDSS-Final-Report.pdf](Course-Project/docs/report/EDSS-Final-Report.pdf) (32 pages, built from the technical documentation by `Course-Project/scripts/build_report.py`) |
 | Live demo steps | [Course-Project/docs/DEMO_QUICK.md](Course-Project/docs/DEMO_QUICK.md), full version [DEMO.md](Course-Project/docs/DEMO.md) |
 
 ## The 12 assignments
