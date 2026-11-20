@@ -1,38 +1,6 @@
-# secrets and local config
+# the project has its own .gitignore in Course-Project/; this is a safety net at the top
 .env
-.env.*
-!.env.example
-
-# real university data must never be committed
-data/real/
-
-# python
-__pycache__/
-*.pyc
-.venv/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-
-# node
-node_modules/
-.next/
-dist/
-
-# local services
-pgdata/
-*.log
+**/.env
+!**/.env.example
+**/data/real/
 .DS_Store
-
-# the demo's build and logs
-.demo/
-.next-demo/
-.next-rehearse/
-# database backups hold the data, and real data never leaves the machine
-backups/
-# the recorded demo, for a USB stick, never into git
-demo-video/
-.demo-video-run/
-
-# make coverage, if it stops part way
-backend/.coverage*
